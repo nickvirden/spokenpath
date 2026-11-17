@@ -49,7 +49,8 @@ jobs:
   lint:
     name: lint
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # Long enough for clippy and cargo-deny on a cold cache.
+    timeout-minutes: 20
     permissions:
       contents: read
     # Dependabot does not track this version or checksum; bump both by hand
@@ -63,10 +64,21 @@ jobs:
         with:
           persist-credentials: false
 
+      # Reads the pnpm version from packageManager in package.json. It comes
+      # before setup-node, which needs pnpm on PATH to cache its store.
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
-          package-manager-cache: false
+          cache: pnpm
+
+      # rustup installs the toolchain and components that rust-toolchain.toml
+      # pins, so CI and local checkouts build with the same Rust.
+      - name: Install the Rust toolchain
+        run: rustup toolchain install
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
 
       # A pinned release checked against its published checksum, so a
       # replaced download fails the job instead of running.
@@ -89,6 +101,28 @@ jobs:
 
       - name: Validate JSON configuration
         run: node --run lint:json
+
+      - name: Install the pnpm workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Check Rust formatting
+        run: cargo fmt --all --check
+
+      - name: Lint Rust
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      # `biome ci` never writes, and reports findings as annotations.
+      - name: Check JS, TS and JSON with Biome
+        run: pnpm exec biome ci .
+
+      - name: Typecheck the packages
+        run: pnpm -r typecheck
+
+      # Licences, RustSec advisories, crate sources and bans, from deny.toml.
+      - name: Check Rust dependencies
+        uses: EmbarkStudios/cargo-deny-action@70f81531115945ba6eb6b941ec9d39d063438eb9 # v2.1.2
+        with:
+          command: check
 
   zizmor:
     name: zizmor
@@ -135,11 +169,103 @@ jobs:
       - name: Test version rules
         run: node --run test:release
 
+      # The lockstep test runs `cargo metadata --locked` on a rewritten
+      # Cargo.lock, so it needs the toolchain from rust-toolchain.toml.
+      - name: Install the Rust toolchain
+        run: rustup toolchain install
+
+      - name: Test lockstep versions
+        run: node --run test:versions
+
       # The test drives the JS API, which skips the CLI's Node version check.
       # Starting the CLI the release job runs catches a toolchain that no
       # longer supports the Node in .nvmrc.
       - name: Start the semantic-release CLI
         run: ./.github/release/node_modules/.bin/semantic-release --version
+
+  test-rust:
+    name: test-rust
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install the Rust toolchain
+        run: rustup toolchain install
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+
+      - name: Test the Cargo workspace
+        run: cargo test --workspace --locked
+
+  test-node:
+    name: test-node
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install the pnpm workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Test the packages
+        run: pnpm -r test
+
+  # Scans every commit the pull request adds, so a secret committed without
+  # the pre-commit hook (which skips when gitleaks is not installed) still
+  # fails the pull request.
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    # Dependabot does not track this version or checksum; bump both by hand
+    # when gitleaks releases.
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      # From gitleaks_8.30.1_checksums.txt on the release page.
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      # The full history, so both ends of the pull request's range exist.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # A pinned release checked against its published checksum, so a
+      # replaced download fails the job instead of running.
+      - name: Install gitleaks
+        run: |
+          archive="$RUNNER_TEMP/gitleaks.tar.gz"
+          curl -sSfL -o "$archive" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  ${archive}" | sha256sum --check --strict
+          tar -xzf "$archive" -C "$RUNNER_TEMP" gitleaks
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      # The SHAs reach the shell only as environment variables, never
+      # interpolated into the script. Any finding exits non-zero.
+      - name: Scan the pull request's commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: gitleaks git --config .gitleaks.toml --redact --verbose --log-opts="${BASE_SHA}..${HEAD_SHA}" .
 
   # The single required status check. Its name is referenced by the branch
   # ruleset, so it must stay `ci-ok`. It runs even when a needed job fails or
@@ -147,7 +273,7 @@ jobs:
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [pr-title, lint, zizmor, release-rules]
+    needs: [pr-title, lint, zizmor, release-rules, test-rust, test-node, gitleaks]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}

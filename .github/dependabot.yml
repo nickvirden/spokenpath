@@ -47,9 +47,13 @@ updates:
         update-types:
           - version-update:semver-major
 
-  # Root dev tooling (husky, commitlint), resolved through pnpm-lock.yaml.
+  # The pnpm workspace: the root dev tooling (husky, commitlint, TypeScript,
+  # Vitest, Biome) and every package manifest, resolved through
+  # pnpm-lock.yaml.
   - package-ecosystem: npm
-    directory: /
+    directories:
+      - /
+      - /packages/*
     schedule:
       interval: weekly
     cooldown:
@@ -58,5 +62,19 @@ updates:
       prefix: build
     groups:
       dev-tooling:
+        patterns:
+          - '*'
+
+  # The Cargo workspace's crates, resolved through Cargo.lock.
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: build
+    groups:
+      crates:
         patterns:
           - '*'
