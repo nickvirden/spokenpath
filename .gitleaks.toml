@@ -1,0 +1,12 @@
+title = "spokenpath gitleaks config"
+
+[extend]
+useDefault = true
+
+# Lockfiles carry integrity hashes that look like high-entropy secrets.
+# Paths are regular expressions.
+[allowlist]
+paths = [
+  '''(^|/)pnpm-lock\.yaml$''',
+  '''^\.github/release/package-lock\.json$''',
+]

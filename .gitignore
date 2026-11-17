@@ -1,0 +1,27 @@
+# Dependencies, at any depth (root and .github/release)
+node_modules/
+
+# Local research and agent notes; never committed
+.context/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor cruft
+.idea/
+*.swp
+*.swo
+*~
+
+# Local secrets; never staged
+.env
+.env.*
+*.pem
+*.key

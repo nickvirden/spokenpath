@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Rejects any commit message that is not a Conventional Commit. The locally
+# installed commitlint is used so the hook and CI run the same version.
+pnpm exec commitlint --edit "$1"
