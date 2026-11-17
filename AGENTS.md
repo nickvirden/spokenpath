@@ -110,7 +110,19 @@ writer than the one semantic-release bundles and fail mid-release.
 ## Issues and decisions
 
 - Issues are tracked in GitHub Issues on this repository.
-- Architectural decisions are recorded as ADRs in `docs/decisions/`.
+- Architectural decisions are recorded as ADRs in `docs/decisions/`, in the format that
+  `docs/decisions/README.md` defines. Read the ADRs that cover an area before changing it.
+
+## Documents
+
+- `README.md`: what spokenpath is and is not, its status, and how it compares with other tools.
+- `CONTRIBUTING.md`: setup, checks, commit rules, releases and the wording rule, for contributors.
+- `SECURITY.md`: how to report a vulnerability privately, and the capture trust model.
+- `GOVERNANCE.md`: who may merge, and how approval could be delegated.
+- `CODE_OF_CONDUCT.md`: the Contributor Covenant that everyone taking part follows.
+- `docs/roadmap.md`: the ordered upcoming work and the later items.
+- `docs/research/`: the research the design rests on, with each claim's verification flag.
+- `docs/decisions/`: the architecture decision records (ADRs) and their index.
 
 ## Comments
 

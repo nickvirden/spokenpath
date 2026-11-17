@@ -1,0 +1,47 @@
+name: Bug report
+description: spokenpath fails, crashes or behaves differently from its documentation.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If the output disagrees with a real browser or screen reader, use the accuracy report
+        instead. Report security problems privately, never in an issue.
+  - type: input
+    id: version
+    attributes:
+      label: spokenpath version or commit
+      placeholder: "0.1.0, or a commit SHA"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system and version
+      placeholder: "macOS 26.1"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: |
+        The commands you ran and any input files, as small as possible. This issue is public: do
+        not paste secrets, tokens, cookies, internal URLs or personal data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: What happened instead, including any error output.
+      render: text
+    validations:
+      required: true
