@@ -68,7 +68,7 @@ const result = {
   defaultsRead,
   voiceOverRunning: { ...voiceOverRunning, running: voiceOverRunning.exitCode === 0 },
   setupRun,
-  result: setupRun ? 'setup run: the speech probe can run' : 'not run: setup pending',
+  result: setupRun ? 'setup run: VoiceOver AppleScript control is enabled' : 'not run: setup pending',
 };
 await writeFile(outputFile, `${JSON.stringify(result, null, 2)}\n`);
 console.log(

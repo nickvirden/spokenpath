@@ -15,14 +15,13 @@
   },
   "appleScriptMarkerFile": {
     "path": "/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled",
-    "exists": false,
-    "code": "ENOENT"
+    "exists": true
   },
   "defaultsRead": {
     "command": "defaults read com.apple.VoiceOver4/default SCREnableAppleScript",
-    "exitCode": 1,
-    "stdout": "",
-    "stderr": "Error: Domain 'com.apple.VoiceOver4/default' not found."
+    "exitCode": 0,
+    "stdout": "1",
+    "stderr": ""
   },
   "voiceOverRunning": {
     "command": "pgrep -x VoiceOver",
@@ -31,6 +30,6 @@
     "stderr": "",
     "running": false
   },
-  "setupRun": false,
-  "result": "not run: setup pending"
+  "setupRun": true,
+  "result": "setup run: VoiceOver AppleScript control is enabled"
 }
