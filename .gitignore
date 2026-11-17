@@ -1,6 +1,9 @@
 # Dependencies, at any depth (root and .github/release)
 node_modules/
 
+# Cargo build output
+target/
+
 # Local research and agent notes; never committed
 .context/
 

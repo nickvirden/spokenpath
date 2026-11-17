@@ -2,3 +2,4 @@
 
 pnpm-lock.yaml linguist-generated
 .github/release/package-lock.json linguist-generated
+Cargo.lock linguist-generated
