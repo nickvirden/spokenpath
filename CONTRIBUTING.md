@@ -13,15 +13,16 @@ where the two differ, AGENTS.md is right.
 ## Setup
 
 Install Node at the version in `.nvmrc` and enable pnpm with `corepack enable`, then install the
-root dev tooling (which also installs the git hooks) and the pinned release tooling:
+pnpm workspace (which also installs the git hooks) and the pinned release tooling:
 
 ```sh
 pnpm install
 npm ci --ignore-scripts --prefix .github/release
 ```
 
-The checks also call native tools (gitleaks, actionlint, shellcheck and zizmor). See
-[Setup in AGENTS.md](AGENTS.md#setup) for the exact versions and how to install each one.
+Install [rustup](https://rustup.rs/); the first `cargo` command installs the Rust toolchain that
+`rust-toolchain.toml` pins. The checks also call native tools (gitleaks, actionlint, shellcheck,
+zizmor and cargo-deny). See [Setup in AGENTS.md](AGENTS.md#setup) for how to install each one.
 
 ## Checks
 
@@ -60,7 +61,7 @@ While the version is 0.x:
 Releases are automated. Every push to `main` runs semantic-release, which decides from the commit
 types since the last tag whether to release. When it releases, it writes `CHANGELOG.md`, bumps the
 version, commits, tags `vX.Y.Z` and creates the GitHub release. One version covers the whole
-repository.
+repository: every crate and every package carries it, and the release commit moves them together.
 
 Never do any of these by hand:
 
