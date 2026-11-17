@@ -1,0 +1,81 @@
+name: Release
+
+# Every push to main is a candidate release. semantic-release inspects the
+# Conventional Commits since the last tag and decides whether a release is
+# warranted at all; a chore- or docs-only push produces no release.
+on:
+  push:
+    branches: [main]
+
+# No cancel-in-progress: a release that is already publishing must not be
+# killed mid-flight by a second push landing right after it. Queuing (the
+# default) serializes runs instead.
+concurrency:
+  group: release-${{ github.workflow }}
+
+# Nothing by default; the job grants only what it uses.
+permissions: {}
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # The workflow token only reads. Every write (the release commit, the tag
+    # and the GitHub release) uses the release App's token below.
+    permissions:
+      contents: read
+    steps:
+      # semantic-release pushes a chore(release) commit and a tag straight to
+      # main. With main protected by a branch ruleset, the default
+      # GITHUB_TOKEN (github-actions[bot]) cannot bypass it, so releases run
+      # as a GitHub App installation that the ruleset lists as a bypass actor.
+      # The token is scoped to this repository only and expires after the job.
+      # It asks for only what semantic-release needs: contents to push the
+      # release commit and tag and create the GitHub release, issues and pull
+      # requests to comment on and label what a release resolves.
+      - name: Create release app token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.RELEASE_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+
+      # The checkout credential is what `git push` uses, so it must be the App
+      # token, and it must persist for the release step. This is the only
+      # checkout in the repository that keeps its credentials.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: # zizmor: ignore[artipacked] git push in the release step needs this credential
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      # No dependency cache: a cache restored into a job holding a push token
+      # is a way to smuggle code into it.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      # This job holds a token that can push to main, so the release tooling
+      # is installed from a committed lockfile (.github/release) with exact
+      # versions and integrity hashes, transitive dependencies included. A
+      # newly published or compromised package version cannot reach it until a
+      # reviewed Dependabot PR bumps the lockfile. The manifest lives outside
+      # the root package.json so local installs do not carry release tooling.
+      # Lifecycle scripts stay off: nothing here needs them.
+      #
+      # conventional-changelog-conventionalcommits stays on 8.x because
+      # commit-analyzer and release-notes-generator resolve the preset package
+      # by name at runtime (not as a declared dependency), and newer preset
+      # majors require a newer conventional-changelog-writer than the one
+      # bundled here; the mismatch throws "Missing helper" mid-release.
+      - name: Install release tooling
+        run: npm ci --ignore-scripts --prefix .github/release
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: ./.github/release/node_modules/.bin/semantic-release

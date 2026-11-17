@@ -1,0 +1,62 @@
+# Workflow actions are pinned to commit SHAs, so a moved or compromised tag
+# cannot change what a job runs. Dependabot proposes the pin updates as
+# reviewed PRs; one grouped PR a week per entry keeps their CI cost to a
+# single run. A release must be a week old before it is proposed, which gives
+# the ecosystem time to catch a compromised or broken version. The commit
+# prefixes are Conventional Commit types that never cut a release.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns:
+          - '*'
+
+  # The release job's lockfile (.github/release) is updated the same way, with
+  # two majors held back because they would pass CI and then fail on main:
+  # - The conventionalcommits preset's next major needs a newer
+  #   conventional-changelog-writer than the one semantic-release bundles and
+  #   fails mid-release with "Missing helper".
+  # - semantic-release 26.x requires Node >= 26.13. Its Node check lives in the
+  #   CLI entry point, and npm ci on an older Node only warns, so a bump is
+  #   moved deliberately together with .nvmrc.
+  - package-ecosystem: npm
+    directory: /.github/release
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: ci
+    groups:
+      release-tooling:
+        patterns:
+          - '*'
+    ignore:
+      - dependency-name: conventional-changelog-conventionalcommits
+        update-types:
+          - version-update:semver-major
+      - dependency-name: semantic-release
+        update-types:
+          - version-update:semver-major
+
+  # Root dev tooling (husky, commitlint), resolved through pnpm-lock.yaml.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: build
+    groups:
+      dev-tooling:
+        patterns:
+          - '*'

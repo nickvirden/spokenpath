@@ -1,0 +1,25 @@
+{
+  "name": "spokenpath",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24.10.0"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "lint:commits": "node scripts/lint-commits.mjs",
+    "lint:json": "node -e \"['./package.json', './.releaserc.json', './.github/release/package.json'].forEach((file) => require(file))\"",
+    "lint:hooks": "shellcheck .husky/commit-msg .husky/pre-commit",
+    "lint:workflows": "actionlint",
+    "zizmor": "zizmor .",
+    "test:release": "node --test --test-isolation=none .github/release/test/version-rules.test.mjs",
+    "check": "pnpm lint:commits && pnpm lint:json && pnpm lint:hooks && pnpm lint:workflows && pnpm zizmor && pnpm test:release"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "husky": "9.1.7"
+  }
+}

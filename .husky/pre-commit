@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+# Rejects commits whose staged changes contain a secret. gitleaks is a native
+# binary that pnpm cannot install, so a checkout without it still commits, with
+# a warning, rather than blocking a contributor who has not installed it yet.
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "warning: gitleaks is not installed, so staged changes were not scanned for secrets." >&2
+  echo "Install it with 'brew install gitleaks' or from https://github.com/gitleaks/gitleaks/releases" >&2
+  exit 0
+fi
+
+if ! gitleaks protect --staged --config .gitleaks.toml --verbose; then
+  echo "gitleaks found a secret in the staged changes. Commit rejected." >&2
+  exit 1
+fi
