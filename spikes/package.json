@@ -1,0 +1,10 @@
+{
+  "name": "spokenpath-spikes",
+  "private": true,
+  "type": "module",
+  "license": "MIT OR Apache-2.0",
+  "description": "Feasibility probes recorded in docs/decisions; evidence, not product code",
+  "dependencies": {
+    "playwright": "1.65.1"
+  }
+}
