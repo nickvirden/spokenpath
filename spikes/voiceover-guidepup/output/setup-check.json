@@ -1,0 +1,36 @@
+{
+  "probe": "voiceover-guidepup",
+  "environment": {
+    "macos": {
+      "productVersion": "27.0.1",
+      "buildVersion": "26A434"
+    },
+    "safari": "27.0.1",
+    "voiceOver": {
+      "shortVersion": "10",
+      "bundleVersion": "993"
+    },
+    "node": "v24.13.0",
+    "runDate": "2026-11-17"
+  },
+  "appleScriptMarkerFile": {
+    "path": "/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled",
+    "exists": false,
+    "code": "ENOENT"
+  },
+  "defaultsRead": {
+    "command": "defaults read com.apple.VoiceOver4/default SCREnableAppleScript",
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "Error: Domain 'com.apple.VoiceOver4/default' not found."
+  },
+  "voiceOverRunning": {
+    "command": "pgrep -x VoiceOver",
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "",
+    "running": false
+  },
+  "setupRun": false,
+  "result": "not run: setup pending"
+}
