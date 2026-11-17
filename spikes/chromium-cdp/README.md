@@ -64,7 +64,8 @@ present, as an ignored node. A follow-up `getPartialAXTree` returns a node for e
 with and without `fetchRelatives`, but always with `role` `{"type": "role", "value": "none"}`,
 `chromeRole` `0`, no `name`, and one reason: `ariaHiddenElement`, `notRendered`, `notVisible`,
 `inertElement`, `presentationalRole` or `emptyAlt` respectively (see
-`targets[].partialWithoutRelatives` for each `probe`). The role and name the element would have had are not recovered.
+`targets[].partialWithoutRelatives` for each `probe`). The role and name the element would have
+had are not recovered.
 
 The `<label for>` element (`label-for`) is not ignored: it is a `LabelText` node with an empty name
 and a `StaticText` child carrying the text.

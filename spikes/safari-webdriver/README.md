@@ -88,3 +88,14 @@ tag position in the fixture, `tagged.html:<line>:<column>`. The
 - `div` with `aria-hidden="true"` (`tagged.html:52:3`): role `generic` and an empty label; nothing
   in either answer says the element is hidden.
 - Empty labels with a role: `main`, both `p`, `ul` and `li`, which have no name.
+
+## Hosted run
+
+The [`macos-probes` workflow](../../.github/workflows/macos-probes.yml) ran this probe once on a
+hosted `macos-26` image (image version 20261102.0473.1, macOS 26.7.2, Safari 27.2):
+[run 44191210745](https://github.com/nickvirden/spokenpath/actions/runs/44191210745). The session
+started, 23 of 24 elements answered both calls, `optgroup` failed with the same `unknown error`,
+and every role and label matched the local run except the `ul` with `list-style: none`, which
+reported `list` instead of `group`. Calls took 2.2 to 158.3 ms and the whole run 15930.8 ms. Its
+output is in the run's artifact, not committed; the comparison is in
+[ADR-0009](../../docs/decisions/ADR-0009-safari-capture-route-and-source-locations.md#hosted-runner-result).

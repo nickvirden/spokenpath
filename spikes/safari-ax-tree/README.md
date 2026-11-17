@@ -119,3 +119,16 @@ the label and the exit status, and no path.
   every run after completed in about 5 s. A capture helper needs a deadline on every AX read.
 - The `ul` with `list-style: none` is `AXGroup` with subrole `AXApplicationGroup`; the `img` with
   `usemap` is `AXImageMap`; the `select` is `AXPopUpButton`.
+
+## Hosted run
+
+The [`macos-probes` workflow](../../.github/workflows/macos-probes.yml) ran the trusted mode once
+on a hosted `macos-26` image (image version 20261102.0473.1, macOS 26.7.2, Safari 27.2):
+[run 44191210745](https://github.com/nickvirden/spokenpath/actions/runs/44191210745). The helper
+was trusted for Accessibility there (`AXIsProcessTrusted()` true, exit status 0). Each variant gave
+72 nodes whose role, subrole, title and description match the local run; the plain variant's first
+query found no web area yet and the repeat after 1 s found it, with no attribute set. The carriers
+mapped 22, 21 and 16 of 24, as locally. The workflow does not run `--untrusted`, so the hosted run
+says nothing about the no-permission path. Its output is in the run's artifact, not committed; the
+comparison is in
+[ADR-0009](../../docs/decisions/ADR-0009-safari-capture-route-and-source-locations.md#hosted-runner-result).
