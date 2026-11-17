@@ -1,0 +1,7 @@
+packages:
+  - packages/*
+
+# No dependency runs install scripts. Nothing in the workspace needs a build
+# step, and an install script is the usual way a compromised package runs code
+# on a contributor's machine or in CI.
+onlyBuiltDependencies: []

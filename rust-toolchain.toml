@@ -1,0 +1,6 @@
+# Dependabot does not track this file. Move the channel by hand, together with
+# rust-version in Cargo.toml, when a new stable Rust releases.
+[toolchain]
+channel = "1.100.0"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

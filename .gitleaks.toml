@@ -9,4 +9,5 @@ useDefault = true
 paths = [
   '''(^|/)pnpm-lock\.yaml$''',
   '''^\.github/release/package-lock\.json$''',
+  '''^Cargo\.lock$''',
 ]

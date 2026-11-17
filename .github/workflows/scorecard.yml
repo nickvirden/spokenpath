@@ -1,0 +1,50 @@
+name: Scorecard
+
+# OpenSSF Scorecard rates the repository's supply-chain practices and
+# publishes the result to the public Scorecard API, which serves the README
+# badge. It runs after every change to main, weekly to pick up new checks,
+# and when branch protection changes, because that is one of the things it
+# rates.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '27 6 * * 1'
+  branch_protection_rule:
+  workflow_dispatch:
+
+# Nothing by default; the job grants only what publishing needs.
+permissions: {}
+
+jobs:
+  analysis:
+    name: scorecard
+    # A fork's results would be published under the fork's name, which is
+    # meaningless, so only this repository runs it.
+    if: github.repository == 'nickvirden/spokenpath'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # id-token lets the Scorecard API verify that the results come from this
+    # workflow before it publishes them. Scorecard's publishing rules limit the
+    # job to the steps below, so it has no run: steps.
+    permissions:
+      contents: read # read the repository being rated
+      id-token: write # prove the results' origin to the Scorecard API
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ossf/scorecard-action@fa7117db83c52d787ae5a89f350999701505d78e # v2.5.0
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: true
+
+      # The repository has no code-scanning upload, so the results are kept
+      # as a run artifact for reading.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: scorecard-results
+          path: results.sarif
+          retention-days: 5

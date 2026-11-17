@@ -19,6 +19,12 @@ permissions: {}
 jobs:
   release:
     name: release
+    # A fork never releases: it has no release App, and its pushes must not
+    # produce tags or releases.
+    if: github.repository == 'nickvirden/spokenpath'
+    # The App credentials live in this environment, which only main can
+    # deploy to, so no other branch's workflow can read them.
+    environment: release
     runs-on: ubuntu-latest
     timeout-minutes: 10
     # The workflow token only reads. Every write (the release commit, the tag

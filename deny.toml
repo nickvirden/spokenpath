@@ -1,0 +1,39 @@
+# cargo-deny checks the dependency graph for licences, advisories, sources and
+# bans. Run it with `cargo deny check` (`pnpm deny`).
+
+[graph]
+all-features = true
+
+[advisories]
+# The RustSec advisory database. Every advisory is an error unless it is
+# listed in `ignore` with a reason.
+db-urls = ["https://github.com/rustsec/advisory-db"]
+yanked = "deny"
+ignore = []
+
+[licenses]
+# Licences compatible with the repository's MIT OR Apache-2.0, limited to the
+# ones the dependency graph needs. Add one only when a dependency requires it.
+allow = ["Apache-2.0", "MIT"]
+confidence-threshold = 0.93
+# Dev-dependencies run on contributors' machines and in CI, so their licences
+# are checked too.
+include-dev = true
+
+[licenses.private]
+# Workspace members are not published, so their own licence is not checked
+# against the allowlist.
+ignore = true
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+# Workspace members depend on each other by path, which cargo-deny otherwise
+# reports as a wildcard version.
+allow-wildcard-paths = true
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

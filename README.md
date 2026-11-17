@@ -2,6 +2,7 @@
 
 [![CI status](https://github.com/nickvirden/spokenpath/actions/workflows/ci.yml/badge.svg)](https://github.com/nickvirden/spokenpath/actions/workflows/ci.yml)
 [![Licence: MIT OR Apache-2.0](https://img.shields.io/badge/licence-MIT%20OR%20Apache--2.0-0b5ea8)](#licence)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/nickvirden/spokenpath/badge)](https://scorecard.dev/viewer/?uri=github.com/nickvirden/spokenpath)
 
 spokenpath is designed to show what a real browser exposes to screen readers on a web page, line by
 line and traced back to the HTML that produced it, so you can review it without running a screen

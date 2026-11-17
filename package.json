@@ -1,5 +1,5 @@
 {
-  "name": "spokenpath",
+  "name": "spokenpath-workspace",
   "version": "0.0.0",
   "private": true,
   "license": "MIT OR Apache-2.0",
@@ -15,11 +15,21 @@
     "lint:workflows": "actionlint",
     "zizmor": "zizmor .",
     "test:release": "node --test --test-isolation=none .github/release/test/version-rules.test.mjs",
-    "check": "pnpm lint:commits && pnpm lint:json && pnpm lint:hooks && pnpm lint:workflows && pnpm zizmor && pnpm test:release"
+    "lint:rust": "cargo fmt --all --check && cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "lint:biome": "biome check .",
+    "typecheck": "pnpm -r typecheck",
+    "deny": "cargo deny check",
+    "test:rust": "cargo test --workspace --locked",
+    "test:node": "pnpm -r test",
+    "test:versions": "node --test scripts/test/set-version.test.mjs",
+    "check": "pnpm lint:commits && pnpm lint:json && pnpm lint:hooks && pnpm lint:workflows && pnpm zizmor && pnpm test:release && pnpm lint:rust && pnpm lint:biome && pnpm typecheck && pnpm deny && pnpm test:rust && pnpm test:node && pnpm test:versions"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.8",
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
-    "husky": "9.1.7"
+    "husky": "9.1.7",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
   }
 }
