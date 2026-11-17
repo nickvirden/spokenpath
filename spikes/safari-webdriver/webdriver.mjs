@@ -74,6 +74,19 @@ export class WebDriverError extends Error {
   }
 }
 
+// Every request has a deadline, so a hung safaridriver or Safari surfaces as a
+// recorded error and the caller's cleanup still deletes the session and stops
+// safaridriver. Starting a session launches Safari and a navigation loads a
+// page, so those two get a longer deadline than an element call.
+const statusTimeoutMs = 1_000;
+const commandTimeoutMs = 10_000;
+const launchOrLoadTimeoutMs = 60_000;
+
+function timeoutFor(method, path) {
+  const launchesOrLoads = method === 'POST' && (path === '/session' || path.endsWith('/url'));
+  return launchesOrLoads ? launchOrLoadTimeoutMs : commandTimeoutMs;
+}
+
 export async function startSafaridriver() {
   const port = await freePort();
   const child = spawn('safaridriver', ['--port', String(port)], { stdio: ['ignore', 'pipe', 'pipe'] });
@@ -86,7 +99,7 @@ export async function startSafaridriver() {
   for (let attempt = 0; attempt < 50; attempt += 1) {
     if (child.exitCode !== null) break;
     try {
-      const response = await fetch(`${base}/status`);
+      const response = await fetch(`${base}/status`, { signal: AbortSignal.timeout(statusTimeoutMs) });
       if (response.ok) {
         return {
           base,
@@ -111,6 +124,7 @@ export async function command(base, method, path, body) {
     method,
     headers: { 'content-type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
+    signal: AbortSignal.timeout(timeoutFor(method, path)),
   });
   const json = await response.json();
   if (!response.ok) throw new WebDriverError(response.status, json);
