@@ -29,7 +29,7 @@ Each command runs from the repository root and rewrites that probe's `output/` f
 |---|---|---|
 | [Chromium protocol](chromium-cdp/README.md) | `node spikes/chromium-cdp/probe.mjs` | the install above |
 | [Safari over WebDriver](safari-webdriver/README.md) | `node spikes/safari-webdriver/probe.mjs` | macOS, Safari remote automation |
-| [Safari accessibility tree](safari-ax-tree/README.md) | `node spikes/safari-ax-tree/probe.mjs` | macOS, remote automation, Accessibility permission, Xcode |
+| [Safari accessibility tree](safari-ax-tree/README.md) | `node spikes/safari-ax-tree/probe.mjs`, then `node spikes/safari-ax-tree/probe.mjs --untrusted` | macOS, remote automation, Accessibility permission, Xcode |
 | [Playwright WebKit](playwright-webkit/README.md) | `node spikes/playwright-webkit/probe.mjs` | the install above |
 | [VoiceOver through Guidepup](voiceover-guidepup/README.md) | `node spikes/voiceover-guidepup/check.mjs` | macOS; read-only |
 

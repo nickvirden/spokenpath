@@ -3,12 +3,14 @@
 // that web area is recorded; other Safari windows are passed over unread.
 //
 // Usage: swift ax-tree.swift <url-substring> <needle>
+//   (or the same arguments to a binary built from it with swiftc)
 //   <needle> is searched for in every string-valued attribute, to find any
 //   attribute that exposes a data-* value directly.
 //
-// Exit status: 0 when the process is trusted, 3 when AXIsProcessTrusted() is
-// false (the tree is still attempted and recorded), 2 on bad arguments or when
-// Safari is not running.
+// Exit status: 0 when the tree was read with the permission; 3 when the
+// permission is missing, meaning AXIsProcessTrusted() is false or the first
+// query fails with kAXErrorAPIDisabled (the attempt is still recorded, with
+// the AX error code); 2 on bad arguments or when Safari is not running.
 import AppKit
 import ApplicationServices
 import Foundation
@@ -105,7 +107,23 @@ else {
 }
 let app = AXUIElementCreateApplication(safari.processIdentifier)
 
+// The AX error codes the probe can meet, by name, so the output states them
+// as data rather than as bare numbers.
+func errorName(_ error: AXError) -> String {
+  switch error {
+  case .success: return "kAXErrorSuccess"
+  case .apiDisabled: return "kAXErrorAPIDisabled"
+  case .cannotComplete: return "kAXErrorCannotComplete"
+  case .noValue: return "kAXErrorNoValue"
+  case .attributeUnsupported: return "kAXErrorAttributeUnsupported"
+  case .invalidUIElement: return "kAXErrorInvalidUIElement"
+  case .notImplemented: return "kAXErrorNotImplemented"
+  default: return "AXError \(error.rawValue)"
+  }
+}
+
 var attempts: [[String: Any]] = []
+var apiDisabled = false
 var populated: [[String: Any]] = []
 var restore: [(String, CFTypeRef?)] = []
 
@@ -127,11 +145,13 @@ for step in plan {
     let previous = attribute(app, name)
     let error = AXUIElementSetAttributeValue(app, name as CFString, kCFBooleanTrue)
     entry["setError"] = error.rawValue
+    entry["setErrorName"] = errorName(error)
     if error == .success { restore.append((name, previous.value)) }
     sleep(1)
   }
   let found = findWebArea(app)
   entry["applicationChildrenError"] = found.rootError.rawValue
+  entry["applicationChildrenErrorName"] = errorName(found.rootError)
   entry["webAreasSeen"] = found.webAreasSeen
   entry["matchingWebAreaFound"] = found.match != nil
   var nodes: [[String: Any]] = []
@@ -141,14 +161,24 @@ for step in plan {
   entry["nodeCount"] = nodes.count
   attempts.append(entry)
   if nodes.count > 1 { populated = nodes }
+  // Without the permission every call fails the same way, so retrying or
+  // setting attributes cannot change the answer.
+  if found.rootError == .apiDisabled {
+    apiDisabled = true
+    break
+  }
 }
 for (name, previous) in restore {
   AXUIElementSetAttributeValue(app, name as CFString, previous ?? kCFBooleanFalse)
 }
 
+// The permission counts as missing on either signal, never on an empty node
+// count alone: an empty tree can also mean the page is not showing.
+let permissionMissing = !trusted || apiDisabled
 let os = ProcessInfo.processInfo.operatingSystemVersion
 let output: [String: Any] = [
   "axIsProcessTrusted": trusted,
+  "permission": permissionMissing ? "missing" : "granted",
   "macosVersion": "\(os.majorVersion).\(os.minorVersion).\(os.patchVersion)",
   "urlSubstring": urlSubstring,
   "needle": needle,
@@ -160,4 +190,4 @@ let output: [String: Any] = [
 let data = try JSONSerialization.data(withJSONObject: output, options: [.prettyPrinted, .sortedKeys])
 FileHandle.standardOutput.write(data)
 FileHandle.standardOutput.write("\n".data(using: .utf8)!)
-exit(trusted ? 0 : 3)
+exit(permissionMissing ? 3 : 0)

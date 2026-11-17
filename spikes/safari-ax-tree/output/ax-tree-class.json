@@ -2,6 +2,7 @@
   "attempts": [
     {
       "applicationChildrenError": 0,
+      "applicationChildrenErrorName": "kAXErrorSuccess",
       "matchingWebAreaFound": true,
       "nodeCount": 72,
       "trigger": "first query",
@@ -4268,6 +4269,7 @@
       "index": 71
     }
   ],
+  "permission": "granted",
   "populatedOnFirstQuery": true,
   "urlSubstring": "/tagged-class.html"
 }

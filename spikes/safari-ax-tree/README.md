@@ -15,12 +15,15 @@ recorded in [ADR-0009](../../docs/decisions/ADR-0009-safari-capture-route-and-so
   `data-spokenpath-src`, read back through `AXDOMClassList`; (ii) the element `id`, read back
   through `AXDOMIdentifier`; (iii) matching by document position against the WebDriver probe's
   label sequence? Does any AX attribute expose `data-*` attributes directly?
-- What does the program read when `AXIsProcessTrusted()` is false?
+- What does the program read when it does not hold the Accessibility permission
+  (`AXIsProcessTrusted()` is false)?
 
 ## Run
 
 ```sh
 node spikes/safari-ax-tree/probe.mjs; echo exit=$?; pgrep -x safaridriver || echo stopped
+node spikes/safari-ax-tree/probe.mjs --untrusted; echo exit=$?
+launchctl list | grep spokenpath || echo no-launchd-job
 ```
 
 [`probe.mjs`](probe.mjs) drives Safari through a `safaridriver` session (the automation window),
@@ -44,8 +47,34 @@ the full `AXUIElementCopyAttributeNames` list, and the names of any string attri
 contains `tagged.html:` (a `data-spokenpath-src` value). If the first query returns one node or
 none, it retries after 1 s, then after setting `AXManualAccessibility`, then
 `AXEnhancedUserInterface` on the Safari application element, and puts each back afterwards. It
-changes no system setting. It exits 3 when `AXIsProcessTrusted()` is false, after recording what
-it read, so callers can tell that case apart; `probe.mjs` passes that status on.
+changes no system setting. Every attempt records the AX error code of the first call and its
+name. When `AXIsProcessTrusted()` is false or that call fails with `kAXErrorAPIDisabled`
+(`-25211`), the program records `permission: "missing"`, stops retrying, and exits 3, so callers
+can tell that case apart from an empty page; `probe.mjs` passes that status on. Each Swift run has
+a 60 s deadline, after which the child is killed and the run error is recorded; `safaridriver`
+and the session are cleaned up either way.
+
+#### The untrusted run
+
+`--untrusted` answers what the helper reads without the permission, without changing any
+setting. The terminal holds the Accessibility permission and every child of it inherits that, so
+the run leaves the terminal's process tree instead:
+
+1. It opens a `safaridriver` session showing the plain fixture, so there is a web area to find.
+2. It builds `ax-tree.swift` with `swiftc` into a new temporary folder (`mkdtemp` under
+   `$TMPDIR`), starting every program (`swiftc`, `launchctl`) from an argument array with no
+   shell.
+3. It submits the binary as a transient launchd job of the invoking user
+   (`launchctl submit -l test.spokenpath.ax-tree-untrusted ...`), never with `sudo`. The job's
+   standard output and error go to files in the temporary folder. A binary started by launchd is
+   its own responsible process, and it has never been granted the permission.
+4. As soon as the job has printed its JSON, the probe reads launchd's `LastExitStatus` and runs
+   `launchctl remove`; it removes the job again in a `finally` on error, timeout or signal, and
+   deletes the temporary folder. `launchctl submit` restarts a job that exits, which is why the
+   job is removed rather than left to finish.
+
+The committed [`ax-tree-untrusted.json`](output/ax-tree-untrusted.json) holds the program's JSON,
+the label and the exit status, and no path.
 
 | | Version |
 |---|---|
@@ -67,7 +96,7 @@ it read, so callers can tell that case apart; `probe.mjs` passes that status on.
 | Carrier (ii): element `id` through `AXDOMIdentifier` | **fail**: 21 of 24; an author `id` displaces it | [`carriers.json`](output/carriers.json), [`ax-tree-id.json`](output/ax-tree-id.json) |
 | Carrier (iii): position against WebDriver labels | **fail**: 16 of 24; elements with an empty label cannot be matched | [`carriers.json`](output/carriers.json) |
 | `data-*` exposed directly by any attribute | **fail**: no string attribute of any node contains a `data-spokenpath-src` value | [`carriers.json`](output/carriers.json) (`directDataAttributeExposure: []`) |
-| Without the permission | **not run** locally: every launch path available on this Mac runs under the terminal, which holds the permission, and revoking it is a settings change; the hosted runner answers it | [workflow](../../.github/workflows/macos-probes.yml) |
+| Without the permission | **pass**: the untrusted run reads `axIsProcessTrusted: false` and the first call fails with `-25211` (`kAXErrorAPIDisabled`): no web area seen, 0 nodes, `permission: "missing"`, exit status 3. The tree is empty with an error code, not silently | [`ax-tree-untrusted.json`](output/ax-tree-untrusted.json) |
 
 ### Details
 
@@ -84,5 +113,9 @@ it read, so callers can tell that case apart; `probe.mjs` passes that status on.
 - Position misses: the eight elements whose WebDriver label is empty (`main`, both `p`, `label`,
   `optgroup`, `ul`, `li`, the hidden `div`). All 16 positional matches land on the node that holds
   the same element's class token in the class variant (`matchesConfirmedByClassToken: 16`).
+- One local run of the trusted mode hung reading the web area: the Swift program had not
+  finished after 60 s, so the deadline killed it and recorded
+  `swift did not finish within 60000 ms`, and `safaridriver` was stopped. The run before and
+  every run after completed in about 5 s. A capture helper needs a deadline on every AX read.
 - The `ul` with `list-style: none` is `AXGroup` with subrole `AXApplicationGroup`; the `img` with
   `usemap` is `AXImageMap`; the `select` is `AXPopUpButton`.
