@@ -40,7 +40,7 @@ fixture of 24 tagged elements served from `127.0.0.1`:
 | A `safaridriver` session starts and answers computed role and label per element | pass: 23 of 24 elements answered both calls; the session was deleted and `safaridriver` stopped | [`webdriver.json`](../../spikes/safari-webdriver/output/webdriver.json) |
 | Element types that error or return empty over WebDriver | `optgroup` errors (`unknown error`); `img` with `usemap` and `label` return an empty role; an `aria-hidden` element answers with no sign that it is hidden | [`webdriver.json`](../../spikes/safari-webdriver/output/webdriver.json) |
 | WebDriver call time | pass: 1.8 to 31.2 ms per call, 1260.8 ms for the whole run | [`webdriver.json`](../../spikes/safari-webdriver/output/webdriver.json) |
-| The AX web tree is populated on the first query, without a trigger | pass: 72 nodes on the first query in every variant; no attribute was set | [`ax-tree-plain.json`](../../spikes/safari-ax-tree/output/ax-tree-plain.json) |
+| The AX web tree is populated without a trigger | pass: locally, 72 nodes on the first query in every variant; no attribute was set. On the hosted run the first query after the first navigation found no web area yet, and a repeat after 1 s returned all 72 nodes | [`ax-tree-plain.json`](../../spikes/safari-ax-tree/output/ax-tree-plain.json) |
 | AX nodes report `AXDOMIdentifier` and `AXDOMClassList` | pass: every node reports both | [`ax-tree-plain.json`](../../spikes/safari-ax-tree/output/ax-tree-plain.json) |
 | Carrier: class token through `AXDOMClassList` | pass: 22 of 24 tagged elements map to exactly one node | [`carriers.json`](../../spikes/safari-ax-tree/output/carriers.json) |
 | Carrier: element `id` through `AXDOMIdentifier` | fail: 21 of 24; an author `id` displaces it | [`carriers.json`](../../spikes/safari-ax-tree/output/carriers.json) |
@@ -48,7 +48,7 @@ fixture of 24 tagged elements served from `127.0.0.1`:
 | Any AX attribute exposes `data-*` attributes directly | fail: no attribute of any node contains a `data-spokenpath-src` value | [`carriers.json`](../../spikes/safari-ax-tree/output/carriers.json) |
 | What the helper reads without the Accessibility permission | pass: run as a transient launchd job outside the terminal's permission, it reads `AXIsProcessTrusted()` false and the first call fails with `-25211` (`kAXErrorAPIDisabled`): no web area, 0 nodes, exit status 3 | [`ax-tree-untrusted.json`](../../spikes/safari-ax-tree/output/ax-tree-untrusted.json) |
 | Playwright WebKit answers `DOM.getAccessibilityPropertiesForNode` | pass: 9 of 9 element nodes, reached through unsupported Playwright internals | [`accessibility-properties.json`](../../spikes/playwright-webkit/output/accessibility-properties.json) |
-| A hosted macOS runner drives Safari and reads its AX tree | see "Hosted runner result" | [workflow](../../.github/workflows/macos-probes.yml) |
+| A hosted macOS runner drives Safari and reads its AX tree | pass, on one run on one image: the WebDriver session started and the AX probe read a populated tree; see "Hosted runner result" | [run 44191210745](https://github.com/nickvirden/spokenpath/actions/runs/44191210745) |
 
 The two class-token misses are the `optgroup` inside a closed `select` and the
 `aria-hidden="true"` `div`; neither has an AX node in any variant, so every tagged element that has
@@ -59,10 +59,32 @@ element's class token.
 ### Hosted runner result
 
 The rule that depends on it: a macOS CI job is added to the checks later only if this hosted-runner
-probe passed (Decision 6). The run records the image label, the macOS and Safari versions, the
-WebDriver result, the AX tree result and the permission state.
+probe passed (Decision 6).
 
-PENDING: read from the macos-probes workflow run on this pull request
+The [`macos-probes` run 44191210745](https://github.com/nickvirden/spokenpath/actions/runs/44191210745)
+on this pull request (job `safari-probes`) succeeded in every step. Its artifact shows:
+
+| | Hosted run | Local run |
+|---|---|---|
+| Image | `macos-26`, image version 20261102.0473.1 | maintainer's Mac |
+| macOS | 26.7.2 (25G332) | 27.0.1 (26A434) |
+| Safari | 27.2 (21625.2.8.18.4) | 27.0.1 (22625.1.29.11.28) |
+| WebDriver session | started, deleted, `safaridriver` stopped | the same |
+| WebDriver answers | 23 of 24 elements; `optgroup` errors (`unknown error`) | the same |
+| WebDriver roles and labels | identical to local except the `ul` with `list-style: none`, which reports `list` | `ul` reports `group` |
+| WebDriver call time | 2.2 to 158.3 ms per call, 15930.8 ms for the whole run | 1.8 to 31.2 ms, 1260.8 ms |
+| Helper trusted for Accessibility | yes: `AXIsProcessTrusted()` true, `permission: "granted"` | yes |
+| AX tree | 72 nodes in each variant; the plain variant's first query found no web area, the repeat after 1 s found it; no attribute was set | 72 nodes on the first query |
+| AX tree content | role, subrole, title and description of all 72 nodes identical to local | |
+| Carriers | class token 22 of 24, `id` 21 of 24, position 16 of 24 (all 16 confirmed by the class token) | the same |
+| `data-*` exposed directly | no | no |
+| AX probe exit status | 0 | 0 |
+
+This is one run on one image. It shows that a hosted `macos-26` image of that version can drive
+Safari over WebDriver and that the helper there runs trusted for Accessibility; it does not show
+that every hosted image or every run does. Because the hosted helper was trusted, the run does not
+exercise the no-permission path, which rests on the local untrusted run. The artifact is not
+committed; the run link is the record, and the workflow can be re-run by `workflow_dispatch`.
 
 ## Decision
 
@@ -73,13 +95,16 @@ PENDING: read from the macos-probes workflow run on this pull request
 2. **AX tree backend.** The Safari tree backend is a native helper that reads the `AXWebArea` of
    the Safari window showing the page, found by its `AXURL`, and records every node's role,
    subrole, role description, title, description, value, help, `AXDOMIdentifier` and
-   `AXDOMClassList`. It needs no trigger: with the permission granted, the first query returns the
-   populated tree. The helper records `AXIsProcessTrusted()` and the AX error code of every query,
-   and treats `AXIsProcessTrusted()` being false or a `-25211` (`kAXErrorAPIDisabled`) error as
-   "no permission": it stops, records why, and exits with a distinct status. It never infers the
-   missing permission from an empty node count alone, because an empty tree can also mean the page
-   is not showing; capture still checks the node count, as ADR-0006 requires. Every AX read has a
-   deadline, because one probe run hung reading the web area.
+   `AXDOMClassList`. It needs no attribute trigger: with the permission granted, the tree is
+   populated once the web area exists. Right after a navigation the web area may not exist yet
+   (the hosted run's first query found none), so the helper repeats the query for a short time
+   before it reports that no matching web area was found. The helper records
+   `AXIsProcessTrusted()` and the AX error code of every query, and treats `AXIsProcessTrusted()`
+   being false or a `-25211` (`kAXErrorAPIDisabled`) error as "no permission": it stops, records
+   why, and exits with a distinct status. It never infers the missing permission from an empty
+   node count alone, because an empty tree can also mean the page is not showing; capture still
+   checks the node count, as ADR-0006 requires. Every AX read has a deadline, because one probe
+   run hung reading the web area.
 3. **Source locations travel through Safari as a class token.** The one chosen carrier is a class
    token derived one-to-one from the element's `data-spokenpath-src` value (the probe used
    `sp-src-<line>-<column>`), read back through `AXDOMClassList`. On the fixture it maps 22 of 24
@@ -99,9 +124,11 @@ PENDING: read from the macos-probes workflow run on this pull request
    decision in ADR-0006 not to use it as a stand-in for Safari stands on the reasons given here.
 6. **macOS in CI.** A macOS CI job is added to the checks later only if the hosted-runner probe
    passed: `safaridriver` started a session on the hosted image and the AX probe read a populated
-   tree. Until then, Safari capture runs on a developer Mac, and the
-   [`macos-probes`](../../.github/workflows/macos-probes.yml) workflow stays an unrequired probe
-   that `ci-ok` does not need.
+   tree. Run 44191210745 met that condition once, on `macos-26` image version 20261102.0473.1, so
+   adding such a job is allowed; it is a separate change that pins its image the same way and
+   re-checks these results on that image. Until it exists, Safari capture runs on a developer Mac,
+   and the [`macos-probes`](../../.github/workflows/macos-probes.yml) workflow stays an unrequired
+   probe that `ci-ok` does not need.
 
 ## Consequences
 
@@ -120,11 +147,17 @@ PENDING: read from the macos-probes workflow run on this pull request
 - Positional matching is not used as a carrier, but it is a cross-check: it agreed with the class
   token on every element it could match.
 - WebDriver roles differ from Chromium's for common elements (`select` reports `button`, a `ul`
-  with `list-style: none` reports `group`, `img` with `usemap` reports an empty role). The
-  cross-check reports these as Safari differences; it does not correct them.
-- The behaviour without the Accessibility permission is answered locally; the hosted run confirms
-  it on a hosted image, whose permission state is recorded with its result.
-- These answers belong to Safari 27.0.1 on macOS 27.0.1. A Safari or macOS upgrade re-runs the
+  with `list-style: none` reports `group` on Safari 27.0.1 and `list` on Safari 27.2, `img` with
+  `usemap` reports an empty role). The cross-check reports these as Safari differences; it does
+  not correct them, and it records the Safari version with each, since they change between Safari
+  releases.
+- The behaviour without the Accessibility permission is answered locally. The hosted run does not
+  confirm it: on the hosted image the helper was trusted.
+- A hosted macOS job runs on a different macOS and Safari from a developer Mac (26.7.2 and 27.2
+  against 27.0.1 and 27.0.1 here), so its output is labelled with its own versions and is not
+  interchangeable with local capture.
+- These answers belong to Safari 27.0.1 on macOS 27.0.1, and the hosted ones to Safari 27.2 on
+  macOS 26.7.2. A Safari or macOS upgrade re-runs the
   probes, and a changed answer is reviewed as drift
   ([ADR-0007](ADR-0007-golden-test-strategy-and-drift-reports.md)).
 
