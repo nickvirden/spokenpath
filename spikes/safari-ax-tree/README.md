@@ -24,9 +24,9 @@ node spikes/safari-ax-tree/probe.mjs; echo exit=$?; pgrep -x safaridriver || ech
 ```
 
 [`probe.mjs`](probe.mjs) drives Safari through a `safaridriver` session (the automation window),
-not `open -a Safari`. It serves the [WebDriver probe's fixture](../safari-webdriver/fixture/tagged.html)
-from `127.0.0.1` in three variants, spliced into the served text next to each
-`data-spokenpath-src` attribute:
+not `open -a Safari`. It serves the
+[WebDriver probe's fixture](../safari-webdriver/fixture/tagged.html) from `127.0.0.1` in three
+variants, spliced into the served text next to each `data-spokenpath-src` attribute:
 
 - `tagged-plain.html`: the fixture unchanged;
 - `tagged-class.html`: a class token `sp-src-<line>-<column>` added to each tagged element (joined
