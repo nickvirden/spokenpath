@@ -28,10 +28,24 @@ running (`pgrep -x VoiceOver`). The setup counts as run only when the marker fil
 [`spikes/package.json`](../package.json) and installed with `--ignore-scripts`. It refuses to start
 when a VoiceOver it did not start is running. For each of two runs it calls `voiceOver.start()`,
 opens [`pages/three-elements.html`](pages/three-elements.html) (a heading, a button and a link,
-served from `127.0.0.1`) in Safari, interacts with the web area, clears the phrase log, moves
-`next` four times, and records `spokenPhraseLog()`. VoiceOver is stopped in a `finally` after every
-run, and the probe records whether a VoiceOver process is left afterwards. The whole probe has a
-three-minute deadline. A run that errors is recorded with its error text and is not retried. It
+served from `127.0.0.1`) in a new Safari window, polls until that window is in front (recording
+its title as `frontWindowTitle`), interacts with the web area, clears the phrase log, moves
+`next` four times, and records `spokenPhraseLog()`. It keeps only the phrases from the first one
+that speaks the fixture heading ("Probe heading") onwards, and records how many earlier phrases it
+dropped (`droppedBeforeHeading`), never their text. The window it opened is closed and VoiceOver
+is stopped in a `finally` after every run, and the probe records whether a VoiceOver process is
+left afterwards. A run that errors is recorded with its error text and is not retried.
+
+The whole probe has a three-minute deadline. The output file is rewritten with
+`completed: false` before anything else runs, so an interrupted run never leaves an earlier result
+looking current. When the deadline passes, the probe closes its window, stops VoiceOver, writes
+the runs gathered so far with `deadlineExceeded: true`, and exits non-zero. Both paths write the
+file through one function, so it has the same shape either way. That deadline path has been
+exercised only against a stub Guidepup whose `start()` never resolves.
+
+Everything after a successful `voiceOver.start()` (the window, the polling, the phrase filter and
+the comparison) has never run on a real machine, because start-up has failed on every run so far.
+A first real run may still need fixes there. It
 also records, read-only and as a boolean, whether the VoiceOver preferences image that Guidepup
 starts VoiceOver with is present in Guidepup's cache.
 
@@ -82,8 +96,10 @@ VoiceOver's own preference files.
 2. Run `probe.mjs`: VoiceOver starts through Guidepup, Safari shows the three-element page, and the
    same four `next` moves run in each of two separate VoiceOver sessions.
 3. Compare the two `spokenPhraseLog` records phrase by phrase (`agreement` in the output).
-4. Read the log before committing it, and keep only phrases captured while the fixture page had
-   focus; say in this README if anything was left out and how.
+4. Check `frontWindowTitle` is "Three elements" and `headingFound` is true for both runs. The
+   probe has already dropped every phrase spoken before the fixture heading
+   (`droppedBeforeHeading` counts them). Still read the kept log before committing it, and leave
+   out anything not from the fixture, saying in this README what was left out and how.
 5. Record the macOS version and build, the Safari version, the VoiceOver version and the Guidepup
    version with the capture.
 

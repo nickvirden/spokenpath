@@ -7,6 +7,13 @@
 // option. VoiceOver is stopped in a `finally` after every run, and the
 // probe refuses to start when a VoiceOver it did not start is running. A run
 // that errors is recorded with its error and is not retried.
+//
+// The page opens in a new Safari window that the probe closes again, so
+// VoiceOver never reads the maintainer's own windows, and only phrases from
+// the fixture heading onwards are kept.
+//
+// Everything after `voiceOver.start()` succeeds has not yet run on a real
+// machine (start-up has failed so far), so a first real run may need fixes.
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -24,6 +31,10 @@ const runs = 2;
 // The key-press script: each step is one VoiceOver cursor move.
 const script = ['next', 'next', 'next', 'next'];
 const overallDeadlineMs = 180_000;
+const pageTitle = 'Three elements';
+// The first phrase kept is the one that speaks the fixture's heading.
+const fixtureHeading = 'Probe heading';
+const frontWindowPollMs = 250;
 
 // Committed output must not identify the machine.
 function scrub(text) {
@@ -94,29 +105,93 @@ async function startPageServer() {
   };
 }
 
-async function speechRun(url) {
-  const run = { steps: script };
+function safari(script) {
+  return execFileSync('osascript', ['-e', `tell application "Safari" to ${script}`], {
+    encoding: 'utf8',
+  }).trim();
+}
+
+// The id of the Safari window this probe opened, so it alone is closed, on
+// the normal path and on the deadline path.
+let fixtureWindowId;
+
+function openFixtureWindow(url) {
+  safari(`make new document with properties {URL:"${url}"}`);
+  fixtureWindowId = safari('id of front window');
+}
+
+function closeFixtureWindow(run) {
+  if (fixtureWindowId === undefined) return;
   try {
-    await voiceOver.start();
+    safari(`close (every window whose id is ${fixtureWindowId})`);
+  } catch (error) {
+    run.closeWindowError = errorChain(error);
+  }
+  fixtureWindowId = undefined;
+}
+
+// Waits until the fixture is Safari's front window; the overall deadline
+// bounds the wait.
+async function waitForFixtureInFront(run) {
+  for (;;) {
+    const title = safari('name of front window');
+    if (title === pageTitle) {
+      run.frontWindowTitle = title;
+      return;
+    }
+    await sleep(frontWindowPollMs);
+  }
+}
+
+// Phrases spoken before the fixture heading can come from outside the page,
+// so only the count of those is recorded, never their text.
+function keepFromHeading(log) {
+  const start = log.findIndex((phrase) => phrase.includes(fixtureHeading));
+  if (start === -1) return { kept: [], droppedBeforeHeading: log.length, headingFound: false };
+  return { kept: log.slice(start), droppedBeforeHeading: start, headingFound: true };
+}
+
+// Whether a VoiceOver this probe started, or began starting, still needs
+// stopping.
+let voiceOverActive = false;
+
+async function stopVoiceOver(run) {
+  if (!voiceOverActive) return;
+  voiceOverActive = false;
+  await voiceOver.stop().catch((error) => {
+    run.stopError = errorChain(error);
+  });
+}
+
+// The run object belongs to the result from the start, so the deadline path
+// writes whatever it has gathered.
+async function speechRun(run, url) {
+  try {
+    // Set before start() resolves: a start-up that hangs may already have
+    // launched VoiceOver, so the deadline path stops it too.
+    // A start() that rejects has already torn its own VoiceOver down.
+    voiceOverActive = true;
+    await voiceOver.start().catch((error) => {
+      voiceOverActive = false;
+      throw error;
+    });
     run.started = true;
-    execFileSync('open', ['-a', 'Safari', url]);
-    // Safari loads the page and VoiceOver moves to the new window.
-    await sleep(3000);
+    openFixtureWindow(url);
+    await waitForFixtureInFront(run);
     await voiceOver.interact();
     await voiceOver.clearSpokenPhraseLog();
     for (const step of script) await voiceOver[step]();
-    run.spokenPhraseLog = await voiceOver.spokenPhraseLog();
+    const { kept, droppedBeforeHeading, headingFound } = keepFromHeading(await voiceOver.spokenPhraseLog());
+    run.spokenPhraseLog = kept;
+    run.droppedBeforeHeading = droppedBeforeHeading;
+    run.headingFound = headingFound;
   } catch (error) {
     run.error = errorChain(error);
   } finally {
-    if (run.started) {
-      await voiceOver.stop().catch((error) => {
-        run.stopError = errorChain(error);
-      });
-    }
+    closeFixtureWindow(run);
+    await stopVoiceOver(run);
     run.voiceOverRunningAfterStop = voiceOverRunning();
   }
-  return run;
 }
 
 function compare([first, second]) {
@@ -128,6 +203,13 @@ function compare([first, second]) {
     agree: first.spokenPhraseLog[index] === second.spokenPhraseLog[index],
   }));
   return { phrases: length, agreeing: phrases.filter((phrase) => phrase.agree).length, perPhrase: phrases };
+}
+
+// The one serialisation of the result, shared by the normal and the deadline
+// path so both write the same shape.
+async function writeResult(result) {
+  result.voiceOverRunningAtEnd = voiceOverRunning();
+  await writeFile(outputFile, `${JSON.stringify(result, null, 2)}\n`);
 }
 
 async function main() {
@@ -149,31 +231,41 @@ async function main() {
       runDate: new Date().toISOString().slice(0, 10),
     },
     preferencesAsset: await preferencesAsset(),
+    completed: false,
     runs: [],
   };
+  // Written before anything else, so an interrupted run never leaves an
+  // earlier run's file looking current.
+  await writeResult(result);
   if (voiceOverRunning()) {
     result.refused = 'VoiceOver was already running and was not started by this probe';
-    await writeFile(outputFile, `${JSON.stringify(result, null, 2)}\n`);
+    result.completed = true;
+    await writeResult(result);
     return 1;
   }
   const server = await startPageServer();
-  const deadline = setTimeout(() => {
+  const deadline = setTimeout(async () => {
     result.deadlineExceeded = true;
-    voiceOver.stop().finally(() => process.exit(1));
+    const current = result.runs.at(-1) ?? {};
+    closeFixtureWindow(current);
+    await stopVoiceOver(current);
+    await writeResult(result);
+    process.exit(1);
   }, overallDeadlineMs);
   try {
     for (let index = 0; index < runs; index += 1) {
-      const run = await speechRun(server.url);
+      const run = { steps: script };
       result.runs.push(run);
+      await speechRun(run, server.url);
       // A run that cannot start VoiceOver would fail the same way again.
       if (run.error) break;
     }
     result.agreement = compare(result.runs);
+    result.completed = true;
   } finally {
     clearTimeout(deadline);
     await server.close();
-    result.voiceOverRunningAtEnd = voiceOverRunning();
-    await writeFile(outputFile, `${JSON.stringify(result, null, 2)}\n`);
+    await writeResult(result);
   }
   const [first] = result.runs;
   console.log(
