@@ -1,0 +1,23 @@
+# The maintainer owns everything by default.
+* @nickvirden
+
+# Workflows, release configuration, the files that run the checks and the
+# secret scan, and the governance documents decide how every change is checked
+# and released, so they are listed explicitly. These entries keep the owner's
+# review on them when another maintainer or an approval App is added to the
+# catch-all rule above, once the main ruleset requires code-owner review.
+/.github/ @nickvirden
+/.github/workflows/ @nickvirden
+/.github/release/ @nickvirden
+/.releaserc.json @nickvirden
+/commitlint.config.mjs @nickvirden
+/.husky/ @nickvirden
+/package.json @nickvirden
+/pnpm-lock.yaml @nickvirden
+/scripts/ @nickvirden
+/.gitleaks.toml @nickvirden
+/.nvmrc @nickvirden
+/GOVERNANCE.md @nickvirden
+/SECURITY.md @nickvirden
+/LICENSE-MIT @nickvirden
+/LICENSE-APACHE @nickvirden
