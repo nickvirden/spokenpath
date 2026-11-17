@@ -46,7 +46,7 @@ fixture of 24 tagged elements served from `127.0.0.1`:
 | Carrier: element `id` through `AXDOMIdentifier` | fail: 21 of 24; an author `id` displaces it | [`carriers.json`](../../spikes/safari-ax-tree/output/carriers.json) |
 | Carrier: document position against the WebDriver labels | fail: 16 of 24; elements with an empty label cannot be matched | [`carriers.json`](../../spikes/safari-ax-tree/output/carriers.json) |
 | Any AX attribute exposes `data-*` attributes directly | fail: no attribute of any node contains a `data-spokenpath-src` value | [`carriers.json`](../../spikes/safari-ax-tree/output/carriers.json) |
-| What the helper reads without the Accessibility permission | not run locally: every launch path on the maintainer's Mac inherits the terminal's permission, and revoking it is a settings change; see "Hosted runner result" | [`ax-tree.swift`](../../spikes/safari-ax-tree/ax-tree.swift) |
+| What the helper reads without the Accessibility permission | pass: run as a transient launchd job outside the terminal's permission, it reads `AXIsProcessTrusted()` false and the first call fails with `-25211` (`kAXErrorAPIDisabled`): no web area, 0 nodes, exit status 3 | [`ax-tree-untrusted.json`](../../spikes/safari-ax-tree/output/ax-tree-untrusted.json) |
 | Playwright WebKit answers `DOM.getAccessibilityPropertiesForNode` | pass: 9 of 9 element nodes, reached through unsupported Playwright internals | [`accessibility-properties.json`](../../spikes/playwright-webkit/output/accessibility-properties.json) |
 | A hosted macOS runner drives Safari and reads its AX tree | see "Hosted runner result" | [workflow](../../.github/workflows/macos-probes.yml) |
 
@@ -74,8 +74,12 @@ PENDING: read from the macos-probes workflow run on this pull request
    the Safari window showing the page, found by its `AXURL`, and records every node's role,
    subrole, role description, title, description, value, help, `AXDOMIdentifier` and
    `AXDOMClassList`. It needs no trigger: with the permission granted, the first query returns the
-   populated tree. The helper records `AXIsProcessTrusted()` and exits with a distinct status when
-   it is false, and capture also checks the node count, as ADR-0006 requires.
+   populated tree. The helper records `AXIsProcessTrusted()` and the AX error code of every query,
+   and treats `AXIsProcessTrusted()` being false or a `-25211` (`kAXErrorAPIDisabled`) error as
+   "no permission": it stops, records why, and exits with a distinct status. It never infers the
+   missing permission from an empty node count alone, because an empty tree can also mean the page
+   is not showing; capture still checks the node count, as ADR-0006 requires. Every AX read has a
+   deadline, because one probe run hung reading the web area.
 3. **Source locations travel through Safari as a class token.** The one chosen carrier is a class
    token derived one-to-one from the element's `data-spokenpath-src` value (the probe used
    `sp-src-<line>-<column>`), read back through `AXDOMClassList`. On the fixture it maps 22 of 24
@@ -118,7 +122,8 @@ PENDING: read from the macos-probes workflow run on this pull request
 - WebDriver roles differ from Chromium's for common elements (`select` reports `button`, a `ul`
   with `list-style: none` reports `group`, `img` with `usemap` reports an empty role). The
   cross-check reports these as Safari differences; it does not correct them.
-- The behaviour without the Accessibility permission rests on the hosted run until it is read.
+- The behaviour without the Accessibility permission is answered locally; the hosted run confirms
+  it on a hosted image, whose permission state is recorded with its result.
 - These answers belong to Safari 27.0.1 on macOS 27.0.1. A Safari or macOS upgrade re-runs the
   probes, and a changed answer is reviewed as drift
   ([ADR-0007](ADR-0007-golden-test-strategy-and-drift-reports.md)).
