@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>aria-owns re-parenting</title>
+</head>
+<body>
+<main>
+<h1>aria-owns</h1>
+<ul data-probe="owner" aria-label="Owner list" aria-owns="owned-item">
+  <li data-probe="dom-first">DOM item one</li>
+  <li data-probe="dom-second">DOM item two</li>
+</ul>
+<div data-probe="original-parent">
+  <div id="owned-item" data-probe="owned" role="listitem">Owned item, outside the list in the DOM</div>
+  <p>Sibling left behind</p>
+</div>
+</main>
+</body>
+</html>

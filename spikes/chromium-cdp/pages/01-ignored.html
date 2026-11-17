@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ignored nodes</title>
+</head>
+<body>
+<main>
+<h1>Ignored nodes</h1>
+<button data-probe="aria-hidden" aria-hidden="true">Hidden by aria-hidden</button>
+<button data-probe="display-none" style="display:none">Hidden by display none</button>
+<button data-probe="visibility-hidden" style="visibility:hidden">Hidden by visibility hidden</button>
+<button data-probe="inert" inert>Inert button</button>
+<h2 data-probe="presentation" role="presentation">Heading with role presentation</h2>
+<img data-probe="alt-empty" src="pixel.svg" alt="">
+<label data-probe="label-for" for="name-input">Your name</label>
+<input id="name-input" type="text">
+</main>
+</body>
+</html>
