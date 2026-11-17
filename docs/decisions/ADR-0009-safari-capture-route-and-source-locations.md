@@ -146,11 +146,13 @@ committed; the run link is the record, and the workflow can be re-run by `workfl
   `for`, `aria-labelledby` and fragment references.
 - Positional matching is not used as a carrier, but it is a cross-check: it agreed with the class
   token on every element it could match.
-- WebDriver roles differ from Chromium's for common elements (`select` reports `button`, a `ul`
-  with `list-style: none` reports `group` on Safari 27.0.1 and `list` on Safari 27.2, `img` with
-  `usemap` reports an empty role). The cross-check reports these as Safari differences; it does
-  not correct them, and it records the Safari version with each, since they change between Safari
-  releases.
+- WebDriver roles differ from Chromium's for common elements (`select` reports `button`, `img`
+  with `usemap` reports an empty role). A `ul` with `list-style: none` reports `group` on macOS
+  27.0.1 with Safari 27.0.1 and `list` on the hosted macOS 26.7.2 image with Safari 27.2. There was
+  one run of each, so the difference cannot be assigned to the Safari version, the macOS version
+  or the machine. The cross-check reports these as Safari differences and does not correct them,
+  and capture records the Safari and macOS versions with each run, since answers can differ
+  between versions.
 - The behaviour without the Accessibility permission is answered locally. The hosted run does not
   confirm it: on the hosted image the helper was trusted.
 - A hosted macOS job runs on a different macOS and Safari from a developer Mac (26.7.2 and 27.2
