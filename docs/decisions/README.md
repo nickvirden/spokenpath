@@ -47,3 +47,6 @@ add the new ADR to the index. Fixing a typo or a broken link in an accepted ADR 
 | [ADR-0005](ADR-0005-dual-mit-apache-licence.md) | Dual MIT and Apache-2.0 licence | Accepted |
 | [ADR-0006](ADR-0006-engine-scope.md) | Engine scope: Chromium first, then Safari and VoiceOver on macOS | Accepted |
 | [ADR-0007](ADR-0007-golden-test-strategy-and-drift-reports.md) | Golden test strategy and drift reports | Accepted |
+| [ADR-0008](ADR-0008-chromium-protocol-behaviours.md) | Chromium protocol behaviours the model must handle | Accepted |
+| [ADR-0009](ADR-0009-safari-capture-route-and-source-locations.md) | Safari capture route and how source locations travel through Safari | Accepted |
+| [ADR-0010](ADR-0010-voiceover-capture-feasibility-and-corpus.md) | VoiceOver capture feasibility and the speech corpus | Accepted |

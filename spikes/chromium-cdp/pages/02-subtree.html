@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Subtree reasons</title>
+</head>
+<body>
+<main>
+<h1>Subtree reasons</h1>
+<div id="hider-aria" data-probe="hider-aria" aria-hidden="true">
+  <p><button data-probe="aria-hidden-subtree">Inside aria-hidden</button></p>
+</div>
+<div data-probe="hider-aria-no-id" aria-hidden="true">
+  <p><button data-probe="aria-hidden-subtree-no-id">Inside aria-hidden without an id</button></p>
+</div>
+<div id="hider-inert" data-probe="hider-inert" inert>
+  <p><button data-probe="inert-subtree">Inside inert</button></p>
+</div>
+<div id="hider-display" data-probe="hider-display" style="display:none">
+  <p><button data-probe="not-rendered-subtree">Inside display none</button></p>
+</div>
+<div id="hider-visibility" data-probe="hider-visibility" style="visibility:hidden">
+  <p><button data-probe="visibility-subtree">Inside visibility hidden</button></p>
+</div>
+</main>
+</body>
+</html>

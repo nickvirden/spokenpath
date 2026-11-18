@@ -1,0 +1,48 @@
+{
+  "probe": "safari-ax-tree",
+  "mode": "untrusted",
+  "driver": "safaridriver session (the automation window)",
+  "environment": {
+    "macos": {
+      "productVersion": "27.0.1",
+      "buildVersion": "26A434"
+    },
+    "safari": {
+      "shortVersion": "27.0.1",
+      "bundleVersion": "22625.1.29.11.28"
+    },
+    "node": "v24.13.0",
+    "runDate": "2026-11-17"
+  },
+  "capabilities": {
+    "browserName": "Safari",
+    "browserVersion": "27.0.1",
+    "platformName": "macOS",
+    "safari:platformVersion": "27.0.1"
+  },
+  "launchRoute": "transient launchd job of the invoking user (launchctl submit), built with swiftc",
+  "launchdLabel": "test.spokenpath.ax-tree-untrusted",
+  "launchdLastExitStatus": 768,
+  "exitStatus": 3,
+  "tree": {
+    "attempts": [
+      {
+        "applicationChildrenError": -25211,
+        "applicationChildrenErrorName": "kAXErrorAPIDisabled",
+        "matchingWebAreaFound": false,
+        "nodeCount": 0,
+        "trigger": "first query",
+        "webAreasSeen": 0
+      }
+    ],
+    "axIsProcessTrusted": false,
+    "macosVersion": "27.0.1",
+    "needle": "tagged.html:",
+    "nodeCount": 0,
+    "nodes": [],
+    "permission": "missing",
+    "populatedOnFirstQuery": false,
+    "urlSubstring": "/tagged.html"
+  },
+  "sessionDeleted": true
+}

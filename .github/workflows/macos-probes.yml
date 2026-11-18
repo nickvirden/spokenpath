@@ -1,0 +1,100 @@
+name: macOS probes
+
+# Runs the Safari feasibility probes in spikes/ on a hosted macOS image and
+# uploads what they recorded. It answers whether a hosted runner can drive
+# Safari over WebDriver and read Safari's accessibility tree
+# (docs/decisions/ADR-0009). It is not a required check and ci-ok does not
+# need it: a probe result of "fail" is evidence, not a broken build, so the
+# job fails only when a step cannot run at all.
+on:
+  pull_request:
+    paths:
+      - spikes/safari-webdriver/**
+      - spikes/safari-ax-tree/**
+      - .github/workflows/macos-probes.yml
+  workflow_dispatch:
+
+concurrency:
+  group: macos-probes-${{ github.ref }}
+  cancel-in-progress: true
+
+# Nothing by default; the job grants only what it uses.
+permissions: {}
+
+jobs:
+  safari-probes:
+    name: safari-probes
+    # A pinned image rather than macos-latest, so the recorded macOS and
+    # Safari versions change only when this label is moved deliberately.
+    runs-on: macos-26
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Record the macOS and Safari versions
+        run: |
+          mkdir -p "$RUNNER_TEMP/macos-probes"
+          {
+            sw_vers
+            printf 'Safari %s (%s)\n' \
+              "$(defaults read /Applications/Safari.app/Contents/Info.plist CFBundleShortVersionString)" \
+              "$(defaults read /Applications/Safari.app/Contents/Info.plist CFBundleVersion)"
+            printf 'Image label: %s\n' "$IMAGE_LABEL"
+            printf 'Image version: %s\n' "${ImageVersion:-unknown}"
+          } | tee "$RUNNER_TEMP/macos-probes/environment.txt"
+        env:
+          IMAGE_LABEL: macos-26
+
+      # The checkout carries the output of the last local run; removing it
+      # keeps the artifact to what this run wrote.
+      - name: Clear the committed probe output
+        run: rm -f spikes/safari-webdriver/output/*.json spikes/safari-ax-tree/output/*.json
+
+      # Safari refuses WebDriver sessions until remote automation is enabled.
+      - name: Enable Safari remote automation
+        run: sudo safaridriver --enable
+
+      # Exits non-zero only when safaridriver or the session cannot start;
+      # elements that error are recorded in the output. Each probe step has
+      # its own deadline inside the job's, so a hung probe fails alone and the
+      # collect and upload steps still run.
+      - name: Run the WebDriver probe
+        timeout-minutes: 5
+        run: node spikes/safari-webdriver/probe.mjs
+
+      # Exit status 3 means the Accessibility permission is missing
+      # (AXIsProcessTrusted() is false or the query failed with
+      # kAXErrorAPIDisabled), which is a result being probed, not a failure.
+      - name: Attempt the accessibility tree probe
+        timeout-minutes: 5
+        run: |
+          status=0
+          node spikes/safari-ax-tree/probe.mjs || status=$?
+          printf 'safari-ax-tree probe exit status: %s\n' "$status" | tee "$RUNNER_TEMP/macos-probes/ax-tree-exit-status.txt"
+          if [ "$status" -ne 0 ] && [ "$status" -ne 3 ]; then
+            exit "$status"
+          fi
+
+      - name: Collect the probe output
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/macos-probes"
+          cp -R spikes/safari-webdriver/output "$RUNNER_TEMP/macos-probes/safari-webdriver"
+          cp -R spikes/safari-ax-tree/output "$RUNNER_TEMP/macos-probes/safari-ax-tree"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: macos-probes
+          path: ${{ runner.temp }}/macos-probes
+          if-no-files-found: error
+          retention-days: 30

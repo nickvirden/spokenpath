@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WebKit accessibility properties</title>
+</head>
+<body>
+<main data-probe="main">
+<h1 data-probe="heading">Accessibility properties</h1>
+<button data-probe="button" type="button">Save</button>
+<a data-probe="link" href="/next">Next page</a>
+<label for="w-name">Name</label>
+<input data-probe="labelled-input" id="w-name" type="text">
+<img data-probe="img-alt" src="pixel.svg" alt="Grey square">
+<button data-probe="aria-hidden" aria-hidden="true">Hidden by aria-hidden</button>
+<button data-probe="display-none" style="display:none">Hidden by display none</button>
+<ul data-probe="unstyled-list" style="list-style:none">
+  <li>Item one</li>
+  <li>Item two</li>
+</ul>
+</main>
+</body>
+</html>

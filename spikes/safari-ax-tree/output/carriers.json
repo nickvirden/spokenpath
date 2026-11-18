@@ -1,0 +1,812 @@
+{
+  "probe": "safari-ax-tree",
+  "driver": "safaridriver session (the automation window)",
+  "environment": {
+    "macos": {
+      "productVersion": "27.0.1",
+      "buildVersion": "26A434"
+    },
+    "safari": {
+      "shortVersion": "27.0.1",
+      "bundleVersion": "22625.1.29.11.28"
+    },
+    "node": "v24.13.0",
+    "runDate": "2026-11-17"
+  },
+  "taggedSources": [
+    "tagged.html:12:1",
+    "tagged.html:13:3",
+    "tagged.html:15:1",
+    "tagged.html:16:3",
+    "tagged.html:17:3",
+    "tagged.html:18:3",
+    "tagged.html:19:3",
+    "tagged.html:20:3",
+    "tagged.html:21:3",
+    "tagged.html:22:3",
+    "tagged.html:23:10",
+    "tagged.html:24:10",
+    "tagged.html:26:5",
+    "tagged.html:27:7",
+    "tagged.html:33:19",
+    "tagged.html:34:3",
+    "tagged.html:36:5",
+    "tagged.html:38:3",
+    "tagged.html:39:5",
+    "tagged.html:42:3",
+    "tagged.html:47:3",
+    "tagged.html:51:3",
+    "tagged.html:52:3",
+    "tagged.html:53:3"
+  ],
+  "capabilities": {
+    "browserName": "Safari",
+    "browserVersion": "27.0.1",
+    "platformName": "macOS",
+    "safari:platformVersion": "27.0.1"
+  },
+  "webDriverSequence": [
+    {
+      "src": "tagged.html:12:1",
+      "tag": "NAV",
+      "role": "navigation",
+      "roleMs": 3.2,
+      "label": "Site",
+      "labelMs": 2.7
+    },
+    {
+      "src": "tagged.html:13:3",
+      "tag": "A",
+      "role": "link",
+      "roleMs": 6,
+      "label": "Next page",
+      "labelMs": 4.2
+    },
+    {
+      "src": "tagged.html:15:1",
+      "tag": "MAIN",
+      "role": "main",
+      "roleMs": 4.2,
+      "label": "",
+      "labelMs": 8.2
+    },
+    {
+      "src": "tagged.html:16:3",
+      "tag": "H1",
+      "role": "heading",
+      "roleMs": 2.7,
+      "label": "Tagged fixture",
+      "labelMs": 5.6
+    },
+    {
+      "src": "tagged.html:17:3",
+      "tag": "H2",
+      "role": "heading",
+      "roleMs": 2.5,
+      "label": "Form controls",
+      "labelMs": 2.5
+    },
+    {
+      "src": "tagged.html:18:3",
+      "tag": "P",
+      "role": "paragraph",
+      "roleMs": 3,
+      "label": "",
+      "labelMs": 2.1
+    },
+    {
+      "src": "tagged.html:19:3",
+      "tag": "P",
+      "role": "paragraph",
+      "roleMs": 1.9,
+      "label": "",
+      "labelMs": 1.7
+    },
+    {
+      "src": "tagged.html:20:3",
+      "tag": "BUTTON",
+      "role": "button",
+      "roleMs": 1.8,
+      "label": "Save",
+      "labelMs": 2.1
+    },
+    {
+      "src": "tagged.html:21:3",
+      "tag": "LABEL",
+      "role": "",
+      "roleMs": 2,
+      "label": "",
+      "labelMs": 2.2
+    },
+    {
+      "src": "tagged.html:22:3",
+      "tag": "INPUT",
+      "role": "textbox",
+      "roleMs": 2,
+      "label": "Name",
+      "labelMs": 2
+    },
+    {
+      "src": "tagged.html:23:10",
+      "tag": "INPUT",
+      "role": "checkbox",
+      "roleMs": 1.8,
+      "label": "Subscribe",
+      "labelMs": 1.9
+    },
+    {
+      "src": "tagged.html:24:10",
+      "tag": "INPUT",
+      "role": "radio",
+      "roleMs": 1.9,
+      "label": "Small",
+      "labelMs": 1.9
+    },
+    {
+      "src": "tagged.html:26:5",
+      "tag": "SELECT",
+      "role": "button",
+      "roleMs": 2,
+      "label": "Flavour",
+      "labelMs": 1.7
+    },
+    {
+      "src": "tagged.html:27:7",
+      "tag": "OPTGROUP",
+      "roleError": {
+        "error": "unknown error",
+        "message": "",
+        "stacktrace": ""
+      },
+      "roleMs": 2.1,
+      "labelError": {
+        "error": "unknown error",
+        "message": "",
+        "stacktrace": ""
+      },
+      "labelMs": 1.8
+    },
+    {
+      "src": "tagged.html:33:19",
+      "tag": "TEXTAREA",
+      "role": "textbox",
+      "roleMs": 1.7,
+      "label": "Comments",
+      "labelMs": 1.8
+    },
+    {
+      "src": "tagged.html:34:3",
+      "tag": "IMG",
+      "role": "",
+      "roleMs": 4,
+      "label": "Grey square",
+      "labelMs": 2.9
+    },
+    {
+      "src": "tagged.html:36:5",
+      "tag": "AREA",
+      "role": "link",
+      "roleMs": 2.2,
+      "label": "Corner",
+      "labelMs": 1.7
+    },
+    {
+      "src": "tagged.html:38:3",
+      "tag": "UL",
+      "role": "group",
+      "roleMs": 1.7,
+      "label": "",
+      "labelMs": 1.7
+    },
+    {
+      "src": "tagged.html:39:5",
+      "tag": "LI",
+      "role": "listitem",
+      "roleMs": 5.9,
+      "label": "",
+      "labelMs": 5.9
+    },
+    {
+      "src": "tagged.html:42:3",
+      "tag": "TABLE",
+      "role": "table",
+      "roleMs": 2,
+      "label": "Prices",
+      "labelMs": 2.1
+    },
+    {
+      "src": "tagged.html:47:3",
+      "tag": "SECTION",
+      "role": "region",
+      "roleMs": 7.2,
+      "label": "Labelled region",
+      "labelMs": 1.8
+    },
+    {
+      "src": "tagged.html:51:3",
+      "tag": "INPUT",
+      "role": "searchbox",
+      "roleMs": 1.9,
+      "label": "Search the site",
+      "labelMs": 1.7
+    },
+    {
+      "src": "tagged.html:52:3",
+      "tag": "DIV",
+      "role": "generic",
+      "roleMs": 1.6,
+      "label": "",
+      "labelMs": 1.7
+    },
+    {
+      "src": "tagged.html:53:3",
+      "tag": "DIALOG",
+      "role": "dialog",
+      "roleMs": 2.3,
+      "label": "Notice",
+      "labelMs": 2.3
+    }
+  ],
+  "trusted": true,
+  "trigger": {
+    "plain": {
+      "populatedOnFirstQuery": true,
+      "attempts": [
+        {
+          "applicationChildrenError": 0,
+          "applicationChildrenErrorName": "kAXErrorSuccess",
+          "matchingWebAreaFound": true,
+          "nodeCount": 72,
+          "trigger": "first query",
+          "webAreasSeen": 1
+        }
+      ]
+    },
+    "class": {
+      "populatedOnFirstQuery": true,
+      "attempts": [
+        {
+          "applicationChildrenError": 0,
+          "applicationChildrenErrorName": "kAXErrorSuccess",
+          "matchingWebAreaFound": true,
+          "nodeCount": 72,
+          "trigger": "first query",
+          "webAreasSeen": 1
+        }
+      ]
+    },
+    "id": {
+      "populatedOnFirstQuery": true,
+      "attempts": [
+        {
+          "applicationChildrenError": 0,
+          "applicationChildrenErrorName": "kAXErrorSuccess",
+          "matchingWebAreaFound": true,
+          "nodeCount": 72,
+          "trigger": "first query",
+          "webAreasSeen": 1
+        }
+      ]
+    }
+  },
+  "directDataAttributeExposure": [],
+  "carriers": {
+    "classToken": {
+      "tagged": 24,
+      "mappedToExactlyOneNode": 22,
+      "misses": [
+        {
+          "src": "tagged.html:27:7",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:52:3",
+          "matchingNodeIndexes": []
+        }
+      ],
+      "perElement": [
+        {
+          "src": "tagged.html:12:1",
+          "matchingNodeIndexes": [
+            1
+          ]
+        },
+        {
+          "src": "tagged.html:13:3",
+          "matchingNodeIndexes": [
+            2
+          ]
+        },
+        {
+          "src": "tagged.html:15:1",
+          "matchingNodeIndexes": [
+            4
+          ]
+        },
+        {
+          "src": "tagged.html:16:3",
+          "matchingNodeIndexes": [
+            5
+          ]
+        },
+        {
+          "src": "tagged.html:17:3",
+          "matchingNodeIndexes": [
+            7
+          ]
+        },
+        {
+          "src": "tagged.html:18:3",
+          "matchingNodeIndexes": [
+            9
+          ]
+        },
+        {
+          "src": "tagged.html:19:3",
+          "matchingNodeIndexes": [
+            11
+          ]
+        },
+        {
+          "src": "tagged.html:20:3",
+          "matchingNodeIndexes": [
+            13
+          ]
+        },
+        {
+          "src": "tagged.html:21:3",
+          "matchingNodeIndexes": [
+            14
+          ]
+        },
+        {
+          "src": "tagged.html:22:3",
+          "matchingNodeIndexes": [
+            16
+          ]
+        },
+        {
+          "src": "tagged.html:23:10",
+          "matchingNodeIndexes": [
+            18
+          ]
+        },
+        {
+          "src": "tagged.html:24:10",
+          "matchingNodeIndexes": [
+            21
+          ]
+        },
+        {
+          "src": "tagged.html:26:5",
+          "matchingNodeIndexes": [
+            25
+          ]
+        },
+        {
+          "src": "tagged.html:27:7",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:33:19",
+          "matchingNodeIndexes": [
+            28
+          ]
+        },
+        {
+          "src": "tagged.html:34:3",
+          "matchingNodeIndexes": [
+            29
+          ]
+        },
+        {
+          "src": "tagged.html:36:5",
+          "matchingNodeIndexes": [
+            30
+          ]
+        },
+        {
+          "src": "tagged.html:38:3",
+          "matchingNodeIndexes": [
+            31
+          ]
+        },
+        {
+          "src": "tagged.html:39:5",
+          "matchingNodeIndexes": [
+            32
+          ]
+        },
+        {
+          "src": "tagged.html:42:3",
+          "matchingNodeIndexes": [
+            36
+          ]
+        },
+        {
+          "src": "tagged.html:47:3",
+          "matchingNodeIndexes": [
+            64
+          ]
+        },
+        {
+          "src": "tagged.html:51:3",
+          "matchingNodeIndexes": [
+            68
+          ]
+        },
+        {
+          "src": "tagged.html:52:3",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:53:3",
+          "matchingNodeIndexes": [
+            69
+          ]
+        }
+      ]
+    },
+    "elementId": {
+      "tagged": 24,
+      "mappedToExactlyOneNode": 21,
+      "misses": [
+        {
+          "src": "tagged.html:22:3",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:27:7",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:52:3",
+          "matchingNodeIndexes": []
+        }
+      ],
+      "perElement": [
+        {
+          "src": "tagged.html:12:1",
+          "matchingNodeIndexes": [
+            1
+          ]
+        },
+        {
+          "src": "tagged.html:13:3",
+          "matchingNodeIndexes": [
+            2
+          ]
+        },
+        {
+          "src": "tagged.html:15:1",
+          "matchingNodeIndexes": [
+            4
+          ]
+        },
+        {
+          "src": "tagged.html:16:3",
+          "matchingNodeIndexes": [
+            5
+          ]
+        },
+        {
+          "src": "tagged.html:17:3",
+          "matchingNodeIndexes": [
+            7
+          ]
+        },
+        {
+          "src": "tagged.html:18:3",
+          "matchingNodeIndexes": [
+            9
+          ]
+        },
+        {
+          "src": "tagged.html:19:3",
+          "matchingNodeIndexes": [
+            11
+          ]
+        },
+        {
+          "src": "tagged.html:20:3",
+          "matchingNodeIndexes": [
+            13
+          ]
+        },
+        {
+          "src": "tagged.html:21:3",
+          "matchingNodeIndexes": [
+            14
+          ]
+        },
+        {
+          "src": "tagged.html:22:3",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:23:10",
+          "matchingNodeIndexes": [
+            18
+          ]
+        },
+        {
+          "src": "tagged.html:24:10",
+          "matchingNodeIndexes": [
+            21
+          ]
+        },
+        {
+          "src": "tagged.html:26:5",
+          "matchingNodeIndexes": [
+            25
+          ]
+        },
+        {
+          "src": "tagged.html:27:7",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:33:19",
+          "matchingNodeIndexes": [
+            28
+          ]
+        },
+        {
+          "src": "tagged.html:34:3",
+          "matchingNodeIndexes": [
+            29
+          ]
+        },
+        {
+          "src": "tagged.html:36:5",
+          "matchingNodeIndexes": [
+            30
+          ]
+        },
+        {
+          "src": "tagged.html:38:3",
+          "matchingNodeIndexes": [
+            31
+          ]
+        },
+        {
+          "src": "tagged.html:39:5",
+          "matchingNodeIndexes": [
+            32
+          ]
+        },
+        {
+          "src": "tagged.html:42:3",
+          "matchingNodeIndexes": [
+            36
+          ]
+        },
+        {
+          "src": "tagged.html:47:3",
+          "matchingNodeIndexes": [
+            64
+          ]
+        },
+        {
+          "src": "tagged.html:51:3",
+          "matchingNodeIndexes": [
+            68
+          ]
+        },
+        {
+          "src": "tagged.html:52:3",
+          "matchingNodeIndexes": []
+        },
+        {
+          "src": "tagged.html:53:3",
+          "matchingNodeIndexes": [
+            69
+          ]
+        }
+      ]
+    },
+    "position": {
+      "tagged": 24,
+      "mappedToExactlyOneNode": 16,
+      "misses": [
+        {
+          "src": "tagged.html:15:1",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:18:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:19:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:21:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:27:7",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:38:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:39:5",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:52:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        }
+      ],
+      "perElement": [
+        {
+          "src": "tagged.html:12:1",
+          "matchingNodeIndexes": [
+            1
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:13:3",
+          "matchingNodeIndexes": [
+            2
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:15:1",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:16:3",
+          "matchingNodeIndexes": [
+            5
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:17:3",
+          "matchingNodeIndexes": [
+            7
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:18:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:19:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:20:3",
+          "matchingNodeIndexes": [
+            13
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:21:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:22:3",
+          "matchingNodeIndexes": [
+            16
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:23:10",
+          "matchingNodeIndexes": [
+            18
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:24:10",
+          "matchingNodeIndexes": [
+            21
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:26:5",
+          "matchingNodeIndexes": [
+            25
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:27:7",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:33:19",
+          "matchingNodeIndexes": [
+            28
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:34:3",
+          "matchingNodeIndexes": [
+            29
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:36:5",
+          "matchingNodeIndexes": [
+            30
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:38:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:39:5",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:42:3",
+          "matchingNodeIndexes": [
+            36
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:47:3",
+          "matchingNodeIndexes": [
+            64
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:51:3",
+          "matchingNodeIndexes": [
+            68
+          ],
+          "laterNodesWithSameLabel": 0
+        },
+        {
+          "src": "tagged.html:52:3",
+          "matchingNodeIndexes": [],
+          "reason": "empty computed label"
+        },
+        {
+          "src": "tagged.html:53:3",
+          "matchingNodeIndexes": [
+            69
+          ],
+          "laterNodesWithSameLabel": 0
+        }
+      ],
+      "treesHaveSameShape": true,
+      "matchesConfirmedByClassToken": 16
+    }
+  },
+  "sessionDeleted": true
+}

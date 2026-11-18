@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shadow root slotting</title>
+</head>
+<body>
+<main>
+<h1>Shadow slots</h1>
+<div data-probe="host" role="group" aria-label="Shadow host">
+  <template shadowrootmode="open">
+    <h2>Shadow heading</h2>
+    <slot name="title"></slot>
+    <p>Shadow paragraph between slots</p>
+    <slot></slot>
+  </template>
+  <button data-probe="light-default-a">Light default A</button>
+  <button data-probe="light-titled" slot="title">Light titled</button>
+  <button data-probe="light-default-b">Light default B</button>
+</div>
+</main>
+</body>
+</html>

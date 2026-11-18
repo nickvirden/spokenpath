@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Name sources</title>
+</head>
+<body>
+<main>
+<h1>Name sources</h1>
+<label for="n-label-for">Label for text</label>
+<input id="n-label-for" data-probe="label-for" type="text">
+<label>Wrapped label text <input data-probe="wrapped-label" type="text"></label>
+<span id="n-labelledby">Labelledby text</span>
+<button data-probe="labelledby-over-label" aria-labelledby="n-labelledby" aria-label="Aria label text">Button content</button>
+<input data-probe="title-only" type="text" title="Title text">
+<input data-probe="placeholder-only" type="text" placeholder="Placeholder text">
+<img data-probe="img-alt" src="pixel.svg" alt="Alt text">
+<span id="n-hidden-label" hidden>Hidden label text</span>
+<button data-probe="labelledby-hidden" aria-labelledby="n-hidden-label"></button>
+</main>
+</body>
+</html>

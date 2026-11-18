@@ -1,0 +1,168 @@
+{
+  "probe": "playwright-webkit",
+  "page": "accessibility-properties.html",
+  "route": "page._connection.toImpl(page).delegate._session (Playwright internals; unsupported API)",
+  "environment": {
+    "macos": {
+      "productVersion": "27.0.1",
+      "buildVersion": "26A434"
+    },
+    "webkit": "27.2",
+    "playwright": "1.65.1",
+    "node": "v24.13.0",
+    "launch": {
+      "headless": true
+    },
+    "runDate": "2026-11-17"
+  },
+  "elements": [
+    {
+      "probe": "main",
+      "nodeId": 6,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "",
+          "role": "main",
+          "nodeId": 6,
+          "childNodeIds": [
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            22
+          ],
+          "parentNodeId": 1
+        }
+      }
+    },
+    {
+      "probe": "heading",
+      "nodeId": 7,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "Accessibility properties",
+          "role": "heading",
+          "nodeId": 7,
+          "childNodeIds": [
+            8
+          ],
+          "parentNodeId": 6,
+          "headingLevel": 1
+        }
+      }
+    },
+    {
+      "probe": "button",
+      "nodeId": 9,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "Save",
+          "role": "button",
+          "nodeId": 9,
+          "childNodeIds": [],
+          "focused": false,
+          "parentNodeId": 6
+        }
+      }
+    },
+    {
+      "probe": "link",
+      "nodeId": 11,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "Next page",
+          "role": "link",
+          "nodeId": 11,
+          "childNodeIds": [
+            12
+          ],
+          "focused": false,
+          "parentNodeId": 6
+        }
+      }
+    },
+    {
+      "probe": "labelled-input",
+      "nodeId": 15,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "Name",
+          "role": "textbox",
+          "nodeId": 15,
+          "childNodeIds": [],
+          "focused": false,
+          "parentNodeId": 6,
+          "required": false
+        }
+      }
+    },
+    {
+      "probe": "img-alt",
+      "nodeId": 17,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "Grey square",
+          "role": "image",
+          "nodeId": 17,
+          "childNodeIds": [],
+          "parentNodeId": 6
+        }
+      }
+    },
+    {
+      "probe": "aria-hidden",
+      "nodeId": 18,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "Hidden by aria-hidden",
+          "role": "button",
+          "nodeId": 18,
+          "childNodeIds": [],
+          "focused": false,
+          "ignored": true,
+          "ignoredByDefault": true,
+          "hidden": true,
+          "parentNodeId": 6
+        }
+      }
+    },
+    {
+      "probe": "display-none",
+      "nodeId": 20,
+      "response": {
+        "properties": {
+          "exists": false,
+          "label": "",
+          "role": "",
+          "nodeId": 20
+        }
+      }
+    },
+    {
+      "probe": "unstyled-list",
+      "nodeId": 22,
+      "response": {
+        "properties": {
+          "exists": true,
+          "label": "",
+          "role": "group",
+          "nodeId": 22,
+          "childNodeIds": [
+            23,
+            25
+          ],
+          "parentNodeId": 6
+        }
+      }
+    }
+  ]
+}

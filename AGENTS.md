@@ -85,6 +85,9 @@ gitleaks scan of the pull request's commits.
   `@spokenpath/instrument-html` and `@spokenpath/capture-chromium` take the `@spokenpath/*` scope,
   and the CLI package is `spokenpath`. Every package stays `"private": true` and every crate
   `publish = false` until publishing is switched on.
+- `spikes/`: feasibility probes whose raw output backs the decision records. They are evidence,
+  not product code: nothing in `crates/` or `packages/` imports them, and they have their own
+  manifest outside the pnpm workspace. See [spikes/README.md](spikes/README.md).
 - Lints are set once for the whole Cargo workspace (`[workspace.lints]` in `Cargo.toml`), and
   every package's `tsconfig.json` extends `tsconfig.base.json`. Rust snapshot tests use `insta`;
   Vitest is the only TypeScript test framework.

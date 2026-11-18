@@ -11,7 +11,10 @@ Each item builds on the ones before it.
    a release step that moves every crate and package to the same version.
 2. **Probes.** Small experiments that settle open questions before they are built on: what
    Chromium's DevTools Protocol returns for edge cases, and what Safari, its macOS accessibility
-   tree and VoiceOver can be made to report. Each result is recorded in a decision record.
+   tree and VoiceOver can be made to report. Each result is recorded in a decision record:
+   [ADR-0008](decisions/ADR-0008-chromium-protocol-behaviours.md),
+   [ADR-0009](decisions/ADR-0009-safari-capture-route-and-source-locations.md) and
+   [ADR-0010](decisions/ADR-0010-voiceover-capture-feasibility-and-corpus.md).
 3. **Snapshot schema.** The versioned JSON format that capture writes and the core reads, for
    several engines from the start, with generated types and a validator.
 4. **Source tagging.** `@spokenpath/instrument-html`, which tags each start tag with its source

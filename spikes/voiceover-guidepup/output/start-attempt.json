@@ -1,0 +1,42 @@
+{
+  "probe": "voiceover-guidepup",
+  "page": "three-elements.html",
+  "environment": {
+    "macos": {
+      "productVersion": "27.0.1",
+      "buildVersion": "26A434"
+    },
+    "safari": "27.0.1",
+    "voiceOver": {
+      "shortVersion": "10",
+      "bundleVersion": "993"
+    },
+    "guidepup": "0.40.0",
+    "node": "v24.13.0",
+    "runDate": "2026-11-17"
+  },
+  "preferencesAsset": {
+    "platformVersion": "27",
+    "listedInManifest": true,
+    "asset": "guidepup-voiceover-preferences-xcode-27.dmg",
+    "version": "0.1.0-VoiceOver4",
+    "installed": false
+  },
+  "completed": true,
+  "runs": [
+    {
+      "steps": [
+        "next",
+        "next",
+        "next",
+        "next"
+      ],
+      "error": [
+        "VoiceOver cannot be started",
+        "Failed to mount Guidepup preferences\n\nPlease ensure you have run:\n\n\t- `npx @guidepup/setup setup` at least once on your machine to configure the OS\n\t- `npx @guidepup/setup install` at least once for this project to install screen reader assets"
+      ],
+      "voiceOverRunningAfterStop": false
+    }
+  ],
+  "voiceOverRunningAtEnd": false
+}
