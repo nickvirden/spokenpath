@@ -774,6 +774,27 @@ fn name_from_a_visible_wrapping_label_is_not_hidden_content() {
 }
 
 #[test]
+fn only_reasons_that_remove_content_from_view_count_as_hiding() {
+    // Not every hiding reason has a capture that names a control from hidden content, so each
+    // kind's answer is pinned here rather than through a golden.
+    let expected = [
+        (ExclusionKind::AriaHidden, true),
+        (ExclusionKind::Inert, true),
+        (ExclusionKind::NotRendered, true),
+        (ExclusionKind::NotVisible, true),
+        (ExclusionKind::OutsideActiveModal, true),
+        (ExclusionKind::PresentationalRole, false),
+        (ExclusionKind::EmptyAlt, false),
+        (ExclusionKind::LabelFor, false),
+        (ExclusionKind::Uninteresting, false),
+        (ExclusionKind::Other, false),
+    ];
+    for (kind, hides) in expected {
+        assert_eq!(kind.hides(), hides, "{}", kind.as_str());
+    }
+}
+
+#[test]
 fn listbox_options_count_and_the_selected_option_is_selected() {
     let model = adapted("set-position/listbox.json");
     assert_eq!(set_position(&model, "apple"), Some(of(1, 3)));
