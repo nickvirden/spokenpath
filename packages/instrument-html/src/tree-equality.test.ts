@@ -25,7 +25,7 @@ function reserialisingInstrumenter(text: string): string {
 
 const page = `<!DOCTYPE html>
 <p class="a" id="b">text<b>bold</b></p>
-<svg><circle r="1"/></svg>
+<svg><circle r="1"/><use xlink:href="#a"/></svg>
 <template><td>cell</td></template>`;
 
 function find(document: Document, tag: string): Element {
@@ -96,6 +96,22 @@ describe('a single mutation is reported', () => {
         find(document, 'circle').namespaceURI = html.NS.MATHML;
       },
       'html[0] > body[0] > svg[0] > circle[0]',
+    ],
+    [
+      'a changed attribute namespace',
+      (document) => {
+        const attr = find(document, 'use').attrs[0];
+        if (attr !== undefined) attr.namespace = html.NS.XML;
+      },
+      'html[0] > body[0] > svg[0] > use[0]',
+    ],
+    [
+      'a changed attribute prefix',
+      (document) => {
+        const attr = find(document, 'use').attrs[0];
+        if (attr !== undefined) attr.prefix = 'xml';
+      },
+      'html[0] > body[0] > svg[0] > use[0]',
     ],
     [
       'changed template contents',
