@@ -47,7 +47,14 @@ two drifting.
    Schema is generated from them by `cargo xtask schema`, and the TypeScript types and validator
    are generated from the committed schema. CI fails when either generated file differs from what
    its source produces.
-7. **Optional means absent.** An optional field is omitted when it has no value, never written as
+7. **Source paths stay inside the capture root.** `sources[].path` is `/`-separated segments, none
+   of them empty, `.` or `..`, with no leading `/` and no `\`, `:` or NUL. The schema states it as a
+   pattern and the Rust reader checks it, because the core later reads source bytes by joining the
+   path onto a root, and a snapshot may come from an untrusted backend.
+8. **The engine pair is checked by both readers.** The TypeScript validator applies the
+   `capture.engine` and `payload.engine` rule after the schema, as the Rust reader does, so the
+   schema and the generated types carry no conditional for it.
+9. **Optional means absent.** An optional field is omitted when it has no value, never written as
    `null`, and the schema does not allow `null` for it.
 
 ## Consequences

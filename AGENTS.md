@@ -89,10 +89,10 @@ gitleaks scan of the pull request's commits.
   Regenerate it with `cargo xtask schema`, then the TypeScript types with
   `pnpm --filter @spokenpath/snapshot-types generate`; never edit either by hand. CI checks both
   (`cargo xtask schema --check` and a package test).
-- `fixtures/snapshots/`: valid snapshots that the Rust and TypeScript tests read. Every file is
-  hand-written except `chromium-from-typescript.json`, the JSON of the typed sample in
-  `@spokenpath/snapshot-types`, refreshed with
-  `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
+- `fixtures/snapshots/`: valid snapshots that the Rust and TypeScript tests read, with the page
+  sources they describe under `pages/`. Every snapshot is hand-written except
+  `chromium-from-typescript.json`, the JSON of the typed sample in `@spokenpath/snapshot-types`,
+  refreshed with `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
 - `spikes/`: feasibility probes whose raw output backs the decision records. They are evidence,
   not product code: nothing in `crates/` or `packages/` imports them, and they have their own
   manifest outside the pnpm workspace. See [spikes/README.md](spikes/README.md).

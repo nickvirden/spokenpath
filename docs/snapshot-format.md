@@ -32,13 +32,19 @@ carrying the JSON Pointer of the failing location.
 | `capture.url` | The URL the page was loaded from. |
 | `capture.settle` | The name of the settle strategy; the capture backends define the values. |
 | `volatile` | `{ captured_at }`, an RFC 3339 UTC timestamp. Excluded from golden comparisons. |
-| `sources[]` | `{ id, path, sha256, encoding }`: a relative `/`-separated path, 64 lowercase hex characters, and `"utf-8"`. |
+| `sources[]` | `{ id, path, sha256, encoding }`: a path relative to the capture root, 64 lowercase hex characters, and `"utf-8"`. The path is `/`-separated segments, none of them empty, `.` or `..`, with no leading `/` and no `\`, `:` or NUL, so joining it onto the capture root never leaves the root. |
 | `spans[]` | `{ id, source, start_tag, element?, line, column }`: where a tagged start tag sits in a source file. |
 | `diagnostics[]` | `{ code, message, node? }`: a problem capture recorded; `node` is a DOM node `id`. |
 | `payload` | The engine-specific payload, tagged by `engine`. |
 
 Fields marked `?` are optional. An optional field is omitted when it has no value, never written
 as `null`.
+
+## Sensitive content
+
+A snapshot is a raw capture of the page. `capture.url` (its query string and any userinfo),
+attribute values and text can hold secrets or personal data. Capture only pages you control, such
+as fixtures, and review a snapshot for tokens before committing it as a golden.
 
 ## Units of a span
 
@@ -90,8 +96,17 @@ later minor versions.
 - A reader **ignores** fields it does not know, except in the accessibility nodes, where every
   protocol field the types do not name is **kept** and written back unchanged.
 
+Both readers also reject a snapshot whose `capture.engine` differs from `payload.engine`, and a
+`sources[].path` that breaks the rule above.
+
 The Rust reader is `spokenpath_snapshot::read`. Its errors name the failing field by path, such as
-`payload.dom[2].kind`.
+`payload.dom[2].kind`. The TypeScript `validateSnapshot` applies the same engine check, reported at
+`/payload/engine`.
+
+The two differ on purpose. `validateSnapshot` is the strict gate for writers: it enforces every
+pattern and range in the schema. The Rust reader is lenient about what does not change the
+meaning of a snapshot: it accepts `null` for an optional field (as absent), a `line` or `column`
+of 0, and a `sha256` or `captured_at` that does not match its pattern.
 
 ## Golden comparisons
 
@@ -114,7 +129,9 @@ from the committed schema. A change to the contract also needs an ADR
 
 ## Fixtures
 
-`fixtures/snapshots/` holds valid snapshots. `chromium-basic.json` is hand-written;
-`chromium-from-typescript.json` is the JSON of the typed sample in `@spokenpath/snapshot-types`.
-The Rust tests read and round-trip every file there, and the package tests validate every file
-there.
+`fixtures/snapshots/` holds valid snapshots. `chromium-basic.json` is hand-written from the page
+in `fixtures/snapshots/pages/basic.html`; a package test checks the source hash and slices every
+span by its byte range against that page. `chromium-from-typescript.json` is the JSON of the typed
+sample in `@spokenpath/snapshot-types`. The Rust tests read and round-trip every `.json` file
+there, and the package tests validate every one. `fixtures/source-paths.json` lists the
+accepted and rejected source paths that both readers' tests use.
