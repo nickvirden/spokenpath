@@ -1,3 +1,9 @@
+## [0.3.0](https://github.com/nickvirden/spokenpath/compare/v0.2.0...v0.3.0) (2026-11-18)
+
+### Features
+
+* **capture:** capture Chromium DOM, accessibility tree and tab order ([#33](https://github.com/nickvirden/spokenpath/issues/33)) ([4ccdbad](https://github.com/nickvirden/spokenpath/commit/4ccdbad3ee70d26edb8c77b254dec6cfc4de0c8e))
+
 ## [0.2.0](https://github.com/nickvirden/spokenpath/compare/v0.1.0...v0.2.0) (2026-11-18)
 
 ### Features
