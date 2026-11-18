@@ -31,7 +31,7 @@ Each command runs from the repository root and rewrites that probe's `output/` f
 | [Safari over WebDriver](safari-webdriver/README.md) | `node spikes/safari-webdriver/probe.mjs` | macOS, Safari remote automation |
 | [Safari accessibility tree](safari-ax-tree/README.md) | `node spikes/safari-ax-tree/probe.mjs`, then `node spikes/safari-ax-tree/probe.mjs --untrusted` | macOS, remote automation, Accessibility permission, Xcode |
 | [Playwright WebKit](playwright-webkit/README.md) | `node spikes/playwright-webkit/probe.mjs` | the install above |
-| [VoiceOver through Guidepup](voiceover-guidepup/README.md) | `node spikes/voiceover-guidepup/check.mjs` (read-only), then `node spikes/voiceover-guidepup/probe.mjs` | macOS; Guidepup's setup and screen reader assets, installed by the maintainer |
+| [VoiceOver through Guidepup](voiceover-guidepup/README.md) | `node spikes/voiceover-guidepup/check.mjs` (read-only) | macOS |
 
 The Safari probes also run on a hosted macOS image through
 [`.github/workflows/macos-probes.yml`](../.github/workflows/macos-probes.yml), which uploads their
@@ -56,4 +56,4 @@ byte for byte as the script wrote it, which is why Biome skips `spikes/*/output`
 | [`safari-webdriver/`](safari-webdriver/README.md) | Computed role and label per element | [ADR-0009](../docs/decisions/ADR-0009-safari-capture-route-and-source-locations.md) |
 | [`safari-ax-tree/`](safari-ax-tree/README.md) | AX tree availability, trigger, permission, source-location carriers | [ADR-0009](../docs/decisions/ADR-0009-safari-capture-route-and-source-locations.md) |
 | [`playwright-webkit/`](playwright-webkit/README.md) | `DOM.getAccessibilityPropertiesForNode` | [ADR-0009](../docs/decisions/ADR-0009-safari-capture-route-and-source-locations.md) |
-| [`voiceover-guidepup/`](voiceover-guidepup/README.md) | Guidepup setup state; starting VoiceOver; repeat-run agreement of speech | [ADR-0010](../docs/decisions/ADR-0010-voiceover-capture-feasibility-and-corpus.md) |
+| [`voiceover-guidepup/`](voiceover-guidepup/README.md) | Guidepup setup state; starting VoiceOver through Guidepup | [ADR-0010](../docs/decisions/ADR-0010-voiceover-capture-feasibility-and-corpus.md) |
