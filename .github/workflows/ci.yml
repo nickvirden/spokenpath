@@ -207,6 +207,31 @@ jobs:
       - name: Check the committed snapshot schema
         run: cargo xtask schema --check
 
+  # The model's tests read the committed captures and their pages from disk, so they also run
+  # where paths, line endings and checkouts differ. Linux runs them in test-rust.
+  test-model:
+    name: test-model (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install the Rust toolchain
+        run: rustup toolchain install
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+
+      - name: Test the model crate
+        run: cargo test -p spokenpath_model --locked
+
   test-node:
     name: test-node
     runs-on: ubuntu-latest
@@ -308,7 +333,7 @@ jobs:
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [pr-title, lint, zizmor, release-rules, test-rust, test-node, test-capture, gitleaks]
+    needs: [pr-title, lint, zizmor, release-rules, test-rust, test-model, test-node, test-capture, gitleaks]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}
