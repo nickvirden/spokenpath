@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Delegated focus</title>
+</head>
+<body>
+<p><button id="before" type="button">Before</button></p>
+<div id="host">
+<template shadowrootmode="open" shadowrootdelegatesfocus>
+<label for="inner">Inner</label>
+<input id="inner" type="text">
+</template>
+</div>
+<p><button id="after" type="button">After</button></p>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Late content</title>
+</head>
+<body>
+<h1>Late content</h1>
+<script>
+setTimeout(() => {
+  const late = document.createElement('p');
+  late.id = 'late';
+  late.textContent = 'Added after a delay.';
+  document.body.append(late);
+}, 300);
+</script>
+</body>
+</html>
