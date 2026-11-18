@@ -1,0 +1,861 @@
+{
+  "$defs": {
+    "Attribute": {
+      "description": "One attribute of an element.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "type": "object"
+    },
+    "AxForced": {
+      "description": "The partial-tree result for one DOM element missing from the full tree.",
+      "properties": {
+        "backend_id": {
+          "description": "The DOM node's `backendNodeId`, which the query used.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "node": {
+          "description": "The DOM node's `id`.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "nodes": {
+          "description": "The response's node list, as delivered.",
+          "items": {
+            "$ref": "#/$defs/AxNode"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "node",
+        "backend_id",
+        "nodes"
+      ],
+      "type": "object"
+    },
+    "AxNode": {
+      "additionalProperties": true,
+      "description": "An accessibility node: a typed subset of the protocol's `AXNode`, in the protocol's names.\nName provenance (`name.sources`) and exclusion reasons (`ignoredReasons`) are optional because\nnot every engine provides them.",
+      "properties": {
+        "backendDOMNodeId": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "childIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "description": {
+          "$ref": "#/$defs/AxValue"
+        },
+        "ignored": {
+          "type": "boolean"
+        },
+        "ignoredReasons": {
+          "items": {
+            "$ref": "#/$defs/AxProperty"
+          },
+          "type": "array"
+        },
+        "name": {
+          "$ref": "#/$defs/AxValue"
+        },
+        "nodeId": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "string"
+        },
+        "properties": {
+          "items": {
+            "$ref": "#/$defs/AxProperty"
+          },
+          "type": "array"
+        },
+        "role": {
+          "$ref": "#/$defs/AxValue"
+        },
+        "value": {
+          "$ref": "#/$defs/AxValue"
+        }
+      },
+      "required": [
+        "nodeId",
+        "ignored"
+      ],
+      "type": "object"
+    },
+    "AxProperty": {
+      "additionalProperties": true,
+      "description": "A named value: an `AXProperty`, or an entry of `ignoredReasons`.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/$defs/AxValue"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "type": "object"
+    },
+    "AxRelatedNode": {
+      "additionalProperties": true,
+      "description": "The protocol's `AXRelatedNode`.",
+      "properties": {
+        "backendDOMNodeId": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "idref": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "backendDOMNodeId"
+      ],
+      "type": "object"
+    },
+    "AxValue": {
+      "additionalProperties": true,
+      "description": "The protocol's `AXValue`. `type` stays a string so a value type the protocol adds later is kept\nrather than rejected.",
+      "properties": {
+        "relatedNodes": {
+          "items": {
+            "$ref": "#/$defs/AxRelatedNode"
+          },
+          "type": "array"
+        },
+        "sources": {
+          "description": "Where the value came from, in the order the engine tried them (name provenance).",
+          "items": {
+            "$ref": "#/$defs/AxValueSource"
+          },
+          "type": "array"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": true
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "AxValueSource": {
+      "additionalProperties": true,
+      "description": "The protocol's `AXValueSource`: one source the engine tried for a value.",
+      "properties": {
+        "attribute": {
+          "type": "string"
+        },
+        "attributeValue": {
+          "$ref": "#/$defs/AxValue"
+        },
+        "nativeSource": {
+          "type": "string"
+        },
+        "nativeSourceValue": {
+          "$ref": "#/$defs/AxValue"
+        },
+        "superseded": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/$defs/AxValue"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ByteRange": {
+      "description": "A half-open range of UTF-8 byte offsets into a source file: `start` is the first byte and `end`\nis one past the last.",
+      "properties": {
+        "end": {
+          "description": "UTF-8 byte offset one past the last byte, from the start of the file.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "start": {
+          "description": "UTF-8 byte offset of the first byte, from the start of the file.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "type": "object"
+    },
+    "Capture": {
+      "description": "The engine and the conditions the page was captured under.",
+      "properties": {
+        "color_scheme": {
+          "$ref": "#/$defs/ColorScheme"
+        },
+        "engine": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Engine"
+            }
+          ],
+          "description": "The engine the snapshot came from; it equals `payload.engine`."
+        },
+        "engine_version": {
+          "description": "The browser version, as the browser reports it.",
+          "type": "string"
+        },
+        "reduced_motion": {
+          "$ref": "#/$defs/ReducedMotion"
+        },
+        "settle": {
+          "description": "The name of the strategy that decided the page had settled; the capture backends define\nthe values.",
+          "type": "string"
+        },
+        "tool_version": {
+          "description": "The version of the tool that drove the browser, for example Playwright.",
+          "type": "string"
+        },
+        "url": {
+          "description": "The URL the page was loaded from.",
+          "type": "string"
+        },
+        "viewport": {
+          "$ref": "#/$defs/Viewport"
+        }
+      },
+      "required": [
+        "engine",
+        "engine_version",
+        "tool_version",
+        "viewport",
+        "color_scheme",
+        "reduced_motion",
+        "url",
+        "settle"
+      ],
+      "type": "object"
+    },
+    "ChromiumPayload": {
+      "description": "What Chromium exposes for the page, as the `DevTools` protocol delivers it.",
+      "properties": {
+        "ax": {
+          "description": "The nodes of `Accessibility.getFullAXTree`.",
+          "items": {
+            "$ref": "#/$defs/AxNode"
+          },
+          "type": "array"
+        },
+        "ax_forced": {
+          "description": "One `Accessibility.getPartialAXTree` result per DOM element that has no node in the full\ntree, kept apart from `ax`.",
+          "items": {
+            "$ref": "#/$defs/AxForced"
+          },
+          "type": "array"
+        },
+        "dom": {
+          "description": "Every DOM node, flat, with the document first.",
+          "items": {
+            "$ref": "#/$defs/DomNode"
+          },
+          "type": "array"
+        },
+        "dom_snapshot": {
+          "additionalProperties": true,
+          "description": "The raw `DOMSnapshot.captureSnapshot` response, with computed `display` and `visibility`,\nkept as delivered.",
+          "type": "object"
+        },
+        "focus": {
+          "$ref": "#/$defs/Focus"
+        }
+      },
+      "required": [
+        "dom",
+        "ax",
+        "ax_forced",
+        "focus"
+      ],
+      "type": "object"
+    },
+    "ColorScheme": {
+      "description": "The emulated `prefers-color-scheme`.",
+      "enum": [
+        "light",
+        "dark",
+        "no-preference"
+      ],
+      "type": "string"
+    },
+    "Diagnostic": {
+      "description": "A problem the capture recorded.",
+      "properties": {
+        "code": {
+          "description": "A stable, machine-readable code.",
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "node": {
+          "description": "The `id` of the DOM node the problem concerns.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "DomNode": {
+      "description": "One DOM node.",
+      "properties": {
+        "attributes": {
+          "description": "The attributes in their DOM order, with `data-spokenpath-src` removed.",
+          "items": {
+            "$ref": "#/$defs/Attribute"
+          },
+          "type": "array"
+        },
+        "backend_id": {
+          "description": "The protocol's `backendNodeId`.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "children": {
+          "description": "The children's `id`s, in DOM order. A shadow host lists its shadow root first.",
+          "items": {
+            "format": "uint32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Snapshot-local id.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "kind": {
+          "$ref": "#/$defs/DomNodeKind"
+        },
+        "namespace": {
+          "description": "The namespace URI of an element.",
+          "type": "string"
+        },
+        "origin": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Origin"
+            }
+          ],
+          "description": "Where an element came from; set on element nodes."
+        },
+        "parent": {
+          "description": "The parent's `id`; absent only for the root. A shadow root's parent is its host.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "shadow": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ShadowMode"
+            }
+          ],
+          "description": "The mode of a shadow root."
+        },
+        "span": {
+          "description": "The `id` of the span locating the element's start tag in the source.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "tag": {
+          "description": "The tag name of an element, as the browser reports it.",
+          "type": "string"
+        },
+        "text": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Text"
+            }
+          ],
+          "description": "The text of a text-bearing node."
+        }
+      },
+      "required": [
+        "id",
+        "backend_id",
+        "children",
+        "kind",
+        "attributes"
+      ],
+      "type": "object"
+    },
+    "DomNodeKind": {
+      "description": "The type of a DOM node.",
+      "enum": [
+        "document",
+        "doctype",
+        "element",
+        "text",
+        "comment",
+        "cdata-section",
+        "processing-instruction",
+        "document-fragment"
+      ],
+      "type": "string"
+    },
+    "Encoding": {
+      "description": "The encoding of a source file; only UTF-8 is supported.",
+      "enum": [
+        "utf-8"
+      ],
+      "type": "string"
+    },
+    "Engine": {
+      "description": "The engine a snapshot came from.",
+      "enum": [
+        "chromium",
+        "safari-webdriver",
+        "safari-ax"
+      ],
+      "type": "string"
+    },
+    "Focus": {
+      "description": "The walk of focus by repeated Tab presses.",
+      "properties": {
+        "cycle_start": {
+          "description": "The index in `steps` of the first step whose element an earlier step already focused.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "steps": {
+          "description": "One step per Tab press, in order.",
+          "items": {
+            "$ref": "#/$defs/FocusStep"
+          },
+          "type": "array"
+        },
+        "truncated": {
+          "description": "True when the walk stopped at its step limit.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "steps",
+        "truncated"
+      ],
+      "type": "object"
+    },
+    "FocusStep": {
+      "description": "The element focused after one Tab press; both fields are absent when focus left the document.",
+      "properties": {
+        "backend_id": {
+          "description": "The focused DOM node's `backendNodeId`.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "node": {
+          "description": "The focused DOM node's `id`.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "Origin": {
+      "description": "Where an element came from.",
+      "oneOf": [
+        {
+          "const": "source",
+          "description": "Written in a source file, with a span.",
+          "type": "string"
+        },
+        {
+          "const": "implied",
+          "description": "Inserted by the HTML parser, such as an implied `tbody`.",
+          "type": "string"
+        },
+        {
+          "const": "script",
+          "description": "Created by a page script.",
+          "type": "string"
+        },
+        {
+          "const": "library",
+          "description": "Created by a known library.",
+          "type": "string"
+        },
+        {
+          "const": "unknown",
+          "description": "None of the above could be established.",
+          "type": "string"
+        }
+      ]
+    },
+    "Payload": {
+      "description": "The engine-specific part of the snapshot, tagged by `engine`.",
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ChromiumPayload"
+            }
+          ],
+          "properties": {
+            "engine": {
+              "const": "chromium",
+              "type": "string"
+            }
+          },
+          "required": [
+            "engine"
+          ],
+          "type": "object"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SafariWebdriverPayload"
+            }
+          ],
+          "properties": {
+            "engine": {
+              "const": "safari-webdriver",
+              "type": "string"
+            }
+          },
+          "required": [
+            "engine"
+          ],
+          "type": "object"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SafariAxPayload"
+            }
+          ],
+          "properties": {
+            "engine": {
+              "const": "safari-ax",
+              "type": "string"
+            }
+          },
+          "required": [
+            "engine"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "Producer": {
+      "description": "The program that wrote the snapshot.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object"
+    },
+    "ReducedMotion": {
+      "description": "The emulated `prefers-reduced-motion`.",
+      "enum": [
+        "reduce",
+        "no-preference"
+      ],
+      "type": "string"
+    },
+    "SafariAxPayload": {
+      "description": "The Safari payload captured from the macOS accessibility tree. Its contents are added in later\nminor versions.",
+      "type": "object"
+    },
+    "SafariWebdriverPayload": {
+      "description": "The Safari payload captured through `WebDriver`. Its contents are added in later minor versions.",
+      "type": "object"
+    },
+    "SchemaId": {
+      "const": "spokenpath-snapshot",
+      "description": "The fixed identifier `spokenpath-snapshot`.",
+      "type": "string"
+    },
+    "ShadowMode": {
+      "description": "The mode of a shadow root.",
+      "enum": [
+        "open",
+        "closed",
+        "user-agent"
+      ],
+      "type": "string"
+    },
+    "Source": {
+      "description": "A source file the page was built from.",
+      "properties": {
+        "encoding": {
+          "$ref": "#/$defs/Encoding"
+        },
+        "id": {
+          "description": "Snapshot-local id that spans refer to.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "path": {
+          "description": "The file's path relative to the capture root, with `/` separators.",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "SHA-256 of the file's bytes, as 64 lowercase hex characters.",
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "sha256",
+        "encoding"
+      ],
+      "type": "object"
+    },
+    "Span": {
+      "description": "The location of one tagged start tag in a source file.",
+      "properties": {
+        "column": {
+          "description": "The 1-based column of the start tag's `<`, counted in Unicode scalar values from the start\nof the line.",
+          "format": "uint32",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "element": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ByteRange"
+            }
+          ],
+          "description": "The whole element, from its start tag to the end of its end tag, when the element has one."
+        },
+        "id": {
+          "description": "Snapshot-local id that DOM nodes refer to.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "line": {
+          "description": "The 1-based line of the start tag's `<`.",
+          "format": "uint32",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "source": {
+          "description": "The `id` of the source file the ranges point into.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "start_tag": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ByteRange"
+            }
+          ],
+          "description": "The start tag, from its `<` to just past its `>`."
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "start_tag",
+        "line",
+        "column"
+      ],
+      "type": "object"
+    },
+    "Text": {
+      "description": "The text of a text-bearing node.",
+      "properties": {
+        "truncated": {
+          "description": "True when the capture shortened `value`.",
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "truncated"
+      ],
+      "type": "object"
+    },
+    "Version": {
+      "description": "The format version. A reader rejects a major version it does not know and accepts any minor\nversion, because minor versions only add fields.",
+      "properties": {
+        "major": {
+          "const": 0,
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "minor": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "major",
+        "minor"
+      ],
+      "type": "object"
+    },
+    "Viewport": {
+      "description": "The viewport, in CSS pixels.",
+      "properties": {
+        "device_pixel_ratio": {
+          "format": "double",
+          "type": "number"
+        },
+        "height": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "width": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "device_pixel_ratio"
+      ],
+      "type": "object"
+    },
+    "Volatile": {
+      "description": "Fields that differ on every run of the same capture. Golden comparisons exclude this whole\nobject.",
+      "properties": {
+        "captured_at": {
+          "description": "When the capture ran, as an RFC 3339 timestamp in UTC.",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "captured_at"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "One capture of one page in one engine: the envelope that every engine shares, plus the\nengine-specific payload.",
+  "properties": {
+    "capture": {
+      "$ref": "#/$defs/Capture"
+    },
+    "diagnostics": {
+      "description": "Problems the capture noticed and recorded rather than failing on.",
+      "items": {
+        "$ref": "#/$defs/Diagnostic"
+      },
+      "type": "array"
+    },
+    "payload": {
+      "$ref": "#/$defs/Payload"
+    },
+    "producer": {
+      "$ref": "#/$defs/Producer"
+    },
+    "schema": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SchemaId"
+        }
+      ],
+      "description": "Identifies the file as a spokenpath snapshot."
+    },
+    "sources": {
+      "description": "The source files that spans point into.",
+      "items": {
+        "$ref": "#/$defs/Source"
+      },
+      "type": "array"
+    },
+    "spans": {
+      "description": "Locations of tagged start tags in the source files.",
+      "items": {
+        "$ref": "#/$defs/Span"
+      },
+      "type": "array"
+    },
+    "version": {
+      "$ref": "#/$defs/Version"
+    },
+    "volatile": {
+      "$ref": "#/$defs/Volatile"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "producer",
+    "capture",
+    "volatile",
+    "sources",
+    "spans",
+    "diagnostics",
+    "payload"
+  ],
+  "title": "Snapshot",
+  "type": "object"
+}
