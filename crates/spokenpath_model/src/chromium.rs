@@ -1,6 +1,6 @@
 //! The Chromium adapter: builds a [`Model`] from a snapshot whose payload is `chromium`, following
 //! the rules in the crate documentation and
-//! `docs/decisions/ADR-0008-chromium-protocol-behaviours.md`.
+//! `docs/decisions/ADR-0012-chromium-protocol-behaviours-and-hidden-content-names.md`.
 
 mod integrity;
 mod layout;
@@ -13,6 +13,7 @@ use spokenpath_snapshot::{
     Engine, Origin, Payload, Snapshot,
 };
 
+use crate::error::excerpt;
 use crate::{
     AccessibleNode, AdaptError, ByteRange, Description, DescriptionSource, Diagnostic, DomRef,
     ExcludedNode, ExclusionKind, ExclusionReason, ExposedNode, FocusStop, FocusWalk, Model, Name,
@@ -63,6 +64,9 @@ struct Adapter<'a> {
     dom: DomFacts<'a>,
     /// Whether each DOM position has a node in the exposed tree, by position.
     exposed: Vec<bool>,
+    /// Whether each DOM position is an excluded element with a hiding reason, by position; filled
+    /// once the excluded nodes are known.
+    hidden: Vec<bool>,
 }
 
 /// Facts about each DOM node that depend on its ancestors, computed once, top-down.
@@ -116,11 +120,18 @@ impl<'a> Adapter<'a> {
             index,
             dom,
             exposed,
+            hidden: Vec::new(),
         }
     }
 
-    fn run(&self) -> Result<Model, AdaptError> {
+    fn run(mut self) -> Result<Model, AdaptError> {
         let excluded = self.excluded_nodes();
+        self.hidden = vec![false; self.payload.dom.len()];
+        for node in &excluded {
+            if node.reasons.iter().any(|reason| reason.kind.hides()) {
+                self.hidden[self.index.dom_by_id[&node.dom.dom_id]] = true;
+            }
+        }
         let mut tree = self.tree()?;
         self.set_positions(&mut tree);
         let focus = self.focus(&tree.dom_to_node);
@@ -460,9 +471,13 @@ impl<'a> Adapter<'a> {
             .enumerate()
             .map(|(index, source)| self.name_source(source, &format!("{path}.sources[{index}]")))
             .collect::<Result<Vec<NameSource>, AdaptError>>()?;
-        let winner = sources
+        // A source has a value when the engine sends its `value` object, even one with no text,
+        // such as a bare node list.
+        let winner = name
+            .sources
             .iter()
-            .position(|source| source.value.is_some() && !source.superseded);
+            .flatten()
+            .position(|source| source.value.is_some() && source.superseded != Some(true));
         let from_hidden_content = winner
             .map(|winner| &sources[winner].related_nodes)
             .filter(|related| !related.is_empty())
@@ -471,7 +486,7 @@ impl<'a> Adapter<'a> {
                     related
                         .dom
                         .as_ref()
-                        .is_some_and(|dom| self.is_excluded(self.index.dom_by_id[&dom.dom_id]))
+                        .is_some_and(|dom| self.hidden[self.index.dom_by_id[&dom.dom_id]])
                 }))
             });
         Ok(Name {
@@ -510,7 +525,7 @@ impl<'a> Adapter<'a> {
             Some(other) => {
                 return Err(AdaptError::field(
                     format!("{path}.invalid"),
-                    format!("expected a boolean, found {other}"),
+                    format!("expected a boolean, found {}", excerpt(other)),
                 ));
             }
         };
@@ -520,7 +535,7 @@ impl<'a> Adapter<'a> {
             Some(other) => {
                 return Err(AdaptError::field(
                     format!("{path}.invalidReason"),
-                    format!("expected a string, found {other}"),
+                    format!("expected a string, found {}", excerpt(other)),
                 ));
             }
         };
@@ -873,7 +888,10 @@ fn read_role(role: &AxValue, path: &str) -> Result<Role, AdaptError> {
         "internalRole" => Ok(Role::Internal(text.clone())),
         other => Err(AdaptError::field(
             format!("{path}.type"),
-            format!("expected `role` or `internalRole`, found {other:?}"),
+            format!(
+                "expected `role` or `internalRole`, found {}",
+                excerpt(&format!("{other:?}"))
+            ),
         )),
     }
 }
@@ -979,7 +997,10 @@ fn property_value(
         }),
         Some(other) => Err(AdaptError::field(
             format!("{path}.value"),
-            format!("expected a boolean, number, string or related nodes, found {other}"),
+            format!(
+                "expected a boolean, number, string or related nodes, found {}",
+                excerpt(other)
+            ),
         )),
     }
 }
@@ -994,13 +1015,16 @@ fn scalar_text(value: Option<&Value>, path: &str) -> Result<Option<String>, Adap
         Some(Value::Bool(boolean)) => Ok(Some(boolean.to_string())),
         Some(other) => Err(AdaptError::field(
             path,
-            format!("expected a string, number or boolean, found {other}"),
+            format!(
+                "expected a string, number or boolean, found {}",
+                excerpt(other)
+            ),
         )),
     }
 }
 
 fn json_or_nothing(value: Option<&Value>) -> String {
-    value.map_or_else(|| "nothing".to_owned(), Value::to_string)
+    value.map_or_else(|| "nothing".to_owned(), excerpt)
 }
 
 fn exclusion_kind(reason: &str) -> ExclusionKind {

@@ -21,7 +21,9 @@
 //!
 //! # How the Chromium adapter reads a snapshot
 //!
-//! The rules follow `docs/decisions/ADR-0008-chromium-protocol-behaviours.md`.
+//! The rules follow `docs/decisions/ADR-0012-chromium-protocol-behaviours-and-hidden-content-names.md`,
+//! which supersedes `docs/decisions/ADR-0008-chromium-protocol-behaviours.md` and keeps its probe
+//! results as evidence.
 //!
 //! - **Tree.** The exposed tree comes from the full accessibility tree (`payload.ax`) alone, never
 //!   from the partial-tree results (`ax_forced`). Every node that is not ignored becomes an
@@ -41,8 +43,10 @@
 //!   `not-in-dom` for a node whose DOM node the snapshot does not hold (pseudo-element content).
 //! - **Name.** The provenance chain lists every `name.sources` entry in order. The winning entry is
 //!   the first with a value and no `superseded: true`; entries before it were tried and empty.
-//!   The name is from hidden content when a related node of the winning entry is an excluded
-//!   node, since the engine's entry does not say so.
+//!   The name is from hidden content when a related node of the winning entry is an element the
+//!   engine leaves out for a hiding reason (`aria-hidden`, `inert`, not rendered, not visible, or
+//!   outside an active modal dialog), since the engine's entry does not say so. An element left
+//!   out for another reason, such as a `label` folded into its control, does not count.
 //! - **Description.** Chromium does not say where a description came from, so the adapter
 //!   attributes it from the element's raw DOM attributes, first match wins: `aria-describedby`
 //!   with at least one idref naming an element in the same tree scope (the document, or the
@@ -58,7 +62,8 @@
 //!   A valid positive `aria-posinset` or `aria-setsize` replaces the counted value;
 //!   `aria-setsize="-1"` leaves the size absent. Excluded nodes are never counted.
 //! - **Excluded nodes.** Every DOM element with no exposed node is an [`ExcludedNode`], with the
-//!   reasons the engine gives for it in `ax` or `ax_forced` (none when it has neither). Its role
+//!   reasons the engine gives for it in `ax` or `ax_forced`. An element with no node in either, or
+//!   one the engine ignores with an empty reason list, is excluded with no reasons. Its role
 //!   and name are never filled in from the partial tree's role `none`, from the tag, or from
 //!   another engine. The hiding ancestor for `ariaHiddenSubtree` is the engine's related node; for
 //!   `inert`, the nearest DOM ancestor carrying `inert`; for `notRendered`, the topmost

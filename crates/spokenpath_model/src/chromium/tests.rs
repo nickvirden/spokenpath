@@ -751,6 +751,29 @@ fn native_radios_count_by_name_and_aria_radios_by_radiogroup() {
 }
 
 #[test]
+fn name_from_a_visible_wrapping_label_is_not_hidden_content() {
+    // Chromium ignores the wrapping label with `labelFor`, which leaves it visible.
+    let model = adapted("set-position/radio-group.json");
+    let name = exposed(&model, "small").name.as_ref().expect("a name");
+    assert_eq!(name.text, "Small");
+    let winner = name.winning_source().expect("a winning source");
+    assert_eq!(winner.native_source, Some(NativeSource::LabelWrapped));
+    let label = winner.related_nodes[0]
+        .dom
+        .as_ref()
+        .expect("the label resolves");
+    assert_eq!(label.tag.as_deref(), Some("label"));
+    let label = model
+        .excluded
+        .iter()
+        .find(|node| node.dom.dom_id == label.dom_id)
+        .expect("the label is excluded");
+    assert_eq!(label.reasons[0].kind, ExclusionKind::LabelFor);
+    assert!(!label.reasons[0].kind.hides());
+    assert_eq!(name.from_hidden_content, Some(Supplied::tool(false)));
+}
+
+#[test]
 fn listbox_options_count_and_the_selected_option_is_selected() {
     let model = adapted("set-position/listbox.json");
     assert_eq!(set_position(&model, "apple"), Some(of(1, 3)));
@@ -1366,4 +1389,192 @@ fn deep_dom_cycle_is_an_error_not_a_hang() {
     payload.dom.last_mut().expect("a node").children.push(1);
     let error = adapt(&snapshot, &BTreeMap::new()).expect_err("a cycle is rejected");
     assert_names_field(&error, "payload.dom[1].parent");
+}
+
+/// The position in `payload.dom` of the element whose `id` attribute is `id`.
+fn dom_index(value: &Value, id: &str) -> usize {
+    value["payload"]["dom"]
+        .as_array()
+        .expect("a dom array")
+        .iter()
+        .position(|node| {
+            node["attributes"]
+                .as_array()
+                .is_some_and(|attributes| attributes.contains(&json!({"name": "id", "value": id})))
+        })
+        .unwrap_or_else(|| panic!("an element with id {id:?}"))
+}
+
+fn adapted_with(name: &str, edit: impl FnOnce(&mut Value)) -> Model {
+    let name = Path::new(name);
+    let mut value = golden_value(name);
+    edit(&mut value);
+    let snapshot = read_value(name, &value);
+    adapt(&snapshot, &source_lengths(name, &snapshot)).expect("the edited snapshot adapts")
+}
+
+#[test]
+fn superseded_source_with_a_value_never_wins() {
+    let model = adapted_with("names/aria-label.json", |value| {
+        let button = ax_position(value, |node| node["role"]["value"] == json!("button"));
+        let first = &mut value["payload"]["ax"][button]["name"]["sources"][0];
+        first["value"] = json!({"type": "computedString", "value": "Stale text"});
+        first["superseded"] = json!(true);
+    });
+    let name = exposed(&model, "target").name.as_ref().expect("a name");
+    assert_eq!(name.winner, Some(1));
+    assert_eq!(
+        name.winning_source()
+            .and_then(|source| source.attribute.as_deref()),
+        Some("aria-label")
+    );
+}
+
+#[test]
+fn source_whose_value_has_no_text_still_wins() {
+    // A bare node list: the `value` object is present, with related nodes and no text.
+    let model = adapted_with("names/labelledby-over-label.json", |value| {
+        let button = ax_position(value, |node| node["role"]["value"] == json!("button"));
+        let first = &mut value["payload"]["ax"][button]["name"]["sources"][0];
+        let related = first["attributeValue"]["relatedNodes"].clone();
+        first["value"] = json!({"type": "nodeList", "relatedNodes": related});
+    });
+    let name = exposed(&model, "target").name.as_ref().expect("a name");
+    assert_eq!(name.winner, Some(0));
+    let winner = name.winning_source().expect("a winning source");
+    assert_eq!(winner.value, None);
+    assert_eq!(winner.attribute.as_deref(), Some("aria-labelledby"));
+}
+
+#[test]
+fn author_role_matches_any_token_ignoring_ascii_case() {
+    let model = adapted_with("set-position/radio-group.json", |value| {
+        for (id, role) in [("red", "RADIO"), ("blue", "switch radio")] {
+            let position = dom_index(value, id);
+            for attribute in value["payload"]["dom"][position]["attributes"]
+                .as_array_mut()
+                .expect("attributes")
+            {
+                if attribute["name"] == json!("role") {
+                    attribute["value"] = json!(role);
+                }
+            }
+        }
+    });
+    for id in ["red", "blue"] {
+        let node = exposed(&model, id);
+        assert_eq!(node.role, Some(Role::Aria("radio".to_owned())), "{id}");
+        assert_eq!(
+            node.role_origin,
+            Some(Supplied::tool(RoleOrigin::Author)),
+            "{id}"
+        );
+    }
+}
+
+#[test]
+fn title_used_for_the_name_is_not_the_description_source() {
+    let model = adapted_with("names/title.json", |value| {
+        let textbox = ax_position(value, |node| node["role"]["value"] == json!("textbox"));
+        value["payload"]["ax"][textbox]["description"] =
+            json!({"type": "computedString", "value": "Title text"});
+    });
+    let target = exposed(&model, "target");
+    assert_eq!(
+        target
+            .name
+            .as_ref()
+            .and_then(|name| name.winning_source())
+            .and_then(|source| source.attribute.as_deref()),
+        Some("title")
+    );
+    let description = target.description.as_ref().expect("a description");
+    assert_eq!(description.provenance, None);
+}
+
+/// Renames the parent element of each radio in `ids` to `tag`.
+fn retag_parents(value: &mut Value, ids: &[&str], tag: &str) {
+    for id in ids {
+        let position = dom_index(value, id);
+        let parent = value["payload"]["dom"][position]["parent"].clone();
+        let dom = value["payload"]["dom"].as_array_mut().expect("a dom array");
+        let parent = dom
+            .iter_mut()
+            .find(|node| node["id"] == parent)
+            .expect("the parent exists");
+        parent["tag"] = json!(tag);
+    }
+}
+
+#[test]
+fn named_radios_in_different_forms_are_separate_sets() {
+    // Each radio's wrapping label becomes its own `form`.
+    let model = adapted_with("set-position/radio-group.json", |value| {
+        retag_parents(value, &["small", "medium", "large"], "form");
+    });
+    for id in ["small", "medium", "large"] {
+        assert_eq!(set_position(&model, id), Some(of(1, 1)), "{id}");
+    }
+}
+
+#[test]
+fn named_radios_in_one_form_are_one_set() {
+    // The `fieldset` holding all three labels becomes the `form`.
+    let model = adapted_with("set-position/radio-group.json", |value| {
+        let small = dom_index(value, "small");
+        let label = value["payload"]["dom"][small]["parent"].clone();
+        let label = value["payload"]["dom"]
+            .as_array()
+            .expect("a dom array")
+            .iter()
+            .find(|node| node["id"] == label)
+            .expect("the label exists")
+            .clone();
+        let fieldset = label["parent"].clone();
+        let dom = value["payload"]["dom"].as_array_mut().expect("a dom array");
+        let fieldset = dom
+            .iter_mut()
+            .find(|node| node["id"] == fieldset)
+            .expect("the fieldset exists");
+        assert_eq!(fieldset["tag"], json!("fieldset"));
+        fieldset["tag"] = json!("form");
+    });
+    assert_eq!(set_position(&model, "small"), Some(of(1, 3)));
+    assert_eq!(set_position(&model, "medium"), Some(of(2, 3)));
+    assert_eq!(set_position(&model, "large"), Some(of(3, 3)));
+}
+
+#[test]
+fn element_ignored_with_an_empty_reason_list_is_excluded_with_no_reasons() {
+    // The placeholder's user-agent `div` is ignored with `ignoredReasons: []`.
+    let model = adapted("names/placeholder.json");
+    let placeholder = excluded(&model, "placeholder");
+    assert_eq!(placeholder.reasons, []);
+    assert_eq!(placeholder.source, SourceClass::Unknown);
+}
+
+#[test]
+fn oversized_value_in_an_error_is_cut_short() {
+    let name = Path::new("sign-in.json");
+    let value = golden_value(name);
+    let textbox = ax_position(&value, |node| node["role"]["value"] == json!("textbox"));
+    let focusable = value["payload"]["ax"][textbox]["properties"]
+        .as_array()
+        .expect("properties")
+        .iter()
+        .position(|property| property["name"] == json!("focusable"))
+        .expect("a focusable property");
+    let error = adapt_error("sign-in.json", |value| {
+        value["payload"]["ax"][textbox]["properties"][focusable]["value"]["value"] =
+            json!("x".repeat(100_000));
+    });
+    let text = error.to_string();
+    assert!(
+        text.starts_with(&format!(
+            "invalid snapshot at `payload.ax[{textbox}].properties[{focusable}].value`: "
+        )),
+        "{text}"
+    );
+    assert!(text.len() < 300, "the message is {} bytes", text.len());
+    assert!(text.ends_with('…'), "{text}");
 }

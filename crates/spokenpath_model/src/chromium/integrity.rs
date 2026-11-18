@@ -10,6 +10,7 @@ use std::hash::Hash;
 use spokenpath_snapshot::{ByteRange, ChromiumPayload, Snapshot};
 
 use crate::AdaptError;
+use crate::error::excerpt;
 
 /// The lookups that every later step uses, built while checking. Positions are indexes into the
 /// snapshot's arrays; ids are the values the snapshot's fields hold.
@@ -76,7 +77,7 @@ fn unique<K: Hash + Eq + Display>(
                     path(position),
                     format!(
                         "repeats {}, which index {} already holds",
-                        first.key(),
+                        excerpt(first.key()),
                         first.get()
                     ),
                 ));
@@ -358,7 +359,10 @@ fn check_ax(
                 if !ax_by_id.contains_key(parent.as_str()) {
                     return Err(AdaptError::field(
                         format!("payload.ax[{position}].parentId"),
-                        format!("names node {parent:?}, which is not in `payload.ax`"),
+                        format!(
+                            "names node {}, which is not in `payload.ax`",
+                            excerpt(&format!("{parent:?}"))
+                        ),
                     ));
                 }
             }
@@ -367,7 +371,10 @@ fn check_ax(
             if !ax_by_id.contains_key(child.as_str()) {
                 return Err(AdaptError::field(
                     format!("payload.ax[{position}].childIds[{child_index}]"),
-                    format!("names node {child:?}, which is not in `payload.ax`"),
+                    format!(
+                        "names node {}, which is not in `payload.ax`",
+                        excerpt(&format!("{child:?}"))
+                    ),
                 ));
             }
         }
@@ -388,7 +395,10 @@ fn check_ax(
             if reached[child_position] {
                 return Err(AdaptError::field(
                     format!("payload.ax[{position}].childIds[{child_index}]"),
-                    format!("names node {child:?}, which the walk from the root already reached"),
+                    format!(
+                        "names node {}, which the walk from the root already reached",
+                        excerpt(&format!("{child:?}"))
+                    ),
                 ));
             }
             reached[child_position] = true;
@@ -399,8 +409,8 @@ fn check_ax(
         return Err(AdaptError::field(
             format!("payload.ax[{position}].nodeId"),
             format!(
-                "node {:?} is not reached from the root through `childIds`",
-                payload.ax[position].node_id
+                "node {} is not reached from the root through `childIds`",
+                excerpt(&format!("{:?}", payload.ax[position].node_id))
             ),
         ));
     }

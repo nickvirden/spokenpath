@@ -7,6 +7,7 @@ use std::collections::HashMap;
 use serde_json::{Map, Value};
 
 use crate::AdaptError;
+use crate::error::excerpt;
 
 const ROOT: &str = "payload.dom_snapshot";
 
@@ -43,7 +44,7 @@ pub(super) fn read(snapshot: &Map<String, Value>) -> Result<Layout, AdaptError> 
             value.as_str().ok_or_else(|| {
                 AdaptError::field(
                     format!("{ROOT}.strings[{index}]"),
-                    format!("expected a string, found {value}"),
+                    format!("expected a string, found {}", excerpt(value)),
                 )
             })
         })
@@ -164,7 +165,7 @@ fn integers(value: Option<&Value>, path: &str) -> Result<Vec<i64>, AdaptError> {
             item.as_i64().ok_or_else(|| {
                 AdaptError::field(
                     format!("{path}[{index}]"),
-                    format!("expected an integer, found {item}"),
+                    format!("expected an integer, found {}", excerpt(item)),
                 )
             })
         })

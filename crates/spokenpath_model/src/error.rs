@@ -24,6 +24,19 @@ pub enum AdaptError {
     },
 }
 
+/// The most characters of an input value that an error message repeats, so a hostile snapshot
+/// cannot make a message as large as itself.
+const EXCERPT_CHARS: usize = 80;
+
+/// `value` as text, cut to [`EXCERPT_CHARS`] characters with `…` marking the cut.
+pub(crate) fn excerpt(value: &impl fmt::Display) -> String {
+    let text = value.to_string();
+    match text.char_indices().nth(EXCERPT_CHARS) {
+        Some((end, _)) => format!("{}…", &text[..end]),
+        None => text,
+    }
+}
+
 impl AdaptError {
     pub(crate) fn field(path: impl Into<String>, message: impl Into<String>) -> Self {
         AdaptError::Field {

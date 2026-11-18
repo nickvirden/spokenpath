@@ -322,8 +322,9 @@ pub struct Name {
     /// The index in `sources` of the source that produced the name: the first with a value that is
     /// not superseded. Absent when no source produced one.
     pub winner: Option<usize>,
-    /// Whether the winning source's related nodes include an excluded node, computed by tool.
-    /// Absent when there is no winning source or it has no related nodes.
+    /// Whether the winning source's related nodes include an element the engine leaves out for a
+    /// hiding reason (see [`ExclusionKind::hides`]), computed by tool. Absent when there is no
+    /// winning source or it has no related nodes.
     pub from_hidden_content: Option<Supplied<bool>>,
 }
 
@@ -434,7 +435,8 @@ pub enum DescriptionSource {
     Title,
 }
 
-/// The common states an engine exposes; each is absent when the engine does not expose it.
+/// The common states an engine exposes; each is absent when the engine does not expose it. When
+/// the engine lists one state twice, the last value is the one kept.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct States {
     /// Checked state.
@@ -565,6 +567,21 @@ pub enum ExclusionKind {
 }
 
 impl ExclusionKind {
+    /// Whether the reason removes the node from what is perceived: `aria-hidden`, `inert`,
+    /// not rendered, not visible, or outside an active modal dialog. Other reasons, such as a
+    /// `label` folded into its control, leave the content rendered.
+    #[must_use]
+    pub fn hides(self) -> bool {
+        matches!(
+            self,
+            ExclusionKind::AriaHidden
+                | ExclusionKind::Inert
+                | ExclusionKind::NotRendered
+                | ExclusionKind::NotVisible
+                | ExclusionKind::OutsideActiveModal
+        )
+    }
+
     /// The kind's name, such as `aria-hidden` or `not-rendered`.
     #[must_use]
     pub fn as_str(self) -> &'static str {
