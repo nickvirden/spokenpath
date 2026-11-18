@@ -1,0 +1,1851 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Date input",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Date input",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/date-input.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Date input"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 104,
+            "end": 107
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 9,
+          "tag": "button",
+          "id": "before"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 8,
+          "column": 4,
+          "start_tag": {
+            "start": 107,
+            "end": 141
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Before",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Before",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Before, button"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Before",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 10
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Before"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 161,
+            "end": 164
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LabelText",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 12,
+          "tag": "label"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 10,
+          "column": 1,
+          "start_tag": {
+            "start": 165,
+            "end": 183
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 7,
+      "depth": 3,
+      "parent": 6,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "When",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 13
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "When"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "Date",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 14,
+          "tag": "input",
+          "id": "when"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 196,
+            "end": 225
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "When",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "When",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "When"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 3,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "generic",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 17,
+          "tag": "div",
+          "id": "date-time-edit"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 10,
+      "depth": 4,
+      "parent": 9,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "generic",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 18,
+          "tag": "div"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 11,
+      "depth": 5,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "spinbutton",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 19,
+          "tag": "span"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "named",
+          "text": "Month Month",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Month",
+              "value": "Month",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "When",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "value": "0",
+        "states": {
+          "required": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "valuemin",
+            "value": {
+              "type": "number",
+              "value": 1.0
+            }
+          },
+          {
+            "name": "valuemax",
+            "value": {
+              "type": "number",
+              "value": 12.0
+            }
+          },
+          {
+            "name": "valuetext",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Month Month, spinbutton, 0"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 6,
+      "parent": 11,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "mm",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 20
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "mm"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 5,
+      "parent": 10,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "/",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 22
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "/"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 5,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "spinbutton",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 23,
+          "tag": "span"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "named",
+          "text": "Day Day",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Day",
+              "value": "Day",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "When",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "value": "0",
+        "states": {
+          "required": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "valuemin",
+            "value": {
+              "type": "number",
+              "value": 1.0
+            }
+          },
+          {
+            "name": "valuemax",
+            "value": {
+              "type": "number",
+              "value": 31.0
+            }
+          },
+          {
+            "name": "valuetext",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Day Day, spinbutton, 0"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 6,
+      "parent": 14,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "dd",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 24
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "dd"
+      }
+    },
+    {
+      "number": 16,
+      "depth": 5,
+      "parent": 10,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "/",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 26
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "/"
+      }
+    },
+    {
+      "number": 17,
+      "depth": 5,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "spinbutton",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 27,
+          "tag": "span"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "named",
+          "text": "Year Year",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Year",
+              "value": "Year",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "When",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "value": "0",
+        "states": {
+          "required": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "valuemin",
+            "value": {
+              "type": "number",
+              "value": 1.0
+            }
+          },
+          {
+            "name": "valuemax",
+            "value": {
+              "type": "number",
+              "value": 275760.0
+            }
+          },
+          {
+            "name": "valuetext",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Year Year, spinbutton, 0"
+      }
+    },
+    {
+      "number": 18,
+      "depth": 6,
+      "parent": 17,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "yyyy",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 28
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "yyyy"
+      }
+    },
+    {
+      "number": 19,
+      "depth": 3,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 29,
+          "tag": "div",
+          "id": "picker"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "named",
+          "text": "Show date picker Show date picker",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "attribute_value": "Show date picker",
+              "value": "Show date picker",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "When",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "hasPopup",
+            "value": {
+              "type": "token",
+              "value": "menu"
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 12,
+                    "tag": "label"
+                  },
+                  "text": "When",
+                  "source": {
+                    "class": "span",
+                    "path": "date-input.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 165,
+                      "end": 183
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Show date picker Show date picker, button"
+      }
+    },
+    {
+      "number": 20,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 30,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 13,
+          "column": 1,
+          "start_tag": {
+            "start": 231,
+            "end": 234
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 21,
+      "depth": 2,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 31,
+          "tag": "button",
+          "id": "after"
+        },
+        "source": {
+          "class": "span",
+          "path": "date-input.html",
+          "line": 13,
+          "column": 4,
+          "start_tag": {
+            "start": 234,
+            "end": 267
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "After",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "After",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "After, button"
+      }
+    },
+    {
+      "number": 22,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "After",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 32
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "After"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 3,
+        "role": "button",
+        "name_status": "named",
+        "name": "Before"
+      },
+      {
+        "item": 11,
+        "role": "spinbutton",
+        "name_status": "named",
+        "name": "Month Month"
+      },
+      {
+        "item": 14,
+        "role": "spinbutton",
+        "name_status": "named",
+        "name": "Day Day"
+      },
+      {
+        "item": 17,
+        "role": "spinbutton",
+        "name_status": "named",
+        "name": "Year Year"
+      },
+      {
+        "item": 19,
+        "role": "button",
+        "name_status": "named",
+        "name": "Show date picker Show date picker"
+      },
+      {
+        "item": 21,
+        "role": "button",
+        "name_status": "named",
+        "name": "After"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "date-input.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "date-input.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "date-input.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "date-input.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "date-input.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "date-input.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "date-input.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 97,
+          "end": 103
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 16,
+        "tag": "div"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 21,
+        "tag": "div"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 25,
+        "tag": "div"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 9,
+            "tag": "button",
+            "id": "before"
+          },
+          "source": {
+            "class": "span",
+            "path": "date-input.html",
+            "line": 8,
+            "column": 4,
+            "start_tag": {
+              "start": 107,
+              "end": 141
+            }
+          },
+          "item": 3
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 19,
+            "tag": "span"
+          },
+          "source": {
+            "class": "unknown"
+          },
+          "item": 11
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 23,
+            "tag": "span"
+          },
+          "source": {
+            "class": "unknown"
+          },
+          "item": 14
+        }
+      },
+      {
+        "step": 4,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 27,
+            "tag": "span"
+          },
+          "source": {
+            "class": "unknown"
+          },
+          "item": 17
+        }
+      },
+      {
+        "step": 5,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 29,
+            "tag": "div",
+            "id": "picker"
+          },
+          "source": {
+            "class": "unknown"
+          },
+          "item": 19
+        }
+      },
+      {
+        "step": 6,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 31,
+            "tag": "button",
+            "id": "after"
+          },
+          "source": {
+            "class": "span",
+            "path": "date-input.html",
+            "line": 13,
+            "column": 4,
+            "start_tag": {
+              "start": 234,
+              "end": 267
+            }
+          },
+          "item": 21
+        }
+      },
+      {
+        "step": 7,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 8,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 9,
+            "tag": "button",
+            "id": "before"
+          },
+          "source": {
+            "class": "span",
+            "path": "date-input.html",
+            "line": 8,
+            "column": 4,
+            "start_tag": {
+              "start": 107,
+              "end": 141
+            }
+          },
+          "item": 3
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

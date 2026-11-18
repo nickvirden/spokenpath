@@ -1,0 +1,1184 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Sign in",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Sign in",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/sign-in.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Sign in"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "h1"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 101,
+            "end": 105
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Sign in",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Sign in",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "level": 1
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Sign in, heading, level 1"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Sign in",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 9
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Sign in"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 10,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 118,
+            "end": 121
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 2,
+      "parent": 4,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LabelText",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "label"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 10,
+          "column": 1,
+          "start_tag": {
+            "start": 122,
+            "end": 141
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 6,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Email",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 12
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Email"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 2,
+      "parent": 4,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 13,
+          "tag": "input",
+          "id": "email"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 155,
+            "end": 207
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Email",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "Email",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 11,
+                    "tag": "label"
+                  },
+                  "text": "Email",
+                  "source": {
+                    "class": "span",
+                    "path": "sign-in.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 122,
+                      "end": 141
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "aria-placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "required": false,
+          "invalid": "false",
+          "readonly": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          },
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "multiline",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 11,
+                    "tag": "label"
+                  },
+                  "text": "Email",
+                  "source": {
+                    "class": "span",
+                    "path": "sign-in.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 122,
+                      "end": 141
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Email, textbox"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 3,
+      "parent": 7,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "generic",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 15,
+          "tag": "div"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 9,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 16,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 13,
+          "column": 1,
+          "start_tag": {
+            "start": 213,
+            "end": 216
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 2,
+      "parent": 9,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 17,
+          "tag": "button",
+          "id": "submit"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 217,
+            "end": 251
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "button"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 3,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "image",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 18,
+          "tag": "svg"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 14,
+          "column": 35,
+          "start_tag": {
+            "start": 251,
+            "end": 299
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "image"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 20,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 339,
+            "end": 342
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 2,
+      "parent": 12,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "link",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 21,
+          "tag": "a",
+          "id": "help"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 16,
+          "column": 4,
+          "start_tag": {
+            "start": 342,
+            "end": 372
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Trouble signing in?",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Trouble signing in?",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/help.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Trouble signing in?, link"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 3,
+      "parent": 13,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Trouble signing in?",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 22
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Trouble signing in?"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 2,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Sign in",
+        "level": 1
+      }
+    ],
+    "landmarks": [],
+    "links": [
+      {
+        "item": 13,
+        "role": "link",
+        "name_status": "named",
+        "name": "Trouble signing in?"
+      }
+    ],
+    "form_controls": [
+      {
+        "item": 7,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Email"
+      },
+      {
+        "item": 10,
+        "role": "button",
+        "name_status": "no accessible name"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "sign-in.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "sign-in.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "sign-in.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "sign-in.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "sign-in.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "sign-in.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "sign-in.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 94,
+          "end": 100
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 19,
+        "tag": "path"
+      },
+      "source": {
+        "class": "span",
+        "path": "sign-in.html",
+        "line": 14,
+        "column": 83,
+        "start_tag": {
+          "start": 299,
+          "end": 318
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 13,
+            "tag": "input",
+            "id": "email"
+          },
+          "source": {
+            "class": "span",
+            "path": "sign-in.html",
+            "line": 11,
+            "column": 1,
+            "start_tag": {
+              "start": 155,
+              "end": 207
+            }
+          },
+          "item": 7
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 17,
+            "tag": "button",
+            "id": "submit"
+          },
+          "source": {
+            "class": "span",
+            "path": "sign-in.html",
+            "line": 14,
+            "column": 1,
+            "start_tag": {
+              "start": 217,
+              "end": 251
+            }
+          },
+          "item": 10
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 21,
+            "tag": "a",
+            "id": "help"
+          },
+          "source": {
+            "class": "span",
+            "path": "sign-in.html",
+            "line": 16,
+            "column": 4,
+            "start_tag": {
+              "start": 342,
+              "end": 372
+            }
+          },
+          "item": 13
+        }
+      },
+      {
+        "step": 4,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 5,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 13,
+            "tag": "input",
+            "id": "email"
+          },
+          "source": {
+            "class": "span",
+            "path": "sign-in.html",
+            "line": 11,
+            "column": 1,
+            "start_tag": {
+              "start": 155,
+              "end": 207
+            }
+          },
+          "item": 7
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

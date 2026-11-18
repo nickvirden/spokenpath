@@ -1,0 +1,565 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Subtree hidden by visibility hidden",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Subtree hidden by visibility hidden",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/visibility-hidden.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Subtree hidden by visibility hidden"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "visibility-hidden.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 129,
+            "end": 132
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 9,
+          "tag": "button",
+          "id": "before"
+        },
+        "source": {
+          "class": "span",
+          "path": "visibility-hidden.html",
+          "line": 8,
+          "column": 4,
+          "start_tag": {
+            "start": 132,
+            "end": 166
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Before",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Before",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Before, button"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Before",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 10
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Before"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 3,
+        "role": "button",
+        "name_status": "named",
+        "name": "Before"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "visibility-hidden.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "visibility-hidden.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 122,
+          "end": 128
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 11,
+        "tag": "div",
+        "id": "container"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 9,
+        "column": 1,
+        "start_tag": {
+          "start": 186,
+          "end": 232
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-visible",
+          "engine_reason": "notVisible"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 12,
+        "tag": "p"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 10,
+        "column": 1,
+        "start_tag": {
+          "start": 233,
+          "end": 236
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-visible",
+          "engine_reason": "notVisible",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 11,
+                "tag": "div",
+                "id": "container"
+              },
+              "source": {
+                "class": "span",
+                "path": "visibility-hidden.html",
+                "line": 9,
+                "column": 1,
+                "start_tag": {
+                  "start": 186,
+                  "end": 232
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 13,
+        "tag": "button",
+        "id": "hidden"
+      },
+      "source": {
+        "class": "span",
+        "path": "visibility-hidden.html",
+        "line": 10,
+        "column": 4,
+        "start_tag": {
+          "start": 236,
+          "end": 270
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-visible",
+          "engine_reason": "notVisible",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 11,
+                "tag": "div",
+                "id": "container"
+              },
+              "source": {
+                "class": "span",
+                "path": "visibility-hidden.html",
+                "line": 9,
+                "column": 1,
+                "start_tag": {
+                  "start": 186,
+                  "end": 232
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 9,
+            "tag": "button",
+            "id": "before"
+          },
+          "source": {
+            "class": "span",
+            "path": "visibility-hidden.html",
+            "line": 8,
+            "column": 4,
+            "start_tag": {
+              "start": 132,
+              "end": 166
+            }
+          },
+          "item": 3
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 9,
+            "tag": "button",
+            "id": "before"
+          },
+          "source": {
+            "class": "span",
+            "path": "visibility-hidden.html",
+            "line": 8,
+            "column": 4,
+            "start_tag": {
+              "start": 132,
+              "end": 166
+            }
+          },
+          "item": 3
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

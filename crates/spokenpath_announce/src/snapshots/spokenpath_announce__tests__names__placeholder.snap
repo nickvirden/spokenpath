@@ -1,0 +1,537 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Name from placeholder",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Name from placeholder",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/placeholder.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Name from placeholder"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "placeholder.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 115,
+            "end": 118
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 9,
+          "tag": "input",
+          "id": "target"
+        },
+        "source": {
+          "class": "span",
+          "path": "placeholder.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 119,
+            "end": 181
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Placeholder text",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "placeholder",
+              "attribute_value": "Placeholder text",
+              "value": "Placeholder text",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "aria-placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "required": false,
+          "invalid": "false",
+          "readonly": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          },
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "multiline",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Placeholder text, textbox"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "generic",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 13,
+          "tag": "div"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 3,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Placeholder text"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "placeholder.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "placeholder.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "placeholder.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "placeholder.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "placeholder.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "placeholder.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "placeholder.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 108,
+          "end": 114
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 11,
+        "tag": "div",
+        "id": "placeholder"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": []
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 9,
+            "tag": "input",
+            "id": "target"
+          },
+          "source": {
+            "class": "span",
+            "path": "placeholder.html",
+            "line": 9,
+            "column": 1,
+            "start_tag": {
+              "start": 119,
+              "end": 181
+            }
+          },
+          "item": 3
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 9,
+            "tag": "input",
+            "id": "target"
+          },
+          "source": {
+            "class": "span",
+            "path": "placeholder.html",
+            "line": 9,
+            "column": 1,
+            "start_tag": {
+              "start": 119,
+              "end": 181
+            }
+          },
+          "item": 3
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

@@ -1,0 +1,697 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Implied and script-created elements",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Implied and script-created elements",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/origins.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Implied and script-created elements"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTable",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "table",
+          "id": "table"
+        },
+        "source": {
+          "class": "span",
+          "path": "origins.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 129,
+            "end": 147
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "table-caption",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "summary",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTableRow",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 10,
+          "tag": "tr"
+        },
+        "source": {
+          "class": "span",
+          "path": "origins.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 148,
+            "end": 152
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTableCell",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "td"
+        },
+        "source": {
+          "class": "span",
+          "path": "origins.html",
+          "line": 9,
+          "column": 5,
+          "start_tag": {
+            "start": 152,
+            "end": 156
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Cell text",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Cell text",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Cell text"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 4,
+      "parent": 4,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Cell text",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 12
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Cell text"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 13,
+          "tag": "p",
+          "id": "slot"
+        },
+        "source": {
+          "class": "span",
+          "path": "origins.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 185,
+            "end": 198
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 2,
+      "parent": 6,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 14,
+          "tag": "button",
+          "id": "added"
+        },
+        "source": {
+          "class": "script"
+        },
+        "name": {
+          "status": "named",
+          "text": "Added by script",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Added by script",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Added by script, button"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 3,
+      "parent": 7,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Added by script",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 15
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Added by script"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 7,
+        "role": "button",
+        "name_status": "named",
+        "name": "Added by script"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "origins.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "origins.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "origins.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "origins.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "origins.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "origins.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "origins.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 122,
+          "end": 128
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 9,
+        "tag": "tbody"
+      },
+      "source": {
+        "class": "implied"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 16,
+        "tag": "script"
+      },
+      "source": {
+        "class": "span",
+        "path": "origins.html",
+        "line": 12,
+        "column": 1,
+        "start_tag": {
+          "start": 203,
+          "end": 211
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 14,
+            "tag": "button",
+            "id": "added"
+          },
+          "source": {
+            "class": "script"
+          },
+          "item": 7
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 14,
+            "tag": "button",
+            "id": "added"
+          },
+          "source": {
+            "class": "script"
+          },
+          "item": 7
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}
