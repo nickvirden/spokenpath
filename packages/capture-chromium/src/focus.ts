@@ -1,5 +1,6 @@
 import type { Diagnostic, DomNode, Focus, FocusStep } from '@spokenpath/snapshot-types';
 import type { CDPSession, Page } from 'playwright-core';
+import { CaptureError } from './error.ts';
 import { bounded } from './session.ts';
 
 /** The most Tab presses a walk makes before it stops and reports itself truncated. */
@@ -43,6 +44,28 @@ async function focusedBackendId(cdp: CDPSession, timeoutMs: number): Promise<num
   }
 }
 
+/**
+ * Presses Tab within the time budget. A page's `keydown` handler runs inside the press, so one that
+ * never returns would otherwise hang the walk.
+ */
+async function pressTab(page: Page, timeoutMs: number): Promise<void> {
+  const press = page.keyboard.press('Tab');
+  let timer: NodeJS.Timeout | undefined;
+  const timedOut = new Promise<'timed-out'>((resolve) => {
+    timer = setTimeout(() => resolve('timed-out'), timeoutMs);
+  });
+  try {
+    if ((await Promise.race([press, timedOut])) === 'timed-out') {
+      // The capture fails here and closes the browser, which then rejects the pending press; that
+      // rejection carries nothing the timeout does not already report.
+      press.catch(() => undefined);
+      throw new CaptureError('timeout', `pressing Tab did not finish within ${timeoutMs} ms`);
+    }
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export interface FocusWalk {
   focus: Focus;
   diagnostics: Diagnostic[];
@@ -55,10 +78,12 @@ export interface FocusWalk {
  * that repeats an element an earlier, non-adjacent step focused (`cycle_start`), at the second
  * step outside the document, or after `MAX_FOCUS_STEPS` presses (`truncated`).
  *
- * A step that repeats the element of the step just before it is no cycle: Tab never moves focus
- * from an element to itself, so focus moved inside content capture cannot read (a frame, or a
- * closed shadow root), and only the frame element or the host is visible. The walk records the
- * press and keeps going, and reports the element's diagnostic once per run of such steps.
+ * A step that repeats the element of the step just before it is no cycle only when that element is
+ * an `iframe` or `frame`, or a host with a closed shadow root: focus then moves inside content
+ * capture cannot read, and only the frame element or the host is visible. The walk records the
+ * press and keeps going, and the element's diagnostic covers the whole run of such steps. On any
+ * other element, including one missing from `dom`, the repeat means a script kept focus where it
+ * was, and it is a cycle like any other.
  */
 export async function walkFocus(
   page: Page,
@@ -72,7 +97,7 @@ export async function walkFocus(
   const seen = new Set<number>();
   let outside = 0;
   while (steps.length < MAX_FOCUS_STEPS) {
-    await page.keyboard.press('Tab');
+    await pressTab(page, timeoutMs);
     const backendId = await focusedBackendId(cdp, timeoutMs);
     const index = steps.length;
     const stillOnPrevious = backendId !== undefined && steps[index - 1]?.backend_id === backendId;
@@ -86,20 +111,12 @@ export async function walkFocus(
     }
     const node = idByBackendId.get(backendId);
     steps.push(node === undefined ? { backend_id: backendId } : { node, backend_id: backendId });
-    if (stillOnPrevious) {
+    if (stillOnPrevious && node !== undefined && hidesFocusedElement(dom, node)) {
       continue;
     }
-    if (node === undefined) {
-      diagnostics.push({
-        code: 'focus-target-not-in-dom',
-        message: `After Tab press ${index + 1}, focus is on an element that is not in the captured DOM.`,
-      });
-    } else if (hasClosedShadowRoot(dom, node)) {
-      diagnostics.push({
-        code: 'focus-in-closed-shadow-root',
-        message: `After Tab press ${index + 1}, focus is on a host with a closed shadow root, so the element focused inside it cannot be read.`,
-        node,
-      });
+    // The previous step already reported the element; an adjacent repeat here is a cycle.
+    if (!stillOnPrevious) {
+      diagnostics.push(...stepDiagnostics(dom, node, index));
     }
     if (seen.has(backendId)) {
       return { focus: { steps, truncated: false, cycle_start: index }, diagnostics };
@@ -107,6 +124,34 @@ export async function walkFocus(
     seen.add(backendId);
   }
   return { focus: { steps, truncated: true }, diagnostics };
+}
+
+/** What capture reports about the element focused after Tab press `index + 1`. */
+function stepDiagnostics(dom: readonly DomNode[], node: number | undefined, index: number): Diagnostic[] {
+  if (node === undefined) {
+    return [
+      {
+        code: 'focus-target-not-in-dom',
+        message: `After Tab press ${index + 1}, focus is on an element that is not in the captured DOM.`,
+      },
+    ];
+  }
+  if (hasClosedShadowRoot(dom, node)) {
+    return [
+      {
+        code: 'focus-in-closed-shadow-root',
+        message: `After Tab press ${index + 1}, focus is on a host with a closed shadow root, so the element focused inside it cannot be read.`,
+        node,
+      },
+    ];
+  }
+  return [];
+}
+
+/** Whether focus can move inside the element while only the element itself shows as focused. */
+function hidesFocusedElement(dom: readonly DomNode[], id: number): boolean {
+  const tag = dom[id]?.tag;
+  return tag === 'iframe' || tag === 'frame' || hasClosedShadowRoot(dom, id);
 }
 
 function hasClosedShadowRoot(dom: readonly DomNode[], id: number): boolean {

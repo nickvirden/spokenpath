@@ -2,8 +2,8 @@ import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { Snapshot } from '@spokenpath/snapshot-types';
-import { chromium } from 'playwright-core';
-import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { type Browser, chromium } from 'playwright-core';
+import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 import { captureChromium, verifyInstrumentation } from './capture.ts';
 import { CaptureError } from './error.ts';
 import { chromiumPayload, elementId, htmlPagesIn, pagePath } from './fixture-pages.ts';
@@ -34,6 +34,7 @@ const expectedFocus: Record<string, (string | null)[]> = {
   'focus/added-on-tab.html': ['before', NOT_IN_DOM, null, 'before'],
   'focus/no-focusable.html': [null, null],
   'focus/trap.html': ['first', 'middle', 'last', 'first'],
+  'focus/self-trap.html': ['before', 'trapped', 'trapped'],
   // The cap is written out, so changing the constant fails here rather than passing silently.
   'focus/long.html': Array.from({ length: 200 }, (_, index) => `b${String(index + 1).padStart(3, '0')}`),
 };
@@ -75,6 +76,13 @@ describe('focus walk stop rules', () => {
     expect(focus.truncated).toBe(false);
     expect(focus.cycle_start).toBeTypeOf('number');
     expect(focus.steps.slice(0, focus.cycle_start).some((step) => step.node === undefined)).toBe(false);
+  });
+
+  test('a script that keeps focus on one element reports a cycle at the repeat, not the cap', async () => {
+    const focus = await focusOf('focus/self-trap.html');
+    expect(focus.cycle_start).toBe(2);
+    expect(focus.truncated).toBe(false);
+    expect(focus.steps).toHaveLength(3);
   });
 
   test('a page with more stops than the cap is truncated at 200 steps with no cycle', async () => {
@@ -178,6 +186,31 @@ describe('capture failures', () => {
       name: 'CaptureError',
       code: 'timeout',
     });
+  });
+
+  test('a key handler that never returns times out, and the browser is closed', {
+    timeout: 30_000,
+  }, async () => {
+    const launched: Browser[] = [];
+    const launch = chromium.launch.bind(chromium);
+    const spy = vi.spyOn(chromium, 'launch').mockImplementation(async (options) => {
+      const browser = await launch(options);
+      launched.push(browser);
+      return browser;
+    });
+    try {
+      await expect(
+        captureChromium(pagePath('timeout/keydown-loop.html'), { timeoutMs: 1_000 }),
+      ).rejects.toMatchObject({
+        name: 'CaptureError',
+        code: 'timeout',
+        message: 'pressing Tab did not finish within 1000 ms',
+      });
+    } finally {
+      spy.mockRestore();
+    }
+    expect(launched).toHaveLength(1);
+    expect(launched[0]?.isConnected()).toBe(false);
   });
 
   test.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY])('timeoutMs %s is refused', async (timeoutMs) => {

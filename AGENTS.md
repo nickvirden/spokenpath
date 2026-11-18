@@ -105,8 +105,8 @@ gitleaks scan of the pull request's commits.
   refreshed with `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
 - `fixtures/pages/`: the capture fixtures, one page per behaviour, that
   `@spokenpath/capture-chromium` captures. `focus/` holds the Tab-order pages, `settle/` pages
-  that only settle with a wait-for selector, and `assets/` the files the pages load from their own
-  directory. Every page is byte-exact (`-text` in `.gitattributes`), because its golden records
+  that only settle with a wait-for selector, `timeout/` pages that must fail the capture with a
+  timeout, and `assets/` the files the pages load from their own directory. Every page is byte-exact (`-text` in `.gitattributes`), because its golden records
   its SHA-256.
 - `fixtures/snapshots/chromium/`: the capture goldens, one per page directly in `fixtures/pages/`
   or in `focus/`, at the same relative path with `.json` for `.html`. Each is the normalised

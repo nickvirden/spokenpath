@@ -136,7 +136,7 @@ motion, `en-US`, UTC, service workers blocked and downloads refused.
 **Settling.** Capture waits for the `load` event, then the `--wait-for` selector when one is
 given, then `document.fonts.ready`, then two animation frames. `capture.settle` is
 `load-fonts-frames`, or `load-selector-fonts-frames` with a selector. Each wait, and each later
-call into the browser, has the same time limit (`timeoutMs`, a positive number of milliseconds,
+call into the browser, Tab presses of the focus walk included, has the same time limit (`timeoutMs`, a positive number of milliseconds,
 30 000 by default), so a page that keeps its main thread busy fails the capture with `timeout`
 rather than hanging it. A selector that never matches fails the capture, naming the selector.
 
@@ -172,16 +172,19 @@ when the document does not have focus or only `body` is active. Chromium moves f
 document after the last stop and back to the first stop on the next press, so the walk continues
 past the first `{}`. It stops at the first of:
 
-- a step whose element an earlier, non-adjacent step already focused, which it keeps, with
-  `cycle_start` set to that step's index (a trap shows a cycle with no `{}` before it);
+- a step whose element an earlier step already focused, which it keeps, with `cycle_start` set to
+  that step's index; a trap shows a cycle with no `{}` before it, and a script that holds focus
+  on one element shows the cycle at the step right after it;
 - the second `{}` step;
 - 200 steps, with `truncated: true`.
 
-A step on the same element as the step just before it is not a cycle. Tab never moves focus from
-an element to itself, so focus moved inside content capture cannot read: a frame, or a shadow root
-that is closed. Only the `iframe` or the host is visible there, so the walk records one step on it
-per press and keeps going; those steps are not collapsed. The element's `iframe-not-captured` or
-`focus-in-closed-shadow-root` diagnostic tells the reader which case it is.
+The one exception to the first rule is a step on the same element as the step just before it when
+that element is an `iframe` or `frame`, or a host whose shadow root is closed. Focus then moves
+inside content capture cannot read, and only the frame element or the host shows as focused, so
+the walk records one step on it per press and keeps going; those steps are not collapsed. The
+element's `iframe-not-captured` or `focus-in-closed-shadow-root` diagnostic tells the reader which
+case it is. On any other element, including one missing from `dom`, the same adjacent repeat is a
+cycle.
 
 **Diagnostics.** Sorted by code, then node, then message. URLs in messages have their userinfo,
 query string and fragment removed.
