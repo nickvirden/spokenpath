@@ -228,8 +228,8 @@ Golden comparisons compare a normalised copy of each snapshot
 Everything else, including the browser version in `capture.engine_version`, is compared, so a
 browser upgrade shows up as a reviewed diff. The capture goldens live in
 `fixtures/snapshots/chromium/`, one per page directly in `fixtures/pages/` or in its `focus/`,
-`names/`, `set-position/` or `excluded/` directory, at the same relative path with `.json` in
-place of `.html`. Refresh them
+`names/`, `set-position/`, `excluded/`, `reading-order/` or `navigation/` directory, at the same
+relative path with `.json` in place of `.html`. Refresh them
 with `UPDATE_FIXTURES=1 pnpm test:capture`. Fixture text stays on one line at 1280 pixels, so
 fonts cannot change how text wraps.
 

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CSS reading-flow</title>
+<style>
+.flex { display: flex; }
+.grid { display: grid; grid-template-columns: repeat(3, auto); }
+.flex-visual { reading-flow: flex-visual; }
+.grid-rows { reading-flow: grid-rows; }
+</style>
+</head>
+<body>
+<main>
+<h1>reading-flow</h1>
+<div id="flex-reading-flow" class="flex flex-visual" role="group" aria-label="Flex with reading-flow">
+<button id="flex-flow-1" type="button" style="order:3">DOM 1, order 3</button>
+<button id="flex-flow-2" type="button" style="order:1">DOM 2, order 1</button>
+<button id="flex-flow-3" type="button" style="order:2">DOM 3, order 2</button>
+</div>
+<div id="flex-order-only" class="flex" role="group" aria-label="Flex with order only">
+<button id="flex-order-1" type="button" style="order:3">DOM 1, order 3</button>
+<button id="flex-order-2" type="button" style="order:1">DOM 2, order 1</button>
+<button id="flex-order-3" type="button" style="order:2">DOM 3, order 2</button>
+</div>
+<div id="grid-reading-flow" class="grid grid-rows" role="group" aria-label="Grid with reading-flow">
+<button id="grid-flow-1" type="button" style="grid-column:3; grid-row:1">DOM 1, column 3</button>
+<button id="grid-flow-2" type="button" style="grid-column:1; grid-row:1">DOM 2, column 1</button>
+<button id="grid-flow-3" type="button" style="grid-column:2; grid-row:1">DOM 3, column 2</button>
+</div>
+<div id="grid-placement-only" class="grid" role="group" aria-label="Grid with placement only">
+<button id="grid-place-1" type="button" style="grid-column:3; grid-row:1">DOM 1, column 3</button>
+<button id="grid-place-2" type="button" style="grid-column:1; grid-row:1">DOM 2, column 1</button>
+<button id="grid-place-3" type="button" style="grid-column:2; grid-row:1">DOM 3, column 2</button>
+</div>
+</main>
+</body>
+</html>
