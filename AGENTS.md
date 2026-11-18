@@ -85,6 +85,14 @@ gitleaks scan of the pull request's commits.
   `@spokenpath/instrument-html` and `@spokenpath/capture-chromium` take the `@spokenpath/*` scope,
   and the CLI package is `spokenpath`. Every package stays `"private": true` and every crate
   `publish = false` until publishing is switched on.
+- `schema/`: `snapshot.v0.json`, the JSON Schema generated from the `spokenpath_snapshot` types.
+  Regenerate it with `cargo xtask schema`, then the TypeScript types with
+  `pnpm --filter @spokenpath/snapshot-types generate`; never edit either by hand. CI checks both
+  (`cargo xtask schema --check` and a package test).
+- `fixtures/snapshots/`: valid snapshots that the Rust and TypeScript tests read. Every file is
+  hand-written except `chromium-from-typescript.json`, the JSON of the typed sample in
+  `@spokenpath/snapshot-types`, refreshed with
+  `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
 - `spikes/`: feasibility probes whose raw output backs the decision records. They are evidence,
   not product code: nothing in `crates/` or `packages/` imports them, and they have their own
   manifest outside the pnpm workspace. See [spikes/README.md](spikes/README.md).
@@ -155,6 +163,8 @@ writer than the one semantic-release bundles and fail mid-release.
 - `GOVERNANCE.md`: who may merge, and how approval could be delegated.
 - `CODE_OF_CONDUCT.md`: the Contributor Covenant that everyone taking part follows.
 - `docs/roadmap.md`: the ordered upcoming work and the later items.
+- `docs/snapshot-format.md`: the snapshot fields, span units, version rule and how to regenerate the
+  schema and types.
 - `docs/research/`: the research the design rests on, with each claim's verification flag.
 - `docs/decisions/`: the architecture decision records (ADRs) and their index.
 
