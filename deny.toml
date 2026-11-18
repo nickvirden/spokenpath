@@ -14,7 +14,13 @@ ignore = []
 [licenses]
 # Licences compatible with the repository's MIT OR Apache-2.0, limited to the
 # ones the dependency graph needs. Add one only when a dependency requires it.
-allow = ["Apache-2.0", "MIT"]
+allow = [
+  "Apache-2.0",
+  "MIT",
+  # unicode-ident, through proc-macro2 (serde_derive and schemars_derive), is
+  # `(MIT OR Apache-2.0) AND Unicode-3.0`.
+  "Unicode-3.0",
+]
 confidence-threshold = 0.93
 # Dev-dependencies run on contributors' machines and in CI, so their licences
 # are checked too.
