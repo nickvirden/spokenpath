@@ -5,7 +5,15 @@
   "license": "MIT OR Apache-2.0",
   "type": "module",
   "scripts": {
+    "generate": "node src/generate.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
+  },
+  "dependencies": {
+    "ajv": "8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "json-schema-to-typescript": "16.0.0"
   }
 }
