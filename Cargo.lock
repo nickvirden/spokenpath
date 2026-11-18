@@ -270,6 +270,11 @@ version = "0.3.0"
 [[package]]
 name = "spokenpath_model"
 version = "0.3.0"
+dependencies = [
+ "insta",
+ "serde_json",
+ "spokenpath_snapshot",
+]
 
 [[package]]
 name = "spokenpath_snapshot"
