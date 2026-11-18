@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Superseded by [ADR-0012](ADR-0012-chromium-protocol-behaviours-and-hidden-content-names.md)
 
 ## Date
 
