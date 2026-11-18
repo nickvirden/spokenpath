@@ -78,7 +78,7 @@ byte offset within the line is 12, because `→` is one scalar value and three b
 | `ax[]` | The `Accessibility.getFullAXTree` nodes, in the protocol's own `camelCase` names. |
 | `ax_forced[]` | `{ node, backend_id, nodes }`: the `getPartialAXTree` node list for each DOM element missing from the full tree, kept apart from `ax`. |
 | `dom_snapshot` | Optional: the raw `DOMSnapshot.captureSnapshot` response, kept as delivered. |
-| `focus` | `{ steps, truncated, cycle_start? }`: the element focused after each Tab press (`{}` when focus left the document), whether the walk stopped at its step limit, and the index of the first step that repeats an earlier step's element. |
+| `focus` | `{ steps, truncated, cycle_start? }`: the DOM node of the focused accessibility node after each Tab press (`{}` when focus left the document), whether the walk stopped at its step limit, and the index of the first step that repeats an earlier step's node. |
 
 The accessibility nodes are typed for the fields the core reads: `nodeId`, `ignored`,
 `ignoredReasons`, `role`, `name`, `description`, `value`, `properties`, `parentId`, `childIds` and
@@ -166,25 +166,29 @@ what the protocol delivers:
 
 `library` is not written by this capture.
 
-**Focus walk.** After the protocol data, capture presses Tab and records the element that has
-focus after each press, descending through open shadow roots' active elements. A step is `{}`
-when the document does not have focus or only `body` is active. Chromium moves focus out of the
-document after the last stop and back to the first stop on the next press, so the walk continues
-past the first `{}`. It stops at the first of:
+**Focus walk.** After the protocol data, capture presses Tab and, after each press, reads
+`Accessibility.getFullAXTree` again and records the DOM node of the node marked `focused`, leaving
+out the root, which is marked whenever the document has focus. That node tells apart stops that
+`document.activeElement` cannot: each field and the calendar button of a date input are nodes in
+its user-agent shadow root, and each control in a closed shadow root is its own node, while the
+active element stays on the input or the host. A step is `{}` when the document does not have
+focus or only `body` is focused. Chromium moves focus out of the document after the last stop and
+back to the first stop on the next press, so the walk continues past the first `{}`. It stops at
+the first of:
 
-- a step whose element an earlier step already focused, which it keeps, with `cycle_start` set to
+- a step on a node an earlier step already recorded, which it keeps, with `cycle_start` set to
   that step's index; a trap shows a cycle with no `{}` before it, and a script that holds focus
   on one element shows the cycle at the step right after it;
 - the second `{}` step;
 - 200 steps, with `truncated: true`.
 
-The one exception to the first rule is a step on the same element as the step just before it when
-that element is an `iframe` or `frame`, or a host whose shadow root is closed. Focus then moves
-inside content capture cannot read, and only the frame element or the host shows as focused, so
-the walk records one step on it per press and keeps going; those steps are not collapsed. The
-element's `iframe-not-captured` or `focus-in-closed-shadow-root` diagnostic tells the reader which
-case it is. On any other element, including one missing from `dom`, the same adjacent repeat is a
-cycle.
+When the tree has no focused node, the step falls back to the active element, descending through
+open shadow roots. That happens when focus is inside a frame, whose tree capture does not read, or
+on an element with no accessibility node. Inside a frame the step is the `iframe` or `frame`
+element, which stays the same while focus moves between the frame's own stops. A step that
+repeats the frame element of the step just before it is therefore the one exception to the first
+rule: the walk records one step per press and keeps going, and the frame's `iframe-not-captured`
+diagnostic marks the case.
 
 **Diagnostics.** Sorted by code, then node, then message. URLs in messages have their userinfo,
 query string and fragment removed.
@@ -197,7 +201,7 @@ query string and fragment removed.
 | `unknown-source-attribute` | An element's `data-spokenpath-src` names no span, so its origin is `unknown`. |
 | `partial-ax-tree-failed` | `getPartialAXTree` failed for the element, so it has no `ax_forced` entry. |
 | `focus-target-not-in-dom` | Focus landed on an element missing from `dom`, such as one a script added after the DOM was read; the step has only `backend_id`. |
-| `focus-in-closed-shadow-root` | Focus is on a host whose shadow root is closed, so the element focused inside it cannot be read; reported once for consecutive steps on the host. |
+| `focus-in-closed-shadow-root` | The tree had no focused node and the active element is a host whose shadow root is closed, so the element focused inside it cannot be read. |
 
 **Verifying instrumentation.** `--verify-instrumentation` loads the original page and the
 instrumented page in two separate loads, served and settled the same way, and compares the two

@@ -7,11 +7,13 @@ import { bounded } from './session.ts';
 export const MAX_FOCUS_STEPS = 200;
 
 /**
- * The focused element, descending through each open shadow root's own active element, or `null`
- * when the document does not have focus or only `body` is active. Evaluated as a protocol
- * expression so the result is a remote object that `DOM.describeNode` can resolve.
+ * The element the page reports as focused, descending through each open shadow root's own active
+ * element, or `null` when the document does not have focus or only `body` is active. Evaluated as a
+ * protocol expression so the result is a remote object that `DOM.describeNode` can resolve. It
+ * stands in only when the accessibility tree has no focused node: focus inside a frame, whose tree
+ * this walk does not read, or on an element that has no accessibility node.
  */
-const FOCUSED_ELEMENT = `(() => {
+const ACTIVE_ELEMENT = `(() => {
   if (!document.hasFocus()) return null;
   let element = document.activeElement;
   while (element !== null && element.shadowRoot !== null && element.shadowRoot.activeElement !== null) {
@@ -20,10 +22,51 @@ const FOCUSED_ELEMENT = `(() => {
   return element === null || element === document.body ? null : element;
 })()`;
 
-/** The `backendNodeId` of the focused element, or nothing when focus is outside the document. */
-async function focusedBackendId(cdp: CDPSession, timeoutMs: number): Promise<number | undefined> {
+/**
+ * Where focus is after a press. `accessibility` is the DOM node of the focused accessibility node,
+ * which tells apart the stops inside one element: the fields of a date input, or the controls in a
+ * closed shadow root. `active-element` is the fallback, which shows only the element that contains
+ * focus.
+ */
+interface FocusPosition {
+  backendId: number;
+  source: 'accessibility' | 'active-element';
+}
+
+/** Where focus is, or nothing when it is outside the document or only on `body`. */
+async function focusPosition(
+  cdp: CDPSession,
+  dom: readonly DomNode[],
+  idByBackendId: ReadonlyMap<number, number>,
+  timeoutMs: number,
+): Promise<FocusPosition | undefined> {
+  const { nodes } = await bounded('Accessibility.getFullAXTree', timeoutMs, (options) =>
+    cdp.send('Accessibility.getFullAXTree', {}, options),
+  );
+  // The root node is focused whenever the document has focus, so it says nothing about where.
+  const focused = nodes.find(
+    (node) =>
+      node.backendDOMNodeId !== undefined &&
+      idByBackendId.get(node.backendDOMNodeId) !== 0 &&
+      (node.properties ?? []).some(
+        (property) => property.name === 'focused' && property.value.value === true,
+      ),
+  );
+  if (focused?.backendDOMNodeId !== undefined) {
+    const id = idByBackendId.get(focused.backendDOMNodeId);
+    if (id !== undefined && dom[id]?.tag === 'body') {
+      return undefined;
+    }
+    return { backendId: focused.backendDOMNodeId, source: 'accessibility' };
+  }
+  const backendId = await activeElementBackendId(cdp, timeoutMs);
+  return backendId === undefined ? undefined : { backendId, source: 'active-element' };
+}
+
+/** The `backendNodeId` of the active element, or nothing when focus is outside the document. */
+async function activeElementBackendId(cdp: CDPSession, timeoutMs: number): Promise<number | undefined> {
   const evaluated = await bounded('reading the focused element', timeoutMs, (options) =>
-    cdp.send('Runtime.evaluate', { expression: FOCUSED_ELEMENT, returnByValue: false }, options),
+    cdp.send('Runtime.evaluate', { expression: ACTIVE_ELEMENT, returnByValue: false }, options),
   );
   if (evaluated.exceptionDetails !== undefined) {
     throw new Error(`reading the focused element failed: ${evaluated.exceptionDetails.text}`);
@@ -73,17 +116,16 @@ export interface FocusWalk {
 
 /**
  * Presses Tab with real key events and records where focus lands after each press, one step per
- * press, starting from wherever the page left focus. The walk continues past the step where focus
- * leaves the document, because Chromium then wraps to the first stop. It stops at the first step
- * that repeats an element an earlier, non-adjacent step focused (`cycle_start`), at the second
- * step outside the document, or after `MAX_FOCUS_STEPS` presses (`truncated`).
+ * press, starting from wherever the page left focus. A step is the DOM node of the focused
+ * accessibility node, so each stop inside a date input or a closed shadow root is its own step.
+ * The walk continues past the step where focus leaves the document, because Chromium then wraps to
+ * the first stop. It stops at the first step that repeats an earlier step's node (`cycle_start`),
+ * at the second step outside the document, or after `MAX_FOCUS_STEPS` presses (`truncated`).
  *
- * A step that repeats the element of the step just before it is no cycle only when that element is
- * an `iframe` or `frame`, or a host with a closed shadow root: focus then moves inside content
- * capture cannot read, and only the frame element or the host is visible. The walk records the
- * press and keeps going, and the element's diagnostic covers the whole run of such steps. On any
- * other element, including one missing from `dom`, the repeat means a script kept focus where it
- * was, and it is a cycle like any other.
+ * The one exception is focus inside a frame. Capture does not read frame contents, so the step is
+ * the `iframe` or `frame` element, which stays the same while focus moves between the frame's own
+ * stops. A step that repeats the frame element of the step just before it is therefore recorded
+ * and the walk keeps going.
  */
 export async function walkFocus(
   page: Page,
@@ -98,10 +140,9 @@ export async function walkFocus(
   let outside = 0;
   while (steps.length < MAX_FOCUS_STEPS) {
     await pressTab(page, timeoutMs);
-    const backendId = await focusedBackendId(cdp, timeoutMs);
+    const position = await focusPosition(cdp, dom, idByBackendId, timeoutMs);
     const index = steps.length;
-    const stillOnPrevious = backendId !== undefined && steps[index - 1]?.backend_id === backendId;
-    if (backendId === undefined) {
+    if (position === undefined) {
       steps.push({});
       outside += 1;
       if (outside === 2) {
@@ -109,25 +150,29 @@ export async function walkFocus(
       }
       continue;
     }
+    const { backendId, source } = position;
     const node = idByBackendId.get(backendId);
+    const stillOnPrevious = steps[index - 1]?.backend_id === backendId;
     steps.push(node === undefined ? { backend_id: backendId } : { node, backend_id: backendId });
-    if (stillOnPrevious && node !== undefined && hidesFocusedElement(dom, node)) {
+    if (stillOnPrevious && source === 'active-element' && node !== undefined && isFrame(dom, node)) {
       continue;
-    }
-    // The previous step already reported the element; an adjacent repeat here is a cycle.
-    if (!stillOnPrevious) {
-      diagnostics.push(...stepDiagnostics(dom, node, index));
     }
     if (seen.has(backendId)) {
       return { focus: { steps, truncated: false, cycle_start: index }, diagnostics };
     }
     seen.add(backendId);
+    diagnostics.push(...stepDiagnostics(dom, node, source, index));
   }
   return { focus: { steps, truncated: true }, diagnostics };
 }
 
 /** What capture reports about the element focused after Tab press `index + 1`. */
-function stepDiagnostics(dom: readonly DomNode[], node: number | undefined, index: number): Diagnostic[] {
+function stepDiagnostics(
+  dom: readonly DomNode[],
+  node: number | undefined,
+  source: FocusPosition['source'],
+  index: number,
+): Diagnostic[] {
   if (node === undefined) {
     return [
       {
@@ -136,7 +181,8 @@ function stepDiagnostics(dom: readonly DomNode[], node: number | undefined, inde
       },
     ];
   }
-  if (hasClosedShadowRoot(dom, node)) {
+  // The accessibility tree reaches into a closed shadow root; the active element stops at its host.
+  if (source === 'active-element' && hasClosedShadowRoot(dom, node)) {
     return [
       {
         code: 'focus-in-closed-shadow-root',
@@ -148,10 +194,9 @@ function stepDiagnostics(dom: readonly DomNode[], node: number | undefined, inde
   return [];
 }
 
-/** Whether focus can move inside the element while only the element itself shows as focused. */
-function hidesFocusedElement(dom: readonly DomNode[], id: number): boolean {
+function isFrame(dom: readonly DomNode[], id: number): boolean {
   const tag = dom[id]?.tag;
-  return tag === 'iframe' || tag === 'frame' || hasClosedShadowRoot(dom, id);
+  return tag === 'iframe' || tag === 'frame';
 }
 
 function hasClosedShadowRoot(dom: readonly DomNode[], id: number): boolean {

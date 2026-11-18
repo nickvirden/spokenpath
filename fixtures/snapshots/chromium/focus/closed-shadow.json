@@ -241,13 +241,7 @@
       "column": 4
     }
   ],
-  "diagnostics": [
-    {
-      "code": "focus-in-closed-shadow-root",
-      "message": "After Tab press 2, focus is on a host with a closed shadow root, so the element focused inside it cannot be read.",
-      "node": 11
-    }
-  ],
+  "diagnostics": [],
   "payload": {
     "engine": "chromium",
     "dom": [
@@ -2060,12 +2054,12 @@
           "backend_id": 10
         },
         {
-          "node": 11,
-          "backend_id": 12
+          "node": 14,
+          "backend_id": 15
         },
         {
-          "node": 11,
-          "backend_id": 12
+          "node": 17,
+          "backend_id": 18
         },
         {
           "node": 20,

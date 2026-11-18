@@ -1,7 +1,7 @@
 import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { Snapshot } from '@spokenpath/snapshot-types';
+import type { DomNode, Snapshot } from '@spokenpath/snapshot-types';
 import { type Browser, chromium } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 import { captureChromium, verifyInstrumentation } from './capture.ts';
@@ -12,10 +12,14 @@ import { normaliseForGolden } from './normalise.ts';
 /** Marks a step on an element that is not in the captured DOM. */
 const NOT_IN_DOM = '(not in dom)';
 
+/** Marks a step on an element that has no `id`. */
+const NO_ID = '(no id)';
+
 /**
- * Where focus lands after each Tab press: an element's `id`, `NOT_IN_DOM`, or `null` when focus
- * left the document. Content inside a frame or a closed shadow root shows as the frame element or
- * the host, once per press.
+ * Where focus lands after each Tab press: an element's `id`, `NO_ID`, `NOT_IN_DOM`, or `null` when
+ * focus left the document. Content inside a frame shows as the frame element, once per press. The
+ * stops inside a date input are the elements of its user-agent shadow root, where only the
+ * calendar button has an `id`.
  */
 const expectedFocus: Record<string, (string | null)[]> = {
   'focus/positive-tabindex.html': [
@@ -29,7 +33,8 @@ const expectedFocus: Record<string, (string | null)[]> = {
   'focus/disabled.html': ['before', 'after', null, 'before'],
   'focus/inert.html': ['before', 'after', null, 'before'],
   'focus/delegates-focus.html': ['before', 'inner', 'after', null, 'before'],
-  'focus/closed-shadow.html': ['before', 'host', 'host', 'after', null, 'before'],
+  'focus/closed-shadow.html': ['before', 'inner-first', 'inner-second', 'after', null, 'before'],
+  'focus/date-input.html': ['before', NO_ID, NO_ID, NO_ID, 'picker', 'after', null, 'before'],
   'focus/iframe.html': ['before', 'frame', 'frame', 'after', null, 'before'],
   'focus/added-on-tab.html': ['before', NOT_IN_DOM, null, 'before'],
   'focus/no-focusable.html': [null, null],
@@ -62,7 +67,7 @@ describe.each(htmlPagesIn('focus/'))('focus walk of %s', (page) => {
     const steps = chromiumPayload(snapshot).focus.steps;
     const landed = steps.map((step) => {
       if (step.node !== undefined) {
-        return elementId(snapshot, step.node) ?? '(no id)';
+        return elementId(snapshot, step.node) ?? NO_ID;
       }
       return step.backend_id === undefined ? null : NOT_IN_DOM;
     });
@@ -99,20 +104,51 @@ describe('focus walk stop rules', () => {
     expect(focus).not.toHaveProperty('cycle_start');
   });
 
-  test.each([
-    ['focus/closed-shadow.html', 'focus-in-closed-shadow-root', 'host'],
-    ['focus/iframe.html', 'iframe-not-captured', 'frame'],
-  ])('focus moving inside %s is not a cycle, and the stop after it is reached', async (page, code, id) => {
-    const snapshot = await captureFocusPage(page);
-    const { focus } = chromiumPayload(snapshot);
-    const ids = focus.steps.map((step) => elementId(snapshot, step.node));
-    // The only cycle is the wrap back to the first stop, after focus left the document.
-    expect(focus.cycle_start).toBe(ids.lastIndexOf('before'));
-    expect(focus.steps[(focus.cycle_start ?? 0) - 1]).toEqual({});
-    expect(ids).toContain('after');
-    const diagnostics = snapshot.diagnostics.filter((diagnostic) => diagnostic.code === code);
+  test.each(['focus/closed-shadow.html', 'focus/date-input.html', 'focus/iframe.html'])(
+    'focus moving inside one element of %s is not a cycle, and the stop after it is reached',
+    async (page) => {
+      const snapshot = await captureFocusPage(page);
+      const { focus } = chromiumPayload(snapshot);
+      const ids = focus.steps.map((step) => elementId(snapshot, step.node));
+      // The only cycle is the wrap back to the first stop, after focus left the document.
+      expect(focus.cycle_start).toBe(ids.lastIndexOf('before'));
+      expect(focus.steps[(focus.cycle_start ?? 0) - 1]).toEqual({});
+      expect(ids).toContain('after');
+    },
+  );
+
+  test('each stop inside a closed shadow root is its own step, with no closed-shadow diagnostic', async () => {
+    const snapshot = await captureFocusPage('focus/closed-shadow.html');
+    const { dom, focus } = chromiumPayload(snapshot);
+    const host = dom.find((node) => elementId(snapshot, node.id) === 'host');
+    for (const step of focus.steps.slice(1, 3)) {
+      expect(shadowHostOf(dom, step.node ?? -1)).toEqual({ host: host?.id, shadow: 'closed' });
+    }
+    expect(snapshot.diagnostics.map((diagnostic) => diagnostic.code)).not.toContain(
+      'focus-in-closed-shadow-root',
+    );
+  });
+
+  test('each stop inside a date input is its own node in its user-agent shadow root', async () => {
+    const snapshot = await captureFocusPage('focus/date-input.html');
+    const { dom, focus } = chromiumPayload(snapshot);
+    const input = dom.find((node) => elementId(snapshot, node.id) === 'when');
+    const inner = focus.steps.slice(1, 5);
+    expect(new Set(inner.map((step) => step.node)).size).toBe(4);
+    for (const step of inner) {
+      expect(shadowHostOf(dom, step.node ?? -1)).toEqual({ host: input?.id, shadow: 'user-agent' });
+    }
+  });
+
+  test('focus moving inside a frame shows as the frame element, once per press', async () => {
+    const snapshot = await captureFocusPage('focus/iframe.html');
+    const ids = chromiumPayload(snapshot).focus.steps.map((step) => elementId(snapshot, step.node));
+    expect(ids.slice(0, 4)).toEqual(['before', 'frame', 'frame', 'after']);
+    const diagnostics = snapshot.diagnostics.filter(
+      (diagnostic) => diagnostic.code === 'iframe-not-captured',
+    );
     expect(diagnostics).toHaveLength(1);
-    expect(elementId(snapshot, diagnostics[0]?.node)).toBe(id);
+    expect(elementId(snapshot, diagnostics[0]?.node)).toBe('frame');
   });
 
   test('focus on an element added after the DOM was read records its backend id and a diagnostic', async () => {
@@ -128,6 +164,16 @@ describe('focus walk stop rules', () => {
     expect(snapshot.diagnostics[0]).not.toHaveProperty('node');
   });
 });
+
+/** The host and type of the nearest shadow root that holds a DOM node. */
+function shadowHostOf(dom: readonly DomNode[], id: number) {
+  for (let current = dom[id]; current !== undefined; current = dom[current.parent ?? -1]) {
+    if (current.shadow !== undefined) {
+      return { host: current.parent, shadow: current.shadow };
+    }
+  }
+  return undefined;
+}
 
 describe('capture failures', () => {
   let directory: string;
