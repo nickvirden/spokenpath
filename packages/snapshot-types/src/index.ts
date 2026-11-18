@@ -1,4 +1,4 @@
-import { Ajv2020, type ErrorObject } from 'ajv/dist/2020.js';
+import { Ajv2020, type ErrorObject, type ValidateFunction } from 'ajv/dist/2020.js';
 import schema from '../../../schema/snapshot.v0.json' with { type: 'json' };
 import type { Snapshot } from './snapshot.generated.js';
 
@@ -31,29 +31,100 @@ const ajv = new Ajv2020({ strict: true, allErrors: true });
 for (const [name, validate] of Object.entries(formats)) {
   ajv.addFormat(name, { type: 'number', validate });
 }
-const validate = ajv.compile<Snapshot>(schema);
+ajv.addSchema(schema, 'snapshot');
+
+function compiled<T>(ref: string): ValidateFunction<T> {
+  const validate = ajv.getSchema<T>(ref);
+  if (validate === undefined) {
+    throw new Error(`the snapshot schema has no ${ref}`);
+  }
+  return validate;
+}
+
+const validate = compiled<Snapshot>('snapshot');
+
+/**
+ * One validator per payload variant, keyed by its `engine`, read from the schema's `Payload`
+ * `oneOf`. When a payload fails, Ajv reports every `oneOf` branch; validating against the branch
+ * that `payload.engine` names keeps only the failures that matter.
+ */
+const payloadValidators = new Map(
+  schema.$defs.Payload.oneOf.flatMap((branch) =>
+    branch.allOf.map((part) => [branch.properties.engine.const, compiled(`snapshot${part.$ref}`)] as const),
+  ),
+);
 
 /** Escapes one JSON Pointer reference token (RFC 6901). */
 function escapePointerToken(token: string): string {
   return token.replaceAll('~', '~0').replaceAll('/', '~1');
 }
 
-function toIssue(error: ErrorObject): ValidationIssue {
+function toIssue(error: ErrorObject, prefix = ''): ValidationIssue {
   const missing: unknown = error.params.missingProperty;
+  const location = `${prefix}${error.instancePath}`;
   const path =
     error.keyword === 'required' && typeof missing === 'string'
-      ? `${error.instancePath}/${escapePointerToken(missing)}`
-      : error.instancePath;
+      ? `${location}/${escapePointerToken(missing)}`
+      : location;
   return { path, message: error.message ?? `fails the ${error.keyword} check` };
 }
 
+function field(value: unknown, key: string): unknown {
+  return typeof value === 'object' && value !== null ? (value as Record<string, unknown>)[key] : undefined;
+}
+
+/** The schema errors, with the payload's reduced to those of the variant `payload.engine` names. */
+function schemaIssues(value: unknown, errors: ErrorObject[]): ValidationIssue[] {
+  const payload = field(value, 'payload');
+  const engine = field(payload, 'engine');
+  const validatePayload = typeof engine === 'string' ? payloadValidators.get(engine) : undefined;
+  if (validatePayload === undefined) {
+    return errors.map((error) => toIssue(error));
+  }
+  const envelopeIssues = errors
+    .filter((error) => error.instancePath !== '/payload' && !error.instancePath.startsWith('/payload/'))
+    .map((error) => toIssue(error));
+  const payloadIssues = validatePayload(payload)
+    ? []
+    : (validatePayload.errors ?? []).map((error) => toIssue(error, '/payload'));
+  return [...envelopeIssues, ...payloadIssues];
+}
+
 /**
- * Checks `value` against the snapshot schema. Like the Rust reader, it accepts unknown fields and
- * any minor version, and rejects a wrong `schema` identifier and any major version other than 0.
+ * The engine rule the schema cannot state: `capture.engine` must equal `payload.engine`. It is
+ * checked here, once, rather than as a schema `if`/`then`, which would report it a second time
+ * through every `oneOf` branch and add nothing to the generated types.
+ */
+function engineMismatch(value: unknown): ValidationIssue | undefined {
+  const captureEngine = field(field(value, 'capture'), 'engine');
+  const payloadEngine = field(field(value, 'payload'), 'engine');
+  if (
+    typeof captureEngine !== 'string' ||
+    typeof payloadEngine !== 'string' ||
+    !payloadValidators.has(captureEngine) ||
+    !payloadValidators.has(payloadEngine) ||
+    captureEngine === payloadEngine
+  ) {
+    return undefined;
+  }
+  return {
+    path: '/payload/engine',
+    message: `capture.engine is \`${captureEngine}\` but payload.engine is \`${payloadEngine}\`; they must name the same engine`,
+  };
+}
+
+/**
+ * Checks `value` against the snapshot schema and the engine rule. Like the Rust reader, it accepts
+ * unknown fields and any minor version, and rejects a wrong `schema` identifier, any major version
+ * other than 0, and a `capture.engine` that differs from `payload.engine`. It is the strict gate
+ * for writers: it also enforces the patterns and ranges that the Rust reader leaves unchecked.
  */
 export function validateSnapshot(value: unknown): ValidationResult {
-  if (validate(value)) {
+  const valid = validate(value);
+  const mismatch = engineMismatch(value);
+  if (valid && mismatch === undefined) {
     return { ok: true, snapshot: value };
   }
-  return { ok: false, errors: (validate.errors ?? []).map(toIssue) };
+  const issues = valid ? [] : schemaIssues(value, validate.errors ?? []);
+  return { ok: false, errors: mismatch === undefined ? issues : [...issues, mismatch] };
 }

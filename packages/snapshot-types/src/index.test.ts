@@ -1,11 +1,13 @@
+import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import { chromiumSample } from './chromium-sample.js';
 import { generateCommand, generatedTypesUrl, generateTypes, readSchema } from './generate.js';
-import { packageName, validateSnapshot } from './index.js';
+import { packageName, type Snapshot, validateSnapshot } from './index.js';
 
 const fixturesUrl = new URL('../../../fixtures/snapshots/', import.meta.url);
 const sampleFixtureUrl = new URL('chromium-from-typescript.json', fixturesUrl);
+const sourcePathCasesUrl = new URL('../source-paths.json', fixturesUrl);
 
 const fixtureNames = readdirSync(fixturesUrl)
   .filter((name) => name.endsWith('.json'))
@@ -110,6 +112,114 @@ describe('validateSnapshot', () => {
       expect(result.ok ? [] : result.errors).toEqual([]);
     }
   });
+});
+
+describe('validateSnapshot source paths', () => {
+  const cases = JSON.parse(readFileSync(sourcePathCasesUrl, 'utf8')) as {
+    accepted: string[];
+    rejected: string[];
+  };
+
+  test('shares the documented cases with the Rust reader', () => {
+    expect(cases.accepted).toContain('pages/basic.html');
+    for (const path of ['../x', '/x', 'a/../b', 'a\\b', 'C:/x', '', 'a/\u0000b']) {
+      expect(cases.rejected).toContain(path);
+    }
+  });
+
+  test.each(cases.accepted)('accepts %j', (path) => {
+    const result = validateSnapshot(editedBasic({ '/sources/0/path': path }));
+    expect(result.ok ? [] : result.errors).toEqual([]);
+  });
+
+  test.each(cases.rejected)('rejects %j at /sources/0/path', (path) => {
+    expect(errorPaths(editedBasic({ '/sources/0/path': path }))).toContain('/sources/0/path');
+  });
+});
+
+describe('validateSnapshot engine rule', () => {
+  test.each(['chromium', 'safari-webdriver', 'safari-ax'])('accepts matching %s engines', (engine) => {
+    const edits: Record<string, unknown> = { '/capture/engine': engine };
+    if (engine !== 'chromium') {
+      edits['/payload'] = { engine };
+    }
+    const result = validateSnapshot(editedBasic(edits));
+    expect(result.ok ? [] : result.errors).toEqual([]);
+  });
+
+  test('rejects a capture.engine that differs from payload.engine', () => {
+    const result = validateSnapshot(editedBasic({ '/capture/engine': 'safari-ax' }));
+    expect(result.ok).toBe(false);
+    const errors = result.ok ? [] : result.errors;
+    expect(errors.map((error) => error.path)).toEqual(['/payload/engine']);
+    expect(errors[0]?.message).toContain('capture.engine');
+    expect(errors[0]?.message).toContain('payload.engine');
+  });
+
+  test('reports a payload failure first at the failing field, not at the other variants', () => {
+    const paths = errorPaths(editedBasic({ '/payload/dom/2/kind': 'paragraph' }));
+    expect(paths[0]).toBe('/payload/dom/2/kind');
+    expect(paths).not.toContain('/payload');
+    expect(paths).not.toContain('/payload/engine');
+  });
+});
+
+describe('validateSnapshot accessibility nodes', () => {
+  test('accepts an AX field the types do not name', () => {
+    const result = validateSnapshot(editedBasic({ '/payload/ax/0/futureField': { nested: [true, null] } }));
+    expect(result.ok ? [] : result.errors).toEqual([]);
+  });
+
+  test('accepts nodes without name provenance or exclusion reasons', () => {
+    const result = validateSnapshot(
+      editedBasic({ '/payload/ax/3/name/sources': removed, '/payload/ax/1/ignoredReasons': removed }),
+    );
+    expect(result.ok ? [] : result.errors).toEqual([]);
+  });
+
+  test('rejects a Chromium payload without ax_forced', () => {
+    expect(errorPaths(editedBasic({ '/payload/ax_forced': removed }))).toContain('/payload/ax_forced');
+  });
+});
+
+describe('chromium-basic.json against its page source', () => {
+  const snapshot = readFixture('chromium-basic.json') as unknown as Snapshot;
+  const source = snapshot.sources[0];
+  if (source === undefined) {
+    throw new Error('chromium-basic.json lists no source');
+  }
+  const bytes = readFileSync(new URL(source.path, fixturesUrl));
+  const tags = new Map<number, string>();
+  if (snapshot.payload.engine === 'chromium') {
+    for (const node of snapshot.payload.dom) {
+      if (node.span !== undefined && node.tag !== undefined) {
+        tags.set(node.span, node.tag);
+      }
+    }
+  }
+
+  test('the source hash matches the committed page', () => {
+    expect(createHash('sha256').update(bytes).digest('hex')).toBe(source.sha256);
+  });
+
+  test.each(snapshot.spans.map((span) => [span.id, span] as const))(
+    'span %i locates its tag',
+    (_id, span) => {
+      const text = (start: number, end: number) => bytes.subarray(start, end).toString('utf8');
+      const tag = tags.get(span.id);
+      const startTag = text(span.start_tag.start, span.start_tag.end);
+      expect(startTag.startsWith(`<${tag}`), startTag).toBe(true);
+      expect(startTag.endsWith('>'), startTag).toBe(true);
+      if (span.element !== undefined) {
+        expect(span.element.start).toBe(span.start_tag.start);
+        expect(text(span.element.start, span.element.end).endsWith(`</${tag}>`)).toBe(true);
+      }
+      const before = text(0, span.start_tag.start);
+      const lineStart = before.lastIndexOf('\n') + 1;
+      expect(span.line).toBe(before.split('\n').length);
+      expect(span.column).toBe(Array.from(before.slice(lineStart)).length + 1);
+    },
+  );
 });
 
 test('the committed generated types match the committed schema', async () => {
