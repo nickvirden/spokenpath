@@ -20,21 +20,21 @@ research left its repeat-run agreement unmeasured
 "Not verified").
 
 The [VoiceOver probe](../../spikes/voiceover-guidepup/README.md) checks, read-only, whether that
-setup has been run on the maintainer's Mac (macOS 27.0.1, Safari 27.0.1, VoiceOver 10), then tries
-to start VoiceOver through Guidepup 0.40.0 and move through a three-element page in Safari twice.
-Running the setup is the maintainer's step, never a job's.
+setup has been run on the maintainer's Mac (macOS 27.0.1, Safari 27.0.1, VoiceOver 10), and keeps
+the record of one attempt to start VoiceOver through Guidepup 0.40.0 before moving through a
+three-element page in Safari. Running the setup is the maintainer's step, never a job's.
 
 | Question | Result | Raw output |
 |---|---|---|
 | Guidepup's setup has been run on the capture Mac | pass: `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled` exists and `SCREnableAppleScript` reads `1` | [`setup-check.json`](../../spikes/voiceover-guidepup/output/setup-check.json) |
-| Guidepup starts VoiceOver | fail: "VoiceOver cannot be started", caused by "Failed to mount Guidepup preferences"; Guidepup's VoiceOver preferences image for macOS 27 is not installed (`npx @guidepup/setup install` has not been run) | [`speech-runs.json`](../../spikes/voiceover-guidepup/output/speech-runs.json) |
-| Two runs of the same key-press script give the same `spokenPhraseLog` | not run: VoiceOver did not start, so no phrase was captured and the second run was not attempted | [`speech-runs.json`](../../spikes/voiceover-guidepup/output/speech-runs.json) |
+| Guidepup starts VoiceOver | fail: "VoiceOver cannot be started", caused by "Failed to mount Guidepup preferences"; Guidepup's VoiceOver preferences image for macOS 27 is not installed (`npx @guidepup/setup install` has not been run) | [`start-attempt.json`](../../spikes/voiceover-guidepup/output/start-attempt.json) |
+| Two runs of the same key-press script give the same `spokenPhraseLog` | not run: VoiceOver did not start, so no phrase was captured and no second run was attempted | [`start-attempt.json`](../../spikes/voiceover-guidepup/output/start-attempt.json) |
 | Speech capture on a hosted macOS runner | not run: ADR-0006 keeps VoiceOver out of CI, and the corpus does not depend on hosted runners | [workflow](../../.github/workflows/macos-probes.yml) |
 
-Reading the installed package shows what Guidepup 0.40.0's `start()` does before VoiceOver runs:
+Reading Guidepup 0.40.0's package source shows what its `start()` does before VoiceOver runs:
 it attaches the preferences image, adds Guidepup's portable identifier to VoiceOver's local
 preferences file, symlinks the image's portable preferences into VoiceOver's preferences folder,
-and restarts `cfprefsd`. On this run it stopped while locating the image, before changing
+and restarts `cfprefsd`. On the attempt it stopped while locating the image, before changing
 anything: VoiceOver's preference files match before and after, and no VoiceOver process was left.
 
 The Safari side the corpus pairs with, including the rule for adding any macOS CI job, is in
@@ -54,11 +54,18 @@ the hosted-runner results recorded there, because speech is captured locally.
 3. **Status of the probe.** Speech capture is "not run": the AppleScript part of Guidepup's setup is
    done, but Guidepup cannot start VoiceOver until its screen reader assets are installed
    (`npx @guidepup/setup install`). Installing them is the maintainer's step, and so is accepting
-   that Guidepup's start-up edits VoiceOver's own preference files. The first job after that runs
-   [`probe.mjs`](../../spikes/voiceover-guidepup/probe.mjs) unchanged: a three-element page,
+   that Guidepup's start-up edits VoiceOver's own preference files.
+4. **The capture script belongs to the capture job.** The probe holds only the read-only setup
+   check and the record of the start attempt. The script that drives VoiceOver through a page is
+   written by the VoiceOver capture job (roadmap item 11) to the
+   [requirements in the probe README](../../spikes/voiceover-guidepup/README.md#requirements-for-the-capture-script):
+   tearing VoiceOver and Guidepup's preferences image down even when start-up stalls, a timeout on
+   every call so the overall deadline holds, opening and closing only its own Safari window,
+   serving the fixture without a request that can end the process, and keeping only phrases
+   spoken on the fixture. Its first run is the first speech capture: a three-element page,
    `spokenPhraseLog` recorded in two separate VoiceOver sessions, agreement reported, with the
    macOS, Safari, VoiceOver and Guidepup versions.
-4. **Wording.** Phrasing from the corpus is labelled illustrative speech, approximate, and appears
+5. **Wording.** Phrasing from the corpus is labelled illustrative speech, approximate, and appears
    only for patterns the corpus covers; everything else stays as what the browser exposes. The
    corpus is a record of one VoiceOver build on one Mac. Nothing built on it claims to reproduce a
    screen reader or makes a conformance claim.
