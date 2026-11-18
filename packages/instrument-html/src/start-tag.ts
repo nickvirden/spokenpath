@@ -1,0 +1,139 @@
+/** The HTML tokenizer states a start tag passes through between its `<` and its closing `>`. */
+type TagState =
+  | 'tag-name'
+  | 'before-attribute-name'
+  | 'attribute-name'
+  | 'after-attribute-name'
+  | 'before-attribute-value'
+  | 'attribute-value-double-quoted'
+  | 'attribute-value-single-quoted'
+  | 'attribute-value-unquoted'
+  | 'after-attribute-value-quoted'
+  | 'self-closing-start-tag';
+
+function isWhitespace(char: string): boolean {
+  return char === '\t' || char === '\n' || char === '\f' || char === '\r' || char === ' ';
+}
+
+/**
+ * The offset in `text` at which an attribute can be added to the start tag spanning
+ * `[start, end)`: before the self-closing `/` when the tag ends in `/>`, otherwise before the `>`.
+ *
+ * A `/` before the `>` is self-closing only when the tokenizer reads it in an attribute-separating
+ * state; in `<a href=x/>` it ends the unquoted value instead. parse5's attribute locations cannot
+ * decide this, because they omit attributes dropped as duplicates (`<div a=1 a=x/>`), so the tag
+ * text is run through the tokenizer's start-tag states here.
+ */
+export function attributeInsertionOffset(text: string, start: number, end: number): number {
+  if (text[start] !== '<' || text[end - 1] !== '>') {
+    throw new Error(`the start tag at offset ${start} does not run from \`<\` to \`>\``);
+  }
+  let state: TagState = 'tag-name';
+  // A start tag's first character after `<` is an ASCII letter of the tag name.
+  for (let index = start + 2; index < end; index += 1) {
+    const char = text.charAt(index);
+    const closes = char === '>';
+    switch (state) {
+      case 'tag-name':
+        if (char === '/') {
+          state = 'self-closing-start-tag';
+        } else if (closes) {
+          return finish(index, end, index);
+        } else if (isWhitespace(char)) {
+          state = 'before-attribute-name';
+        }
+        break;
+      case 'attribute-name':
+        // Whitespace, `/` and `>` are reconsumed in the after-attribute-name state.
+        if (char === '/') {
+          state = 'self-closing-start-tag';
+        } else if (closes) {
+          return finish(index, end, index);
+        } else if (isWhitespace(char)) {
+          state = 'after-attribute-name';
+        } else if (char === '=') {
+          state = 'before-attribute-value';
+        }
+        break;
+      case 'after-attribute-name':
+        if (char === '/') {
+          state = 'self-closing-start-tag';
+        } else if (closes) {
+          return finish(index, end, index);
+        } else if (char === '=') {
+          state = 'before-attribute-value';
+        } else if (!isWhitespace(char)) {
+          state = 'attribute-name';
+        }
+        break;
+      case 'before-attribute-name':
+        if (char === '/') {
+          state = 'self-closing-start-tag';
+        } else if (closes) {
+          return finish(index, end, index);
+        } else if (!isWhitespace(char)) {
+          // `=` here starts an attribute name (unexpected-equals-sign-before-attribute-name).
+          state = 'attribute-name';
+        }
+        break;
+      case 'before-attribute-value':
+        if (char === '"') {
+          state = 'attribute-value-double-quoted';
+        } else if (char === "'") {
+          state = 'attribute-value-single-quoted';
+        } else if (closes) {
+          return finish(index, end, index);
+        } else if (!isWhitespace(char)) {
+          state = 'attribute-value-unquoted';
+        }
+        break;
+      case 'attribute-value-double-quoted':
+        if (char === '"') {
+          state = 'after-attribute-value-quoted';
+        }
+        break;
+      case 'attribute-value-single-quoted':
+        if (char === "'") {
+          state = 'after-attribute-value-quoted';
+        }
+        break;
+      case 'attribute-value-unquoted':
+        if (closes) {
+          return finish(index, end, index);
+        }
+        if (isWhitespace(char)) {
+          state = 'before-attribute-name';
+        }
+        break;
+      case 'after-attribute-value-quoted':
+        if (char === '/') {
+          state = 'self-closing-start-tag';
+        } else if (closes) {
+          return finish(index, end, index);
+        } else if (isWhitespace(char)) {
+          state = 'before-attribute-name';
+        } else {
+          // missing-whitespace-between-attributes: the character starts the next name.
+          state = 'attribute-name';
+        }
+        break;
+      case 'self-closing-start-tag':
+        if (closes) {
+          return finish(index, end, index - 1);
+        }
+        // unexpected-solidus-in-tag: the `/` is ignored and the character reconsumed.
+        state = 'before-attribute-name';
+        index -= 1;
+        break;
+    }
+  }
+  throw new Error(`the start tag at offset ${start} has no closing \`>\``);
+}
+
+/** Checks that the `>` the tokenizer stopped at is the one parse5 reported as the tag's end. */
+function finish(closeIndex: number, end: number, insertAt: number): number {
+  if (closeIndex !== end - 1) {
+    throw new Error(`the start tag ending at offset ${end} closes early, at offset ${closeIndex}`);
+  }
+  return insertAt;
+}
