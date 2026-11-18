@@ -53,7 +53,7 @@ export function instrumentHtml(input: Uint8Array, options: InstrumentHtmlOptions
   if (declaration !== undefined) {
     throw new InstrumentHtmlError(
       'unsupported-encoding',
-      `the page declares the encoding "${declaration.label}" ${describeLocation(declaration.element, index)}; only UTF-8 input is supported`,
+      `the page declares the encoding ${JSON.stringify(declaration.label)} ${describeLocation(declaration.element, index)}; only UTF-8 input is supported`,
     );
   }
 
@@ -97,6 +97,9 @@ function locatedTags(document: Document, index: SourceIndex): LocatedTag[] {
     }
     const location = element.sourceCodeLocation;
     const startTag = location?.startTag;
+    // An element the parser reopens when it reconstructs active formatting elements
+    // (`<i><b>x</i>y</b>` reopens `b` around `y`) is created from the original token and reports
+    // the original's start tag, so one start tag can own several elements. It is spliced once.
     if (startTag === undefined || byStart.has(startTag.startOffset)) {
       continue;
     }
@@ -107,6 +110,7 @@ function locatedTags(document: Document, index: SourceIndex): LocatedTag[] {
       ...(endTag === undefined ? {} : { elementEnd: endTag.endOffset }),
     });
   }
+  // Foster parenting moves elements out of file order, so tree order is not file order.
   return [...byStart.values()].sort((left, right) => left.start - right.start);
 }
 

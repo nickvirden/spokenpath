@@ -58,6 +58,20 @@ describe('accepted inputs', () => {
     },
   );
 
+  test.each([
+    '<meta charset="">',
+    '<meta charset>',
+    '<meta charset=" ">',
+    '<meta charset="no-such-encoding">',
+  ])('%s names no encoding, so it is no declaration', (meta) => {
+    expect(instrumentText(`${meta}<p>x`).spans).toHaveLength(2);
+  });
+
+  test('an http-equiv content type naming no encoding is no declaration', () => {
+    const meta = '<meta http-equiv="content-type" content="text/html; charset=no-such-encoding">';
+    expect(instrumentText(meta).spans).toHaveLength(1);
+  });
+
   test('a non-UTF-8 meta inside template contents is not a declaration', () => {
     expect(instrumentText('<template><meta charset="windows-1252"></template>').spans).toHaveLength(2);
   });
@@ -91,6 +105,14 @@ describe('splice points', () => {
     ['<span //>', '<span / data-spokenpath-src="0"/>'],
     ['<p title="a/>b">', '<p title="a/>b" data-spokenpath-src="0">'],
     ["<p title='/'/>", `<p title='/' data-spokenpath-src="0"/>`],
+    // A tag closing right after `=` takes the attribute after its name: spliced after the `=`,
+    // it would become the empty attribute's value.
+    ['<a href=>', '<a data-spokenpath-src="0" href=>'],
+    ['<a href= >', '<a data-spokenpath-src="0" href= >'],
+    ['<input value=>', '<input data-spokenpath-src="0" value=>'],
+    ['<a b =>', '<a data-spokenpath-src="0" b =>'],
+    ['<a\nb=>', '<a data-spokenpath-src="0"\nb=>'],
+    ['<a/b=>', '<a data-spokenpath-src="0"/b=>'],
     [
       '<svg><path d="M0"/></svg>',
       '<svg data-spokenpath-src="0"><path d="M0" data-spokenpath-src="1"/></svg>',
@@ -150,6 +172,15 @@ test('an adoption-agency clone carries its original span id and implied elements
   expect(source('b')).toEqual(['0', '0']);
 });
 
+test("an element reopened from its original start tag shares that tag's span", () => {
+  const { text, spans } = instrumentText('<p><i>a<b>b</i>c</b></p>');
+  expect(spans).toHaveLength(3);
+  const ids = [...elements(parse(text), { templates: true })]
+    .filter((element) => element.tagName === 'b')
+    .map((element) => element.attrs.find((attr) => attr.name === SOURCE_ATTRIBUTE)?.value);
+  expect(ids).toEqual(['2', '2']);
+});
+
 describe('refused inputs', () => {
   test.each([
     ['UTF-16LE', [0xff, 0xfe, 0x3c, 0x00]],
@@ -186,6 +217,31 @@ describe('refused inputs', () => {
 
   test('a meta declaring UTF-16, which is not a UTF-8 label', () => {
     expect(refusal('<meta charset="utf-16">').code).toBe('unsupported-encoding');
+  });
+
+  test.each(['windows-1252', 'shift_jis', 'koi8-r', 'gb18030', 'iso-2022-kr', 'x-user-defined'])(
+    'a meta charset of %s, a known non-UTF-8 label',
+    (label) => {
+      expect(refusal(`<meta charset="${label}">`).code).toBe('unsupported-encoding');
+    },
+  );
+
+  test('an unknown charset falls through to the http-equiv declaration', () => {
+    const error = refusal(
+      '<meta charset="bogus" http-equiv="content-type" content="text/html; charset=koi8-r">',
+    );
+    expect(error.message).toContain('"koi8-r"');
+  });
+
+  test('a declared label is escaped in the message', () => {
+    // Surrounding whitespace is trimmed when the label is looked up, so the page's raw text,
+    // control characters included, reaches the message.
+    const error = refusal('<meta charset="\n\twindows-1252\n">');
+    expect(error.code).toBe('unsupported-encoding');
+    expect(error.message).toContain('"\\n\\twindows-1252\\n"');
+    for (const control of ['\n', '\t']) {
+      expect(error.message).not.toContain(control);
+    }
   });
 
   test('an element that already has the source attribute, inside template contents too', () => {

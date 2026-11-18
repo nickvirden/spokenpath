@@ -19,6 +19,10 @@ function isWhitespace(char: string): boolean {
  * The offset in `text` at which an attribute can be added to the start tag spanning
  * `[start, end)`: before the self-closing `/` when the tag ends in `/>`, otherwise before the `>`.
  *
+ * The exception is a tag that closes straight after an attribute's `=` (`<a href=>`,
+ * `<a b = >`): there the attribute goes right after the tag name, because text spliced after the
+ * `=` would become the dangling attribute's unquoted value.
+ *
  * A `/` before the `>` is self-closing only when the tokenizer reads it in an attribute-separating
  * state; in `<a href=x/>` it ends the unquoted value instead. parse5's attribute locations cannot
  * decide this, because they omit attributes dropped as duplicates (`<div a=1 a=x/>`), so the tag
@@ -29,6 +33,8 @@ export function attributeInsertionOffset(text: string, start: number, end: numbe
     throw new Error(`the start tag at offset ${start} does not run from \`<\` to \`>\``);
   }
   let state: TagState = 'tag-name';
+  // Where the tag name ends: the first whitespace or `/` after it, or the closing `>`.
+  let tagNameEnd = end - 1;
   // A start tag's first character after `<` is an ASCII letter of the tag name.
   for (let index = start + 2; index < end; index += 1) {
     const char = text.charAt(index);
@@ -36,10 +42,12 @@ export function attributeInsertionOffset(text: string, start: number, end: numbe
     switch (state) {
       case 'tag-name':
         if (char === '/') {
+          tagNameEnd = index;
           state = 'self-closing-start-tag';
         } else if (closes) {
           return finish(index, end, index);
         } else if (isWhitespace(char)) {
+          tagNameEnd = index;
           state = 'before-attribute-name';
         }
         break;
@@ -82,7 +90,8 @@ export function attributeInsertionOffset(text: string, start: number, end: numbe
         } else if (char === "'") {
           state = 'attribute-value-single-quoted';
         } else if (closes) {
-          return finish(index, end, index);
+          // missing-attribute-value: the attribute's value is empty.
+          return finish(index, end, tagNameEnd);
         } else if (!isWhitespace(char)) {
           state = 'attribute-value-unquoted';
         }

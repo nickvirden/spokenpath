@@ -112,9 +112,55 @@ export interface EncodingDeclaration {
 }
 
 /**
+ * Labels that "get an encoding" maps to an encoding `TextDecoder` refuses to construct: the
+ * replacement encoding, which decodes a whole page to one U+FFFD, and x-user-defined.
+ */
+const UNDECODABLE_LABELS: ReadonlySet<string> = new Set([
+  'csiso2022kr',
+  'hz-gb-2312',
+  'iso-2022-cn',
+  'iso-2022-cn-ext',
+  'iso-2022-kr',
+  'replacement',
+  'x-user-defined',
+]);
+
+/**
+ * Whether this runtime's `TextDecoder` knows the legacy encodings. A Node built without ICU knows
+ * only the Unicode ones; there every label it cannot construct counts as an encoding, so the gate
+ * refuses a page it cannot judge rather than accepting one a browser would decode differently.
+ */
+const knowsLegacyEncodings = constructsDecoder('shift_jis');
+
+function constructsDecoder(label: string): boolean {
+  try {
+    new TextDecoder(label);
+    return true;
+  } catch (error) {
+    if (error instanceof RangeError) {
+      return false;
+    }
+    throw error;
+  }
+}
+
+/**
+ * Whether the Encoding Standard's "get an encoding" finds an encoding for `label`. An empty or
+ * unknown label finds none, and a browser then ignores the declaration.
+ */
+function namesAnEncoding(label: string): boolean {
+  const normalised = normaliseLabel(label);
+  if (normalised === '') {
+    return false;
+  }
+  return UNDECODABLE_LABELS.has(normalised) || constructsDecoder(normalised) || !knowsLegacyEncodings;
+}
+
+/**
  * The first `meta` element, outside `template` contents, that declares an encoding other than
- * UTF-8. Both `<meta charset>` and `<meta http-equiv="content-type" content>` count, as they do
- * for the HTML tree builder, with `charset` taking precedence when an element has both.
+ * UTF-8. As for the HTML tree builder, `<meta charset>` counts when its label names an encoding,
+ * and otherwise `<meta http-equiv="content-type" content>` does; a label that names no encoding is
+ * no declaration.
  */
 export function nonUtf8Declaration(document: Document): EncodingDeclaration | undefined {
   for (const element of elements(document, { templates: false })) {
@@ -132,7 +178,7 @@ export function nonUtf8Declaration(document: Document): EncodingDeclaration | un
 function declaredLabel(element: Element): string | undefined {
   const attribute = (name: string) => element.attrs.find((attr) => attr.name === name)?.value;
   const charset = attribute('charset');
-  if (charset !== undefined) {
+  if (charset !== undefined && namesAnEncoding(charset)) {
     return charset;
   }
   const httpEquiv = attribute('http-equiv');
@@ -140,7 +186,8 @@ function declaredLabel(element: Element): string | undefined {
   if (httpEquiv === undefined || asciiLowercase(httpEquiv) !== 'content-type' || content === undefined) {
     return undefined;
   }
-  return charsetFromContent(content);
+  const fromContent = charsetFromContent(content);
+  return fromContent !== undefined && namesAnEncoding(fromContent) ? fromContent : undefined;
 }
 
 /** Trims ASCII whitespace and lowercases ASCII letters only, as the Encoding Standard's "get an encoding" does. */
