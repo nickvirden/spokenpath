@@ -172,12 +172,41 @@ pub struct Volatile {
 pub struct Source {
     /// Snapshot-local id that spans refer to.
     pub id: u32,
-    /// The file's path relative to the capture root, with `/` separators.
+    /// The file's path relative to the capture root: `/`-separated segments, none of them empty,
+    /// `.` or `..`, with no leading `/` and no `\`, `:` or NUL, so joining it onto the root never
+    /// leaves the root.
+    #[schemars(regex(pattern = SOURCE_PATH_PATTERN))]
     pub path: String,
     /// SHA-256 of the file's bytes, as 64 lowercase hex characters.
     #[schemars(regex(pattern = r"^[0-9a-f]{64}$"))]
     pub sha256: String,
     pub encoding: Encoding,
+}
+
+/// One segment of a source path: not empty, not `.` or `..`, and free of `/`, `\`, `:` and NUL.
+/// It is written without lookahead so ECMAScript and Rust regex engines read it the same way.
+macro_rules! source_path_segment {
+    () => {
+        r"(?:[^/\\:\x00.][^/\\:\x00]*|\.[^/\\:\x00.][^/\\:\x00]*|\.\.[^/\\:\x00]+)"
+    };
+}
+
+/// The pattern the schema states for [`Source::path`]; [`is_source_path`] is the reader's check of
+/// the same rule.
+const SOURCE_PATH_PATTERN: &str = concat!(
+    "^",
+    source_path_segment!(),
+    "(?:/",
+    source_path_segment!(),
+    ")*$"
+);
+
+/// Whether `path` is a capture-root-relative source path, as [`SOURCE_PATH_PATTERN`] states.
+fn is_source_path(path: &str) -> bool {
+    !path.is_empty()
+        && path.split('/').all(|segment| {
+            !matches!(segment, "" | "." | "..") && !segment.contains(['\\', ':', '\0'])
+        })
 }
 
 /// The encoding of a source file; only UTF-8 is supported.
@@ -522,7 +551,7 @@ pub enum ReadError {
     /// The JSON has no `schema` field equal to [`SCHEMA_ID`].
     NotASnapshot,
     /// `version.major` is not [`SUPPORTED_MAJOR`].
-    UnsupportedMajor { found: u32 },
+    UnsupportedMajor { found: u64 },
     /// `capture.engine` and `payload.engine` name different engines.
     EngineMismatch { capture: Engine, payload: Engine },
     /// A field is missing or has the wrong type or value. `path` is dotted, with indexes, such as
@@ -565,10 +594,16 @@ impl std::error::Error for ReadError {
     }
 }
 
-/// The `version` field alone, read before anything else.
+/// The major version alone, read before anything else, so a future major whose `version` has
+/// another shape is still reported as an unsupported major.
 #[derive(Deserialize)]
-struct VersionOnly {
-    version: Version,
+struct MajorOnly {
+    version: Major,
+}
+
+#[derive(Deserialize)]
+struct Major {
+    major: u64,
 }
 
 /// The `engine` tag of `payload`.
@@ -602,19 +637,38 @@ struct Envelope {
 /// # Errors
 ///
 /// Returns a [`ReadError`] when the text is not JSON, is not a spokenpath snapshot, has an
-/// unsupported major version, names two different engines, or has a missing or malformed field.
+/// unsupported major version, names two different engines, lists a source path that could leave
+/// the capture root, or has a missing or malformed field.
 pub fn read(json: &str) -> Result<Snapshot, ReadError> {
     let value: Value = serde_json::from_str(json).map_err(ReadError::Json)?;
     if value.get("schema").and_then(Value::as_str) != Some(SCHEMA_ID) {
         return Err(ReadError::NotASnapshot);
     }
-    let VersionOnly { version } = deserialize_at("", &value)?;
-    if version.major != SUPPORTED_MAJOR {
+    let MajorOnly { version } = deserialize_at("", &value)?;
+    if version.major != u64::from(SUPPORTED_MAJOR) {
         return Err(ReadError::UnsupportedMajor {
             found: version.major,
         });
     }
+    if let Some(payload) = value.get("payload")
+        && !payload.is_object()
+    {
+        return Err(ReadError::Field {
+            path: "payload".to_owned(),
+            message: "expected an object with an `engine` field".to_owned(),
+        });
+    }
     let envelope: Envelope = deserialize_at("", &value)?;
+    if let Some(index) = envelope
+        .sources
+        .iter()
+        .position(|source| !is_source_path(&source.path))
+    {
+        return Err(ReadError::Field {
+            path: format!("sources[{index}].path"),
+            message: "expected a path relative to the capture root: `/`-separated segments, none of them empty, `.` or `..`, with no `\\`, `:` or NUL".to_owned(),
+        });
+    }
     let engine = envelope.payload.engine;
     if envelope.capture.engine != engine {
         return Err(ReadError::EngineMismatch {
@@ -847,6 +901,104 @@ mod tests {
             matches!(error, ReadError::UnsupportedMajor { found: 1 }),
             "{error:?}"
         );
+    }
+
+    #[test]
+    fn major_version_beyond_u32_is_rejected_as_unsupported() {
+        let mut value = basic();
+        value["version"]["major"] = json!(5_000_000_000_u64);
+        let error = read_value(&value).expect_err("a huge major is rejected");
+        assert!(
+            matches!(
+                error,
+                ReadError::UnsupportedMajor {
+                    found: 5_000_000_000
+                }
+            ),
+            "{error:?}"
+        );
+    }
+
+    #[test]
+    fn future_major_without_a_minor_is_rejected_as_unsupported() {
+        let mut value = basic();
+        value["version"] = json!({"major": 1});
+        let error = read_value(&value).expect_err("a future major is rejected");
+        assert!(
+            matches!(error, ReadError::UnsupportedMajor { found: 1 }),
+            "{error:?}"
+        );
+    }
+
+    #[test]
+    fn missing_minor_under_the_supported_major_names_version_minor() {
+        let mut value = basic();
+        value["version"] = json!({"major": 0});
+        let error = read_value(&value).expect_err("a missing minor is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `version`: missing field `minor`");
+    }
+
+    #[test]
+    fn non_object_payload_names_payload() {
+        let mut value = basic();
+        value["payload"] = json!("chromium");
+        let error = read_value(&value).expect_err("a string payload is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload`: expected an object with an `engine` field");
+    }
+
+    /// The source-path cases the Rust reader and the TypeScript validator share.
+    fn source_path_cases() -> (Vec<String>, Vec<String>) {
+        let path = fixtures_directory().join("../source-paths.json");
+        let text = std::fs::read_to_string(&path)
+            .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
+        let cases: Value = serde_json::from_str(&text).expect("the cases are JSON");
+        let list = |key: &str| -> Vec<String> {
+            cases[key]
+                .as_array()
+                .expect("a list of paths")
+                .iter()
+                .map(|path| path.as_str().expect("a path string").to_owned())
+                .collect()
+        };
+        (list("accepted"), list("rejected"))
+    }
+
+    #[test]
+    fn source_paths_relative_to_the_capture_root_are_accepted() {
+        let (accepted, _) = source_path_cases();
+        assert!(accepted.contains(&"pages/basic.html".to_owned()));
+        for path in accepted {
+            let mut value = basic();
+            value["sources"][0]["path"] = json!(path);
+            read_value(&value).unwrap_or_else(|error| panic!("{path:?} is accepted: {error}"));
+        }
+    }
+
+    #[test]
+    fn source_paths_that_could_leave_the_capture_root_are_rejected() {
+        let (_, rejected) = source_path_cases();
+        for path in ["../x", "/x", "a/../b", "a\\b", "C:/x", "", "a/\0b"] {
+            assert!(
+                rejected.contains(&path.to_owned()),
+                "{path:?} is a shared case"
+            );
+        }
+        for path in rejected {
+            let mut value = basic();
+            value["sources"][0]["path"] = json!(path);
+            let error = read_value(&value).expect_err("an escaping path is rejected");
+            assert!(
+                error.to_string().contains("`sources[0].path`"),
+                "{path:?}: {error}"
+            );
+        }
+    }
+
+    #[test]
+    fn schema_pattern_and_reader_state_the_same_source_path_rule() {
+        let schema = json_schema();
+        let pattern = &schema["$defs"]["Source"]["properties"]["path"]["pattern"];
+        assert_eq!(pattern, &json!(super::SOURCE_PATH_PATTERN));
     }
 
     #[test]

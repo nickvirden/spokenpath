@@ -649,7 +649,8 @@
           "type": "integer"
         },
         "path": {
-          "description": "The file's path relative to the capture root, with `/` separators.",
+          "description": "The file's path relative to the capture root: `/`-separated segments, none of them empty,\n`.` or `..`, with no leading `/` and no `\\`, `:` or NUL, so joining it onto the root never\nleaves the root.",
+          "pattern": "^(?:[^/\\\\:\\x00.][^/\\\\:\\x00]*|\\.[^/\\\\:\\x00.][^/\\\\:\\x00]*|\\.\\.[^/\\\\:\\x00]+)(?:/(?:[^/\\\\:\\x00.][^/\\\\:\\x00]*|\\.[^/\\\\:\\x00.][^/\\\\:\\x00]*|\\.\\.[^/\\\\:\\x00]+))*$",
           "type": "string"
         },
         "sha256": {

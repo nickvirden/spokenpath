@@ -362,7 +362,9 @@ export interface Source {
    */
   id: number;
   /**
-   * The file's path relative to the capture root, with `/` separators.
+   * The file's path relative to the capture root: `/`-separated segments, none of them empty,
+   * `.` or `..`, with no leading `/` and no `\`, `:` or NUL, so joining it onto the root never
+   * leaves the root.
    */
   path: string;
   /**
