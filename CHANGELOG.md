@@ -1,3 +1,9 @@
+## [0.4.0](https://github.com/nickvirden/spokenpath/compare/v0.3.0...v0.4.0) (2026-11-18)
+
+### Features
+
+* **model:** add the engine-neutral model and Chromium adapter ([#40](https://github.com/nickvirden/spokenpath/issues/40)) ([857baca](https://github.com/nickvirden/spokenpath/commit/857bacabd3b6e46d4c273b07a05e3690a53aa8fe))
+
 ## [0.3.0](https://github.com/nickvirden/spokenpath/compare/v0.2.0...v0.3.0) (2026-11-18)
 
 ### Features
