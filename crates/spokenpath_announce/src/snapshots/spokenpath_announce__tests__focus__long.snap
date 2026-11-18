@@ -25985,7 +25985,7 @@ expression: json
     "ending": {
       "value": {
         "kind": "truncated",
-        "wording": "The walk stopped at its limit after 200 Tab presses."
+        "wording": "The walk stopped at its limit after 200 Tab presses. Later stops are not listed."
       },
       "by": "computed by tool"
     }

@@ -4,7 +4,9 @@ use std::path::{Component, Path, PathBuf};
 use std::time::{Duration, Instant};
 
 use serde_json::{Value, json};
-use spokenpath_model::{ExposedNode, FocusStop, FocusWalk, Model, Role, chromium::adapt};
+use spokenpath_model::{
+    AccessibleNode, ExposedNode, FocusStop, FocusWalk, Model, Role, chromium::adapt,
+};
 use spokenpath_snapshot::{Snapshot, read};
 
 use crate::{
@@ -491,7 +493,8 @@ fn a_name_absent_from_the_model_says_so_with_an_empty_list_of_sources() {
 }
 
 /// Every phrase of a transcript, with the Layer A strings of its item that it may equal: a text
-/// run's text, a name alone, or a role token alone.
+/// run's text, a name alone, or a role token alone. The role token is exempt because an unnamed
+/// item with no parts has the bare role as its required phrase, as `button` for an icon button.
 fn phrases(transcript: &Transcript) -> Vec<(&str, Vec<&str>)> {
     transcript
         .nodes
@@ -777,7 +780,7 @@ fn tab_order_endings_match_the_focus_captures() {
         (
             "focus/long.json",
             EndingKind::Truncated,
-            "The walk stopped at its limit after 200 Tab presses.",
+            "The walk stopped at its limit after 200 Tab presses. Later stops are not listed.",
         ),
         (
             "focus/iframe.json",
@@ -787,7 +790,7 @@ fn tab_order_endings_match_the_focus_captures() {
         (
             "focus/no-focusable.json",
             EndingKind::LeftPage,
-            "Focus left the page after 0 element stops, with no return.",
+            "Focus left the page without stopping on any element.",
         ),
     ];
     for (name, kind, wording) in cases {
@@ -939,24 +942,62 @@ fn only_supplied_values_carry_a_marking() {
 }
 
 #[test]
-fn escape_for_terminal_escapes_control_and_bidirectional_characters_only() {
-    assert!(matches!(
-        escape_for_terminal("Café 日本語"),
-        Cow::Borrowed("Café 日本語")
-    ));
+fn escape_for_terminal_escapes_only_characters_that_disturb_a_terminal() {
+    for clean in ["Café 日本語", "Ünïcødé ñ 한국어 العربية"] {
+        assert!(
+            matches!(escape_for_terminal(clean), Cow::Borrowed(text) if text == clean),
+            "{clean:?}"
+        );
+    }
     assert_eq!(
         escape_for_terminal("\u{1b}[31mred\u{7}\u{0}\u{7f}\u{9b}2J\u{202e}x\u{2066}y\u{2069}\n"),
         "\\u{1b}[31mred\\u{7}\\u{0}\\u{7f}\\u{9b}2J\\u{202e}x\\u{2066}y\\u{2069}\\u{a}"
     );
-    // The neighbours of the bidirectional ranges are ordinary characters.
-    assert_eq!(
-        escape_for_terminal("\u{2029}\u{202f}\u{2065}\u{206a}"),
-        "\u{2029}\u{202f}\u{2065}\u{206a}"
-    );
+    let cases = [
+        // Bidirectional embedding, override and isolate controls.
+        ('\u{202a}', "\\u{202a}"),
+        ('\u{202e}', "\\u{202e}"),
+        ('\u{2066}', "\\u{2066}"),
+        ('\u{2069}', "\\u{2069}"),
+        // Implicit direction marks.
+        ('\u{200e}', "\\u{200e}"),
+        ('\u{200f}', "\\u{200f}"),
+        ('\u{61c}', "\\u{61c}"),
+        // Line and paragraph separators.
+        ('\u{2028}', "\\u{2028}"),
+        ('\u{2029}', "\\u{2029}"),
+        // Zero-width characters.
+        ('\u{200b}', "\\u{200b}"),
+        ('\u{200c}', "\\u{200c}"),
+        ('\u{200d}', "\\u{200d}"),
+        ('\u{2060}', "\\u{2060}"),
+        ('\u{feff}', "\\u{feff}"),
+    ];
+    for (character, escaped) in cases {
+        assert_eq!(
+            escape_for_terminal(&format!("a{character}b")),
+            format!("a{escaped}b"),
+            "{character:?}"
+        );
+    }
+    // The neighbours of each escaped range are ordinary characters.
+    let neighbours = "\u{61b}\u{61d}\u{200a}\u{2010}\u{2027}\u{202f}\u{205f}\u{2061}\u{2065}\u{206a}\u{fefe}\u{ff00}";
+    assert!(matches!(escape_for_terminal(neighbours), Cow::Borrowed(_)));
 }
 
 fn is_unsafe_for_a_terminal(character: char) -> bool {
-    character.is_control() || matches!(character, '\u{202A}'..='\u{202E}' | '\u{2066}'..='\u{2069}')
+    character.is_control()
+        || matches!(
+            character,
+            '\u{202A}'..='\u{202E}'
+                | '\u{2066}'..='\u{2069}'
+                | '\u{200B}'..='\u{200F}'
+                | '\u{061C}'
+                | '\u{2028}'
+                | '\u{2029}'
+                | '\u{2060}'
+                | '\u{FEFF}'
+        )
 }
 
 #[test]
@@ -1167,11 +1208,11 @@ fn user_facing_wording_makes_no_claims() {
     let wording = TEMPLATES
         .iter()
         .flat_map(|template| [template.id, template.pattern])
-        .chain(
-            ENDING_WORDING
-                .iter()
-                .flat_map(|ending| [ending.pattern, ending.unit.0, ending.unit.1]),
-        )
+        .chain(ENDING_WORDING.iter().flat_map(|ending| {
+            [ending.pattern, ending.unit.0, ending.unit.1]
+                .into_iter()
+                .chain(ending.zero_pattern)
+        }))
         .chain([NO_ACCESSIBLE_NAME]);
     for text in wording {
         let lower = text.to_lowercase();
@@ -1200,4 +1241,230 @@ fn template_identifiers_are_unique_kebab_case() {
     identifiers.sort_unstable();
     identifiers.dedup();
     assert_eq!(identifiers.len(), TEMPLATES.len());
+}
+
+/// The accessible node of sign-in's element whose `id` attribute is `id`.
+fn node_mut<'m>(model: &'m mut Model, id: &str) -> &'m mut AccessibleNode {
+    model
+        .nodes
+        .iter_mut()
+        .find_map(|node| match node {
+            ExposedNode::Accessible(node)
+                if node
+                    .dom
+                    .as_ref()
+                    .is_some_and(|dom| dom.id.as_deref() == Some(id)) =>
+            {
+                Some(&mut **node)
+            }
+            ExposedNode::Accessible(_) | ExposedNode::TextRun(_) => None,
+        })
+        .unwrap_or_else(|| panic!("an exposed node with id {id:?}"))
+}
+
+#[test]
+fn a_whitespace_only_name_is_no_accessible_name() {
+    const BLANK: &str = "  \t\n ";
+    let mut model = adapted("sign-in.json");
+    node_mut(&mut model, "email")
+        .name
+        .as_mut()
+        .expect("the textbox is named")
+        .text = BLANK.to_owned();
+    let transcript = with_layer_b(&model);
+    let textbox = item(&transcript, "email");
+    let record = accessible(textbox).expect("an accessible item");
+    assert_eq!(record.name.status, NameStatus::NoAccessibleName);
+    assert_eq!(
+        record.name.text.as_deref(),
+        Some(BLANK),
+        "Layer A keeps the raw text"
+    );
+    let approx = textbox.approx.as_ref().expect("approx");
+    assert_eq!(
+        (approx.template, approx.phrase.as_str()),
+        ("unnamed", "textbox")
+    );
+    let entry = transcript
+        .indexes
+        .form_controls
+        .iter()
+        .find(|entry| entry.item == textbox.number)
+        .expect("the textbox is a form control");
+    assert_eq!(*entry, unnamed_entry(textbox.number, "textbox"));
+}
+
+#[test]
+fn an_empty_value_adds_no_part_and_a_value_does() {
+    let phrase = |value: Option<&str>| {
+        let mut model = adapted("sign-in.json");
+        node_mut(&mut model, "email").value = value.map(str::to_owned);
+        let transcript = with_layer_b(&model);
+        let approx = item(&transcript, "email").approx.clone().expect("approx");
+        approx.phrase
+    };
+    assert_eq!(phrase(None), "Email, textbox");
+    assert_eq!(phrase(Some("")), phrase(None));
+    assert_eq!(
+        phrase(Some("you@example.com")),
+        "Email, textbox, you@example.com"
+    );
+}
+
+fn unresolved(backend_id: u64) -> FocusStop {
+    FocusStop::Unresolved { backend_id }
+}
+
+/// A focus walk and the tab order it must give.
+struct WalkCase {
+    case: &'static str,
+    steps: Vec<FocusStop>,
+    truncated: bool,
+    cycle_start: Option<u32>,
+    kind: EndingKind,
+    wording: &'static str,
+    repeats: Vec<Option<usize>>,
+}
+
+/// Announces sign-in with the case's walk in place of its own and checks the ending, its
+/// marking, and each step's `repeats`.
+fn assert_walk(walk: WalkCase) {
+    let mut model = adapted("sign-in.json");
+    model.focus = FocusWalk {
+        steps: walk.steps,
+        truncated: walk.truncated,
+        cycle_start: walk.cycle_start,
+    };
+    let tab_order = with_layer_b(&model).tab_order;
+    let repeats: Vec<Option<usize>> = tab_order.steps.iter().map(|step| step.repeats).collect();
+    assert_eq!(
+        (
+            tab_order.ending.value.kind,
+            tab_order.ending.value.wording.as_str(),
+            repeats
+        ),
+        (walk.kind, walk.wording, walk.repeats),
+        "{}",
+        walk.case
+    );
+    assert_eq!(
+        tab_order.ending.by,
+        Marking::ComputedByTool,
+        "{}",
+        walk.case
+    );
+}
+
+const WRAP_TO_STEP_1: &str =
+    "Focus left the page and Tab returned to step 1, the normal end of a walk.";
+
+#[test]
+fn repeating_stops_are_matched_by_identity_on_synthetic_walks() {
+    use FocusStop::LeftPage;
+    let email = adapted("sign-in.json").focus.steps[0].clone();
+    let cases = [
+        WalkCase {
+            case: "an unresolved stop repeats by backend id after leaving the page",
+            steps: vec![unresolved(7), LeftPage, unresolved(7)],
+            truncated: false,
+            cycle_start: Some(2),
+            kind: EndingKind::Wrap,
+            wording: WRAP_TO_STEP_1,
+            repeats: vec![None, None, Some(1)],
+        },
+        WalkCase {
+            case: "an unresolved stop repeats by backend id without leaving the page",
+            steps: vec![unresolved(7), unresolved(8), unresolved(7)],
+            truncated: false,
+            cycle_start: Some(2),
+            kind: EndingKind::Trap,
+            wording: "Tab returned to step 1 without focus leaving the page: a focus trap.",
+            repeats: vec![None, None, Some(1)],
+        },
+        WalkCase {
+            case: "an element stop repeats by DOM id",
+            steps: vec![email.clone(), LeftPage, email],
+            truncated: false,
+            cycle_start: Some(2),
+            kind: EndingKind::Wrap,
+            wording: WRAP_TO_STEP_1,
+            repeats: vec![None, None, Some(1)],
+        },
+        WalkCase {
+            case: "the repeat names the earliest earlier matching step",
+            steps: vec![unresolved(7), unresolved(7), LeftPage, unresolved(7)],
+            truncated: false,
+            cycle_start: Some(3),
+            kind: EndingKind::Wrap,
+            wording: WRAP_TO_STEP_1,
+            repeats: vec![None, None, None, Some(1)],
+        },
+    ];
+    for case in cases {
+        assert_walk(case);
+    }
+}
+
+#[test]
+fn walks_without_a_usable_cycle_end_by_the_other_rules() {
+    use FocusStop::LeftPage;
+    let cases = [
+        WalkCase {
+            case: "a cycle start past the last step is ignored",
+            steps: vec![unresolved(7), LeftPage, unresolved(7)],
+            truncated: false,
+            cycle_start: Some(9),
+            kind: EndingKind::Ended,
+            wording: "The walk ended after 3 steps.",
+            repeats: vec![None, None, None],
+        },
+        WalkCase {
+            case: "a cycle start on the first step repeats nothing",
+            steps: vec![unresolved(7), LeftPage, unresolved(7)],
+            truncated: false,
+            cycle_start: Some(0),
+            kind: EndingKind::Ended,
+            wording: "The walk ended after 3 steps.",
+            repeats: vec![None, None, None],
+        },
+        WalkCase {
+            case: "a cycle start on a left-page step repeats nothing",
+            steps: vec![unresolved(7), LeftPage],
+            truncated: false,
+            cycle_start: Some(1),
+            kind: EndingKind::LeftPage,
+            wording: "Focus left the page after 1 element stop, with no return.",
+            repeats: vec![None, None],
+        },
+        WalkCase {
+            case: "focus leaves the page with no element stops",
+            steps: vec![LeftPage, LeftPage],
+            truncated: false,
+            cycle_start: None,
+            kind: EndingKind::LeftPage,
+            wording: "Focus left the page without stopping on any element.",
+            repeats: vec![None, None],
+        },
+        WalkCase {
+            case: "truncation wins over a cycle",
+            steps: vec![unresolved(7), LeftPage, unresolved(7)],
+            truncated: true,
+            cycle_start: Some(2),
+            kind: EndingKind::Truncated,
+            wording: "The walk stopped at its limit after 3 Tab presses. Later stops are not listed.",
+            repeats: vec![None, None, Some(1)],
+        },
+        WalkCase {
+            case: "an empty truncated walk",
+            steps: Vec::new(),
+            truncated: true,
+            cycle_start: None,
+            kind: EndingKind::Truncated,
+            wording: "The walk stopped at its limit after 0 Tab presses. Later stops are not listed.",
+            repeats: Vec::new(),
+        },
+    ];
+    for case in cases {
+        assert_walk(case);
+    }
 }

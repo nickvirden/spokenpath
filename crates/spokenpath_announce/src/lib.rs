@@ -70,13 +70,14 @@
 //! Tab presses did:
 //!
 //! - `truncated`, when the walk stopped at its step limit: "The walk stopped at its limit after
-//!   N Tab presses."
+//!   N Tab presses. Later stops are not listed."
 //! - `wrap`, when a step repeats an earlier one and focus left the page before it: "Focus left the
 //!   page and Tab returned to step M, the normal end of a walk."
 //! - `trap`, when a step repeats an earlier one without focus leaving the page: "Tab returned to
 //!   step M without focus leaving the page: a focus trap."
 //! - `left-page`, when the last step is `left-page`: "Focus left the page after K element stops,
-//!   with no return."
+//!   with no return.", or, with no element stops, "Focus left the page without stopping on any
+//!   element."
 //! - `ended`, otherwise, including a walk with no steps: "The walk ended after N steps."
 //!
 //! # Layer B
@@ -104,11 +105,19 @@
 //!
 //! # Terminal escaping
 //!
-//! Page-controlled text reaches phrases, so every phrase passes through [`escape_for_terminal`]:
-//! each control character (C0, DEL, C1, including the CSI introducer U+009B) and each
-//! bidirectional embedding, override or isolate control (U+202A to U+202E, U+2066 to U+2069) is
-//! replaced with its `\u{..}` escape; every other character, non-ASCII letters included, passes
-//! unchanged. Layer A keeps the raw strings; a printer escapes them with the same function.
+//! Page-controlled text reaches phrases, so every phrase passes through [`escape_for_terminal`],
+//! which replaces each of these characters with its `\u{..}` escape:
+//!
+//! - every control character: C0, DEL and C1, including the CSI introducer U+009B;
+//! - the bidirectional embedding, override and isolate controls (U+202A to U+202E, U+2066 to
+//!   U+2069) and the implicit direction marks (U+200E, U+200F, U+061C), which reorder what a
+//!   terminal shows;
+//! - the line and paragraph separators (U+2028, U+2029), which can break a line;
+//! - the zero-width characters (U+200B to U+200D, U+2060, U+FEFF), which hide text or make two
+//!   strings look the same.
+//!
+//! Every other character, non-ASCII letters included, passes unchanged. Layer A keeps the raw
+//! strings; a printer escapes them with the same function.
 
 mod approx;
 mod tab_order;

@@ -987,7 +987,7 @@ expression: json
     "ending": {
       "value": {
         "kind": "left-page",
-        "wording": "Focus left the page after 0 element stops, with no return."
+        "wording": "Focus left the page without stopping on any element."
       },
       "by": "computed by tool"
     }

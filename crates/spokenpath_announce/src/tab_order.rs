@@ -85,34 +85,42 @@ pub struct EndingWording {
     pub pattern: &'static str,
     /// The singular and plural unit that `{count}` counts; empty when the pattern has no count.
     pub unit: (&'static str, &'static str),
+    /// The line in place of `pattern` when the count is zero, for an ending where "after 0" reads
+    /// as a count of something that happened; absent when `pattern` serves every count.
+    pub zero_pattern: Option<&'static str>,
 }
 
 /// The wording of every ending kind.
 pub const ENDING_WORDING: [EndingWording; 5] = [
     EndingWording {
         kind: EndingKind::Truncated,
-        pattern: "The walk stopped at its limit after {count}.",
+        pattern: "The walk stopped at its limit after {count}. Later stops are not listed.",
         unit: ("Tab press", "Tab presses"),
+        zero_pattern: None,
     },
     EndingWording {
         kind: EndingKind::Wrap,
         pattern: "Focus left the page and Tab returned to step {step}, the normal end of a walk.",
         unit: ("", ""),
+        zero_pattern: None,
     },
     EndingWording {
         kind: EndingKind::Trap,
         pattern: "Tab returned to step {step} without focus leaving the page: a focus trap.",
         unit: ("", ""),
+        zero_pattern: None,
     },
     EndingWording {
         kind: EndingKind::LeftPage,
         pattern: "Focus left the page after {count}, with no return.",
         unit: ("element stop", "element stops"),
+        zero_pattern: Some("Focus left the page without stopping on any element."),
     },
     EndingWording {
         kind: EndingKind::Ended,
         pattern: "The walk ended after {count}.",
         unit: ("step", "steps"),
+        zero_pattern: None,
     },
 ];
 
@@ -147,8 +155,11 @@ fn wording(kind: EndingKind, step: usize, count: usize) -> String {
     } else {
         entry.unit.1
     };
-    entry
-        .pattern
+    let pattern = match entry.zero_pattern {
+        Some(zero_pattern) if count == 0 => zero_pattern,
+        _ => entry.pattern,
+    };
+    pattern
         .replace("{step}", &step.to_string())
         .replace("{count}", &format!("{count} {unit}"))
 }

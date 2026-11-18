@@ -163,13 +163,29 @@ fn set_position(position: SetPositionRecord) -> String {
 }
 
 /// Whether a terminal must not receive `character` raw: a control character (C0, DEL, or C1,
-/// which includes the CSI introducer U+009B) or a bidirectional embedding, override or isolate
-/// control, which reorders what a terminal shows.
+/// which includes the CSI introducer U+009B); a bidirectional embedding, override or isolate
+/// control, or an implicit direction mark (U+200E, U+200F, U+061C), which reorder what a terminal
+/// shows; a line or paragraph separator (U+2028, U+2029), which can break a line; or a zero-width
+/// character (U+200B to U+200D, U+2060, U+FEFF), which hides text or makes two strings look equal.
 fn needs_escape(character: char) -> bool {
-    character.is_control() || matches!(character, '\u{202A}'..='\u{202E}' | '\u{2066}'..='\u{2069}')
+    character.is_control()
+        || matches!(
+            character,
+            '\u{202A}'..='\u{202E}'
+                | '\u{2066}'..='\u{2069}'
+                | '\u{200E}'
+                | '\u{200F}'
+                | '\u{061C}'
+                | '\u{2028}'
+                | '\u{2029}'
+                | '\u{200B}'..='\u{200D}'
+                | '\u{2060}'
+                | '\u{FEFF}'
+        )
 }
 
-/// `text` with each control and bidirectional control character replaced by its `\u{..}` escape,
+/// `text` with each control character, bidirectional control or mark, line or paragraph
+/// separator, and zero-width character replaced by its `\u{..}` escape,
 /// as [`char::escape_unicode`] writes it; every other character passes unchanged. Borrows `text`
 /// when nothing needs escaping.
 #[must_use]
