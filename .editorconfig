@@ -7,3 +7,10 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
+
+# Byte-exact torture pages: editors keep their encoding, line endings and whitespace.
+[fixtures/pages/torture/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
