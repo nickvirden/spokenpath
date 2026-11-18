@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // Functions passed to `page.evaluate` run in the browser, so the DOM types are in scope.
-    "lib": ["ES2024", "DOM"],
     "types": ["node"]
   },
   "include": ["src"]

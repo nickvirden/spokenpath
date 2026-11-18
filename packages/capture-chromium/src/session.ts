@@ -67,6 +67,33 @@ export async function openPage(browser: Browser, options: OpenPageOptions): Prom
   return { context, page, cdp, url: pageUrl(options.fileName), throwIfServingFailed };
 }
 
+/**
+ * Runs one call into the browser within the capture's time budget. A page can keep its main
+ * thread busy after `load`, and a protocol call that waits on it would otherwise never return.
+ *
+ * @param what Names the call in the timeout message, such as `DOM.getDocument`.
+ */
+export async function bounded<T>(
+  what: string,
+  timeoutMs: number,
+  call: (options: { timeout: number }) => Promise<T>,
+): Promise<T> {
+  try {
+    return await call({ timeout: timeoutMs });
+  } catch (error) {
+    if (error instanceof errors.TimeoutError) {
+      throw new CaptureError('timeout', `${what} did not finish within ${timeoutMs} ms`, { cause: error });
+    }
+    throw error;
+  }
+}
+
+/** Resolves once web fonts have loaded and two animation frames have run. */
+const FONTS_AND_FRAMES = `(async () => {
+  await document.fonts.ready;
+  await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => done())));
+})()`;
+
 /** The settle strategy's name, as `capture.settle` records it. */
 export type SettleName = 'load-fonts-frames' | 'load-selector-fonts-frames';
 
@@ -106,21 +133,12 @@ export async function loadAndSettle(
       throw error;
     }
   }
-  // The race runs in the page, so a font that never loads ends the wait instead of leaving a
-  // promise pending in Node after the browser closes.
-  const settled = await page.evaluate(async (ms) => {
-    const frames = (async () => {
-      await document.fonts.ready;
-      await new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => done())));
-      return true;
-    })();
-    const timeout = new Promise<boolean>((done) => setTimeout(() => done(false), ms));
-    return Promise.race([frames, timeout]);
-  }, timeoutMs);
-  if (!settled) {
-    throw new CaptureError(
-      'timeout',
-      `the page's fonts and animation frames did not settle within ${timeoutMs} ms`,
+  const settled = await bounded("the page's fonts and animation frames", timeoutMs, (options) =>
+    session.cdp.send('Runtime.evaluate', { expression: FONTS_AND_FRAMES, awaitPromise: true }, options),
+  );
+  if (settled.exceptionDetails !== undefined) {
+    throw new Error(
+      `waiting for the page's fonts and animation frames failed: ${settled.exceptionDetails.text}`,
     );
   }
   return waitFor === undefined ? 'load-fonts-frames' : 'load-selector-fonts-frames';

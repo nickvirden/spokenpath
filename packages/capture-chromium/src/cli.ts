@@ -60,8 +60,11 @@ function describeFailure(error: unknown): string {
   if (!(error instanceof Error)) {
     return String(error);
   }
-  const code = 'code' in error && typeof error.code === 'string' ? `${error.code}: ` : '';
-  return `${code}${error.message}`;
+  const code = 'code' in error && typeof error.code === 'string' ? error.code : undefined;
+  // Node's file system errors already start their message with the code.
+  return code === undefined || error.message.startsWith(`${code}:`)
+    ? error.message
+    : `${code}: ${error.message}`;
 }
 
 async function run(args: string[]): Promise<number> {

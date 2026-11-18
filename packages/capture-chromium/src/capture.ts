@@ -2,19 +2,15 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { basename, dirname, resolve } from 'node:path';
 import { instrumentHtml } from '@spokenpath/instrument-html';
-import {
-  type AxForced,
-  type AxNode,
-  type Diagnostic,
-  type Snapshot,
-  validateSnapshot,
-} from '@spokenpath/snapshot-types';
+import { type AxNode, type Diagnostic, type Snapshot, validateSnapshot } from '@spokenpath/snapshot-types';
 import type { Browser } from 'playwright-core';
 import { flattenDocument } from './dom.ts';
 import { CaptureError } from './error.ts';
 import { walkFocus } from './focus.ts';
+import { forcedAxTrees } from './forced.ts';
 import type { ProtocolNode } from './protocol.ts';
 import {
+  bounded,
   CONDITIONS,
   DEFAULT_TIMEOUT_MS,
   launchBrowser,
@@ -28,7 +24,10 @@ import { playwrightVersion, producerVersion } from './versions.ts';
 export interface CaptureOptions {
   /** A CSS selector to wait for, in the DOM, after the `load` event. */
   waitFor?: string;
-  /** How long loading, waiting for the selector and settling may each take; 30 000 ms by default. */
+  /**
+   * How long loading, waiting for the selector, settling and each later call into the browser may
+   * take, in milliseconds: a positive finite number, 30 000 by default.
+   */
   timeoutMs?: number;
 }
 
@@ -38,13 +37,34 @@ interface PageFile {
   bytes: Uint8Array;
 }
 
+function timeoutOf(options: CaptureOptions): number {
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+    // Playwright reads 0 as "no limit", which would let a busy page hang the capture.
+    throw new CaptureError(
+      'invalid-options',
+      `timeoutMs must be a positive number of milliseconds, not ${String(timeoutMs)}`,
+    );
+  }
+  return timeoutMs;
+}
+
+/**
+ * Reads the page file. The error names the file by its base name and the reason by its code
+ * only, because the file system's message carries the absolute path, which output shared from a
+ * capture should not reveal; the full error stays in `cause`.
+ */
 async function readPage(pagePath: string): Promise<PageFile> {
   const absolute = resolve(pagePath);
+  const fileName = basename(absolute);
   try {
-    return { root: dirname(absolute), fileName: basename(absolute), bytes: await readFile(absolute) };
+    return { root: dirname(absolute), fileName, bytes: await readFile(absolute) };
   } catch (error) {
-    const reason = error instanceof Error ? error.message : String(error);
-    throw new CaptureError('page-unreadable', `cannot read the page ${JSON.stringify(pagePath)}: ${reason}`, {
+    const reason =
+      error instanceof Error && 'code' in error && typeof error.code === 'string'
+        ? error.code
+        : 'an unknown error';
+    throw new CaptureError('page-unreadable', `cannot read the page ${JSON.stringify(fileName)}: ${reason}`, {
       cause: error,
     });
   }
@@ -59,8 +79,10 @@ async function withBrowser<T>(run: (browser: Browser) => Promise<T>): Promise<T>
   }
 }
 
-async function getDocument(session: PageSession): Promise<ProtocolNode> {
-  const { root } = await session.cdp.send('DOM.getDocument', { depth: -1, pierce: true });
+async function getDocument(session: PageSession, timeoutMs: number): Promise<ProtocolNode> {
+  const { root } = await bounded('DOM.getDocument', timeoutMs, (options) =>
+    session.cdp.send('DOM.getDocument', { depth: -1, pierce: true }, options),
+  );
   return root;
 }
 
@@ -86,11 +108,11 @@ function compareStrings(left: string, right: string): number {
  * protocol's responses as delivered; it never joins, filters or interprets them (ADR-0002).
  *
  * @throws {InstrumentHtmlError} when the instrumenter refuses the page.
- * @throws {CaptureError} when the page cannot be read, does not load or settle in time, cannot be
- *   served, or yields a snapshot that fails the schema.
+ * @throws {CaptureError} when the options are unusable, the page cannot be read, the page or the
+ *   browser does not answer in time, the page cannot be served, or the snapshot fails the schema.
  */
 export async function captureChromium(pagePath: string, options: CaptureOptions = {}): Promise<Snapshot> {
-  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const timeoutMs = timeoutOf(options);
   const { root, fileName, bytes } = await readPage(pagePath);
   const { html, spans } = instrumentHtml(bytes, { source: 0 });
   const servedText = new TextDecoder('utf-8').decode(html);
@@ -102,44 +124,23 @@ export async function captureChromium(pagePath: string, options: CaptureOptions 
     const capturedAt = new Date().toISOString();
     const { cdp, page } = session;
 
-    const document = await getDocument(session);
+    const document = await getDocument(session, timeoutMs);
+    const { nodes } = await bounded('Accessibility.getFullAXTree', timeoutMs, (callOptions) =>
+      cdp.send('Accessibility.getFullAXTree', {}, callOptions),
+    );
     // The protocol's AXNode declares no index signature, so TypeScript cannot relate it to the
     // schema's open AxNode; the nodes are stored as delivered and validated below.
-    const { nodes } = await cdp.send('Accessibility.getFullAXTree', {});
     const ax = nodes as unknown as AxNode[];
     const flat = flattenDocument(document, spans, servedText);
     diagnostics.push(...flat.diagnostics);
 
-    const inFullTree = new Set(ax.map((node) => node.backendDOMNodeId));
-    const axForced: AxForced[] = [];
-    for (const node of flat.dom) {
-      if (node.kind !== 'element' || inFullTree.has(node.backend_id)) {
-        continue;
-      }
-      try {
-        const partial = await cdp.send('Accessibility.getPartialAXTree', {
-          backendNodeId: node.backend_id,
-          fetchRelatives: false,
-        });
-        axForced.push({
-          node: node.id,
-          backend_id: node.backend_id,
-          nodes: partial.nodes as unknown as AxNode[],
-        });
-      } catch (error) {
-        const reason = error instanceof Error ? error.message : String(error);
-        diagnostics.push({
-          code: 'partial-ax-tree-failed',
-          message: `Accessibility.getPartialAXTree failed for this element: ${reason}`,
-          node: node.id,
-        });
-      }
-    }
+    const forced = await forcedAxTrees(cdp, flat.dom, ax, timeoutMs);
+    diagnostics.push(...forced.diagnostics);
 
-    const domSnapshot = await cdp.send('DOMSnapshot.captureSnapshot', {
-      computedStyles: ['display', 'visibility'],
-    });
-    const walk = await walkFocus(page, cdp, flat.dom, flat.idByBackendId);
+    const domSnapshot = await bounded('DOMSnapshot.captureSnapshot', timeoutMs, (callOptions) =>
+      cdp.send('DOMSnapshot.captureSnapshot', { computedStyles: ['display', 'visibility'] }, callOptions),
+    );
+    const walk = await walkFocus(page, cdp, flat.dom, flat.idByBackendId, timeoutMs);
     diagnostics.push(...walk.diagnostics);
     session.throwIfServingFailed();
 
@@ -172,7 +173,7 @@ export async function captureChromium(pagePath: string, options: CaptureOptions 
         engine: 'chromium',
         dom: flat.dom,
         ax,
-        ax_forced: axForced,
+        ax_forced: forced.axForced,
         // Stored as delivered, for the same reason as the AX nodes.
         dom_snapshot: domSnapshot as unknown as Record<string, unknown>,
         focus: walk.focus,
@@ -196,13 +197,13 @@ export async function captureChromium(pagePath: string, options: CaptureOptions 
  * sound for the page when they are equal.
  *
  * @throws {InstrumentHtmlError} when the instrumenter refuses the page.
- * @throws {CaptureError} as `captureChromium` does, for reading, loading and serving.
+ * @throws {CaptureError} as `captureChromium` does, for options, reading, loading and serving.
  */
 export async function verifyInstrumentation(
   pagePath: string,
   options: CaptureOptions = {},
 ): Promise<DomComparison> {
-  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const timeoutMs = timeoutOf(options);
   const { root, fileName, bytes } = await readPage(pagePath);
   const { html } = instrumentHtml(bytes, { source: 0 });
 
@@ -211,7 +212,7 @@ export async function verifyInstrumentation(
       const session = await openPage(browser, { root, fileName, body, diagnostics: [] });
       try {
         await loadAndSettle(session, options.waitFor, timeoutMs);
-        const document = await getDocument(session);
+        const document = await getDocument(session, timeoutMs);
         session.throwIfServingFailed();
         return document;
       } finally {

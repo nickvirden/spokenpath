@@ -127,14 +127,18 @@ timeoutMs })`, `verifyInstrumentation(pagePath, options)` and `normaliseForGolde
 **Loading.** The page is tagged with `@spokenpath/instrument-html` and served at
 `http://spokenpath.test/<file name>` by request interception, so capture opens no listening
 socket. Other requests on that origin are answered from the page's directory and the directories
-below it. Requests to any other origin are aborted and every WebSocket is closed. The browser
+below it, except paths with a segment starting with `.` (such as `.env` or `.git/`), which get a
+404 like a missing file. Requests to any other origin are aborted and every WebSocket is closed.
+The browser
 context is fixed: a 1280 × 720 viewport at device pixel ratio 1, light colour scheme, no reduced
 motion, `en-US`, UTC, service workers blocked and downloads refused.
 
 **Settling.** Capture waits for the `load` event, then the `--wait-for` selector when one is
 given, then `document.fonts.ready`, then two animation frames. `capture.settle` is
-`load-fonts-frames`, or `load-selector-fonts-frames` with a selector. Each wait has a time limit
-(30 seconds by default); a selector that never matches fails the capture, naming the selector.
+`load-fonts-frames`, or `load-selector-fonts-frames` with a selector. Each wait, and each later
+call into the browser, has the same time limit (`timeoutMs`, a positive number of milliseconds,
+30 000 by default), so a page that keeps its main thread busy fails the capture with `timeout`
+rather than hanging it. A selector that never matches fails the capture, naming the selector.
 
 **Protocol data.** After settling, capture calls `DOM.getDocument({ depth: -1, pierce: true })` and
 `Accessibility.getFullAXTree` once each, `Accessibility.getPartialAXTree` (without relatives) for
@@ -168,10 +172,16 @@ when the document does not have focus or only `body` is active. Chromium moves f
 document after the last stop and back to the first stop on the next press, so the walk continues
 past the first `{}`. It stops at the first of:
 
-- a step whose element an earlier step already focused, which it keeps, with `cycle_start` set
-  to that step's index (a trap shows a cycle with no `{}` before it);
+- a step whose element an earlier, non-adjacent step already focused, which it keeps, with
+  `cycle_start` set to that step's index (a trap shows a cycle with no `{}` before it);
 - the second `{}` step;
 - 200 steps, with `truncated: true`.
+
+A step on the same element as the step just before it is not a cycle. Tab never moves focus from
+an element to itself, so focus moved inside content capture cannot read: a frame, or a shadow root
+that is closed. Only the `iframe` or the host is visible there, so the walk records one step on it
+per press and keeps going; those steps are not collapsed. The element's `iframe-not-captured` or
+`focus-in-closed-shadow-root` diagnostic tells the reader which case it is.
 
 **Diagnostics.** Sorted by code, then node, then message. URLs in messages have their userinfo,
 query string and fragment removed.
@@ -183,8 +193,8 @@ query string and fragment removed.
 | `iframe-not-captured` | An `iframe`, `frame` or other element with a frame document; the element is recorded, its contents are not. |
 | `unknown-source-attribute` | An element's `data-spokenpath-src` names no span, so its origin is `unknown`. |
 | `partial-ax-tree-failed` | `getPartialAXTree` failed for the element, so it has no `ax_forced` entry. |
-| `focus-target-not-in-dom` | Focus landed on an element missing from `dom`; the step has only `backend_id`. |
-| `focus-in-closed-shadow-root` | Focus is on a host whose shadow root is closed, so the element focused inside it cannot be read. |
+| `focus-target-not-in-dom` | Focus landed on an element missing from `dom`, such as one a script added after the DOM was read; the step has only `backend_id`. |
+| `focus-in-closed-shadow-root` | Focus is on a host whose shadow root is closed, so the element focused inside it cannot be read; reported once for consecutive steps on the host. |
 
 **Verifying instrumentation.** `--verify-instrumentation` loads the original page and the
 instrumented page in two separate loads, served and settled the same way, and compares the two

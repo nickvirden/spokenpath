@@ -54,6 +54,19 @@ test('exits 1 naming the instrumenter error code for a refused page', async () =
   expect(stderr).toContain('attribute-present');
 });
 
+test('exits 1 with page-unreadable for a missing page', async () => {
+  const { code, stderr } = await runCli([pagePath('no-such-page.html')]);
+  expect(code).toBe(1);
+  expect(stderr).toContain('page-unreadable: cannot read the page "no-such-page.html": ENOENT');
+});
+
+test('a failure whose message already starts with its code names the code once', async () => {
+  const { code, stderr } = await runCli([pagePath('sign-in.html'), '--out', pagePath('no-such-dir/s.json')]);
+  expect(code).toBe(1);
+  expect(stderr).toMatch(/^capture failed: ENOENT: /);
+  expect(stderr).not.toContain('ENOENT: ENOENT');
+});
+
 describe('usage errors exit 2', () => {
   test.each([
     ['no page', []],

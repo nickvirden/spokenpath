@@ -1,13 +1,22 @@
-import { readFileSync } from 'node:fs';
+import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import type { Snapshot } from '@spokenpath/snapshot-types';
 import { chromium } from 'playwright-core';
-import { describe, expect, test } from 'vitest';
-import { captureChromium } from './capture.ts';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { captureChromium, verifyInstrumentation } from './capture.ts';
 import { CaptureError } from './error.ts';
 import { chromiumPayload, elementId, htmlPagesIn, pagePath } from './fixture-pages.ts';
-import { MAX_FOCUS_STEPS } from './focus.ts';
 import { normaliseForGolden } from './normalise.ts';
 
-/** Where focus lands after each Tab press: an element's `id`, or `null` when it left the document. */
+/** Marks a step on an element that is not in the captured DOM. */
+const NOT_IN_DOM = '(not in dom)';
+
+/**
+ * Where focus lands after each Tab press: an element's `id`, `NOT_IN_DOM`, or `null` when focus
+ * left the document. Content inside a frame or a closed shadow root shows as the frame element or
+ * the host, once per press.
+ */
 const expectedFocus: Record<string, (string | null)[]> = {
   'focus/positive-tabindex.html': [
     'tabindex-one',
@@ -20,38 +29,163 @@ const expectedFocus: Record<string, (string | null)[]> = {
   'focus/disabled.html': ['before', 'after', null, 'before'],
   'focus/inert.html': ['before', 'after', null, 'before'],
   'focus/delegates-focus.html': ['before', 'inner', 'after', null, 'before'],
+  'focus/closed-shadow.html': ['before', 'host', 'host', 'after', null, 'before'],
+  'focus/iframe.html': ['before', 'frame', 'frame', 'after', null, 'before'],
+  'focus/added-on-tab.html': ['before', NOT_IN_DOM, null, 'before'],
+  'focus/no-focusable.html': [null, null],
   'focus/trap.html': ['first', 'middle', 'last', 'first'],
-  'focus/long.html': Array.from(
-    { length: MAX_FOCUS_STEPS },
-    (_, index) => `b${String(index + 1).padStart(3, '0')}`,
-  ),
+  // The cap is written out, so changing the constant fails here rather than passing silently.
+  'focus/long.html': Array.from({ length: 200 }, (_, index) => `b${String(index + 1).padStart(3, '0')}`),
 };
+
+/** Each focus page captured once, by the first test that needs it. */
+const focusCaptures = new Map<string, Promise<Snapshot>>();
+function captureFocusPage(page: string): Promise<Snapshot> {
+  let captured = focusCaptures.get(page);
+  if (captured === undefined) {
+    captured = captureChromium(pagePath(page));
+    focusCaptures.set(page, captured);
+  }
+  return captured;
+}
+
+function focusOf(page: string) {
+  return captureFocusPage(page).then((snapshot) => chromiumPayload(snapshot).focus);
+}
 
 describe.each(htmlPagesIn('focus/'))('focus walk of %s', (page) => {
   test('lands on the expected elements in order', async () => {
     const expected = expectedFocus[page];
     expect(expected, `${page} has no entry in expectedFocus`).toBeDefined();
-    const snapshot = await captureChromium(pagePath(page));
+    const snapshot = await captureFocusPage(page);
     const steps = chromiumPayload(snapshot).focus.steps;
-    expect(
-      steps.map((step) => (step.node === undefined ? null : (elementId(snapshot, step.node) ?? '(no id)'))),
-    ).toEqual(expected);
+    const landed = steps.map((step) => {
+      if (step.node !== undefined) {
+        return elementId(snapshot, step.node) ?? '(no id)';
+      }
+      return step.backend_id === undefined ? null : NOT_IN_DOM;
+    });
+    expect(landed).toEqual(expected);
   });
 });
 
 describe('focus walk stop rules', () => {
   test('a trap reports a cycle with no step outside the document before it', async () => {
-    const { focus } = chromiumPayload(await captureChromium(pagePath('focus/trap.html')));
+    const focus = await focusOf('focus/trap.html');
     expect(focus.truncated).toBe(false);
     expect(focus.cycle_start).toBeTypeOf('number');
     expect(focus.steps.slice(0, focus.cycle_start).some((step) => step.node === undefined)).toBe(false);
   });
 
-  test('a page with more stops than the cap is truncated at the cap with no cycle', async () => {
-    const { focus } = chromiumPayload(await captureChromium(pagePath('focus/long.html')));
-    expect(focus.steps).toHaveLength(MAX_FOCUS_STEPS);
+  test('a page with more stops than the cap is truncated at 200 steps with no cycle', async () => {
+    const focus = await focusOf('focus/long.html');
+    expect(focus.steps).toHaveLength(200);
     expect(focus.truncated).toBe(true);
     expect(focus).not.toHaveProperty('cycle_start');
+  });
+
+  test('a page with no tab stops stops at the second step outside the document', async () => {
+    const focus = await focusOf('focus/no-focusable.html');
+    expect(focus.steps).toEqual([{}, {}]);
+    expect(focus.truncated).toBe(false);
+    expect(focus).not.toHaveProperty('cycle_start');
+  });
+
+  test.each([
+    ['focus/closed-shadow.html', 'focus-in-closed-shadow-root', 'host'],
+    ['focus/iframe.html', 'iframe-not-captured', 'frame'],
+  ])('focus moving inside %s is not a cycle, and the stop after it is reached', async (page, code, id) => {
+    const snapshot = await captureFocusPage(page);
+    const { focus } = chromiumPayload(snapshot);
+    const ids = focus.steps.map((step) => elementId(snapshot, step.node));
+    // The only cycle is the wrap back to the first stop, after focus left the document.
+    expect(focus.cycle_start).toBe(ids.lastIndexOf('before'));
+    expect(focus.steps[(focus.cycle_start ?? 0) - 1]).toEqual({});
+    expect(ids).toContain('after');
+    const diagnostics = snapshot.diagnostics.filter((diagnostic) => diagnostic.code === code);
+    expect(diagnostics).toHaveLength(1);
+    expect(elementId(snapshot, diagnostics[0]?.node)).toBe(id);
+  });
+
+  test('focus on an element added after the DOM was read records its backend id and a diagnostic', async () => {
+    const snapshot = await captureFocusPage('focus/added-on-tab.html');
+    const step = chromiumPayload(snapshot).focus.steps[1];
+    expect(step).toEqual({ backend_id: expect.any(Number) });
+    expect(snapshot.diagnostics).toEqual([
+      expect.objectContaining({
+        code: 'focus-target-not-in-dom',
+        message: expect.stringContaining('Tab press 2'),
+      }),
+    ]);
+    expect(snapshot.diagnostics[0]).not.toHaveProperty('node');
+  });
+});
+
+describe('capture failures', () => {
+  let directory: string;
+  const write = (name: string, contents: string) => {
+    const path = join(directory, name);
+    writeFileSync(path, contents);
+    return path;
+  };
+
+  beforeAll(() => {
+    directory = mkdtempSync(join(tmpdir(), 'capture-failures-'));
+  });
+
+  afterAll(() => {
+    rmSync(directory, { recursive: true, force: true });
+  });
+
+  test('a missing page is page-unreadable, named by its base name only', async () => {
+    const capture = captureChromium(join(directory, 'missing.html'));
+    await expect(capture).rejects.toThrow(CaptureError);
+    await expect(capture).rejects.toMatchObject({ code: 'page-unreadable' });
+    const message = await capture.catch((error: Error) => error.message);
+    expect(message).toContain('"missing.html"');
+    expect(message).not.toContain(directory);
+  });
+
+  test.skipIf(process.getuid?.() === 0)(
+    'an asset that cannot be read aborts the capture as asset-unreadable',
+    async () => {
+      const page = write(
+        'locked-asset.html',
+        '<!doctype html><link rel="stylesheet" href="locked.css"><p>x</p>',
+      );
+      chmodSync(write('locked.css', 'p { color: red; }'), 0o000);
+      await expect(captureChromium(page)).rejects.toMatchObject({
+        name: 'CaptureError',
+        code: 'asset-unreadable',
+      });
+    },
+  );
+
+  test('a page that never finishes loading times out', { timeout: 30_000 }, async () => {
+    const page = write('busy-load.html', '<!doctype html><p>x</p><script>for (;;) {}</script>');
+    await expect(captureChromium(page, { timeoutMs: 1_000 })).rejects.toMatchObject({
+      name: 'CaptureError',
+      code: 'timeout',
+    });
+  });
+
+  test('a page that keeps its main thread busy after load times out', { timeout: 30_000 }, async () => {
+    const page = write(
+      'busy-after-load.html',
+      '<!doctype html><p>x</p><script>addEventListener("load", () => setTimeout(() => { for (;;) {} }, 0));</script>',
+    );
+    await expect(captureChromium(page, { timeoutMs: 1_000 })).rejects.toMatchObject({
+      name: 'CaptureError',
+      code: 'timeout',
+    });
+  });
+
+  test.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY])('timeoutMs %s is refused', async (timeoutMs) => {
+    const page = pagePath('sign-in.html');
+    await expect(captureChromium(page, { timeoutMs })).rejects.toMatchObject({ code: 'invalid-options' });
+    await expect(verifyInstrumentation(page, { timeoutMs })).rejects.toMatchObject({
+      code: 'invalid-options',
+    });
   });
 });
 
