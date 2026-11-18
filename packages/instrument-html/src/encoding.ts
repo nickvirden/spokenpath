@@ -1,5 +1,5 @@
-import { InstrumentHtmlError } from './error.js';
-import { type Document, type Element, elements } from './tree.js';
+import { InstrumentHtmlError } from './error.ts';
+import { type Document, type Element, elements } from './tree.ts';
 
 const UTF8_BOM_LENGTH = 3;
 

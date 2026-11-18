@@ -1,8 +1,8 @@
 import { parse } from 'parse5';
 import { describe, expect, test } from 'vitest';
-import { charsetFromContent } from './encoding.js';
-import { InstrumentHtmlError, instrumentHtml, packageName, SOURCE_ATTRIBUTE } from './index.js';
-import { elements } from './tree.js';
+import { charsetFromContent } from './encoding.ts';
+import { InstrumentHtmlError, instrumentHtml, packageName, SOURCE_ATTRIBUTE } from './index.ts';
+import { elements } from './tree.ts';
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder('utf-8', { ignoreBOM: true });

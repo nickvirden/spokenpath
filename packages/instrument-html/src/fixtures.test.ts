@@ -6,9 +6,9 @@ import {
   InstrumentHtmlError,
   instrumentHtml,
   SOURCE_ATTRIBUTE,
-} from './index.js';
-import { compareTrees } from './tree-equality.js';
-import { elements } from './tree.js';
+} from './index.ts';
+import { compareTrees } from './tree-equality.ts';
+import { elements } from './tree.ts';
 
 const tortureUrl = new URL('../../../fixtures/pages/torture/', import.meta.url);
 const rejectedUrl = new URL('rejected/', tortureUrl);

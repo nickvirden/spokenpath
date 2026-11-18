@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { html, parse, serialize } from 'parse5';
 import { describe, expect, test } from 'vitest';
-import { SOURCE_ATTRIBUTE } from './source-attribute.js';
-import { compareTrees } from './tree-equality.js';
-import { type Document, type Element, elements, isTemplate } from './tree.js';
+import { SOURCE_ATTRIBUTE } from './source-attribute.ts';
+import { compareTrees } from './tree-equality.ts';
+import { type Document, type Element, elements, isTemplate } from './tree.ts';
 
 const fosterParentingUrl = new URL('../../../fixtures/pages/torture/foster-parenting.html', import.meta.url);
 
