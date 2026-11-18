@@ -115,18 +115,36 @@ fn main() -> ExitCode {
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
+    use std::path::{Path, PathBuf};
 
     use super::{generated_schema, run, schema};
 
-    /// A fresh directory under the system temporary directory, unique to this process and test.
-    fn temporary_directory(name: &str) -> PathBuf {
-        let directory = std::env::temp_dir().join(format!("xtask-{}-{name}", std::process::id()));
-        if directory.exists() {
-            std::fs::remove_dir_all(&directory).expect("stale test directory is removed");
+    /// A fresh directory under the system temporary directory, unique to this process and test,
+    /// removed when the value drops.
+    struct TemporaryDirectory(PathBuf);
+
+    impl TemporaryDirectory {
+        fn new(name: &str) -> Self {
+            let directory =
+                std::env::temp_dir().join(format!("xtask-{}-{name}", std::process::id()));
+            if directory.exists() {
+                std::fs::remove_dir_all(&directory).expect("stale test directory is removed");
+            }
+            std::fs::create_dir_all(&directory).expect("test directory is created");
+            Self(directory)
         }
-        std::fs::create_dir_all(&directory).expect("test directory is created");
-        directory
+
+        fn join(&self, path: impl AsRef<Path>) -> PathBuf {
+            self.0.join(path)
+        }
+    }
+
+    impl Drop for TemporaryDirectory {
+        fn drop(&mut self) {
+            if let Err(error) = std::fs::remove_dir_all(&self.0) {
+                eprintln!("could not remove {}: {error}", self.0.display());
+            }
+        }
     }
 
     #[test]
@@ -144,7 +162,8 @@ mod tests {
 
     #[test]
     fn schema_writes_a_file_that_check_then_accepts() {
-        let path = temporary_directory("write").join("schema/snapshot.v0.json");
+        let directory = TemporaryDirectory::new("write");
+        let path = directory.join("schema/snapshot.v0.json");
         schema(&[], &path).expect("schema writes the file");
         let written = std::fs::read_to_string(&path).expect("the file exists");
         assert_eq!(written, generated_schema().expect("schema serialises"));
@@ -155,7 +174,8 @@ mod tests {
 
     #[test]
     fn schema_check_fails_on_differing_content_and_writes_nothing() {
-        let path = temporary_directory("differ").join("snapshot.v0.json");
+        let directory = TemporaryDirectory::new("differ");
+        let path = directory.join("snapshot.v0.json");
         let stale = generated_schema().expect("schema serialises") + " ";
         std::fs::write(&path, &stale).expect("stale file is written");
         let message = schema(&["--check"], &path).expect_err("check fails on differing content");
@@ -166,7 +186,8 @@ mod tests {
 
     #[test]
     fn schema_check_fails_when_the_file_is_missing() {
-        let path = temporary_directory("missing").join("snapshot.v0.json");
+        let directory = TemporaryDirectory::new("missing");
+        let path = directory.join("snapshot.v0.json");
         let message = schema(&["--check"], &path).expect_err("check fails on a missing file");
         assert!(message.contains("schema/snapshot.v0.json"), "{message}");
         assert!(message.contains("`cargo xtask schema`"), "{message}");
@@ -175,7 +196,8 @@ mod tests {
 
     #[test]
     fn schema_unknown_flag_is_an_error_naming_it() {
-        let path = temporary_directory("flag").join("snapshot.v0.json");
+        let directory = TemporaryDirectory::new("flag");
+        let path = directory.join("snapshot.v0.json");
         let message = schema(&["--nope"], &path).expect_err("an unknown flag fails");
         assert!(message.contains("`--nope`"), "{message}");
         let message =
