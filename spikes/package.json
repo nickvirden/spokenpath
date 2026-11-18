@@ -5,7 +5,6 @@
   "license": "MIT OR Apache-2.0",
   "description": "Feasibility probes recorded in docs/decisions; evidence, not product code",
   "dependencies": {
-    "@guidepup/guidepup": "0.40.0",
     "playwright": "1.65.1"
   }
 }
