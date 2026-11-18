@@ -30,9 +30,17 @@ on a fresh clone.
    npm ci --ignore-scripts --prefix .github/release
    ```
 
-5. Install [rustup](https://rustup.rs/). The first `cargo` command in the checkout installs the
+5. Install the Chromium build that the pinned playwright-core drives, which the capture tests
+   launch:
+
+   ```sh
+   pnpm --filter @spokenpath/capture-chromium exec playwright-core install chromium
+   ```
+
+   On Linux, add `--with-deps` to install the browser's system libraries too.
+6. Install [rustup](https://rustup.rs/). The first `cargo` command in the checkout installs the
    toolchain and components that `rust-toolchain.toml` pins.
-6. Install the native tools the checks call. A commit works without them (the secret-scan hook
+7. Install the native tools the checks call. A commit works without them (the secret-scan hook
    warns and skips when gitleaks is missing), but `pnpm check` needs all five:
 
    | Tool | Used by | Install (macOS) | Elsewhere |
@@ -61,15 +69,17 @@ and stops at the first failure:
 | 9 | Every package typechecks | `pnpm typecheck` |
 | 10 | Rust dependencies pass the licence, advisory, source and ban checks | `pnpm deny` |
 | 11 | Rust tests pass | `pnpm test:rust` |
-| 12 | Package tests pass | `pnpm test:node` |
-| 13 | Every manifest carries the same version, and the version script moves them together | `pnpm test:versions` |
+| 12 | Package tests pass, except Chromium capture | `pnpm test:node` |
+| 13 | Chromium capture matches its goldens (needs Setup step 5) | `pnpm test:capture` |
+| 14 | Every manifest carries the same version, and the version script moves them together | `pnpm test:versions` |
 | all | Everything above | `pnpm check` |
 
 `pnpm lint:commits` (`scripts/lint-commits.mjs`) checks the commits between `origin/main` and
 `HEAD`, so fetch first (`git fetch origin`) if `origin/main` is stale. When there are no commits in
 that range, as on `main` itself, it passes without linting anything. When `origin/main` does not
-exist it fails. `pnpm test:release` needs step 4 of Setup. `pnpm lint:biome` only reports; to apply
-its formatting, run `pnpm exec biome check --write <files>`.
+exist it fails. `pnpm test:release` needs step 4 of Setup, and `pnpm test:capture` needs step 5.
+`pnpm lint:biome` only reports; to apply its formatting, run
+`pnpm exec biome check --write <files>`.
 
 CI runs the same checks on every pull request, plus a lint of the pull request title and a
 gitleaks scan of the pull request's commits.
@@ -93,6 +103,16 @@ gitleaks scan of the pull request's commits.
   sources they describe under `pages/`. Every snapshot is hand-written except
   `chromium-from-typescript.json`, the JSON of the typed sample in `@spokenpath/snapshot-types`,
   refreshed with `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
+- `fixtures/pages/`: the capture fixtures, one page per behaviour, that
+  `@spokenpath/capture-chromium` captures. `focus/` holds the Tab-order pages, `settle/` pages
+  that only settle with a wait-for selector, and `assets/` the files the pages load from their own
+  directory. Every page is byte-exact (`-text` in `.gitattributes`), because its golden records
+  its SHA-256.
+- `fixtures/snapshots/chromium/`: the capture goldens, one per page directly in `fixtures/pages/`
+  or in `focus/`, at the same relative path with `.json` for `.html`. Each is the normalised
+  capture of its page; refresh them with `UPDATE_FIXTURES=1 pnpm test:capture` and review the
+  diff as drift ([ADR-0007](docs/decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)).
+  The Rust tests do not read this directory.
 - `fixtures/pages/torture/`: hostile HTML pages for `@spokenpath/instrument-html`, one parser
   corner per file, each of which it must tag without changing the parsed tree. `rejected/` holds
   pages it must refuse, each named for the error code it raises (`<code>.<case>.html`). The tests
@@ -104,8 +124,10 @@ gitleaks scan of the pull request's commits.
   not product code: nothing in `crates/` or `packages/` imports them, and they have their own
   manifest outside the pnpm workspace. See [spikes/README.md](spikes/README.md).
 - Lints are set once for the whole Cargo workspace (`[workspace.lints]` in `Cargo.toml`), and
-  every package's `tsconfig.json` extends `tsconfig.base.json`. Rust snapshot tests use `insta`;
-  Vitest is the only TypeScript test framework.
+  every package's `tsconfig.json` extends `tsconfig.base.json`. Relative imports in the
+  TypeScript packages name the `.ts` file (`./error.ts`, not `./error.js`), so Node runs the
+  sources directly, with no build step. Rust snapshot tests use `insta`; Vitest is the only
+  TypeScript test framework.
 
 ## Commits and pull request titles
 

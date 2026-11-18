@@ -20,6 +20,13 @@ pnpm install
 npm ci --ignore-scripts --prefix .github/release
 ```
 
+The capture tests launch the Chromium build that the pinned playwright-core drives; install it
+once with:
+
+```sh
+pnpm --filter @spokenpath/capture-chromium exec playwright-core install chromium
+```
+
 Install [rustup](https://rustup.rs/); the first `cargo` command installs the Rust toolchain that
 `rust-toolchain.toml` pins. The checks also call native tools (gitleaks, actionlint, shellcheck,
 zizmor and cargo-deny). See [Setup in AGENTS.md](AGENTS.md#setup) for how to install each one.

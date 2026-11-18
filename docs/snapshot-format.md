@@ -108,11 +108,112 @@ pattern and range in the schema. The Rust reader is lenient about what does not 
 meaning of a snapshot: it accepts `null` for an optional field (as absent), a `line` or `column`
 of 0, and a `sha256` or `captured_at` that does not match its pattern.
 
+## Chromium capture
+
+`@spokenpath/capture-chromium` writes Chromium snapshots. It drives the Chromium build that its
+exactly pinned playwright-core names, in new headless mode, and records what the browser exposes
+as the DevTools Protocol delivers it ([ADR-0008](decisions/ADR-0008-chromium-protocol-behaviours.md)).
+
+```sh
+node packages/capture-chromium/src/cli.ts <page.html> [--out <file>] [--wait-for <selector>]
+node packages/capture-chromium/src/cli.ts <page.html> --verify-instrumentation
+```
+
+The snapshot goes to stdout, or to `--out`. The command exits 0 on success, 1 when capture or
+verification fails (with the reason on stderr, prefixed by its code, such as `attribute-present`),
+and 2 on a usage error. The package also exports `captureChromium(pagePath, { waitFor,
+timeoutMs })`, `verifyInstrumentation(pagePath, options)` and `normaliseForGolden(snapshot)`.
+
+**Loading.** The page is tagged with `@spokenpath/instrument-html` and served at
+`http://spokenpath.test/<file name>` by request interception, so capture opens no listening
+socket. Other requests on that origin are answered from the page's directory and the directories
+below it. Requests to any other origin are aborted and every WebSocket is closed. The browser
+context is fixed: a 1280 × 720 viewport at device pixel ratio 1, light colour scheme, no reduced
+motion, `en-US`, UTC, service workers blocked and downloads refused.
+
+**Settling.** Capture waits for the `load` event, then the `--wait-for` selector when one is
+given, then `document.fonts.ready`, then two animation frames. `capture.settle` is
+`load-fonts-frames`, or `load-selector-fonts-frames` with a selector. Each wait has a time limit
+(30 seconds by default); a selector that never matches fails the capture, naming the selector.
+
+**Protocol data.** After settling, capture calls `DOM.getDocument({ depth: -1, pierce: true })` and
+`Accessibility.getFullAXTree` once each, `Accessibility.getPartialAXTree` (without relatives) for
+every element the full tree leaves out, and `DOMSnapshot.captureSnapshot` with the computed
+`display` and `visibility`. `ax`, `ax_forced` and `dom_snapshot` hold the responses unchanged.
+`dom` is the document tree flattened in pre-order (the document is id 0), with these limits of
+what the protocol delivers:
+
+- `DOM.getDocument` leaves out text nodes that hold only whitespace, so `dom` has none.
+- `namespace` is never written, because the protocol does not deliver it.
+- Pseudo-elements are not recorded; the snapshot has no kind for them.
+- A `template`'s content fragment is recorded without children, as the protocol returns it.
+- Frame contents are not followed (see `iframe-not-captured`).
+- Text is never shortened, so `text.truncated` is always `false`.
+
+**Origins.** Each element's `origin` comes from the first rule that matches:
+
+1. `source`, with `span`, when its `data-spokenpath-src` value is the id of a span;
+2. `unknown` when that attribute is present but names no span;
+3. `unknown` inside a user-agent shadow root, which the browser builds itself;
+4. `implied` for an element in the document's light tree when the HTML parser, run on the served
+   text, creates an element of the same name at the same place without a start tag (implied
+   `html`, `head`, `body` or `tbody`);
+5. `script` otherwise, such as content a script adds or attaches in a shadow root.
+
+`library` is not written by this capture.
+
+**Focus walk.** After the protocol data, capture presses Tab and records the element that has
+focus after each press, descending through open shadow roots' active elements. A step is `{}`
+when the document does not have focus or only `body` is active. Chromium moves focus out of the
+document after the last stop and back to the first stop on the next press, so the walk continues
+past the first `{}`. It stops at the first of:
+
+- a step whose element an earlier step already focused, which it keeps, with `cycle_start` set
+  to that step's index (a trap shows a cycle with no `{}` before it);
+- the second `{}` step;
+- 200 steps, with `truncated: true`.
+
+**Diagnostics.** Sorted by code, then node, then message. URLs in messages have their userinfo,
+query string and fragment removed.
+
+| Code | Meaning |
+|---|---|
+| `external-request-blocked` | A request to another origin was aborted, or a WebSocket was closed. |
+| `asset-not-found` | A request on the page's origin named no file in its directory, or one outside it; it got a 404. |
+| `iframe-not-captured` | An `iframe`, `frame` or other element with a frame document; the element is recorded, its contents are not. |
+| `unknown-source-attribute` | An element's `data-spokenpath-src` names no span, so its origin is `unknown`. |
+| `partial-ax-tree-failed` | `getPartialAXTree` failed for the element, so it has no `ax_forced` entry. |
+| `focus-target-not-in-dom` | Focus landed on an element missing from `dom`; the step has only `backend_id`. |
+| `focus-in-closed-shadow-root` | Focus is on a host whose shadow root is closed, so the element focused inside it cannot be read. |
+
+**Verifying instrumentation.** `--verify-instrumentation` loads the original page and the
+instrumented page in two separate loads, served and settled the same way, and compares the two
+`DOM.getDocument` trees: node types, names, values, doctype identifiers, shadow root types,
+attributes in order (leaving out `data-spokenpath-src` on the instrumented side only) and the
+child structure, ignoring protocol ids. It prints one line and exits 0 when they are equal and 1
+at the first difference. It writes no snapshot.
+
 ## Golden comparisons
 
-`volatile` differs on every run of the same capture, so golden comparisons exclude it
-([ADR-0007](decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)). Everything else,
-including the browser version in `capture.engine_version`, is compared.
+Golden comparisons compare a normalised copy of each snapshot
+([ADR-0007](decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)).
+`normaliseForGolden` rewrites the fields that differ between runs or hosts of the same capture:
+
+| Field | Set to | Why it varies |
+|---|---|---|
+| `volatile.captured_at` | `1970-01-01T00:00:00Z` | The time of each run. |
+| `producer.version` | `0.0.0` | Every release bumps it. |
+| `backendNodeId`, `backend_id` and `backendDOMNodeId`, everywhere (including `relatedNodes` and the DOM snapshot's `backendNodeId` arrays) | Renumbered from 1 by first appearance in `dom`, then `ax`, `ax_forced`, `focus` and `dom_snapshot`, the same number everywhere | The browser assigns them at run time. |
+| AX `nodeId`, `parentId` and `childIds`, in `ax` and `ax_forced` | Renumbered from 1 by first appearance in `ax`, then `ax_forced`, the same number everywhere | Chromium assigns them from process-wide counters; the `InlineTextBox` ids differ between macOS and Linux. |
+| AX `frameId`, and the DOM snapshot document's `frameId` string | `frame` | Random per browser launch. |
+| `dom_snapshot` layout `bounds`, `offsetRects`, `scrollRects` and `clientRects`, text box `bounds`, and each document's `contentWidth`, `contentHeight`, `scrollOffsetX` and `scrollOffsetY` | `0`, keeping array shapes | They depend on the host's fonts. |
+
+Everything else, including the browser version in `capture.engine_version`, is compared, so a
+browser upgrade shows up as a reviewed diff. The capture goldens live in
+`fixtures/snapshots/chromium/`, one per page directly in `fixtures/pages/` or in
+`fixtures/pages/focus/`, at the same relative path with `.json` in place of `.html`. Refresh them
+with `UPDATE_FIXTURES=1 pnpm test:capture`. Fixture text stays on one line at 1280 pixels, so
+fonts cannot change how text wraps.
 
 ## Changing the format
 
