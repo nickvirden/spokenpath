@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en">
+<h1>Café sign-up</h1>
+<label for="email">Email</label>
+<input id="email" type="email"> → <button>Join</button>
+<p aria-hidden="true">Décor</p>
+<x-card></x-card>
+<script>const card = document.querySelector('x-card'); card.attachShadow({ mode: 'open' }).append(Object.assign(document.createElement('span'), { textContent: 'Hi' }));</script>

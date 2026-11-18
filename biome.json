@@ -12,7 +12,10 @@
       "!**/pnpm-lock.yaml",
       "!**/package-lock.json",
       "!**/CHANGELOG.md",
-      "!spikes/*/output"
+      "!spikes/*/output",
+      "!schema/snapshot.v0.json",
+      "!packages/snapshot-types/src/snapshot.generated.ts",
+      "!fixtures/snapshots/chromium-from-typescript.json"
     ]
   },
   "formatter": {

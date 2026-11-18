@@ -202,6 +202,11 @@ jobs:
       - name: Test the Cargo workspace
         run: cargo test --workspace --locked
 
+      # The committed JSON Schema must be what the snapshot types generate, so
+      # the TypeScript types and validator built from it match the Rust reader.
+      - name: Check the committed snapshot schema
+        run: cargo xtask schema --check
+
   test-node:
     name: test-node
     runs-on: ubuntu-latest

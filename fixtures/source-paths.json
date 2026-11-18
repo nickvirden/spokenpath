@@ -1,0 +1,4 @@
+{
+  "accepted": ["pages/basic.html", "index.html", "a/.well-known/b", "a/...", "a/..b"],
+  "rejected": ["../x", "/x", "a/../b", "a\\b", "C:/x", "", "a/\u0000b", "a//b", "./a", "a/."]
+}

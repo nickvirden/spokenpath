@@ -50,3 +50,4 @@ add the new ADR to the index. Fixing a typo or a broken link in an accepted ADR 
 | [ADR-0008](ADR-0008-chromium-protocol-behaviours.md) | Chromium protocol behaviours the model must handle | Accepted |
 | [ADR-0009](ADR-0009-safari-capture-route-and-source-locations.md) | Safari capture route and how source locations travel through Safari | Accepted |
 | [ADR-0010](ADR-0010-voiceover-capture-feasibility-and-corpus.md) | VoiceOver capture feasibility and the speech corpus | Accepted |
+| [ADR-0011](ADR-0011-snapshot-format-and-versioning.md) | Snapshot format and versioning | Accepted |

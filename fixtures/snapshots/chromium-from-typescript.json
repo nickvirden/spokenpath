@@ -1,0 +1,252 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "producer": {
+    "name": "@spokenpath/snapshot-types sample",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1",
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "device_pixel_ratio": 1.5
+    },
+    "color_scheme": "dark",
+    "reduced_motion": "reduce",
+    "url": "http://spokenpath.test/link.html",
+    "settle": "load"
+  },
+  "volatile": {
+    "captured_at": "2026-11-17T12:30:00.250Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "pages/link.html",
+      "sha256": "a3f1c2d4e5b60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 39
+      },
+      "element": {
+        "start": 16,
+        "end": 49
+      },
+      "line": 2,
+      "column": 1
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "chromium",
+    "dom": [
+      {
+        "id": 1,
+        "backend_id": 1,
+        "children": [
+          2
+        ],
+        "kind": "document",
+        "attributes": []
+      },
+      {
+        "id": 2,
+        "backend_id": 2,
+        "parent": 1,
+        "children": [
+          3
+        ],
+        "kind": "element",
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "tag": "html",
+        "attributes": [],
+        "origin": "implied"
+      },
+      {
+        "id": 3,
+        "backend_id": 3,
+        "parent": 2,
+        "children": [
+          4
+        ],
+        "kind": "element",
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "tag": "body",
+        "attributes": [],
+        "origin": "implied"
+      },
+      {
+        "id": 4,
+        "backend_id": 4,
+        "parent": 3,
+        "children": [
+          5
+        ],
+        "kind": "element",
+        "namespace": "http://www.w3.org/1999/xhtml",
+        "tag": "a",
+        "attributes": [
+          {
+            "name": "href",
+            "value": "/help"
+          }
+        ],
+        "span": 0,
+        "origin": "source"
+      },
+      {
+        "id": 5,
+        "backend_id": 5,
+        "parent": 4,
+        "children": [],
+        "kind": "text",
+        "attributes": [],
+        "text": {
+          "value": "Help",
+          "truncated": false
+        }
+      }
+    ],
+    "ax": [
+      {
+        "nodeId": "1",
+        "ignored": false,
+        "role": {
+          "type": "internalRole",
+          "value": "RootWebArea"
+        },
+        "chromeRole": {
+          "type": "internalRole",
+          "value": 144
+        },
+        "name": {
+          "type": "computedString",
+          "value": ""
+        },
+        "childIds": [
+          "4"
+        ],
+        "backendDOMNodeId": 1
+      },
+      {
+        "nodeId": "4",
+        "ignored": false,
+        "role": {
+          "type": "role",
+          "value": "link"
+        },
+        "name": {
+          "type": "computedString",
+          "value": "Help",
+          "sources": [
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "contents",
+              "value": {
+                "type": "computedString",
+                "value": "Help"
+              }
+            }
+          ]
+        },
+        "properties": [
+          {
+            "name": "focusable",
+            "value": {
+              "type": "booleanOrUndefined",
+              "value": true
+            }
+          }
+        ],
+        "parentId": "1",
+        "childIds": [
+          "5"
+        ],
+        "backendDOMNodeId": 4
+      },
+      {
+        "nodeId": "5",
+        "ignored": false,
+        "role": {
+          "type": "internalRole",
+          "value": "StaticText"
+        },
+        "name": {
+          "type": "computedString",
+          "value": "Help"
+        },
+        "parentId": "4",
+        "childIds": [],
+        "backendDOMNodeId": 5
+      }
+    ],
+    "ax_forced": [
+      {
+        "node": 2,
+        "backend_id": 2,
+        "nodes": [
+          {
+            "nodeId": "2",
+            "ignored": true,
+            "ignoredReasons": [
+              {
+                "name": "uninteresting",
+                "value": {
+                  "type": "boolean",
+                  "value": true
+                }
+              }
+            ],
+            "backendDOMNodeId": 2
+          }
+        ]
+      },
+      {
+        "node": 3,
+        "backend_id": 3,
+        "nodes": [
+          {
+            "nodeId": "3",
+            "ignored": true,
+            "ignoredReasons": [
+              {
+                "name": "uninteresting",
+                "value": {
+                  "type": "boolean",
+                  "value": true
+                }
+              }
+            ],
+            "backendDOMNodeId": 3
+          }
+        ]
+      }
+    ],
+    "focus": {
+      "steps": [
+        {
+          "node": 4,
+          "backend_id": 4
+        },
+        {}
+      ],
+      "truncated": true
+    }
+  }
+}
