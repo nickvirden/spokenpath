@@ -1,8 +1,9 @@
 * text=auto eol=lf
 
-# The instrumenter's torture pages are byte-exact: their CRLF line endings, BOM and
-# non-UTF-8 bytes are what the tests exercise, so git never normalises them.
-fixtures/pages/torture/** -text
+# Fixture pages are byte-exact: the torture pages' CRLF line endings, BOM and non-UTF-8
+# bytes are what the tests exercise, and every capture golden records its page's SHA-256,
+# so git never normalises them.
+fixtures/pages/** -text
 
 pnpm-lock.yaml linguist-generated
 .github/release/package-lock.json linguist-generated

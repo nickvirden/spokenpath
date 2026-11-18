@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Closed shadow root</title>
+</head>
+<body>
+<p><button id="before" type="button">Before</button></p>
+<div id="host">
+<template shadowrootmode="closed">
+<p><button id="inner-first" type="button">Inner first</button></p>
+<p><button id="inner-second" type="button">Inner second</button></p>
+</template>
+</div>
+<p><button id="after" type="button">After</button></p>
+</body>
+</html>

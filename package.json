@@ -20,9 +20,10 @@
     "typecheck": "pnpm -r typecheck",
     "deny": "cargo deny check",
     "test:rust": "cargo test --workspace --locked",
-    "test:node": "pnpm -r test",
+    "test:node": "pnpm -r --filter '!@spokenpath/capture-chromium' test",
+    "test:capture": "pnpm --filter @spokenpath/capture-chromium test",
     "test:versions": "node --test scripts/test/set-version.test.mjs",
-    "check": "pnpm lint:commits && pnpm lint:json && pnpm lint:hooks && pnpm lint:workflows && pnpm zizmor && pnpm test:release && pnpm lint:rust && pnpm lint:biome && pnpm typecheck && pnpm deny && pnpm test:rust && pnpm test:node && pnpm test:versions"
+    "check": "pnpm lint:commits && pnpm lint:json && pnpm lint:hooks && pnpm lint:workflows && pnpm zizmor && pnpm test:release && pnpm lint:rust && pnpm lint:biome && pnpm typecheck && pnpm deny && pnpm test:rust && pnpm test:node && pnpm test:capture && pnpm test:versions"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.8",

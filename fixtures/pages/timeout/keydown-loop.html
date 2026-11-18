@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Key handler that never returns</title>
+</head>
+<body>
+<p><button id="only" type="button">Only</button></p>
+<script>
+document.addEventListener('keydown', () => {
+  for (;;) {}
+});
+</script>
+</body>
+</html>

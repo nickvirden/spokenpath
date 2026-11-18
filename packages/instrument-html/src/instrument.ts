@@ -1,12 +1,12 @@
 import { parse } from 'parse5';
 import type { Span } from '@spokenpath/snapshot-types';
-import { decodeUtf8, nonUtf8Declaration } from './encoding.js';
-import { InstrumentHtmlError } from './error.js';
-import { SOURCE_ATTRIBUTE } from './source-attribute.js';
-import { SourceIndex } from './source-index.js';
-import { attributeInsertionOffset } from './start-tag.js';
-import { compareTrees } from './tree-equality.js';
-import { type Document, type Element, elements } from './tree.js';
+import { decodeUtf8, nonUtf8Declaration } from './encoding.ts';
+import { InstrumentHtmlError } from './error.ts';
+import { SOURCE_ATTRIBUTE } from './source-attribute.ts';
+import { SourceIndex } from './source-index.ts';
+import { attributeInsertionOffset } from './start-tag.ts';
+import { compareTrees } from './tree-equality.ts';
+import { type Document, type Element, elements } from './tree.ts';
 
 export interface InstrumentHtmlOptions {
   /** The `id` of the source file, written into every span's `source`. */

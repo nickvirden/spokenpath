@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus held on one control</title>
+</head>
+<body>
+<p><button id="before" type="button">Before</button></p>
+<p>
+<label for="trapped">Trapped</label>
+<input id="trapped" type="text">
+</p>
+<p><button id="after" type="button">After</button></p>
+<script>
+document.getElementById('trapped').addEventListener('keydown', (event) => {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+  }
+});
+</script>
+</body>
+</html>

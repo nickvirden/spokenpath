@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus moves to an added element</title>
+</head>
+<body>
+<p><button id="before" type="button">Before</button></p>
+<script>
+const before = document.getElementById('before');
+before.addEventListener('keydown', (event) => {
+  if (event.key === 'Tab' && !event.shiftKey && document.getElementById('added') === null) {
+    event.preventDefault();
+    const added = document.createElement('button');
+    added.id = 'added';
+    added.type = 'button';
+    added.textContent = 'Added';
+    document.body.append(added);
+    added.focus();
+  }
+});
+</script>
+</body>
+</html>

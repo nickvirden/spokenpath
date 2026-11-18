@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus trap</title>
+</head>
+<body>
+<p><button id="first" type="button">First</button></p>
+<p><button id="middle" type="button">Middle</button></p>
+<p><button id="last" type="button">Last</button></p>
+<script>
+document.getElementById('last').addEventListener('keydown', (event) => {
+  if (event.key === 'Tab' && !event.shiftKey) {
+    event.preventDefault();
+    document.getElementById('first').focus();
+  }
+});
+</script>
+</body>
+</html>

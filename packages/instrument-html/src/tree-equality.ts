@@ -1,6 +1,6 @@
 import type { Token } from 'parse5';
-import { SOURCE_ATTRIBUTE } from './source-attribute.js';
-import { type ChildNode, type Document, isElement, isTemplate, type ParentNode } from './tree.js';
+import { SOURCE_ATTRIBUTE } from './source-attribute.ts';
+import { type ChildNode, type Document, isElement, isTemplate, type ParentNode } from './tree.ts';
 
 export type TreeComparison =
   | { equal: true }

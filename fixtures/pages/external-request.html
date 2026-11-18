@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>External request</title>
+</head>
+<body>
+<h1>External request</h1>
+<p><img src="https://example.com/pixel.png?token=not-a-secret#frag" alt="Remote pixel"></p>
+<script>
+new WebSocket('wss://example.com/socket?session=not-a-secret');
+</script>
+</body>
+</html>

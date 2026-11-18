@@ -64,6 +64,12 @@ updates:
       dev-tooling:
         patterns:
           - '*'
+    # playwright-core pins the Chromium build that capture drives. Upgrading it
+    # changes the browser, re-runs the protocol probe and is reviewed as drift
+    # in the capture goldens (ADR-0007, ADR-0008), never folded into the
+    # weekly group.
+    ignore:
+      - dependency-name: playwright-core
 
   # The Cargo workspace's crates, resolved through Cargo.lock.
   - package-ecosystem: cargo

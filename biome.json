@@ -15,7 +15,8 @@
       "!spikes/*/output",
       "!schema/snapshot.v0.json",
       "!packages/snapshot-types/src/snapshot.generated.ts",
-      "!fixtures/snapshots/chromium-from-typescript.json"
+      "!fixtures/snapshots/chromium-from-typescript.json",
+      "!fixtures/snapshots/chromium"
     ]
   },
   "formatter": {
