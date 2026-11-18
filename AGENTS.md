@@ -93,6 +93,13 @@ gitleaks scan of the pull request's commits.
   sources they describe under `pages/`. Every snapshot is hand-written except
   `chromium-from-typescript.json`, the JSON of the typed sample in `@spokenpath/snapshot-types`,
   refreshed with `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
+- `fixtures/pages/torture/`: hostile HTML pages for `@spokenpath/instrument-html`, one parser
+  corner per file, each of which it must tag without changing the parsed tree. `rejected/` holds
+  pages it must refuse, each named for the error code it raises (`<code>.<case>.html`). The tests
+  find every page by listing the directories, so a new page needs no test change. The files are
+  byte-exact (`-text` in `.gitattributes`, with an `.editorconfig` section that unsets
+  normalisation), so their CRLF line endings, byte order mark and non-UTF-8 bytes survive checkout
+  and editing.
 - `spikes/`: feasibility probes whose raw output backs the decision records. They are evidence,
   not product code: nothing in `crates/` or `packages/` imports them, and they have their own
   manifest outside the pnpm workspace. See [spikes/README.md](spikes/README.md).

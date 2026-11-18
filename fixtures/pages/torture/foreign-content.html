@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<title>Foreign content</title>
+<svg viewBox="0 0 10 10" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs><linearGradient id="g"><stop offset="0"/></linearGradient></defs>
+  <path d="M0"/>
+  <circle cx="5" cy="5" r="4" />
+  <use xlink:href="#g"/>
+  <foreignObject width="10" height="10"><p>html inside svg</p></foreignObject>
+  <text><![CDATA[a < b && <c/> is text]]></text>
+  <desc><span>html in desc</span></desc>
+</svg>
+<math>
+  <mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac>
+  <mspace width="1em"/>
+  <annotation-xml encoding="text/html"><div>html annotation</div></annotation-xml>
+</math>
+<p>after<svg><font color="red">breaks out</font></svg></p>
