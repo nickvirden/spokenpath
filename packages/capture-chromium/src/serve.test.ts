@@ -14,6 +14,10 @@ describe('resolveAsset', () => {
     mkdirSync(join(root, 'assets'), { recursive: true });
     writeFileSync(join(root, 'assets', 'style.css'), 'p {}');
     writeFileSync(join(root, 'page.html'), '<p>');
+    writeFileSync(join(root, '.env'), 'TOKEN=x');
+    mkdirSync(join(root, '.git'));
+    writeFileSync(join(root, '.git', 'config'), '[core]');
+    writeFileSync(join(root, 'assets', '.hidden.css'), 'p {}');
     writeFileSync(join(base, 'secret.txt'), 'outside');
     symlinkSync(join(base, 'secret.txt'), join(root, 'escape.txt'));
     symlinkSync(join(root, 'page.html'), join(root, 'alias.html'));
@@ -41,6 +45,10 @@ describe('resolveAsset', () => {
     ['a symbolic link out of the directory', '/escape.txt'],
     ['an encoded NUL', '/page.html%00.css'],
     ['a malformed escape', '/%E0%A4%A.css'],
+    ['a dotfile', '/.env'],
+    ['a file in a dot-directory', '/.git/config'],
+    ['a dotfile in a subdirectory', '/assets/.hidden.css'],
+    ['an encoded dotfile', '/%2eenv'],
   ])('%s is not', async (_name, pathname) => {
     expect(await resolveAsset(root, pathname)).toBeUndefined();
   });

@@ -81,8 +81,10 @@ function isNotFound(error: unknown): boolean {
 
 /**
  * The real path of the file that answers the URL path `pathname` from the directory `root`, or
- * nothing when no file does: when the path names no regular file, or resolves outside `root`
- * once symbolic links are followed.
+ * nothing when no file does: when the path names no regular file, has a segment starting with
+ * `.`, or resolves outside `root` once symbolic links are followed. Dot segments are refused
+ * because they name files such as `.env` or `.git/` that a page directory can hold but a page
+ * has no reason to load.
  */
 export async function resolveAsset(root: string, pathname: string): Promise<string | undefined> {
   let decoded: string;
@@ -94,7 +96,7 @@ export async function resolveAsset(root: string, pathname: string): Promise<stri
     }
     throw error;
   }
-  if (decoded.includes('\0')) {
+  if (decoded.includes('\0') || decoded.split('/').some((segment) => segment.startsWith('.'))) {
     return undefined;
   }
   const realRoot = await realpath(root);
