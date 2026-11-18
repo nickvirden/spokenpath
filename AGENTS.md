@@ -104,15 +104,19 @@ gitleaks scan of the pull request's commits.
   `chromium-from-typescript.json`, the JSON of the typed sample in `@spokenpath/snapshot-types`,
   refreshed with `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/snapshot-types test`.
 - `fixtures/pages/`: the capture fixtures, one page per behaviour, that
-  `@spokenpath/capture-chromium` captures. `focus/` holds the Tab-order pages, `settle/` pages
+  `@spokenpath/capture-chromium` captures. `focus/` holds the Tab-order pages, `names/` the
+  name and description provenance pages, `set-position/` the list, radio group and listbox pages,
+  `excluded/` the pages whose elements the browser leaves out of the tree, `settle/` pages
   that only settle with a wait-for selector, `timeout/` pages that must fail the capture with a
   timeout, and `assets/` the files the pages load from their own directory. Every page is byte-exact (`-text` in `.gitattributes`), because its golden records
   its SHA-256.
 - `fixtures/snapshots/chromium/`: the capture goldens, one per page directly in `fixtures/pages/`
-  or in `focus/`, at the same relative path with `.json` for `.html`. Each is the normalised
-  capture of its page; refresh them with `UPDATE_FIXTURES=1 pnpm test:capture` and review the
-  diff as drift ([ADR-0007](docs/decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)).
-  The Rust tests do not read this directory.
+  or in `focus/`, `names/`, `set-position/` or `excluded/`, at the same relative path with
+  `.json` for `.html`. Each is the normalised capture of its page; refresh them with
+  `UPDATE_FIXTURES=1 pnpm test:capture` and review the diff as drift
+  ([ADR-0007](docs/decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)). The
+  `spokenpath_model` tests read every golden in this directory, with its page from
+  `fixtures/pages/`, so a new golden is adapted without a test change.
 - `fixtures/pages/torture/`: hostile HTML pages for `@spokenpath/instrument-html`, one parser
   corner per file, each of which it must tag without changing the parsed tree. `rejected/` holds
   pages it must refuse, each named for the error code it raises (`<code>.<case>.html`). The tests

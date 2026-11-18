@@ -112,7 +112,7 @@ of 0, and a `sha256` or `captured_at` that does not match its pattern.
 
 `@spokenpath/capture-chromium` writes Chromium snapshots. It drives the Chromium build that its
 exactly pinned playwright-core names, in new headless mode, and records what the browser exposes
-as the DevTools Protocol delivers it ([ADR-0008](decisions/ADR-0008-chromium-protocol-behaviours.md)).
+as the DevTools Protocol delivers it ([ADR-0012](decisions/ADR-0012-chromium-protocol-behaviours-and-hidden-content-names.md)).
 
 ```sh
 node packages/capture-chromium/src/cli.ts <page.html> [--out <file>] [--wait-for <selector>]
@@ -227,8 +227,9 @@ Golden comparisons compare a normalised copy of each snapshot
 
 Everything else, including the browser version in `capture.engine_version`, is compared, so a
 browser upgrade shows up as a reviewed diff. The capture goldens live in
-`fixtures/snapshots/chromium/`, one per page directly in `fixtures/pages/` or in
-`fixtures/pages/focus/`, at the same relative path with `.json` in place of `.html`. Refresh them
+`fixtures/snapshots/chromium/`, one per page directly in `fixtures/pages/` or in its `focus/`,
+`names/`, `set-position/` or `excluded/` directory, at the same relative path with `.json` in
+place of `.html`. Refresh them
 with `UPDATE_FIXTURES=1 pnpm test:capture`. Fixture text stays on one line at 1280 pixels, so
 fonts cannot change how text wraps.
 

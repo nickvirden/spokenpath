@@ -17,8 +17,17 @@ export function htmlPagesIn(directory: string): string[] {
     .sort();
 }
 
-/** The pages that have committed goldens: the top level of `fixtures/pages/` and `focus/`. */
-export const capturePages: string[] = [...htmlPagesIn(''), ...htmlPagesIn('focus/')];
+/**
+ * The pages that have committed goldens: the top level of `fixtures/pages/`, `focus/`, and the
+ * name-provenance, set-position and exclusion pages that the Rust model tests read.
+ */
+export const capturePages: string[] = [
+  ...htmlPagesIn(''),
+  ...htmlPagesIn('focus/'),
+  ...htmlPagesIn('names/'),
+  ...htmlPagesIn('set-position/'),
+  ...htmlPagesIn('excluded/'),
+];
 
 /** The file system path of a page named relative to `fixtures/pages/`. */
 export function pagePath(page: string): string {

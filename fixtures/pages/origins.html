@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Implied and script-created elements</title>
+</head>
+<body>
+<table id="table">
+<tr><td>Cell text</td></tr>
+</table>
+<p id="slot"></p>
+<script>
+const button = document.createElement('button');
+button.id = 'added';
+button.type = 'button';
+button.textContent = 'Added by script';
+document.getElementById('slot').append(button);
+</script>
+</body>
+</html>

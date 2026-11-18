@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Native and ARIA radio groups</title>
+</head>
+<body>
+<fieldset>
+<legend>Size</legend>
+<label><input id="small" type="radio" name="size" value="small"> Small</label>
+<label><input id="medium" type="radio" name="size" value="medium"> Medium</label>
+<label><input id="large" type="radio" name="size" value="large"> Large</label>
+</fieldset>
+<div id="colour" role="radiogroup" aria-label="Colour">
+<div id="red" role="radio" aria-checked="true" tabindex="0">Red</div>
+<div id="blue" role="radio" aria-checked="false" tabindex="-1">Blue</div>
+</div>
+</body>
+</html>
