@@ -1,3 +1,9 @@
+## [0.7.0](https://github.com/nickvirden/spokenpath/compare/v0.6.0...v0.7.0) (2026-11-19)
+
+### Features
+
+* **safari:** cross-check role and name against real Safari ([#70](https://github.com/nickvirden/spokenpath/issues/70)) ([0cb91c3](https://github.com/nickvirden/spokenpath/commit/0cb91c39024714e361051380259667733495fa6d))
+
 ## [0.6.0](https://github.com/nickvirden/spokenpath/compare/v0.5.0...v0.6.0) (2026-11-19)
 
 ### Features
