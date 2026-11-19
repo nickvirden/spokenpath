@@ -237,6 +237,16 @@ pub(crate) fn encode<E>(raw: Raw<E>, resolve: &impl Fn(&E) -> Option<u32>) -> Sa
         Raw::Element(element) => SafariAxValue::Element {
             node: resolve(&element),
         },
+        // JSON has no NaN or infinity either, so geometry holding one, such as `CGRectNull`, is
+        // recorded by its type alone rather than written as `null`.
+        Raw::Point { x, y } if !all_finite(&[x, y]) => geometry_unsupported(),
+        Raw::Size { width, height } if !all_finite(&[width, height]) => geometry_unsupported(),
+        Raw::Rect {
+            x,
+            y,
+            width,
+            height,
+        } if !all_finite(&[x, y, width, height]) => geometry_unsupported(),
         Raw::Point { x, y } => SafariAxValue::Point { x, y },
         Raw::Size { width, height } => SafariAxValue::Size { width, height },
         Raw::Rect {
@@ -258,6 +268,17 @@ pub(crate) fn encode<E>(raw: Raw<E>, resolve: &impl Fn(&E) -> Option<u32>) -> Sa
             cf_type: String::from_utf16_lossy(&units),
         },
         Raw::Error(code) => SafariAxValue::Error { code },
+    }
+}
+
+fn all_finite(values: &[f64]) -> bool {
+    values.iter().all(|value| value.is_finite())
+}
+
+/// A point, size or rect `AXValue` that JSON cannot hold.
+fn geometry_unsupported() -> SafariAxValue {
+    SafariAxValue::Unsupported {
+        cf_type: "AXValue".to_owned(),
     }
 }
 
@@ -580,6 +601,80 @@ mod tests {
         for (raw, expected) in cases {
             assert_eq!(encode(raw.clone(), &resolve), expected, "{raw:?}");
         }
+    }
+
+    #[test]
+    fn geometry_that_is_not_finite_is_recorded_as_unsupported_and_never_as_null() {
+        let unsupported = SafariAxValue::Unsupported {
+            cf_type: "AXValue".to_owned(),
+        };
+        for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            let cases: [Raw<usize>; 3] = [
+                Raw::Point { x: 1.0, y: bad },
+                Raw::Size {
+                    width: bad,
+                    height: 2.0,
+                },
+                Raw::Rect {
+                    x: 0.0,
+                    y: 0.0,
+                    width: 3.0,
+                    height: bad,
+                },
+            ];
+            for raw in cases {
+                let mut tree = Plain::new(vec![vec![role("AXWebArea"), ("AXFrame", raw.clone())]]);
+                let (nodes, _) = walk(&mut tree, 0).expect("the walk succeeds");
+                assert_eq!(nodes[0].attributes["AXFrame"], unsupported, "{raw:?}");
+                assert_eq!(
+                    nodes[0].attributes["AXRole"],
+                    SafariAxValue::String {
+                        value: "AXWebArea".to_owned()
+                    }
+                );
+                let json = serde_json::to_string(&nodes).expect("serialises");
+                assert!(!json.contains("null"), "{json}");
+            }
+        }
+    }
+
+    #[test]
+    fn finite_geometry_is_encoded_as_geometry() {
+        let none = |_: &usize| None;
+        assert_eq!(
+            encode(Raw::Point { x: 1.0, y: -2.5 }, &none),
+            SafariAxValue::Point { x: 1.0, y: -2.5 }
+        );
+        assert_eq!(
+            encode(
+                Raw::Size {
+                    width: 0.0,
+                    height: 4.0
+                },
+                &none
+            ),
+            SafariAxValue::Size {
+                width: 0.0,
+                height: 4.0
+            }
+        );
+        assert_eq!(
+            encode(
+                Raw::Rect {
+                    x: -1.0,
+                    y: 2.0,
+                    width: 3.0,
+                    height: 4.0
+                },
+                &none
+            ),
+            SafariAxValue::Rect {
+                x: -1.0,
+                y: 2.0,
+                width: 3.0,
+                height: 4.0
+            }
+        );
     }
 
     #[test]
