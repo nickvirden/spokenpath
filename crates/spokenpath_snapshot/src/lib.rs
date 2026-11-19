@@ -722,17 +722,24 @@ fn deserialize_at<T: DeserializeOwned>(prefix: &str, value: &Value) -> Result<T,
 /// generator drops the referenced schema when a `$ref` sits beside other keywords.
 #[must_use]
 pub fn json_schema() -> Value {
-    schemars::generate::SchemaSettings::draft2020_12()
-        .with(|settings| {
-            let remove_null: fn(&mut Schema) = remove_null_from_optional;
-            settings.transforms.push(Box::new(remove_null));
-            settings
-                .transforms
-                .push(Box::new(schemars::transform::RemoveRefSiblings::default()));
-        })
+    schema_settings()
         .into_generator()
         .into_root_schema_for::<Snapshot>()
         .to_value()
+}
+
+/// The schema settings every committed spokenpath JSON Schema is generated with: draft 2020-12,
+/// optional properties narrowed to their non-null form, and no `$ref` with sibling keywords, as
+/// [`json_schema`] describes.
+#[must_use]
+pub fn schema_settings() -> schemars::generate::SchemaSettings {
+    schemars::generate::SchemaSettings::draft2020_12().with(|settings| {
+        let remove_null: fn(&mut Schema) = remove_null_from_optional;
+        settings.transforms.push(Box::new(remove_null));
+        settings
+            .transforms
+            .push(Box::new(schemars::transform::RemoveRefSiblings::default()));
+    })
 }
 
 /// Narrows every optional property's schema to its non-null form. schemars allows `null` for an

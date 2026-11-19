@@ -2,6 +2,7 @@
 
 use std::collections::BTreeMap;
 
+use schemars::JsonSchema;
 use serde::Serialize;
 use spokenpath_model::{
     AccessibleNode, Description, DescriptionSource, DomRef, ExcludedNode, ExclusionReason, Model,
@@ -15,7 +16,7 @@ use crate::tab_order::TabOrder;
 
 /// The ordered transcript of one model: what the browser exposes, item by item, with the
 /// navigation indexes, the excluded nodes and the tab order.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct Transcript {
     /// The engine and versions every Layer A record came from.
     pub header: Header,
@@ -30,7 +31,7 @@ pub struct Transcript {
 }
 
 /// The engine and versions a transcript came from.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct Header {
     /// The engine token, such as `chromium`.
     pub engine: &'static str,
@@ -41,7 +42,7 @@ pub struct Header {
 }
 
 /// One exposed node in reading order.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct Item {
     /// The 1-based position in reading order.
     pub number: usize,
@@ -58,7 +59,7 @@ pub struct Item {
 }
 
 /// The record of what the browser exposes for one item.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 #[serde(tag = "kind", rename_all = "kebab-case")]
 pub enum LayerA {
     /// A node of the accessibility tree.
@@ -68,7 +69,7 @@ pub enum LayerA {
 }
 
 /// Whether a value is exposed by the engine or computed by the tool.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 pub enum Marking {
     /// The engine exposes the value.
     #[serde(rename = "exposed by engine")]
@@ -89,7 +90,8 @@ impl From<SuppliedBy> for Marking {
 
 /// A value with its marking, for every value the model wraps in [`Supplied`] and for the
 /// tab-order ending.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
+#[schemars(rename = "Marked_{T}")]
 pub struct Marked<T> {
     /// The value.
     pub value: T,
@@ -107,7 +109,7 @@ impl<T> Marked<T> {
 }
 
 /// Layer A of an accessible node.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct AccessibleRecord {
     /// The role the engine exposes; absent when it exposes none.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -138,7 +140,7 @@ pub struct AccessibleRecord {
 }
 
 /// A role token and whether it is an ARIA role or one internal to the engine.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct RoleRecord {
     /// The role's text, as exposed.
     pub token: String,
@@ -158,7 +160,7 @@ impl RoleRecord {
 }
 
 /// Whether a role is an ARIA role or internal to the engine.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum RoleKind {
     /// An ARIA role token.
@@ -168,7 +170,7 @@ pub enum RoleKind {
 }
 
 /// Where an exposed role came from.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum RoleOriginToken {
     /// The element's `role` attribute names the exposed role.
@@ -178,7 +180,7 @@ pub enum RoleOriginToken {
 }
 
 /// The identity of a DOM node.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct DomRecord {
     /// The snapshot-local DOM node id.
     pub dom_id: u32,
@@ -191,7 +193,7 @@ pub struct DomRecord {
 }
 
 /// Where in the page's sources a node came from. The path is data only; nothing opens it.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct SourceRecord {
     /// The classification, from [`SourceClass::as_str`].
     pub class: &'static str,
@@ -210,7 +212,7 @@ pub struct SourceRecord {
 }
 
 /// A half-open range of UTF-8 byte offsets.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct ByteRangeRecord {
     /// The first byte.
     pub start: u64,
@@ -219,7 +221,7 @@ pub struct ByteRangeRecord {
 }
 
 /// Whether an item has an accessible name.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 pub enum NameStatus {
     /// The name's text is not empty after trimming whitespace.
     #[serde(rename = "named")]
@@ -233,7 +235,7 @@ pub enum NameStatus {
 pub const NO_ACCESSIBLE_NAME: &str = "no accessible name";
 
 /// An accessible name and every source the engine tried for it.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct NameRecord {
     /// Whether there is a name.
     pub status: NameStatus,
@@ -259,7 +261,7 @@ impl NameRecord {
 }
 
 /// One source the engine tried for a name.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct NameSourceRecord {
     /// The kind of source, such as `attribute` or `contents`, or the engine's text for another.
     pub kind: String,
@@ -286,7 +288,7 @@ pub struct NameSourceRecord {
 }
 
 /// What came of one name source.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum NameSourceOutcome {
     /// The source produced the name.
@@ -300,7 +302,7 @@ pub enum NameSourceOutcome {
 }
 
 /// A node a value draws on.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct RelatedRecord {
     /// The DOM node, when the snapshot holds it.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -317,7 +319,7 @@ pub struct RelatedRecord {
 }
 
 /// An accessible description and where it came from.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct DescriptionRecord {
     /// The description's text.
     pub text: String,
@@ -327,7 +329,7 @@ pub struct DescriptionRecord {
 }
 
 /// The attribute a description is attributed to.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(tag = "attribute", rename_all = "kebab-case")]
 pub enum DescriptionSourceRecord {
     /// `aria-describedby`, with the elements its idrefs resolve to.
@@ -342,7 +344,7 @@ pub enum DescriptionSourceRecord {
 }
 
 /// The typed states an engine exposes; each absent one is omitted.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct StatesRecord {
     /// Checked state.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -380,7 +382,7 @@ pub struct StatesRecord {
 }
 
 /// A three-valued state.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum TristateToken {
     /// On.
@@ -392,7 +394,7 @@ pub enum TristateToken {
 }
 
 /// A property the engine exposes that [`StatesRecord`] does not name.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct PropertyRecord {
     /// The engine's property name.
     pub name: String,
@@ -401,7 +403,7 @@ pub struct PropertyRecord {
 }
 
 /// The typed value of a property.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 #[serde(tag = "type", content = "value", rename_all = "kebab-case")]
 pub enum PropertyValueRecord {
     /// A boolean.
@@ -421,7 +423,7 @@ pub enum PropertyValueRecord {
 }
 
 /// A node's position in its set.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct SetPositionRecord {
     /// The 1-based position.
     pub position: u32,
@@ -431,7 +433,7 @@ pub struct SetPositionRecord {
 }
 
 /// Layer A of a text run.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct TextRunRecord {
     /// The parts' text joined in order, with `"\n"` for each line break.
     pub text: String,
@@ -440,7 +442,7 @@ pub struct TextRunRecord {
 }
 
 /// One text node or line break of a text run.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct TextPartRecord {
     /// Whether the part is text or a line break.
     pub kind: TextPartKindToken,
@@ -452,7 +454,7 @@ pub struct TextPartRecord {
 }
 
 /// The kind of a text part.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum TextPartKindToken {
     /// A run of text.
@@ -462,7 +464,7 @@ pub enum TextPartKindToken {
 }
 
 /// A DOM element the engine leaves out of the exposed tree.
-#[derive(Debug, Clone, PartialEq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct Excluded {
     /// The element.
     pub dom: DomRecord,
@@ -479,7 +481,7 @@ pub struct Excluded {
 }
 
 /// One reason an engine gives for leaving a node out.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct ExclusionRecord {
     /// The engine-neutral kind, from `ExclusionKind::as_str`.
     pub kind: &'static str,
@@ -491,7 +493,7 @@ pub struct ExclusionRecord {
 }
 
 /// A DOM node with its source location, when the model holds the node.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct NodeRecord {
     /// The DOM node.
     pub dom: DomRecord,
@@ -501,7 +503,7 @@ pub struct NodeRecord {
 }
 
 /// The navigation indexes, each in reading order and always present.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct Indexes {
     /// Items whose ARIA role is `heading`.
     pub headings: Vec<HeadingEntry>,
@@ -514,7 +516,7 @@ pub struct Indexes {
 }
 
 /// An index entry: an item by number, its role and its name.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct IndexEntry {
     /// The item's number.
     pub item: usize,
@@ -528,7 +530,7 @@ pub struct IndexEntry {
 }
 
 /// A heading index entry.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct HeadingEntry {
     /// The item, role and name.
     #[serde(flatten)]

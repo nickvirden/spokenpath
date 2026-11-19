@@ -113,11 +113,20 @@
 //!   U+2069) and the implicit direction marks (U+200E, U+200F, U+061C), which reorder what a
 //!   terminal shows;
 //! - the line and paragraph separators (U+2028, U+2029), which can break a line;
-//! - the zero-width characters (U+200B to U+200D, U+2060, U+FEFF), which hide text or make two
-//!   strings look the same.
+//! - the zero-width characters (U+200B to U+200D, U+2060, U+FEFF) and the invisible operators
+//!   (U+2061 to U+2064), which hide text or make two strings look the same;
+//! - the Unicode tag characters (U+E0000 to U+E007F), which a terminal shows as nothing, so they
+//!   can carry hidden text.
 //!
-//! Every other character, non-ASCII letters included, passes unchanged. Layer A keeps the raw
-//! strings; a printer escapes them with the same function.
+//! Every other character, non-ASCII letters included, passes unchanged. The variation selectors
+//! (U+FE00 to U+FE0F, U+E0100 to U+E01EF) pass too, so U+FE0F keeps selecting an emoji's
+//! presentation; the cost of escaping tag characters is that a subdivision flag emoji shows as
+//! escapes. Layer A keeps the raw strings; a printer escapes them with the same function.
+//!
+//! # JSON Schema
+//!
+//! [`json_schema`] is the JSON Schema of a serialised [`Transcript`], which `cargo xtask schema`
+//! writes to `schema/transcript.v0.json`.
 
 mod approx;
 mod tab_order;
@@ -146,6 +155,18 @@ impl Default for Options {
     fn default() -> Self {
         Options { layer_b: true }
     }
+}
+
+/// The JSON Schema (draft 2020-12) of a [`Transcript`] serialised with `serde_json`, as
+/// `cargo xtask schema` writes it to `schema/transcript.v0.json`. It is generated with the same
+/// settings as the snapshot schema (`spokenpath_snapshot::schema_settings`), so an optional field
+/// may be absent but never `null`.
+#[must_use]
+pub fn json_schema() -> serde_json::Value {
+    spokenpath_snapshot::schema_settings()
+        .into_generator()
+        .into_root_schema_for::<Transcript>()
+        .to_value()
 }
 
 /// The transcript of `model`.

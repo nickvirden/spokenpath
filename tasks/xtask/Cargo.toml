@@ -9,6 +9,7 @@ publish.workspace = true
 
 [dependencies]
 serde_json.workspace = true
+spokenpath_announce.workspace = true
 spokenpath_snapshot.workspace = true
 
 [lints]

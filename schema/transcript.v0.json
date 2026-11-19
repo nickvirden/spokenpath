@@ -1,0 +1,1512 @@
+{
+  "$defs": {
+    "AccessibleRecord": {
+      "description": "Layer A of an accessible node.",
+      "properties": {
+        "description": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DescriptionRecord"
+            }
+          ],
+          "description": "The accessible description, when the engine exposes one."
+        },
+        "dom": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DomRecord"
+            }
+          ],
+          "description": "The DOM node, when the snapshot holds it."
+        },
+        "name": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameRecord"
+            }
+          ],
+          "description": "The accessible name, or the plain statement that there is none, with every source tried."
+        },
+        "properties": {
+          "description": "Every other property, in engine order.",
+          "items": {
+            "$ref": "#/$defs/PropertyRecord"
+          },
+          "type": "array"
+        },
+        "role": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/RoleRecord"
+            }
+          ],
+          "description": "The role the engine exposes; absent when it exposes none."
+        },
+        "role_origin": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marked_RoleOriginToken"
+            }
+          ],
+          "description": "Where the role came from; absent when the node has no DOM element."
+        },
+        "set_position": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marked_SetPositionRecord"
+            }
+          ],
+          "description": "The position in its set."
+        },
+        "source": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SourceRecord"
+            }
+          ],
+          "description": "Where in the page's sources the node came from."
+        },
+        "states": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/StatesRecord"
+            }
+          ],
+          "description": "The typed states the engine exposes; absent ones are omitted."
+        },
+        "value": {
+          "description": "The value, as text, when the engine exposes one.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "name",
+        "states",
+        "properties"
+      ],
+      "type": "object"
+    },
+    "Approx": {
+      "description": "The illustrative phrase of one item, approximate, with the template that rendered it.",
+      "properties": {
+        "phrase": {
+          "description": "The phrase, escaped for a terminal.",
+          "type": "string"
+        },
+        "template": {
+          "description": "The template's identifier.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "template",
+        "phrase"
+      ],
+      "type": "object"
+    },
+    "ByteRangeRecord": {
+      "description": "A half-open range of UTF-8 byte offsets.",
+      "properties": {
+        "end": {
+          "description": "One past the last byte.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "start": {
+          "description": "The first byte.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "type": "object"
+    },
+    "DescriptionRecord": {
+      "description": "An accessible description and where it came from.",
+      "properties": {
+        "provenance": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marked_DescriptionSourceRecord"
+            }
+          ],
+          "description": "The attribute the description is attributed to."
+        },
+        "text": {
+          "description": "The description's text.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
+    },
+    "DescriptionSourceRecord": {
+      "description": "The attribute a description is attributed to.",
+      "oneOf": [
+        {
+          "description": "`aria-describedby`, with the elements its idrefs resolve to.",
+          "properties": {
+            "attribute": {
+              "const": "aria-describedby",
+              "type": "string"
+            },
+            "elements": {
+              "description": "The elements.",
+              "items": {
+                "$ref": "#/$defs/RelatedRecord"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "attribute",
+            "elements"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "`aria-description`.",
+          "properties": {
+            "attribute": {
+              "const": "aria-description",
+              "type": "string"
+            }
+          },
+          "required": [
+            "attribute"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "`title`.",
+          "properties": {
+            "attribute": {
+              "const": "title",
+              "type": "string"
+            }
+          },
+          "required": [
+            "attribute"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "DomRecord": {
+      "description": "The identity of a DOM node.",
+      "properties": {
+        "dom_id": {
+          "description": "The snapshot-local DOM node id.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "id": {
+          "description": "The element's `id` attribute.",
+          "type": "string"
+        },
+        "tag": {
+          "description": "The tag name of an element.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dom_id"
+      ],
+      "type": "object"
+    },
+    "Ending": {
+      "description": "How a focus walk ended.",
+      "properties": {
+        "kind": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/EndingKind"
+            }
+          ],
+          "description": "The kind of ending."
+        },
+        "wording": {
+          "description": "One plain line stating what the Tab presses did, from [`ENDING_WORDING`].",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "wording"
+      ],
+      "type": "object"
+    },
+    "EndingKind": {
+      "description": "The kind of a focus walk's ending.",
+      "oneOf": [
+        {
+          "const": "truncated",
+          "description": "The walk stopped at its step limit.",
+          "type": "string"
+        },
+        {
+          "const": "wrap",
+          "description": "Focus left the page, then Tab returned to an earlier stop.",
+          "type": "string"
+        },
+        {
+          "const": "trap",
+          "description": "Tab returned to an earlier stop without focus leaving the page.",
+          "type": "string"
+        },
+        {
+          "const": "left-page",
+          "description": "Focus left the page and did not return.",
+          "type": "string"
+        },
+        {
+          "const": "ended",
+          "description": "The walk ended otherwise, including a walk with no steps.",
+          "type": "string"
+        }
+      ]
+    },
+    "Excluded": {
+      "description": "A DOM element the engine leaves out of the exposed tree.",
+      "properties": {
+        "dom": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DomRecord"
+            }
+          ],
+          "description": "The element."
+        },
+        "name": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameRecord"
+            }
+          ],
+          "description": "The name the element would have had, when the model holds one."
+        },
+        "reasons": {
+          "description": "Every reason the engine gives, in its order.",
+          "items": {
+            "$ref": "#/$defs/ExclusionRecord"
+          },
+          "type": "array"
+        },
+        "role": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/RoleRecord"
+            }
+          ],
+          "description": "The role the element would have had, when the model holds one."
+        },
+        "source": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SourceRecord"
+            }
+          ],
+          "description": "Where in the page's sources the element came from."
+        }
+      },
+      "required": [
+        "dom",
+        "source",
+        "reasons"
+      ],
+      "type": "object"
+    },
+    "ExclusionRecord": {
+      "description": "One reason an engine gives for leaving a node out.",
+      "properties": {
+        "engine_reason": {
+          "description": "The engine's own name for the reason.",
+          "type": "string"
+        },
+        "hiding_ancestor": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marked_NodeRecord"
+            }
+          ],
+          "description": "The ancestor whose attribute or style hides the node."
+        },
+        "kind": {
+          "description": "The engine-neutral kind, from `ExclusionKind::as_str`.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "engine_reason"
+      ],
+      "type": "object"
+    },
+    "Header": {
+      "description": "The engine and versions a transcript came from.",
+      "properties": {
+        "engine": {
+          "description": "The engine token, such as `chromium`.",
+          "type": "string"
+        },
+        "engine_version": {
+          "description": "The browser version, as the browser reports it.",
+          "type": "string"
+        },
+        "tool_version": {
+          "description": "The version of the tool that drove the browser.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "engine",
+        "engine_version",
+        "tool_version"
+      ],
+      "type": "object"
+    },
+    "HeadingEntry": {
+      "description": "A heading index entry.",
+      "properties": {
+        "item": {
+          "description": "The item's number.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "level": {
+          "description": "The exposed level; absent when the engine exposes none.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "name": {
+          "description": "The name's text, when the item has a name.",
+          "type": "string"
+        },
+        "name_status": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameStatus"
+            }
+          ],
+          "description": "Whether the item has a name."
+        },
+        "role": {
+          "description": "The item's ARIA role token.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item",
+        "role",
+        "name_status"
+      ],
+      "type": "object"
+    },
+    "IndexEntry": {
+      "description": "An index entry: an item by number, its role and its name.",
+      "properties": {
+        "item": {
+          "description": "The item's number.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "name": {
+          "description": "The name's text, when the item has a name.",
+          "type": "string"
+        },
+        "name_status": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameStatus"
+            }
+          ],
+          "description": "Whether the item has a name."
+        },
+        "role": {
+          "description": "The item's ARIA role token.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item",
+        "role",
+        "name_status"
+      ],
+      "type": "object"
+    },
+    "Indexes": {
+      "description": "The navigation indexes, each in reading order and always present.",
+      "properties": {
+        "form_controls": {
+          "description": "Items whose ARIA role is a form-control role.",
+          "items": {
+            "$ref": "#/$defs/IndexEntry"
+          },
+          "type": "array"
+        },
+        "headings": {
+          "description": "Items whose ARIA role is `heading`.",
+          "items": {
+            "$ref": "#/$defs/HeadingEntry"
+          },
+          "type": "array"
+        },
+        "landmarks": {
+          "description": "Items whose ARIA role is a landmark role.",
+          "items": {
+            "$ref": "#/$defs/IndexEntry"
+          },
+          "type": "array"
+        },
+        "links": {
+          "description": "Items whose ARIA role is `link`.",
+          "items": {
+            "$ref": "#/$defs/IndexEntry"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "headings",
+        "landmarks",
+        "links",
+        "form_controls"
+      ],
+      "type": "object"
+    },
+    "Item": {
+      "description": "One exposed node in reading order.",
+      "properties": {
+        "approx": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Approx"
+            }
+          ],
+          "description": "The illustrative phrase, approximate; absent when Layer B is not produced."
+        },
+        "depth": {
+          "description": "The depth in the exposed tree; the root is 0.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "layer_a": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/LayerA"
+            }
+          ],
+          "description": "What the browser exposes for the node."
+        },
+        "number": {
+          "description": "The 1-based position in reading order.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "parent": {
+          "description": "The number of the parent item; absent for the root.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "number",
+        "depth",
+        "layer_a"
+      ],
+      "type": "object"
+    },
+    "LayerA": {
+      "description": "The record of what the browser exposes for one item.",
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/AccessibleRecord"
+            }
+          ],
+          "description": "A node of the accessibility tree.",
+          "properties": {
+            "kind": {
+              "const": "accessible",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "type": "object"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/TextRunRecord"
+            }
+          ],
+          "description": "A run of text.",
+          "properties": {
+            "kind": {
+              "const": "text-run",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "Marked_DescriptionSourceRecord": {
+      "description": "A value with its marking, for every value the model wraps in [`Supplied`] and for the\ntab-order ending.",
+      "properties": {
+        "by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marking"
+            }
+          ],
+          "description": "Who supplied it."
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DescriptionSourceRecord"
+            }
+          ],
+          "description": "The value."
+        }
+      },
+      "required": [
+        "value",
+        "by"
+      ],
+      "type": "object"
+    },
+    "Marked_Ending": {
+      "description": "A value with its marking, for every value the model wraps in [`Supplied`] and for the\ntab-order ending.",
+      "properties": {
+        "by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marking"
+            }
+          ],
+          "description": "Who supplied it."
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Ending"
+            }
+          ],
+          "description": "The value."
+        }
+      },
+      "required": [
+        "value",
+        "by"
+      ],
+      "type": "object"
+    },
+    "Marked_NodeRecord": {
+      "description": "A value with its marking, for every value the model wraps in [`Supplied`] and for the\ntab-order ending.",
+      "properties": {
+        "by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marking"
+            }
+          ],
+          "description": "Who supplied it."
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NodeRecord"
+            }
+          ],
+          "description": "The value."
+        }
+      },
+      "required": [
+        "value",
+        "by"
+      ],
+      "type": "object"
+    },
+    "Marked_RoleOriginToken": {
+      "description": "A value with its marking, for every value the model wraps in [`Supplied`] and for the\ntab-order ending.",
+      "properties": {
+        "by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marking"
+            }
+          ],
+          "description": "Who supplied it."
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/RoleOriginToken"
+            }
+          ],
+          "description": "The value."
+        }
+      },
+      "required": [
+        "value",
+        "by"
+      ],
+      "type": "object"
+    },
+    "Marked_SetPositionRecord": {
+      "description": "A value with its marking, for every value the model wraps in [`Supplied`] and for the\ntab-order ending.",
+      "properties": {
+        "by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marking"
+            }
+          ],
+          "description": "Who supplied it."
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SetPositionRecord"
+            }
+          ],
+          "description": "The value."
+        }
+      },
+      "required": [
+        "value",
+        "by"
+      ],
+      "type": "object"
+    },
+    "Marked_boolean": {
+      "description": "A value with its marking, for every value the model wraps in [`Supplied`] and for the\ntab-order ending.",
+      "properties": {
+        "by": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marking"
+            }
+          ],
+          "description": "Who supplied it."
+        },
+        "value": {
+          "description": "The value.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "by"
+      ],
+      "type": "object"
+    },
+    "Marking": {
+      "description": "Whether a value is exposed by the engine or computed by the tool.",
+      "oneOf": [
+        {
+          "const": "exposed by engine",
+          "description": "The engine exposes the value.",
+          "type": "string"
+        },
+        {
+          "const": "computed by tool",
+          "description": "The tool derives the value from what the engine exposes.",
+          "type": "string"
+        }
+      ]
+    },
+    "NameRecord": {
+      "description": "An accessible name and every source the engine tried for it.",
+      "properties": {
+        "from_hidden_content": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marked_boolean"
+            }
+          ],
+          "description": "Whether the winning source drew on content the engine hides."
+        },
+        "sources": {
+          "description": "Every source the engine tried, in its order; empty when it reported none.",
+          "items": {
+            "$ref": "#/$defs/NameSourceRecord"
+          },
+          "type": "array"
+        },
+        "status": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameStatus"
+            }
+          ],
+          "description": "Whether there is a name."
+        },
+        "text": {
+          "description": "The name's text, raw, when the engine exposes a name (possibly empty or blank).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "sources"
+      ],
+      "type": "object"
+    },
+    "NameSourceOutcome": {
+      "description": "What came of one name source.",
+      "oneOf": [
+        {
+          "const": "used",
+          "description": "The source produced the name.",
+          "type": "string"
+        },
+        {
+          "const": "superseded",
+          "description": "An earlier source took precedence.",
+          "type": "string"
+        },
+        {
+          "const": "invalid",
+          "description": "The engine marks the source invalid.",
+          "type": "string"
+        },
+        {
+          "const": "empty",
+          "description": "The source gave nothing.",
+          "type": "string"
+        }
+      ]
+    },
+    "NameSourceRecord": {
+      "description": "One source the engine tried for a name.",
+      "properties": {
+        "attribute": {
+          "description": "The attribute the source reads.",
+          "type": "string"
+        },
+        "attribute_value": {
+          "description": "The attribute's value.",
+          "type": "string"
+        },
+        "invalid_reason": {
+          "description": "Why the engine marks the source invalid.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The kind of source, such as `attribute` or `contents`, or the engine's text for another.",
+          "type": "string"
+        },
+        "native_source": {
+          "description": "The native mechanism the source reads, such as `label-for`, or the engine's text for\nanother.",
+          "type": "string"
+        },
+        "outcome": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NameSourceOutcome"
+            }
+          ],
+          "description": "What came of the source."
+        },
+        "related_nodes": {
+          "description": "The nodes the source drew on.",
+          "items": {
+            "$ref": "#/$defs/RelatedRecord"
+          },
+          "type": "array"
+        },
+        "value": {
+          "description": "The text the source gave.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "related_nodes",
+        "outcome"
+      ],
+      "type": "object"
+    },
+    "NameStatus": {
+      "description": "Whether an item has an accessible name.",
+      "oneOf": [
+        {
+          "const": "named",
+          "description": "The name's text is not empty after trimming whitespace.",
+          "type": "string"
+        },
+        {
+          "const": "no accessible name",
+          "description": "The name is absent, or empty after trimming whitespace.",
+          "type": "string"
+        }
+      ]
+    },
+    "NodeRecord": {
+      "description": "A DOM node with its source location, when the model holds the node.",
+      "properties": {
+        "dom": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DomRecord"
+            }
+          ],
+          "description": "The DOM node."
+        },
+        "source": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SourceRecord"
+            }
+          ],
+          "description": "Where in the page's sources the node came from."
+        }
+      },
+      "required": [
+        "dom"
+      ],
+      "type": "object"
+    },
+    "PropertyRecord": {
+      "description": "A property the engine exposes that [`StatesRecord`] does not name.",
+      "properties": {
+        "name": {
+          "description": "The engine's property name.",
+          "type": "string"
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/PropertyValueRecord"
+            }
+          ],
+          "description": "Its typed value."
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "type": "object"
+    },
+    "PropertyValueRecord": {
+      "description": "The typed value of a property.",
+      "oneOf": [
+        {
+          "description": "A boolean.",
+          "properties": {
+            "type": {
+              "const": "boolean",
+              "type": "string"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An integer.",
+          "properties": {
+            "type": {
+              "const": "integer",
+              "type": "string"
+            },
+            "value": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A number that may have a fraction.",
+          "properties": {
+            "type": {
+              "const": "number",
+              "type": "string"
+            },
+            "value": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "Free text.",
+          "properties": {
+            "type": {
+              "const": "text",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A token from a fixed set.",
+          "properties": {
+            "type": {
+              "const": "token",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A list of nodes.",
+          "properties": {
+            "type": {
+              "const": "nodes",
+              "type": "string"
+            },
+            "value": {
+              "items": {
+                "$ref": "#/$defs/RelatedRecord"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "The engine names the property with no value.",
+          "properties": {
+            "type": {
+              "const": "undefined",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "RelatedRecord": {
+      "description": "A node a value draws on.",
+      "properties": {
+        "dom": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DomRecord"
+            }
+          ],
+          "description": "The DOM node, when the snapshot holds it."
+        },
+        "idref": {
+          "description": "The idref that named it.",
+          "type": "string"
+        },
+        "source": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SourceRecord"
+            }
+          ],
+          "description": "Where in the page's sources the node came from, when the model holds the node."
+        },
+        "text": {
+          "description": "The text it contributed.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "RoleKind": {
+      "description": "Whether a role is an ARIA role or internal to the engine.",
+      "oneOf": [
+        {
+          "const": "aria",
+          "description": "An ARIA role token.",
+          "type": "string"
+        },
+        {
+          "const": "internal",
+          "description": "A role the engine uses internally.",
+          "type": "string"
+        }
+      ]
+    },
+    "RoleOriginToken": {
+      "description": "Where an exposed role came from.",
+      "oneOf": [
+        {
+          "const": "author",
+          "description": "The element's `role` attribute names the exposed role.",
+          "type": "string"
+        },
+        {
+          "const": "native",
+          "description": "The element's own semantics.",
+          "type": "string"
+        }
+      ]
+    },
+    "RoleRecord": {
+      "description": "A role token and whether it is an ARIA role or one internal to the engine.",
+      "properties": {
+        "kind": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/RoleKind"
+            }
+          ],
+          "description": "Whether the token is an ARIA role or internal to the engine."
+        },
+        "token": {
+          "description": "The role's text, as exposed.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "token",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "SetPositionRecord": {
+      "description": "A node's position in its set.",
+      "properties": {
+        "position": {
+          "description": "The 1-based position.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "size": {
+          "description": "The number of members; absent when unknown.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "position"
+      ],
+      "type": "object"
+    },
+    "SourceRecord": {
+      "description": "Where in the page's sources a node came from. The path is data only; nothing opens it.",
+      "properties": {
+        "class": {
+          "description": "The classification, from [`SourceClass::as_str`].",
+          "type": "string"
+        },
+        "column": {
+          "description": "For a `span`, the 1-based column of the start tag.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "line": {
+          "description": "For a `span`, the 1-based line of the start tag.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "path": {
+          "description": "For a `span`, the source file's path relative to the capture root.",
+          "type": "string"
+        },
+        "start_tag": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ByteRangeRecord"
+            }
+          ],
+          "description": "For a `span`, the start tag's half-open range of UTF-8 byte offsets."
+        }
+      },
+      "required": [
+        "class"
+      ],
+      "type": "object"
+    },
+    "StatesRecord": {
+      "description": "The typed states an engine exposes; each absent one is omitted.",
+      "properties": {
+        "checked": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/TristateToken"
+            }
+          ],
+          "description": "Checked state."
+        },
+        "disabled": {
+          "description": "Disabled state.",
+          "type": "boolean"
+        },
+        "expanded": {
+          "description": "Expanded state.",
+          "type": "boolean"
+        },
+        "focusable": {
+          "description": "Whether the node can take focus.",
+          "type": "boolean"
+        },
+        "focused": {
+          "description": "Whether the node had focus when the tree was read.",
+          "type": "boolean"
+        },
+        "invalid": {
+          "description": "The invalid token, as the engine gives it.",
+          "type": "string"
+        },
+        "level": {
+          "description": "The heading or tree level.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "pressed": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/TristateToken"
+            }
+          ],
+          "description": "Pressed state."
+        },
+        "readonly": {
+          "description": "Read-only state.",
+          "type": "boolean"
+        },
+        "required": {
+          "description": "Required state.",
+          "type": "boolean"
+        },
+        "selected": {
+          "description": "Selected state.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Stop": {
+      "description": "One stop of the focus walk.",
+      "oneOf": [
+        {
+          "description": "An element of the snapshot's DOM.",
+          "properties": {
+            "dom": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/DomRecord"
+                }
+              ],
+              "description": "The focused element."
+            },
+            "item": {
+              "description": "The number of the element's item, when the element is exposed.",
+              "format": "uint",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "kind": {
+              "const": "element",
+              "type": "string"
+            },
+            "source": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/SourceRecord"
+                }
+              ],
+              "description": "Where in the page's sources the element came from, when the model holds it."
+            }
+          },
+          "required": [
+            "kind",
+            "dom"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "Focus left the page.",
+          "properties": {
+            "kind": {
+              "const": "left-page",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An element the snapshot's DOM does not hold.",
+          "properties": {
+            "backend_id": {
+              "description": "The engine's id for the node.",
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "kind": {
+              "const": "unresolved",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "backend_id"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "TabOrder": {
+      "description": "The focus walk by repeated Tab presses, as captured, and how it ended.",
+      "properties": {
+        "ending": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Marked_Ending"
+            }
+          ],
+          "description": "How the walk ended, computed by tool."
+        },
+        "steps": {
+          "description": "One entry per Tab press, in order.",
+          "items": {
+            "$ref": "#/$defs/TabStep"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "steps",
+        "ending"
+      ],
+      "type": "object"
+    },
+    "TabStep": {
+      "description": "Where focus was after one Tab press.",
+      "properties": {
+        "repeats": {
+          "description": "For the step that repeats an earlier one, the step number it repeats.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "step": {
+          "description": "The 1-based step number.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "stop": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Stop"
+            }
+          ],
+          "description": "The stop."
+        }
+      },
+      "required": [
+        "step",
+        "stop"
+      ],
+      "type": "object"
+    },
+    "TextPartKindToken": {
+      "description": "The kind of a text part.",
+      "oneOf": [
+        {
+          "const": "text",
+          "description": "A run of text.",
+          "type": "string"
+        },
+        {
+          "const": "line-break",
+          "description": "A line break.",
+          "type": "string"
+        }
+      ]
+    },
+    "TextPartRecord": {
+      "description": "One text node or line break of a text run.",
+      "properties": {
+        "dom": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DomRecord"
+            }
+          ],
+          "description": "The DOM node the part came from."
+        },
+        "kind": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/TextPartKindToken"
+            }
+          ],
+          "description": "Whether the part is text or a line break."
+        },
+        "source": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/SourceRecord"
+            }
+          ],
+          "description": "Where in the page's sources the part came from."
+        }
+      },
+      "required": [
+        "kind",
+        "source"
+      ],
+      "type": "object"
+    },
+    "TextRunRecord": {
+      "description": "Layer A of a text run.",
+      "properties": {
+        "parts": {
+          "description": "The text nodes and line breaks the run came from, in order.",
+          "items": {
+            "$ref": "#/$defs/TextPartRecord"
+          },
+          "type": "array"
+        },
+        "text": {
+          "description": "The parts' text joined in order, with `\"\\n\"` for each line break.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "parts"
+      ],
+      "type": "object"
+    },
+    "TristateToken": {
+      "description": "A three-valued state.",
+      "oneOf": [
+        {
+          "const": "true",
+          "description": "On.",
+          "type": "string"
+        },
+        {
+          "const": "false",
+          "description": "Off.",
+          "type": "string"
+        },
+        {
+          "const": "mixed",
+          "description": "Partly on.",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The ordered transcript of one model: what the browser exposes, item by item, with the\nnavigation indexes, the excluded nodes and the tab order.",
+  "properties": {
+    "excluded": {
+      "description": "The DOM elements the engine leaves out of the exposed tree, in DOM order.",
+      "items": {
+        "$ref": "#/$defs/Excluded"
+      },
+      "type": "array"
+    },
+    "header": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Header"
+        }
+      ],
+      "description": "The engine and versions every Layer A record came from."
+    },
+    "indexes": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Indexes"
+        }
+      ],
+      "description": "The navigation indexes, each in reading order."
+    },
+    "nodes": {
+      "description": "The exposed tree in reading order, one item per exposed node.",
+      "items": {
+        "$ref": "#/$defs/Item"
+      },
+      "type": "array"
+    },
+    "tab_order": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/TabOrder"
+        }
+      ],
+      "description": "The focus walk by repeated Tab presses and how it ended."
+    }
+  },
+  "required": [
+    "header",
+    "nodes",
+    "indexes",
+    "excluded",
+    "tab_order"
+  ],
+  "title": "Transcript",
+  "type": "object"
+}
