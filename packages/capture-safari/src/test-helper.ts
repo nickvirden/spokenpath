@@ -40,6 +40,8 @@ export type HelperReply =
 export interface HelperScenario {
   /** The file every start is appended to, one JSON object per line. */
   log: string;
+  /** The reply to `canary-page`; the check page by default. */
+  canaryPage?: HelperReply;
   /** The reply to `read --canary`; a full check by default. */
   canary?: HelperReply;
   /** The reply to `read`; the served page's tree by default. */
@@ -150,7 +152,11 @@ async function main(args: string[]): Promise<void> {
     `${JSON.stringify({ event: 'helper-started', pid: process.pid, args: args.slice(1) } satisfies HelperEvent)}\n`,
   );
   if (command === 'canary-page') {
-    print({ html: TEST_CANARY_PAGE });
+    if (scenario.canaryPage === undefined) {
+      print({ html: TEST_CANARY_PAGE });
+    } else {
+      await reply(scenario.canaryPage, '', scenario);
+    }
     return;
   }
   const url = rest[rest.indexOf('--url') + 1] ?? '';

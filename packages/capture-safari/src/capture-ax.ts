@@ -28,6 +28,7 @@ import {
   type ReadTarget,
   readCanary,
   readTree,
+  requireRunnableHelper,
 } from './helper.ts';
 import { VISIBILITY_SCRIPT } from './scripts.ts';
 import { type PageServer, servePage } from './serve.ts';
@@ -74,7 +75,10 @@ async function pageTitle(session: Session): Promise<string> {
   return title;
 }
 
-/** What Safari's WebDriver says identifies the automation window: the page's title and the window's rect. */
+/**
+ * What Safari's WebDriver says identifies the automation window: the page's title and the
+ * window's rect.
+ */
 async function readTarget(session: Session, url: string): Promise<ReadTarget> {
   const title = await pageTitle(session);
   const rect = await session.call("reading the window's rect", 'GET', '/window/rect');
@@ -154,12 +158,14 @@ export function mapSourceTokens(
 /**
  * Captures Safari's macOS accessibility tree for the HTML page at `pagePath`. The page is
  * instrumented with its source locations as class tokens, served on the loopback address at a
- * URL with a per-capture nonce, and loaded in one `safaridriver` session. The page is loaded once
- * first, and refused when it has no title, by which the helper identifies the window. Then a
- * built-in check page is loaded and read, which tells a missing Accessibility permission apart
- * from an empty tree; then the page is loaded again, settled and read by the
- * `spokenpath-ax-macos` helper, which reads only the automation window. Every node whose class list holds a token gets that token's span.
- * The tree is recorded as the helper read it and never interpreted.
+ * URL with a per-capture nonce, and loaded in one `safaridriver` session. Before the driver
+ * starts, the helper's file is checked for existing and being executable, without running it.
+ * The page is loaded once first, and refused when it has no title, by which the helper
+ * identifies the window. Then a built-in check page is loaded and read, which tells a missing
+ * Accessibility permission apart from an empty tree; then the page is loaded again, settled and
+ * read by the `spokenpath-ax-macos` helper, which reads only the automation window. Every node
+ * whose class list holds a token gets that token's span. The tree is recorded as the helper read
+ * it and never interpreted.
  *
  * SIGINT and SIGTERM are handled as `captureSafari` handles them; a helper still running is
  * killed before the session is deleted. No snapshot is returned after a check-page, permission,
@@ -176,6 +182,7 @@ export async function captureSafariAx(pagePath: string, options: AxCaptureOption
   const timeoutMs = timeoutOf(options);
   const driverCommand = options.driver ?? safaridriver();
   const helper = options.helper ?? axHelper();
+  requireRunnableHelper(helper);
   const { root, fileName, bytes } = await readPage(pagePath);
   const { html, spans } = instrumentHtml(bytes, { source: 0, classToken: true });
   const diagnostics: Diagnostic[] = [];
@@ -194,11 +201,16 @@ export async function captureSafariAx(pagePath: string, options: AxCaptureOption
     const server = await serve(fileName, html);
     const { session, browserVersion } = await openSession(driverCommand, timeoutMs, interrupt, resources);
 
-    // The helper identifies the window by the page's title, so an untitled page is refused after
-    // one load, before the helper runs at all.
+    // The helper's file was checked for existing and being executable before the driver started,
+    // without running it. The helper identifies the window by the page's title, so the page is
+    // loaded once and an untitled page is refused here, before the helper runs at all; only after
+    // that does the helper run, first for the check page.
     const url = withNonce(server.url);
+    // Only the load the helper reads contributes diagnostics, so a missing asset is recorded once.
+    const diagnosticsBeforeTitleCheck = diagnostics.length;
     await loadAndSettle(session, server, url, options.waitFor, timeoutMs);
     await pageTitle(session);
+    diagnostics.length = diagnosticsBeforeTitleCheck;
 
     const canaryHtml = options.canaryPage ?? (await canaryPage(helperRun));
     const canaryServer = await serve(CANARY_FILE_NAME, new TextEncoder().encode(canaryHtml));

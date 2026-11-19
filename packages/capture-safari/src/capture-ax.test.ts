@@ -390,11 +390,12 @@ describe('a Safari AX capture that fails', () => {
   });
 
   test('fails with ax-helper-not-found when the helper cannot be started', async () => {
-    const { driver } = doubles();
+    const { driver, driverEvents } = doubles();
     const helper = { command: join(tmpdir(), 'no-such-spokenpath-ax-macos'), args: [] };
     const error = await failure(captureSafariAx(signInPage, { driver, helper }));
     expect(error.code).toBe('ax-helper-not-found');
     expect(error.message).toContain('cargo build -p spokenpath_ax_macos');
+    expect(driverEvents()).toEqual([]);
   });
 
   test.runIf(process.platform !== 'win32')(
@@ -404,10 +405,11 @@ describe('a Safari AX capture that fails', () => {
       directories.push(directory);
       const command = join(directory, 'spokenpath-ax-macos');
       writeFileSync(command, '#!/bin/sh\n', { mode: 0o600 });
-      const { driver } = doubles();
+      const { driver, driverEvents } = doubles();
       const error = await failure(captureSafariAx(signInPage, { driver, helper: { command, args: [] } }));
       expect(error.code).toBe('ax-helper-failed');
       expect(error.message).toBe('the spokenpath-ax-macos helper could not be started: EACCES');
+      expect(driverEvents()).toEqual([]);
     },
   );
 
@@ -483,4 +485,196 @@ describe('an interrupted Safari AX capture', () => {
       expect(isRunning(pid)).toBe(false);
     },
   );
+});
+
+/** A page in a fresh directory, for the steps that depend on what the page holds. */
+function pageWith(html: string): string {
+  const directory = mkdtempSync(join(tmpdir(), 'spokenpath-page-'));
+  directories.push(directory);
+  const path = join(directory, 'page.html');
+  writeFileSync(path, html);
+  return path;
+}
+
+describe('a Safari AX capture records each asset request of the page it reads once', () => {
+  test('one asset-not-found for a missing asset, although the page is loaded twice', async () => {
+    const page = pageWith('<!doctype html>\n<title>Asset</title>\n<img src="missing.png" alt="x">\n');
+    const { driver, helper, driverEvents } = doubles({}, { fetchOnNavigate: ['/missing.png'] });
+    const snapshot = await captureSafariAx(page, { driver, helper });
+    expect(snapshot.diagnostics).toEqual([
+      {
+        code: 'asset-not-found',
+        message: "No file in the page's directory answers /missing.png, so it was answered with 404.",
+      },
+    ]);
+    expect(names(driverEvents()).filter((name) => name === 'navigated')).toHaveLength(3);
+  });
+});
+
+/** The helper commands a run started, with `read --canary` told apart from `read`. */
+function helperCommands(events: HelperEvent[]): string[] {
+  return events.map((event) =>
+    event.args[0] === 'read' && event.args.includes('--canary') ? 'read --canary' : (event.args[0] ?? ''),
+  );
+}
+
+interface Step {
+  /** The step of `captureSafariAx` that fails. */
+  step: string;
+  code: string;
+  helper?: Omit<HelperScenario, 'log'>;
+  driver?: Omit<DriverScenario, 'log'>;
+  page?: string;
+  timeoutMs?: number;
+  /** The driver's events up to the failure, which the cleanup events follow. */
+  driverEvents: string[];
+  /** The helper commands run up to the failure. */
+  helperRuns: string[];
+}
+
+const CLEANUP = ['session-deleted', 'terminated'];
+
+const steps: Step[] = [
+  {
+    step: 'the options',
+    code: 'invalid-options',
+    timeoutMs: 0,
+    driverEvents: [],
+    helperRuns: [],
+  },
+  {
+    step: 'reading the page file',
+    code: 'page-unreadable',
+    page: join(tmpdir(), 'no-such-directory', 'page.html'),
+    driverEvents: [],
+    helperRuns: [],
+  },
+  {
+    step: 'starting safaridriver, which exits at once',
+    code: 'safari-session-refused',
+    driver: { stderr: 'safaridriver: remote automation is off\n', exitAtStart: true },
+    driverEvents: [],
+    helperRuns: [],
+  },
+  {
+    step: 'opening the session',
+    code: 'safari-session-refused',
+    driver: { refuseSession: { error: 'session not created', message: 'automation is off' } },
+    driverEvents: ['started', 'terminated'],
+    helperRuns: [],
+  },
+  {
+    step: 'the first page load',
+    code: 'safari-call-failed',
+    driver: { loadError: { error: 'unknown error', message: 'load failed' } },
+    driverEvents: ['started', 'session-created', ...CLEANUP],
+    helperRuns: [],
+  },
+  {
+    step: 'settling the first page load',
+    code: 'page-hidden',
+    driver: { visibility: 'hidden' },
+    driverEvents: ['started', 'session-created', 'navigated', ...CLEANUP],
+    helperRuns: [],
+  },
+  {
+    step: 'reading the title',
+    code: 'safari-window-not-identified',
+    page: '<!doctype html>\n<p>untitled</p>\n',
+    driverEvents: ['started', 'session-created', 'navigated', ...CLEANUP],
+    helperRuns: [],
+  },
+  {
+    step: 'getting the check page from the helper',
+    code: 'ax-helper-failed',
+    helper: { canaryPage: { kind: 'output', stdout: 'not json', exit: 1 } },
+    driverEvents: ['started', 'session-created', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page'],
+  },
+  {
+    step: 'settling the check page',
+    code: 'page-hidden',
+    driver: { visibilitySequence: ['visible', 'hidden'] },
+    driverEvents: ['started', 'session-created', 'navigated', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page'],
+  },
+  {
+    step: 'reading the check page',
+    code: 'accessibility-permission-missing',
+    helper: { canary: helperError('accessibility-permission-missing', PERMISSION_MESSAGE, 3) },
+    driverEvents: ['started', 'session-created', 'navigated', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page', 'read --canary'],
+  },
+  {
+    step: 'settling the second page load',
+    code: 'page-hidden',
+    driver: { visibilitySequence: ['visible', 'visible', 'hidden'] },
+    driverEvents: ['started', 'session-created', 'navigated', 'navigated', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page', 'read --canary'],
+  },
+  {
+    step: 'reading the page',
+    code: 'safari-window-not-identified',
+    helper: { read: helperError('safari-window-not-identified', 'not identified') },
+    driverEvents: ['started', 'session-created', 'navigated', 'navigated', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page', 'read --canary', 'read'],
+  },
+  {
+    step: 'the visibility after the read',
+    code: 'page-hidden',
+    driver: { visibilitySequence: ['visible', 'visible', 'visible', 'hidden'] },
+    driverEvents: ['started', 'session-created', 'navigated', 'navigated', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page', 'read --canary', 'read'],
+  },
+  {
+    step: 'validating the snapshot',
+    code: 'invalid-snapshot',
+    helper: {
+      read: {
+        kind: 'output',
+        stdout: JSON.stringify({
+          nodes: [{ id: 0, children: [], attributes: { AXRole: { type: 'colour' } } }],
+        }),
+        exit: 0,
+      },
+    },
+    driverEvents: ['started', 'session-created', 'navigated', 'navigated', 'navigated', ...CLEANUP],
+    helperRuns: ['canary-page', 'read --canary', 'read'],
+  },
+];
+
+describe('each step of a Safari AX capture', () => {
+  test.each(steps)('fails at $step with $code, after only the steps before it', async (step) => {
+    const { driver, helper, driverEvents, helperEvents } = doubles(step.helper, step.driver);
+    const page =
+      step.page === undefined ? signInPage : step.page.startsWith('<') ? pageWith(step.page) : step.page;
+    const error = await failure(
+      captureSafariAx(page, {
+        driver,
+        helper,
+        ...(step.timeoutMs === undefined ? {} : { timeoutMs: step.timeoutMs }),
+      }),
+    );
+    expect(error.code).toBe(step.code);
+    expect(names(driverEvents())).toEqual(step.driverEvents);
+    expect(helperCommands(helperEvents())).toEqual(step.helperRuns);
+  });
+
+  test('fails at resolving the built helper with ax-helper-not-found, before the driver starts', async () => {
+    const { driver, driverEvents } = doubles();
+    const previous = process.env.CARGO_TARGET_DIR;
+    process.env.CARGO_TARGET_DIR = join(tmpdir(), 'no-such-cargo-target');
+    try {
+      const error = await failure(captureSafariAx(signInPage, { driver }));
+      expect(error.code).toBe('ax-helper-not-found');
+      expect(error.message).toContain('cargo build -p spokenpath_ax_macos');
+    } finally {
+      if (previous === undefined) {
+        delete process.env.CARGO_TARGET_DIR;
+      } else {
+        process.env.CARGO_TARGET_DIR = previous;
+      }
+    }
+    expect(driverEvents()).toEqual([]);
+  });
 });

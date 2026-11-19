@@ -61,6 +61,11 @@ export interface DriverScenario {
   currentUrlError?: { error: string; message: string };
   /** Answer the navigation with this WebDriver error instead of loading the page. */
   loadError?: { error: string; message: string };
+  /**
+   * Paths the page asks its own origin for on every navigation to a page whose HTML names them,
+   * as a browser loads the assets a page references.
+   */
+  fetchOnNavigate?: string[];
 }
 
 /**
@@ -215,6 +220,10 @@ function main(args: string[]): void {
       currentUrl = String(parsed.url);
       loaded = true;
       const html = await page.text();
+      for (const path of (scenario.fetchOnNavigate ?? []).filter((path) => html.includes(path.slice(1)))) {
+        const asset = await fetch(new URL(path, String(parsed.url)));
+        await asset.body?.cancel();
+      }
       log({ event: 'navigated', status: page.status, csp: page.headers.get('content-security-policy') });
       sources = [...html.matchAll(/data-spokenpath-src="([^"]*)"/g)].map((match) => match[1] ?? '');
       title = /<title[^>]*>([^<]*)<\/title>/i.exec(html)?.[1]?.trim() ?? '';

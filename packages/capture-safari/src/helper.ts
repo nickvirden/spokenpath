@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { accessSync, constants, existsSync } from 'node:fs';
 import type { SafariAxNode } from '@spokenpath/snapshot-types';
 import { cargoBinaryPath } from './binary.ts';
 import { CaptureError, type CaptureErrorCode } from './error.ts';
@@ -52,6 +52,41 @@ export function axHelper(env: NodeJS.ProcessEnv = process.env): HelperCommand {
     );
   }
   return { command: path, args: [] };
+}
+
+/**
+ * The failure for a helper that cannot be run: `ax-helper-not-found` when the file is missing,
+ * otherwise `ax-helper-failed` naming the error code alone.
+ */
+function helperStartError(error: unknown, helper: HelperCommand): CaptureError {
+  const code =
+    error instanceof Error && 'code' in error && typeof error.code === 'string'
+      ? error.code
+      : 'an unknown error';
+  return code === 'ENOENT'
+    ? new CaptureError(
+        'ax-helper-not-found',
+        `the spokenpath-ax-macos helper is not installed at ${helper.command}; build it with \`${HELPER_BUILD_COMMAND}\``,
+        { cause: error },
+      )
+    : new CaptureError('ax-helper-failed', `the spokenpath-ax-macos helper could not be started: ${code}`, {
+        cause: error,
+      });
+}
+
+/**
+ * Fails, without running anything, when the helper's file is missing or not executable, so such
+ * a helper is refused before any browser starts. A helper that passes can still fail to start,
+ * which `runHelper` reports the same way.
+ *
+ * @throws {CaptureError} `ax-helper-not-found` or `ax-helper-failed`.
+ */
+export function requireRunnableHelper(helper: HelperCommand): void {
+  try {
+    accessSync(helper.command, constants.X_OK);
+  } catch (error) {
+    throw helperStartError(error, helper);
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -165,22 +200,7 @@ export function runHelper<T>(
       }
     });
     child.once('error', (error) => {
-      const code = 'code' in error && typeof error.code === 'string' ? error.code : 'an unknown error';
-      fail(
-        code === 'ENOENT'
-          ? new CaptureError(
-              'ax-helper-not-found',
-              `the spokenpath-ax-macos helper is not installed at ${helper.command}; build it with \`${HELPER_BUILD_COMMAND}\``,
-              { cause: error },
-            )
-          : new CaptureError(
-              'ax-helper-failed',
-              `the spokenpath-ax-macos helper could not be started: ${code}`,
-              {
-                cause: error,
-              },
-            ),
-      );
+      fail(helperStartError(error, helper));
     });
     child.once('close', (code) => {
       clearTimeout(timer);
