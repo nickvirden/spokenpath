@@ -39,3 +39,12 @@ export function escapeForTerminal(text: string): string {
   }
   return escaped;
 }
+
+/**
+ * `text` escaped line by line with `escapeForTerminal`, keeping each `\n` as a line break, so
+ * a multi-line message stays readable. A `\r` and every other control character are still
+ * escaped, so no line can rewrite another.
+ */
+export function escapeLines(text: string): string {
+  return text.split('\n').map(escapeForTerminal).join('\n');
+}

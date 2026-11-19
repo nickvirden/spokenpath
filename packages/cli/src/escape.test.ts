@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { escapeForTerminal } from './escape.ts';
+import { escapeForTerminal, escapeLines } from './escape.ts';
 
 describe('escapeForTerminal', () => {
   test.each([
@@ -48,5 +48,28 @@ describe('escapeForTerminal', () => {
 
   test('escapes an ANSI colour sequence so it cannot reach the terminal', () => {
     expect(escapeForTerminal('\u{1b}[31mred\u{1b}[0m')).toBe('\\u{1b}[31mred\\u{1b}[0m');
+  });
+});
+
+describe('escapeLines', () => {
+  test('keeps line breaks and escapes every line', () => {
+    const message = [
+      'page.waitForSelector: Timeout 30000ms exceeded.',
+      'Call log:',
+      '  - waiting for locator("\u{1b}[31m#late")',
+      '\u{1b}[2Kerased\r\u{202e}',
+    ].join('\n');
+    expect(escapeLines(message)).toBe(
+      [
+        'page.waitForSelector: Timeout 30000ms exceeded.',
+        'Call log:',
+        '  - waiting for locator("\\u{1b}[31m#late")',
+        '\\u{1b}[2Kerased\\u{d}\\u{202e}',
+      ].join('\n'),
+    );
+  });
+
+  test('is escapeForTerminal for a single line', () => {
+    expect(escapeLines('a\u{7}b')).toBe(escapeForTerminal('a\u{7}b'));
   });
 });

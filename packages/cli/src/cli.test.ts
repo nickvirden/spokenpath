@@ -264,6 +264,12 @@ describe('usage errors exit 2', () => {
     ['a flag missing its value', [signInPage, '--wait-for']],
     ['--format with --verify-instrumentation', [signInPage, '--verify-instrumentation', '--format', 'json']],
     ['--no-speech with --verify-instrumentation', [signInPage, '--verify-instrumentation', '--no-speech']],
+    ['a repeated --format', [signInPage, '--format', 'text', '--format', 'json']],
+    ['a repeated --wait-for', [signInPage, '--wait-for', 'main', '--wait-for', 'h1']],
+    ['a value for a flag that takes none', [signInPage, '--no-speech=yes']],
+    ['--help with a page', ['--help', signInPage]],
+    ['-h with a page', ['-h', signInPage]],
+    ['--version with a page', ['--version', signInPage]],
   ])('%s', async (_name, args) => {
     const { code, stdout, stderr } = await runCli(args);
     expect(code).toBe(2);
@@ -271,6 +277,73 @@ describe('usage errors exit 2', () => {
     expect(stderr).toMatch(/^spokenpath: /);
     expect(stderr).toContain('usage:');
   });
+});
+
+describe('argument errors are worded by the command', () => {
+  test.each([
+    ['an unknown option', [signInPage, '--colour'], 'spokenpath: unknown option "--colour"'],
+    ['an unknown short option', [signInPage, '-x'], 'spokenpath: unknown option "-x"'],
+    ['a missing value', [signInPage, '--format'], 'spokenpath: "--format" needs a value'],
+    [
+      'an option as a value',
+      [signInPage, '--wait-for', '--no-speech'],
+      'spokenpath: "--wait-for" needs a value',
+    ],
+    [
+      'a repeated option',
+      [signInPage, '--format', 'json', '--format', 'json'],
+      'spokenpath: "--format" is given more than once',
+    ],
+  ])('%s', async (_name, args, message) => {
+    const { code, stderr } = await runCli(args);
+    expect(code).toBe(2);
+    const [first, second, ...rest] = stderr.split('\n');
+    expect(first).toBe(message);
+    expect(second).toMatch(/^usage: spokenpath /);
+    expect(rest).toEqual(['']);
+    expect(stderr).not.toContain("'--'");
+    expect(stderr).not.toContain('positional');
+    expect((first?.match(/"/g) ?? []).length % 2).toBe(0);
+  });
+});
+
+test.each([['--help'], ['-h']])('%s prints the usage and every option to stdout', async (flag) => {
+  const { code, stdout, stderr } = await runCli([flag]);
+  expect(stderr).toBe('');
+  expect(code).toBe(0);
+  expect(stdout).toMatch(/^usage: spokenpath <page\.html> /);
+  for (const option of [
+    '--format',
+    '--no-speech',
+    '--wait-for',
+    '--verify-instrumentation',
+    '--help',
+    '--version',
+  ]) {
+    expect(stdout).toContain(`  ${option === '--help' ? '-h, --help' : option}`);
+  }
+});
+
+test('--version prints the workspace version', async () => {
+  const manifest = JSON.parse(readFileSync(join(repositoryRoot, 'package.json'), 'utf8')) as {
+    version: string;
+  };
+  const { code, stdout, stderr } = await runCli(['--version']);
+  expect(stderr).toBe('');
+  expect(code).toBe(0);
+  expect(stdout).toBe(`spokenpath ${manifest.version}\n`);
+});
+
+test('a multi-line capture failure keeps its line breaks and escapes every line', async () => {
+  // Playwright rejects the selector with a message that ends in a call log quoting it.
+  const { code, stdout, stderr } = await runCli([signInPage, '--wait-for', '!!\u{1b}[31m']);
+  expect(code).toBe(1);
+  expect(stdout).toBe('');
+  const lines = stderr.trimEnd().split('\n');
+  expect(lines.length).toBeGreaterThan(1);
+  expect(lines[0]).toMatch(/^spokenpath: /);
+  expect(stderr).not.toContain('\u{1b}');
+  expect(lines.filter((line) => line.includes('!!\\u{1b}[31m')).length).toBeGreaterThan(1);
 });
 
 test('a missing page exits 2 naming page-unreadable', async () => {
