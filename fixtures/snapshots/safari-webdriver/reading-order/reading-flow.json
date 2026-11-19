@@ -1,0 +1,523 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/reading-flow.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "reading-flow.html",
+      "sha256": "a9e5ab38267ae4be39c725547c76c795cd0344c9f3c1ce60ed99394ac62ebb5c",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 1835
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 293
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 94
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 95,
+        "end": 102
+      },
+      "element": {
+        "start": 95,
+        "end": 285
+      },
+      "line": 6,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 294,
+        "end": 300
+      },
+      "element": {
+        "start": 294,
+        "end": 1827
+      },
+      "line": 13,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 301,
+        "end": 307
+      },
+      "element": {
+        "start": 301,
+        "end": 1819
+      },
+      "line": 14,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 308,
+        "end": 312
+      },
+      "element": {
+        "start": 308,
+        "end": 329
+      },
+      "line": 15,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 330,
+        "end": 432
+      },
+      "element": {
+        "start": 330,
+        "end": 676
+      },
+      "line": 16,
+      "column": 1
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 433,
+        "end": 488
+      },
+      "element": {
+        "start": 433,
+        "end": 511
+      },
+      "line": 17,
+      "column": 1
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 512,
+        "end": 567
+      },
+      "element": {
+        "start": 512,
+        "end": 590
+      },
+      "line": 18,
+      "column": 1
+    },
+    {
+      "id": 11,
+      "source": 0,
+      "start_tag": {
+        "start": 591,
+        "end": 646
+      },
+      "element": {
+        "start": 591,
+        "end": 669
+      },
+      "line": 19,
+      "column": 1
+    },
+    {
+      "id": 12,
+      "source": 0,
+      "start_tag": {
+        "start": 677,
+        "end": 763
+      },
+      "element": {
+        "start": 677,
+        "end": 1010
+      },
+      "line": 21,
+      "column": 1
+    },
+    {
+      "id": 13,
+      "source": 0,
+      "start_tag": {
+        "start": 764,
+        "end": 820
+      },
+      "element": {
+        "start": 764,
+        "end": 843
+      },
+      "line": 22,
+      "column": 1
+    },
+    {
+      "id": 14,
+      "source": 0,
+      "start_tag": {
+        "start": 844,
+        "end": 900
+      },
+      "element": {
+        "start": 844,
+        "end": 923
+      },
+      "line": 23,
+      "column": 1
+    },
+    {
+      "id": 15,
+      "source": 0,
+      "start_tag": {
+        "start": 924,
+        "end": 980
+      },
+      "element": {
+        "start": 924,
+        "end": 1003
+      },
+      "line": 24,
+      "column": 1
+    },
+    {
+      "id": 16,
+      "source": 0,
+      "start_tag": {
+        "start": 1011,
+        "end": 1111
+      },
+      "element": {
+        "start": 1011,
+        "end": 1412
+      },
+      "line": 26,
+      "column": 1
+    },
+    {
+      "id": 17,
+      "source": 0,
+      "start_tag": {
+        "start": 1112,
+        "end": 1185
+      },
+      "element": {
+        "start": 1112,
+        "end": 1209
+      },
+      "line": 27,
+      "column": 1
+    },
+    {
+      "id": 18,
+      "source": 0,
+      "start_tag": {
+        "start": 1210,
+        "end": 1283
+      },
+      "element": {
+        "start": 1210,
+        "end": 1307
+      },
+      "line": 28,
+      "column": 1
+    },
+    {
+      "id": 19,
+      "source": 0,
+      "start_tag": {
+        "start": 1308,
+        "end": 1381
+      },
+      "element": {
+        "start": 1308,
+        "end": 1405
+      },
+      "line": 29,
+      "column": 1
+    },
+    {
+      "id": 20,
+      "source": 0,
+      "start_tag": {
+        "start": 1413,
+        "end": 1507
+      },
+      "element": {
+        "start": 1413,
+        "end": 1811
+      },
+      "line": 31,
+      "column": 1
+    },
+    {
+      "id": 21,
+      "source": 0,
+      "start_tag": {
+        "start": 1508,
+        "end": 1582
+      },
+      "element": {
+        "start": 1508,
+        "end": 1606
+      },
+      "line": 32,
+      "column": 1
+    },
+    {
+      "id": 22,
+      "source": 0,
+      "start_tag": {
+        "start": 1607,
+        "end": 1681
+      },
+      "element": {
+        "start": 1607,
+        "end": 1705
+      },
+      "line": 33,
+      "column": 1
+    },
+    {
+      "id": 23,
+      "source": 0,
+      "start_tag": {
+        "start": 1706,
+        "end": 1780
+      },
+      "element": {
+        "start": 1706,
+        "end": 1804
+      },
+      "line": 34,
+      "column": 1
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 5,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 6,
+        "role": "main",
+        "label": ""
+      },
+      {
+        "span": 7,
+        "role": "heading",
+        "label": "reading-flow"
+      },
+      {
+        "span": 8,
+        "role": "group",
+        "label": "Flex with reading-flow"
+      },
+      {
+        "span": 9,
+        "role": "button",
+        "label": "DOM 1, order 3"
+      },
+      {
+        "span": 10,
+        "role": "button",
+        "label": "DOM 2, order 1"
+      },
+      {
+        "span": 11,
+        "role": "button",
+        "label": "DOM 3, order 2"
+      },
+      {
+        "span": 12,
+        "role": "group",
+        "label": "Flex with order only"
+      },
+      {
+        "span": 13,
+        "role": "button",
+        "label": "DOM 1, order 3"
+      },
+      {
+        "span": 14,
+        "role": "button",
+        "label": "DOM 2, order 1"
+      },
+      {
+        "span": 15,
+        "role": "button",
+        "label": "DOM 3, order 2"
+      },
+      {
+        "span": 16,
+        "role": "group",
+        "label": "Grid with reading-flow"
+      },
+      {
+        "span": 17,
+        "role": "button",
+        "label": "DOM 1, column 3"
+      },
+      {
+        "span": 18,
+        "role": "button",
+        "label": "DOM 2, column 1"
+      },
+      {
+        "span": 19,
+        "role": "button",
+        "label": "DOM 3, column 2"
+      },
+      {
+        "span": 20,
+        "role": "group",
+        "label": "Grid with placement only"
+      },
+      {
+        "span": 21,
+        "role": "button",
+        "label": "DOM 1, column 3"
+      },
+      {
+        "span": 22,
+        "role": "button",
+        "label": "DOM 2, column 1"
+      },
+      {
+        "span": 23,
+        "role": "button",
+        "label": "DOM 3, column 2"
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}

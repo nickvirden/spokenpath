@@ -1,0 +1,353 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/radio-group.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "radio-group.html",
+      "sha256": "9dbf1370fc0dae609cc041510aa326004b8768e2d86f9b34d05c0058e4d19321",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 629
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 114
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 106
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 115,
+        "end": 121
+      },
+      "element": {
+        "start": 115,
+        "end": 621
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 122,
+        "end": 132
+      },
+      "element": {
+        "start": 122,
+        "end": 406
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 133,
+        "end": 141
+      },
+      "element": {
+        "start": 133,
+        "end": 154
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 155,
+        "end": 162
+      },
+      "element": {
+        "start": 155,
+        "end": 233
+      },
+      "line": 10,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 162,
+        "end": 219
+      },
+      "line": 10,
+      "column": 8
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 234,
+        "end": 241
+      },
+      "element": {
+        "start": 234,
+        "end": 315
+      },
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 241,
+        "end": 300
+      },
+      "line": 11,
+      "column": 8
+    },
+    {
+      "id": 11,
+      "source": 0,
+      "start_tag": {
+        "start": 316,
+        "end": 323
+      },
+      "element": {
+        "start": 316,
+        "end": 394
+      },
+      "line": 12,
+      "column": 1
+    },
+    {
+      "id": 12,
+      "source": 0,
+      "start_tag": {
+        "start": 323,
+        "end": 380
+      },
+      "line": 12,
+      "column": 8
+    },
+    {
+      "id": 13,
+      "source": 0,
+      "start_tag": {
+        "start": 407,
+        "end": 462
+      },
+      "element": {
+        "start": 407,
+        "end": 613
+      },
+      "line": 14,
+      "column": 1
+    },
+    {
+      "id": 14,
+      "source": 0,
+      "start_tag": {
+        "start": 463,
+        "end": 523
+      },
+      "element": {
+        "start": 463,
+        "end": 532
+      },
+      "line": 15,
+      "column": 1
+    },
+    {
+      "id": 15,
+      "source": 0,
+      "start_tag": {
+        "start": 533,
+        "end": 596
+      },
+      "element": {
+        "start": 533,
+        "end": 606
+      },
+      "line": 16,
+      "column": 1
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 5,
+        "role": "group",
+        "label": "Size"
+      },
+      {
+        "span": 6,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 7,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 8,
+        "role": "radio",
+        "label": "Small"
+      },
+      {
+        "span": 9,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 10,
+        "role": "radio",
+        "label": "Medium"
+      },
+      {
+        "span": 11,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 12,
+        "role": "radio",
+        "label": "Large"
+      },
+      {
+        "span": 13,
+        "role": "radiogroup",
+        "label": "Colour"
+      },
+      {
+        "span": 14,
+        "role": "radio",
+        "label": "Red"
+      },
+      {
+        "span": 15,
+        "role": "radio",
+        "label": "Blue"
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}

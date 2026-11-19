@@ -1,0 +1,338 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/sign-in.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "sign-in.html",
+      "sha256": "78cf3594a1f9917279d459a48f91c0c2f9c3c73b08fb0e1ef3e9b6a5da51aae7",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 415
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 93
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 85
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 94,
+        "end": 100
+      },
+      "element": {
+        "start": 94,
+        "end": 407
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 101,
+        "end": 105
+      },
+      "element": {
+        "start": 101,
+        "end": 117
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 118,
+        "end": 121
+      },
+      "element": {
+        "start": 118,
+        "end": 212
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 122,
+        "end": 141
+      },
+      "element": {
+        "start": 122,
+        "end": 154
+      },
+      "line": 10,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 155,
+        "end": 207
+      },
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 213,
+        "end": 216
+      },
+      "element": {
+        "start": 213,
+        "end": 338
+      },
+      "line": 13,
+      "column": 1
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 217,
+        "end": 251
+      },
+      "element": {
+        "start": 217,
+        "end": 333
+      },
+      "line": 14,
+      "column": 1
+    },
+    {
+      "id": 11,
+      "source": 0,
+      "start_tag": {
+        "start": 251,
+        "end": 299
+      },
+      "element": {
+        "start": 251,
+        "end": 324
+      },
+      "line": 14,
+      "column": 35
+    },
+    {
+      "id": 12,
+      "source": 0,
+      "start_tag": {
+        "start": 299,
+        "end": 318
+      },
+      "line": 14,
+      "column": 83
+    },
+    {
+      "id": 13,
+      "source": 0,
+      "start_tag": {
+        "start": 339,
+        "end": 342
+      },
+      "element": {
+        "start": 339,
+        "end": 399
+      },
+      "line": 16,
+      "column": 1
+    },
+    {
+      "id": 14,
+      "source": 0,
+      "start_tag": {
+        "start": 342,
+        "end": 372
+      },
+      "element": {
+        "start": 342,
+        "end": 395
+      },
+      "line": 16,
+      "column": 4
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 5,
+        "role": "heading",
+        "label": "Sign in"
+      },
+      {
+        "span": 6,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 7,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 8,
+        "role": "textbox",
+        "label": "Email"
+      },
+      {
+        "span": 9,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 10,
+        "role": "button",
+        "label": ""
+      },
+      {
+        "span": 11,
+        "role": "generic",
+        "label": ""
+      },
+      {
+        "span": 12,
+        "role": "none",
+        "label": ""
+      },
+      {
+        "span": 13,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 14,
+        "role": "link",
+        "label": "Trouble signing in?"
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}

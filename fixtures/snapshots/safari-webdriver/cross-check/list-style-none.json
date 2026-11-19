@@ -1,0 +1,276 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/list-style-none.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "list-style-none.html",
+      "sha256": "10d28da847f06fbf031766dcd866b1b3403aab745148022812de5ad679ef9e19",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 288
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 146
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 98
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 99,
+        "end": 106
+      },
+      "element": {
+        "start": 99,
+        "end": 138
+      },
+      "line": 6,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 147,
+        "end": 153
+      },
+      "element": {
+        "start": 147,
+        "end": 280
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 154,
+        "end": 158
+      },
+      "element": {
+        "start": 154,
+        "end": 169
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 170,
+        "end": 186
+      },
+      "element": {
+        "start": 170,
+        "end": 272
+      },
+      "line": 10,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 187,
+        "end": 202
+      },
+      "element": {
+        "start": 187,
+        "end": 212
+      },
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 213,
+        "end": 229
+      },
+      "element": {
+        "start": 213,
+        "end": 240
+      },
+      "line": 12,
+      "column": 1
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 241,
+        "end": 256
+      },
+      "element": {
+        "start": 241,
+        "end": 266
+      },
+      "line": 13,
+      "column": 1
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 5,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 6,
+        "role": "heading",
+        "label": "Prices"
+      },
+      {
+        "span": 7,
+        "role": "group",
+        "label": ""
+      },
+      {
+        "span": 8,
+        "role": "listitem",
+        "label": ""
+      },
+      {
+        "span": 9,
+        "role": "listitem",
+        "label": ""
+      },
+      {
+        "span": 10,
+        "role": "listitem",
+        "label": ""
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}

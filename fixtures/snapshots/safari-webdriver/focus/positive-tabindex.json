@@ -1,0 +1,308 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/positive-tabindex.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "positive-tabindex.html",
+      "sha256": "0c47bca28a9cfaa6ae2b05a1b530220b5ff0afcd1cc18716d02132f43443ddff",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 430
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 103
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 95
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 104,
+        "end": 110
+      },
+      "element": {
+        "start": 104,
+        "end": 422
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 111,
+        "end": 114
+      },
+      "element": {
+        "start": 111,
+        "end": 181
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 114,
+        "end": 155
+      },
+      "element": {
+        "start": 114,
+        "end": 177
+      },
+      "line": 8,
+      "column": 4
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 182,
+        "end": 185
+      },
+      "element": {
+        "start": 182,
+        "end": 263
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 185,
+        "end": 238
+      },
+      "element": {
+        "start": 185,
+        "end": 259
+      },
+      "line": 9,
+      "column": 4
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 264,
+        "end": 267
+      },
+      "element": {
+        "start": 264,
+        "end": 345
+      },
+      "line": 10,
+      "column": 1
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 267,
+        "end": 320
+      },
+      "element": {
+        "start": 267,
+        "end": 341
+      },
+      "line": 10,
+      "column": 4
+    },
+    {
+      "id": 11,
+      "source": 0,
+      "start_tag": {
+        "start": 346,
+        "end": 349
+      },
+      "element": {
+        "start": 346,
+        "end": 414
+      },
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": 12,
+      "source": 0,
+      "start_tag": {
+        "start": 349,
+        "end": 389
+      },
+      "element": {
+        "start": 349,
+        "end": 410
+      },
+      "line": 11,
+      "column": 4
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 5,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 6,
+        "role": "button",
+        "label": "Natural first"
+      },
+      {
+        "span": 7,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 8,
+        "role": "button",
+        "label": "Tabindex two"
+      },
+      {
+        "span": 9,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 10,
+        "role": "button",
+        "label": "Tabindex one"
+      },
+      {
+        "span": 11,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 12,
+        "role": "button",
+        "label": "Natural last"
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}
