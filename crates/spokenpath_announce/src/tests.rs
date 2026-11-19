@@ -1399,6 +1399,15 @@ fn repeating_stops_are_matched_by_identity_on_synthetic_walks() {
             wording: WRAP_TO_STEP_1,
             repeats: vec![None, None, None, Some(1)],
         },
+        WalkCase {
+            case: "an unresolved stop with a different backend id is not a repeat",
+            steps: vec![unresolved(8), unresolved(7), LeftPage, unresolved(7)],
+            truncated: false,
+            cycle_start: Some(3),
+            kind: EndingKind::Wrap,
+            wording: "Focus left the page and Tab returned to step 2, the normal end of a walk.",
+            repeats: vec![None, None, None, Some(2)],
+        },
     ];
     for case in cases {
         assert_walk(case);
