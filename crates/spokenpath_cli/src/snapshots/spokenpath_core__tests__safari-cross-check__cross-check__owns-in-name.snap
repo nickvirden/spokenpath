@@ -1,0 +1,56 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 2 elements compared: 1 differs, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "An owned element in a name from content"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "An owned element in a name from content"
+2    A menuitem "Inbox 3 new"
+       owns-in-name.html:8:1  <div id="menu" role="menuitem" aria-owns="badge">
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+     ~ "Inbox 3 new, menuitem"
+3      A text "Inbox"
+       ~ "Inbox"
+4      A generic (no accessible name)
+         owns-in-name.html:9:1  <span id="badge">
+         no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+         differs in Safari: role "" in Safari 27.0.1, "generic" in Chromium 159.0.8154.6
+       ~ ""
+5        A text "3 new"
+         ~ "3 new"
+
+Excluded
+  <html>  owns-in-name.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  owns-in-name.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  owns-in-name.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  owns-in-name.html:3:1 (computed by tool)
+  <title>  owns-in-name.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  owns-in-name.html:3:1 (computed by tool)
+  <body>  owns-in-name.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

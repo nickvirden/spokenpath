@@ -1,0 +1,55 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 2 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Icon button with no name"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Icon button with no name"
+2    A paragraph (no accessible name)
+       icon-button.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A button (no accessible name)  focusable
+         icon-button.html:9:1  <button id="target" type="button">
+         no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; contents: empty; title (attribute): empty
+       ~ "button"
+
+Excluded
+  <html>  icon-button.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  icon-button.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  icon-button.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  icon-button.html:3:1 (computed by tool)
+  <title>  icon-button.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  icon-button.html:3:1 (computed by tool)
+  <body>  icon-button.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <svg> #icon  icon-button.html:9:35  <svg id="icon" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">
+    aria-hidden (engine reason: ariaHiddenElement)
+  <path>  icon-button.html:9:112  <path d="M2 8h12"/>
+    aria-hidden (engine reason: ariaHiddenSubtree); hidden by <svg> #icon  icon-button.html:9:35 (exposed by engine)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button (no accessible name)
+
+Tab order
+  1  [3] button (no accessible name)
+  2  left the page
+  3  [3] button (no accessible name)  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

@@ -1,0 +1,384 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/tables.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "tables.html",
+      "sha256": "2a87664a213bf71fd793796fa36e6ed18af7626640d3371377a407fb6d99a6fe",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 409
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 108
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 100
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 109,
+        "end": 115
+      },
+      "element": {
+        "start": 109,
+        "end": 401
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 116,
+        "end": 135
+      },
+      "element": {
+        "start": 116,
+        "end": 202
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 136,
+        "end": 140
+      },
+      "element": {
+        "start": 136,
+        "end": 193
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 140,
+        "end": 154
+      },
+      "element": {
+        "start": 140,
+        "end": 163
+      },
+      "line": 9,
+      "column": 5
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 163,
+        "end": 178
+      },
+      "element": {
+        "start": 163,
+        "end": 188
+      },
+      "line": 9,
+      "column": 28
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 203,
+        "end": 220
+      },
+      "element": {
+        "start": 203,
+        "end": 393
+      },
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 221,
+        "end": 243
+      },
+      "element": {
+        "start": 221,
+        "end": 266
+      },
+      "line": 12,
+      "column": 1
+    },
+    {
+      "id": 11,
+      "source": 0,
+      "start_tag": {
+        "start": 267,
+        "end": 271
+      },
+      "element": {
+        "start": 267,
+        "end": 322
+      },
+      "line": 13,
+      "column": 1
+    },
+    {
+      "id": 12,
+      "source": 0,
+      "start_tag": {
+        "start": 271,
+        "end": 284
+      },
+      "element": {
+        "start": 271,
+        "end": 292
+      },
+      "line": 13,
+      "column": 5
+    },
+    {
+      "id": 13,
+      "source": 0,
+      "start_tag": {
+        "start": 292,
+        "end": 307
+      },
+      "element": {
+        "start": 292,
+        "end": 317
+      },
+      "line": 13,
+      "column": 26
+    },
+    {
+      "id": 14,
+      "source": 0,
+      "start_tag": {
+        "start": 323,
+        "end": 327
+      },
+      "element": {
+        "start": 323,
+        "end": 384
+      },
+      "line": 14,
+      "column": 1
+    },
+    {
+      "id": 15,
+      "source": 0,
+      "start_tag": {
+        "start": 327,
+        "end": 343
+      },
+      "element": {
+        "start": 327,
+        "end": 354
+      },
+      "line": 14,
+      "column": 5
+    },
+    {
+      "id": 16,
+      "source": 0,
+      "start_tag": {
+        "start": 354,
+        "end": 368
+      },
+      "element": {
+        "start": 354,
+        "end": 379
+      },
+      "line": 14,
+      "column": 32
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 5,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 6,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 7,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 8,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 9,
+        "role": "table",
+        "label": "Opening hours"
+      },
+      {
+        "span": 10,
+        "role": "caption",
+        "label": ""
+      },
+      {
+        "span": 11,
+        "role": "row",
+        "label": ""
+      },
+      {
+        "span": 12,
+        "role": "columnheader",
+        "label": ""
+      },
+      {
+        "span": 13,
+        "role": "columnheader",
+        "label": ""
+      },
+      {
+        "span": 14,
+        "role": "row",
+        "label": ""
+      },
+      {
+        "span": 15,
+        "role": "cell",
+        "label": ""
+      },
+      {
+        "span": 16,
+        "role": "cell",
+        "label": ""
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}

@@ -182,6 +182,14 @@ describe('validateSnapshot accessibility nodes', () => {
   });
 });
 
+test('safari-webdriver-basic.json is a Safari snapshot of the same page as chromium-basic.json', () => {
+  const chromium = readFixture('chromium-basic.json');
+  const safari = readFixture('safari-webdriver-basic.json');
+  expect(safari.sources).toEqual(chromium.sources);
+  expect(safari.spans).toEqual(chromium.spans);
+  expect(safari.version).toEqual({ major: 0, minor: 1 });
+});
+
 describe('chromium-basic.json against its page source', () => {
   const snapshot = readFixture('chromium-basic.json') as unknown as Snapshot;
   const source = snapshot.sources[0];

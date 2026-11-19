@@ -17,7 +17,8 @@
       "!schema/transcript.v0.json",
       "!packages/snapshot-types/src/snapshot.generated.ts",
       "!fixtures/snapshots/chromium-from-typescript.json",
-      "!fixtures/snapshots/chromium"
+      "!fixtures/snapshots/chromium",
+      "!fixtures/snapshots/safari-webdriver"
     ]
   },
   "formatter": {

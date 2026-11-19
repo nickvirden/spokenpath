@@ -1,0 +1,1849 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 201 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+  1  A RootWebArea (internal role) "Long tab order"  focusable, focused
+       no source location: the document itself (document)
+       name from title (related-element)
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+     ~ "Long tab order"
+  2    A button "001"  focusable
+         long.html:9:1  <button id="b001" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "001, button"
+  3      A text "001"
+         ~ "001"
+  4    A button "002"  focusable
+         long.html:10:1  <button id="b002" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "002, button"
+  5      A text "002"
+         ~ "002"
+  6    A button "003"  focusable
+         long.html:11:1  <button id="b003" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "003, button"
+  7      A text "003"
+         ~ "003"
+  8    A button "004"  focusable
+         long.html:12:1  <button id="b004" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "004, button"
+  9      A text "004"
+         ~ "004"
+ 10    A button "005"  focusable
+         long.html:13:1  <button id="b005" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "005, button"
+ 11      A text "005"
+         ~ "005"
+ 12    A button "006"  focusable
+         long.html:14:1  <button id="b006" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "006, button"
+ 13      A text "006"
+         ~ "006"
+ 14    A button "007"  focusable
+         long.html:15:1  <button id="b007" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "007, button"
+ 15      A text "007"
+         ~ "007"
+ 16    A button "008"  focusable
+         long.html:16:1  <button id="b008" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "008, button"
+ 17      A text "008"
+         ~ "008"
+ 18    A button "009"  focusable
+         long.html:17:1  <button id="b009" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "009, button"
+ 19      A text "009"
+         ~ "009"
+ 20    A button "010"  focusable
+         long.html:18:1  <button id="b010" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "010, button"
+ 21      A text "010"
+         ~ "010"
+ 22    A button "011"  focusable
+         long.html:19:1  <button id="b011" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "011, button"
+ 23      A text "011"
+         ~ "011"
+ 24    A button "012"  focusable
+         long.html:20:1  <button id="b012" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "012, button"
+ 25      A text "012"
+         ~ "012"
+ 26    A button "013"  focusable
+         long.html:21:1  <button id="b013" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "013, button"
+ 27      A text "013"
+         ~ "013"
+ 28    A button "014"  focusable
+         long.html:22:1  <button id="b014" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "014, button"
+ 29      A text "014"
+         ~ "014"
+ 30    A button "015"  focusable
+         long.html:23:1  <button id="b015" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "015, button"
+ 31      A text "015"
+         ~ "015"
+ 32    A button "016"  focusable
+         long.html:24:1  <button id="b016" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "016, button"
+ 33      A text "016"
+         ~ "016"
+ 34    A button "017"  focusable
+         long.html:25:1  <button id="b017" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "017, button"
+ 35      A text "017"
+         ~ "017"
+ 36    A button "018"  focusable
+         long.html:26:1  <button id="b018" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "018, button"
+ 37      A text "018"
+         ~ "018"
+ 38    A button "019"  focusable
+         long.html:27:1  <button id="b019" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "019, button"
+ 39      A text "019"
+         ~ "019"
+ 40    A button "020"  focusable
+         long.html:28:1  <button id="b020" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "020, button"
+ 41      A text "020"
+         ~ "020"
+ 42    A button "021"  focusable
+         long.html:29:1  <button id="b021" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "021, button"
+ 43      A text "021"
+         ~ "021"
+ 44    A button "022"  focusable
+         long.html:30:1  <button id="b022" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "022, button"
+ 45      A text "022"
+         ~ "022"
+ 46    A button "023"  focusable
+         long.html:31:1  <button id="b023" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "023, button"
+ 47      A text "023"
+         ~ "023"
+ 48    A button "024"  focusable
+         long.html:32:1  <button id="b024" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "024, button"
+ 49      A text "024"
+         ~ "024"
+ 50    A button "025"  focusable
+         long.html:33:1  <button id="b025" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "025, button"
+ 51      A text "025"
+         ~ "025"
+ 52    A button "026"  focusable
+         long.html:34:1  <button id="b026" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "026, button"
+ 53      A text "026"
+         ~ "026"
+ 54    A button "027"  focusable
+         long.html:35:1  <button id="b027" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "027, button"
+ 55      A text "027"
+         ~ "027"
+ 56    A button "028"  focusable
+         long.html:36:1  <button id="b028" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "028, button"
+ 57      A text "028"
+         ~ "028"
+ 58    A button "029"  focusable
+         long.html:37:1  <button id="b029" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "029, button"
+ 59      A text "029"
+         ~ "029"
+ 60    A button "030"  focusable
+         long.html:38:1  <button id="b030" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "030, button"
+ 61      A text "030"
+         ~ "030"
+ 62    A button "031"  focusable
+         long.html:39:1  <button id="b031" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "031, button"
+ 63      A text "031"
+         ~ "031"
+ 64    A button "032"  focusable
+         long.html:40:1  <button id="b032" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "032, button"
+ 65      A text "032"
+         ~ "032"
+ 66    A button "033"  focusable
+         long.html:41:1  <button id="b033" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "033, button"
+ 67      A text "033"
+         ~ "033"
+ 68    A button "034"  focusable
+         long.html:42:1  <button id="b034" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "034, button"
+ 69      A text "034"
+         ~ "034"
+ 70    A button "035"  focusable
+         long.html:43:1  <button id="b035" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "035, button"
+ 71      A text "035"
+         ~ "035"
+ 72    A button "036"  focusable
+         long.html:44:1  <button id="b036" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "036, button"
+ 73      A text "036"
+         ~ "036"
+ 74    A button "037"  focusable
+         long.html:45:1  <button id="b037" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "037, button"
+ 75      A text "037"
+         ~ "037"
+ 76    A button "038"  focusable
+         long.html:46:1  <button id="b038" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "038, button"
+ 77      A text "038"
+         ~ "038"
+ 78    A button "039"  focusable
+         long.html:47:1  <button id="b039" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "039, button"
+ 79      A text "039"
+         ~ "039"
+ 80    A button "040"  focusable
+         long.html:48:1  <button id="b040" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "040, button"
+ 81      A text "040"
+         ~ "040"
+ 82    A button "041"  focusable
+         long.html:49:1  <button id="b041" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "041, button"
+ 83      A text "041"
+         ~ "041"
+ 84    A button "042"  focusable
+         long.html:50:1  <button id="b042" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "042, button"
+ 85      A text "042"
+         ~ "042"
+ 86    A button "043"  focusable
+         long.html:51:1  <button id="b043" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "043, button"
+ 87      A text "043"
+         ~ "043"
+ 88    A button "044"  focusable
+         long.html:52:1  <button id="b044" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "044, button"
+ 89      A text "044"
+         ~ "044"
+ 90    A button "045"  focusable
+         long.html:53:1  <button id="b045" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "045, button"
+ 91      A text "045"
+         ~ "045"
+ 92    A button "046"  focusable
+         long.html:54:1  <button id="b046" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "046, button"
+ 93      A text "046"
+         ~ "046"
+ 94    A button "047"  focusable
+         long.html:55:1  <button id="b047" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "047, button"
+ 95      A text "047"
+         ~ "047"
+ 96    A button "048"  focusable
+         long.html:56:1  <button id="b048" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "048, button"
+ 97      A text "048"
+         ~ "048"
+ 98    A button "049"  focusable
+         long.html:57:1  <button id="b049" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "049, button"
+ 99      A text "049"
+         ~ "049"
+100    A button "050"  focusable
+         long.html:58:1  <button id="b050" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "050, button"
+101      A text "050"
+         ~ "050"
+102    A button "051"  focusable
+         long.html:59:1  <button id="b051" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "051, button"
+103      A text "051"
+         ~ "051"
+104    A button "052"  focusable
+         long.html:60:1  <button id="b052" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "052, button"
+105      A text "052"
+         ~ "052"
+106    A button "053"  focusable
+         long.html:61:1  <button id="b053" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "053, button"
+107      A text "053"
+         ~ "053"
+108    A button "054"  focusable
+         long.html:62:1  <button id="b054" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "054, button"
+109      A text "054"
+         ~ "054"
+110    A button "055"  focusable
+         long.html:63:1  <button id="b055" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "055, button"
+111      A text "055"
+         ~ "055"
+112    A button "056"  focusable
+         long.html:64:1  <button id="b056" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "056, button"
+113      A text "056"
+         ~ "056"
+114    A button "057"  focusable
+         long.html:65:1  <button id="b057" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "057, button"
+115      A text "057"
+         ~ "057"
+116    A button "058"  focusable
+         long.html:66:1  <button id="b058" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "058, button"
+117      A text "058"
+         ~ "058"
+118    A button "059"  focusable
+         long.html:67:1  <button id="b059" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "059, button"
+119      A text "059"
+         ~ "059"
+120    A button "060"  focusable
+         long.html:68:1  <button id="b060" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "060, button"
+121      A text "060"
+         ~ "060"
+122    A button "061"  focusable
+         long.html:69:1  <button id="b061" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "061, button"
+123      A text "061"
+         ~ "061"
+124    A button "062"  focusable
+         long.html:70:1  <button id="b062" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "062, button"
+125      A text "062"
+         ~ "062"
+126    A button "063"  focusable
+         long.html:71:1  <button id="b063" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "063, button"
+127      A text "063"
+         ~ "063"
+128    A button "064"  focusable
+         long.html:72:1  <button id="b064" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "064, button"
+129      A text "064"
+         ~ "064"
+130    A button "065"  focusable
+         long.html:73:1  <button id="b065" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "065, button"
+131      A text "065"
+         ~ "065"
+132    A button "066"  focusable
+         long.html:74:1  <button id="b066" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "066, button"
+133      A text "066"
+         ~ "066"
+134    A button "067"  focusable
+         long.html:75:1  <button id="b067" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "067, button"
+135      A text "067"
+         ~ "067"
+136    A button "068"  focusable
+         long.html:76:1  <button id="b068" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "068, button"
+137      A text "068"
+         ~ "068"
+138    A button "069"  focusable
+         long.html:77:1  <button id="b069" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "069, button"
+139      A text "069"
+         ~ "069"
+140    A button "070"  focusable
+         long.html:78:1  <button id="b070" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "070, button"
+141      A text "070"
+         ~ "070"
+142    A button "071"  focusable
+         long.html:79:1  <button id="b071" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "071, button"
+143      A text "071"
+         ~ "071"
+144    A button "072"  focusable
+         long.html:80:1  <button id="b072" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "072, button"
+145      A text "072"
+         ~ "072"
+146    A button "073"  focusable
+         long.html:81:1  <button id="b073" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "073, button"
+147      A text "073"
+         ~ "073"
+148    A button "074"  focusable
+         long.html:82:1  <button id="b074" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "074, button"
+149      A text "074"
+         ~ "074"
+150    A button "075"  focusable
+         long.html:83:1  <button id="b075" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "075, button"
+151      A text "075"
+         ~ "075"
+152    A button "076"  focusable
+         long.html:84:1  <button id="b076" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "076, button"
+153      A text "076"
+         ~ "076"
+154    A button "077"  focusable
+         long.html:85:1  <button id="b077" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "077, button"
+155      A text "077"
+         ~ "077"
+156    A button "078"  focusable
+         long.html:86:1  <button id="b078" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "078, button"
+157      A text "078"
+         ~ "078"
+158    A button "079"  focusable
+         long.html:87:1  <button id="b079" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "079, button"
+159      A text "079"
+         ~ "079"
+160    A button "080"  focusable
+         long.html:88:1  <button id="b080" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "080, button"
+161      A text "080"
+         ~ "080"
+162    A button "081"  focusable
+         long.html:89:1  <button id="b081" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "081, button"
+163      A text "081"
+         ~ "081"
+164    A button "082"  focusable
+         long.html:90:1  <button id="b082" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "082, button"
+165      A text "082"
+         ~ "082"
+166    A button "083"  focusable
+         long.html:91:1  <button id="b083" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "083, button"
+167      A text "083"
+         ~ "083"
+168    A button "084"  focusable
+         long.html:92:1  <button id="b084" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "084, button"
+169      A text "084"
+         ~ "084"
+170    A button "085"  focusable
+         long.html:93:1  <button id="b085" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "085, button"
+171      A text "085"
+         ~ "085"
+172    A button "086"  focusable
+         long.html:94:1  <button id="b086" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "086, button"
+173      A text "086"
+         ~ "086"
+174    A button "087"  focusable
+         long.html:95:1  <button id="b087" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "087, button"
+175      A text "087"
+         ~ "087"
+176    A button "088"  focusable
+         long.html:96:1  <button id="b088" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "088, button"
+177      A text "088"
+         ~ "088"
+178    A button "089"  focusable
+         long.html:97:1  <button id="b089" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "089, button"
+179      A text "089"
+         ~ "089"
+180    A button "090"  focusable
+         long.html:98:1  <button id="b090" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "090, button"
+181      A text "090"
+         ~ "090"
+182    A button "091"  focusable
+         long.html:99:1  <button id="b091" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "091, button"
+183      A text "091"
+         ~ "091"
+184    A button "092"  focusable
+         long.html:100:1  <button id="b092" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "092, button"
+185      A text "092"
+         ~ "092"
+186    A button "093"  focusable
+         long.html:101:1  <button id="b093" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "093, button"
+187      A text "093"
+         ~ "093"
+188    A button "094"  focusable
+         long.html:102:1  <button id="b094" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "094, button"
+189      A text "094"
+         ~ "094"
+190    A button "095"  focusable
+         long.html:103:1  <button id="b095" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "095, button"
+191      A text "095"
+         ~ "095"
+192    A button "096"  focusable
+         long.html:104:1  <button id="b096" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "096, button"
+193      A text "096"
+         ~ "096"
+194    A button "097"  focusable
+         long.html:105:1  <button id="b097" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "097, button"
+195      A text "097"
+         ~ "097"
+196    A button "098"  focusable
+         long.html:106:1  <button id="b098" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "098, button"
+197      A text "098"
+         ~ "098"
+198    A button "099"  focusable
+         long.html:107:1  <button id="b099" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "099, button"
+199      A text "099"
+         ~ "099"
+200    A button "100"  focusable
+         long.html:108:1  <button id="b100" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "100, button"
+201      A text "100"
+         ~ "100"
+202    A button "101"  focusable
+         long.html:109:1  <button id="b101" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "101, button"
+203      A text "101"
+         ~ "101"
+204    A button "102"  focusable
+         long.html:110:1  <button id="b102" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "102, button"
+205      A text "102"
+         ~ "102"
+206    A button "103"  focusable
+         long.html:111:1  <button id="b103" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "103, button"
+207      A text "103"
+         ~ "103"
+208    A button "104"  focusable
+         long.html:112:1  <button id="b104" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "104, button"
+209      A text "104"
+         ~ "104"
+210    A button "105"  focusable
+         long.html:113:1  <button id="b105" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "105, button"
+211      A text "105"
+         ~ "105"
+212    A button "106"  focusable
+         long.html:114:1  <button id="b106" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "106, button"
+213      A text "106"
+         ~ "106"
+214    A button "107"  focusable
+         long.html:115:1  <button id="b107" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "107, button"
+215      A text "107"
+         ~ "107"
+216    A button "108"  focusable
+         long.html:116:1  <button id="b108" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "108, button"
+217      A text "108"
+         ~ "108"
+218    A button "109"  focusable
+         long.html:117:1  <button id="b109" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "109, button"
+219      A text "109"
+         ~ "109"
+220    A button "110"  focusable
+         long.html:118:1  <button id="b110" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "110, button"
+221      A text "110"
+         ~ "110"
+222    A button "111"  focusable
+         long.html:119:1  <button id="b111" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "111, button"
+223      A text "111"
+         ~ "111"
+224    A button "112"  focusable
+         long.html:120:1  <button id="b112" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "112, button"
+225      A text "112"
+         ~ "112"
+226    A button "113"  focusable
+         long.html:121:1  <button id="b113" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "113, button"
+227      A text "113"
+         ~ "113"
+228    A button "114"  focusable
+         long.html:122:1  <button id="b114" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "114, button"
+229      A text "114"
+         ~ "114"
+230    A button "115"  focusable
+         long.html:123:1  <button id="b115" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "115, button"
+231      A text "115"
+         ~ "115"
+232    A button "116"  focusable
+         long.html:124:1  <button id="b116" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "116, button"
+233      A text "116"
+         ~ "116"
+234    A button "117"  focusable
+         long.html:125:1  <button id="b117" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "117, button"
+235      A text "117"
+         ~ "117"
+236    A button "118"  focusable
+         long.html:126:1  <button id="b118" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "118, button"
+237      A text "118"
+         ~ "118"
+238    A button "119"  focusable
+         long.html:127:1  <button id="b119" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "119, button"
+239      A text "119"
+         ~ "119"
+240    A button "120"  focusable
+         long.html:128:1  <button id="b120" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "120, button"
+241      A text "120"
+         ~ "120"
+242    A button "121"  focusable
+         long.html:129:1  <button id="b121" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "121, button"
+243      A text "121"
+         ~ "121"
+244    A button "122"  focusable
+         long.html:130:1  <button id="b122" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "122, button"
+245      A text "122"
+         ~ "122"
+246    A button "123"  focusable
+         long.html:131:1  <button id="b123" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "123, button"
+247      A text "123"
+         ~ "123"
+248    A button "124"  focusable
+         long.html:132:1  <button id="b124" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "124, button"
+249      A text "124"
+         ~ "124"
+250    A button "125"  focusable
+         long.html:133:1  <button id="b125" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "125, button"
+251      A text "125"
+         ~ "125"
+252    A button "126"  focusable
+         long.html:134:1  <button id="b126" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "126, button"
+253      A text "126"
+         ~ "126"
+254    A button "127"  focusable
+         long.html:135:1  <button id="b127" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "127, button"
+255      A text "127"
+         ~ "127"
+256    A button "128"  focusable
+         long.html:136:1  <button id="b128" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "128, button"
+257      A text "128"
+         ~ "128"
+258    A button "129"  focusable
+         long.html:137:1  <button id="b129" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "129, button"
+259      A text "129"
+         ~ "129"
+260    A button "130"  focusable
+         long.html:138:1  <button id="b130" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "130, button"
+261      A text "130"
+         ~ "130"
+262    A button "131"  focusable
+         long.html:139:1  <button id="b131" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "131, button"
+263      A text "131"
+         ~ "131"
+264    A button "132"  focusable
+         long.html:140:1  <button id="b132" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "132, button"
+265      A text "132"
+         ~ "132"
+266    A button "133"  focusable
+         long.html:141:1  <button id="b133" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "133, button"
+267      A text "133"
+         ~ "133"
+268    A button "134"  focusable
+         long.html:142:1  <button id="b134" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "134, button"
+269      A text "134"
+         ~ "134"
+270    A button "135"  focusable
+         long.html:143:1  <button id="b135" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "135, button"
+271      A text "135"
+         ~ "135"
+272    A button "136"  focusable
+         long.html:144:1  <button id="b136" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "136, button"
+273      A text "136"
+         ~ "136"
+274    A button "137"  focusable
+         long.html:145:1  <button id="b137" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "137, button"
+275      A text "137"
+         ~ "137"
+276    A button "138"  focusable
+         long.html:146:1  <button id="b138" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "138, button"
+277      A text "138"
+         ~ "138"
+278    A button "139"  focusable
+         long.html:147:1  <button id="b139" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "139, button"
+279      A text "139"
+         ~ "139"
+280    A button "140"  focusable
+         long.html:148:1  <button id="b140" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "140, button"
+281      A text "140"
+         ~ "140"
+282    A button "141"  focusable
+         long.html:149:1  <button id="b141" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "141, button"
+283      A text "141"
+         ~ "141"
+284    A button "142"  focusable
+         long.html:150:1  <button id="b142" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "142, button"
+285      A text "142"
+         ~ "142"
+286    A button "143"  focusable
+         long.html:151:1  <button id="b143" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "143, button"
+287      A text "143"
+         ~ "143"
+288    A button "144"  focusable
+         long.html:152:1  <button id="b144" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "144, button"
+289      A text "144"
+         ~ "144"
+290    A button "145"  focusable
+         long.html:153:1  <button id="b145" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "145, button"
+291      A text "145"
+         ~ "145"
+292    A button "146"  focusable
+         long.html:154:1  <button id="b146" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "146, button"
+293      A text "146"
+         ~ "146"
+294    A button "147"  focusable
+         long.html:155:1  <button id="b147" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "147, button"
+295      A text "147"
+         ~ "147"
+296    A button "148"  focusable
+         long.html:156:1  <button id="b148" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "148, button"
+297      A text "148"
+         ~ "148"
+298    A button "149"  focusable
+         long.html:157:1  <button id="b149" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "149, button"
+299      A text "149"
+         ~ "149"
+300    A button "150"  focusable
+         long.html:158:1  <button id="b150" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "150, button"
+301      A text "150"
+         ~ "150"
+302    A button "151"  focusable
+         long.html:159:1  <button id="b151" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "151, button"
+303      A text "151"
+         ~ "151"
+304    A button "152"  focusable
+         long.html:160:1  <button id="b152" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "152, button"
+305      A text "152"
+         ~ "152"
+306    A button "153"  focusable
+         long.html:161:1  <button id="b153" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "153, button"
+307      A text "153"
+         ~ "153"
+308    A button "154"  focusable
+         long.html:162:1  <button id="b154" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "154, button"
+309      A text "154"
+         ~ "154"
+310    A button "155"  focusable
+         long.html:163:1  <button id="b155" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "155, button"
+311      A text "155"
+         ~ "155"
+312    A button "156"  focusable
+         long.html:164:1  <button id="b156" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "156, button"
+313      A text "156"
+         ~ "156"
+314    A button "157"  focusable
+         long.html:165:1  <button id="b157" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "157, button"
+315      A text "157"
+         ~ "157"
+316    A button "158"  focusable
+         long.html:166:1  <button id="b158" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "158, button"
+317      A text "158"
+         ~ "158"
+318    A button "159"  focusable
+         long.html:167:1  <button id="b159" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "159, button"
+319      A text "159"
+         ~ "159"
+320    A button "160"  focusable
+         long.html:168:1  <button id="b160" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "160, button"
+321      A text "160"
+         ~ "160"
+322    A button "161"  focusable
+         long.html:169:1  <button id="b161" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "161, button"
+323      A text "161"
+         ~ "161"
+324    A button "162"  focusable
+         long.html:170:1  <button id="b162" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "162, button"
+325      A text "162"
+         ~ "162"
+326    A button "163"  focusable
+         long.html:171:1  <button id="b163" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "163, button"
+327      A text "163"
+         ~ "163"
+328    A button "164"  focusable
+         long.html:172:1  <button id="b164" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "164, button"
+329      A text "164"
+         ~ "164"
+330    A button "165"  focusable
+         long.html:173:1  <button id="b165" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "165, button"
+331      A text "165"
+         ~ "165"
+332    A button "166"  focusable
+         long.html:174:1  <button id="b166" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "166, button"
+333      A text "166"
+         ~ "166"
+334    A button "167"  focusable
+         long.html:175:1  <button id="b167" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "167, button"
+335      A text "167"
+         ~ "167"
+336    A button "168"  focusable
+         long.html:176:1  <button id="b168" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "168, button"
+337      A text "168"
+         ~ "168"
+338    A button "169"  focusable
+         long.html:177:1  <button id="b169" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "169, button"
+339      A text "169"
+         ~ "169"
+340    A button "170"  focusable
+         long.html:178:1  <button id="b170" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "170, button"
+341      A text "170"
+         ~ "170"
+342    A button "171"  focusable
+         long.html:179:1  <button id="b171" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "171, button"
+343      A text "171"
+         ~ "171"
+344    A button "172"  focusable
+         long.html:180:1  <button id="b172" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "172, button"
+345      A text "172"
+         ~ "172"
+346    A button "173"  focusable
+         long.html:181:1  <button id="b173" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "173, button"
+347      A text "173"
+         ~ "173"
+348    A button "174"  focusable
+         long.html:182:1  <button id="b174" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "174, button"
+349      A text "174"
+         ~ "174"
+350    A button "175"  focusable
+         long.html:183:1  <button id="b175" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "175, button"
+351      A text "175"
+         ~ "175"
+352    A button "176"  focusable
+         long.html:184:1  <button id="b176" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "176, button"
+353      A text "176"
+         ~ "176"
+354    A button "177"  focusable
+         long.html:185:1  <button id="b177" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "177, button"
+355      A text "177"
+         ~ "177"
+356    A button "178"  focusable
+         long.html:186:1  <button id="b178" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "178, button"
+357      A text "178"
+         ~ "178"
+358    A button "179"  focusable
+         long.html:187:1  <button id="b179" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "179, button"
+359      A text "179"
+         ~ "179"
+360    A button "180"  focusable
+         long.html:188:1  <button id="b180" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "180, button"
+361      A text "180"
+         ~ "180"
+362    A button "181"  focusable
+         long.html:189:1  <button id="b181" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "181, button"
+363      A text "181"
+         ~ "181"
+364    A button "182"  focusable
+         long.html:190:1  <button id="b182" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "182, button"
+365      A text "182"
+         ~ "182"
+366    A button "183"  focusable
+         long.html:191:1  <button id="b183" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "183, button"
+367      A text "183"
+         ~ "183"
+368    A button "184"  focusable
+         long.html:192:1  <button id="b184" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "184, button"
+369      A text "184"
+         ~ "184"
+370    A button "185"  focusable
+         long.html:193:1  <button id="b185" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "185, button"
+371      A text "185"
+         ~ "185"
+372    A button "186"  focusable
+         long.html:194:1  <button id="b186" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "186, button"
+373      A text "186"
+         ~ "186"
+374    A button "187"  focusable
+         long.html:195:1  <button id="b187" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "187, button"
+375      A text "187"
+         ~ "187"
+376    A button "188"  focusable
+         long.html:196:1  <button id="b188" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "188, button"
+377      A text "188"
+         ~ "188"
+378    A button "189"  focusable
+         long.html:197:1  <button id="b189" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "189, button"
+379      A text "189"
+         ~ "189"
+380    A button "190"  focusable
+         long.html:198:1  <button id="b190" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "190, button"
+381      A text "190"
+         ~ "190"
+382    A button "191"  focusable
+         long.html:199:1  <button id="b191" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "191, button"
+383      A text "191"
+         ~ "191"
+384    A button "192"  focusable
+         long.html:200:1  <button id="b192" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "192, button"
+385      A text "192"
+         ~ "192"
+386    A button "193"  focusable
+         long.html:201:1  <button id="b193" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "193, button"
+387      A text "193"
+         ~ "193"
+388    A button "194"  focusable
+         long.html:202:1  <button id="b194" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "194, button"
+389      A text "194"
+         ~ "194"
+390    A button "195"  focusable
+         long.html:203:1  <button id="b195" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "195, button"
+391      A text "195"
+         ~ "195"
+392    A button "196"  focusable
+         long.html:204:1  <button id="b196" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "196, button"
+393      A text "196"
+         ~ "196"
+394    A button "197"  focusable
+         long.html:205:1  <button id="b197" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "197, button"
+395      A text "197"
+         ~ "197"
+396    A button "198"  focusable
+         long.html:206:1  <button id="b198" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "198, button"
+397      A text "198"
+         ~ "198"
+398    A button "199"  focusable
+         long.html:207:1  <button id="b199" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "199, button"
+399      A text "199"
+         ~ "199"
+400    A button "200"  focusable
+         long.html:208:1  <button id="b200" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "200, button"
+401      A text "200"
+         ~ "200"
+402    A button "201"  focusable
+         long.html:209:1  <button id="b201" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "201, button"
+403      A text "201"
+         ~ "201"
+
+Excluded
+  <html>  long.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  long.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  long.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  long.html:3:1 (computed by tool)
+  <title>  long.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  long.html:3:1 (computed by tool)
+  <style>  long.html:6:1  <style>
+    not-rendered (engine reason: notRendered); hidden by <head>  long.html:3:1 (computed by tool)
+  <body>  long.html:8:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [2] button "001"
+  [4] button "002"
+  [6] button "003"
+  [8] button "004"
+  [10] button "005"
+  [12] button "006"
+  [14] button "007"
+  [16] button "008"
+  [18] button "009"
+  [20] button "010"
+  [22] button "011"
+  [24] button "012"
+  [26] button "013"
+  [28] button "014"
+  [30] button "015"
+  [32] button "016"
+  [34] button "017"
+  [36] button "018"
+  [38] button "019"
+  [40] button "020"
+  [42] button "021"
+  [44] button "022"
+  [46] button "023"
+  [48] button "024"
+  [50] button "025"
+  [52] button "026"
+  [54] button "027"
+  [56] button "028"
+  [58] button "029"
+  [60] button "030"
+  [62] button "031"
+  [64] button "032"
+  [66] button "033"
+  [68] button "034"
+  [70] button "035"
+  [72] button "036"
+  [74] button "037"
+  [76] button "038"
+  [78] button "039"
+  [80] button "040"
+  [82] button "041"
+  [84] button "042"
+  [86] button "043"
+  [88] button "044"
+  [90] button "045"
+  [92] button "046"
+  [94] button "047"
+  [96] button "048"
+  [98] button "049"
+  [100] button "050"
+  [102] button "051"
+  [104] button "052"
+  [106] button "053"
+  [108] button "054"
+  [110] button "055"
+  [112] button "056"
+  [114] button "057"
+  [116] button "058"
+  [118] button "059"
+  [120] button "060"
+  [122] button "061"
+  [124] button "062"
+  [126] button "063"
+  [128] button "064"
+  [130] button "065"
+  [132] button "066"
+  [134] button "067"
+  [136] button "068"
+  [138] button "069"
+  [140] button "070"
+  [142] button "071"
+  [144] button "072"
+  [146] button "073"
+  [148] button "074"
+  [150] button "075"
+  [152] button "076"
+  [154] button "077"
+  [156] button "078"
+  [158] button "079"
+  [160] button "080"
+  [162] button "081"
+  [164] button "082"
+  [166] button "083"
+  [168] button "084"
+  [170] button "085"
+  [172] button "086"
+  [174] button "087"
+  [176] button "088"
+  [178] button "089"
+  [180] button "090"
+  [182] button "091"
+  [184] button "092"
+  [186] button "093"
+  [188] button "094"
+  [190] button "095"
+  [192] button "096"
+  [194] button "097"
+  [196] button "098"
+  [198] button "099"
+  [200] button "100"
+  [202] button "101"
+  [204] button "102"
+  [206] button "103"
+  [208] button "104"
+  [210] button "105"
+  [212] button "106"
+  [214] button "107"
+  [216] button "108"
+  [218] button "109"
+  [220] button "110"
+  [222] button "111"
+  [224] button "112"
+  [226] button "113"
+  [228] button "114"
+  [230] button "115"
+  [232] button "116"
+  [234] button "117"
+  [236] button "118"
+  [238] button "119"
+  [240] button "120"
+  [242] button "121"
+  [244] button "122"
+  [246] button "123"
+  [248] button "124"
+  [250] button "125"
+  [252] button "126"
+  [254] button "127"
+  [256] button "128"
+  [258] button "129"
+  [260] button "130"
+  [262] button "131"
+  [264] button "132"
+  [266] button "133"
+  [268] button "134"
+  [270] button "135"
+  [272] button "136"
+  [274] button "137"
+  [276] button "138"
+  [278] button "139"
+  [280] button "140"
+  [282] button "141"
+  [284] button "142"
+  [286] button "143"
+  [288] button "144"
+  [290] button "145"
+  [292] button "146"
+  [294] button "147"
+  [296] button "148"
+  [298] button "149"
+  [300] button "150"
+  [302] button "151"
+  [304] button "152"
+  [306] button "153"
+  [308] button "154"
+  [310] button "155"
+  [312] button "156"
+  [314] button "157"
+  [316] button "158"
+  [318] button "159"
+  [320] button "160"
+  [322] button "161"
+  [324] button "162"
+  [326] button "163"
+  [328] button "164"
+  [330] button "165"
+  [332] button "166"
+  [334] button "167"
+  [336] button "168"
+  [338] button "169"
+  [340] button "170"
+  [342] button "171"
+  [344] button "172"
+  [346] button "173"
+  [348] button "174"
+  [350] button "175"
+  [352] button "176"
+  [354] button "177"
+  [356] button "178"
+  [358] button "179"
+  [360] button "180"
+  [362] button "181"
+  [364] button "182"
+  [366] button "183"
+  [368] button "184"
+  [370] button "185"
+  [372] button "186"
+  [374] button "187"
+  [376] button "188"
+  [378] button "189"
+  [380] button "190"
+  [382] button "191"
+  [384] button "192"
+  [386] button "193"
+  [388] button "194"
+  [390] button "195"
+  [392] button "196"
+  [394] button "197"
+  [396] button "198"
+  [398] button "199"
+  [400] button "200"
+  [402] button "201"
+
+Tab order
+    1  [2] button "001"
+    2  [4] button "002"
+    3  [6] button "003"
+    4  [8] button "004"
+    5  [10] button "005"
+    6  [12] button "006"
+    7  [14] button "007"
+    8  [16] button "008"
+    9  [18] button "009"
+   10  [20] button "010"
+   11  [22] button "011"
+   12  [24] button "012"
+   13  [26] button "013"
+   14  [28] button "014"
+   15  [30] button "015"
+   16  [32] button "016"
+   17  [34] button "017"
+   18  [36] button "018"
+   19  [38] button "019"
+   20  [40] button "020"
+   21  [42] button "021"
+   22  [44] button "022"
+   23  [46] button "023"
+   24  [48] button "024"
+   25  [50] button "025"
+   26  [52] button "026"
+   27  [54] button "027"
+   28  [56] button "028"
+   29  [58] button "029"
+   30  [60] button "030"
+   31  [62] button "031"
+   32  [64] button "032"
+   33  [66] button "033"
+   34  [68] button "034"
+   35  [70] button "035"
+   36  [72] button "036"
+   37  [74] button "037"
+   38  [76] button "038"
+   39  [78] button "039"
+   40  [80] button "040"
+   41  [82] button "041"
+   42  [84] button "042"
+   43  [86] button "043"
+   44  [88] button "044"
+   45  [90] button "045"
+   46  [92] button "046"
+   47  [94] button "047"
+   48  [96] button "048"
+   49  [98] button "049"
+   50  [100] button "050"
+   51  [102] button "051"
+   52  [104] button "052"
+   53  [106] button "053"
+   54  [108] button "054"
+   55  [110] button "055"
+   56  [112] button "056"
+   57  [114] button "057"
+   58  [116] button "058"
+   59  [118] button "059"
+   60  [120] button "060"
+   61  [122] button "061"
+   62  [124] button "062"
+   63  [126] button "063"
+   64  [128] button "064"
+   65  [130] button "065"
+   66  [132] button "066"
+   67  [134] button "067"
+   68  [136] button "068"
+   69  [138] button "069"
+   70  [140] button "070"
+   71  [142] button "071"
+   72  [144] button "072"
+   73  [146] button "073"
+   74  [148] button "074"
+   75  [150] button "075"
+   76  [152] button "076"
+   77  [154] button "077"
+   78  [156] button "078"
+   79  [158] button "079"
+   80  [160] button "080"
+   81  [162] button "081"
+   82  [164] button "082"
+   83  [166] button "083"
+   84  [168] button "084"
+   85  [170] button "085"
+   86  [172] button "086"
+   87  [174] button "087"
+   88  [176] button "088"
+   89  [178] button "089"
+   90  [180] button "090"
+   91  [182] button "091"
+   92  [184] button "092"
+   93  [186] button "093"
+   94  [188] button "094"
+   95  [190] button "095"
+   96  [192] button "096"
+   97  [194] button "097"
+   98  [196] button "098"
+   99  [198] button "099"
+  100  [200] button "100"
+  101  [202] button "101"
+  102  [204] button "102"
+  103  [206] button "103"
+  104  [208] button "104"
+  105  [210] button "105"
+  106  [212] button "106"
+  107  [214] button "107"
+  108  [216] button "108"
+  109  [218] button "109"
+  110  [220] button "110"
+  111  [222] button "111"
+  112  [224] button "112"
+  113  [226] button "113"
+  114  [228] button "114"
+  115  [230] button "115"
+  116  [232] button "116"
+  117  [234] button "117"
+  118  [236] button "118"
+  119  [238] button "119"
+  120  [240] button "120"
+  121  [242] button "121"
+  122  [244] button "122"
+  123  [246] button "123"
+  124  [248] button "124"
+  125  [250] button "125"
+  126  [252] button "126"
+  127  [254] button "127"
+  128  [256] button "128"
+  129  [258] button "129"
+  130  [260] button "130"
+  131  [262] button "131"
+  132  [264] button "132"
+  133  [266] button "133"
+  134  [268] button "134"
+  135  [270] button "135"
+  136  [272] button "136"
+  137  [274] button "137"
+  138  [276] button "138"
+  139  [278] button "139"
+  140  [280] button "140"
+  141  [282] button "141"
+  142  [284] button "142"
+  143  [286] button "143"
+  144  [288] button "144"
+  145  [290] button "145"
+  146  [292] button "146"
+  147  [294] button "147"
+  148  [296] button "148"
+  149  [298] button "149"
+  150  [300] button "150"
+  151  [302] button "151"
+  152  [304] button "152"
+  153  [306] button "153"
+  154  [308] button "154"
+  155  [310] button "155"
+  156  [312] button "156"
+  157  [314] button "157"
+  158  [316] button "158"
+  159  [318] button "159"
+  160  [320] button "160"
+  161  [322] button "161"
+  162  [324] button "162"
+  163  [326] button "163"
+  164  [328] button "164"
+  165  [330] button "165"
+  166  [332] button "166"
+  167  [334] button "167"
+  168  [336] button "168"
+  169  [338] button "169"
+  170  [340] button "170"
+  171  [342] button "171"
+  172  [344] button "172"
+  173  [346] button "173"
+  174  [348] button "174"
+  175  [350] button "175"
+  176  [352] button "176"
+  177  [354] button "177"
+  178  [356] button "178"
+  179  [358] button "179"
+  180  [360] button "180"
+  181  [362] button "181"
+  182  [364] button "182"
+  183  [366] button "183"
+  184  [368] button "184"
+  185  [370] button "185"
+  186  [372] button "186"
+  187  [374] button "187"
+  188  [376] button "188"
+  189  [378] button "189"
+  190  [380] button "190"
+  191  [382] button "191"
+  192  [384] button "192"
+  193  [386] button "193"
+  194  [388] button "194"
+  195  [390] button "195"
+  196  [392] button "196"
+  197  [394] button "197"
+  198  [396] button "198"
+  199  [398] button "199"
+  200  [400] button "200"
+  ending (computed by tool): The walk stopped at its limit after 200 Tab presses. Later stops are not listed.

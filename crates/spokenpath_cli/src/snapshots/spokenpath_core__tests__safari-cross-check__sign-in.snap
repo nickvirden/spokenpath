@@ -1,0 +1,100 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 9 elements compared: 2 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Sign in"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Sign in"
+ 2    A heading "Sign in"  level 1
+        sign-in.html:8:1  <h1>
+        name from contents
+        other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+      ~ "Sign in, heading, level 1"
+ 3      A text "Sign in"
+        ~ "Sign in"
+ 4    A paragraph (no accessible name)
+        sign-in.html:9:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 5      A LabelText (internal role) (no accessible name)
+          sign-in.html:10:1  <label for="email">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+          differs in Safari: role "" in Safari 27.0.1, "LabelText" in Chromium 159.0.8154.6
+        ~ ""
+ 6        A text "Email"
+          ~ "Email"
+ 7      A textbox "Email"  focusable
+          sign-in.html:11:1  <input id="email" type="email" autocomplete="email">
+          name from label-for (related-element)
+            via <label>  "Email"  sign-in.html:10:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+        ~ "Email, textbox"
+ 8        A generic (no accessible name)
+            no source location: its origin could not be established (unknown)
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ ""
+ 9    A paragraph (no accessible name)
+        sign-in.html:13:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+10      A button (no accessible name)  focusable
+          sign-in.html:14:1  <button id="submit" type="button">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; contents: empty; title (attribute): empty
+        ~ "button"
+11        A image (no accessible name)
+            sign-in.html:14:35  <svg width="16" height="16" viewBox="0 0 16 16">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (related-element): empty; title (attribute): empty
+            differs in Safari: role "generic" in Safari 27.0.1, "image" in Chromium 159.0.8154.6
+          ~ "image"
+12    A paragraph (no accessible name)
+        sign-in.html:16:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+13      A link "Trouble signing in?"  focusable
+          sign-in.html:16:4  <a id="help" href="help.html">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Trouble signing in?, link"
+14        A text "Trouble signing in?"
+          ~ "Trouble signing in?"
+
+Excluded
+  <html>  sign-in.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  sign-in.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  sign-in.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  sign-in.html:3:1 (computed by tool)
+  <title>  sign-in.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  sign-in.html:3:1 (computed by tool)
+  <body>  sign-in.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <path>  sign-in.html:14:83  <path d="M2 8h12"/>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  [2] heading "Sign in"  level 1
+
+Landmarks
+  (none)
+
+Links
+  [13] link "Trouble signing in?"
+
+Form controls
+  [7] textbox "Email"
+  [10] button (no accessible name)
+
+Tab order
+  1  [7] textbox "Email"
+  2  [10] button (no accessible name)
+  3  [13] link "Trouble signing in?"
+  4  left the page
+  5  [7] textbox "Email"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

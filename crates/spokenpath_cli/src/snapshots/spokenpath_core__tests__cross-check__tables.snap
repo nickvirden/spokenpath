@@ -1,0 +1,115 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Layout and data tables"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Layout and data tables"
+ 2    A LayoutTable (internal role) (no accessible name)
+        tables.html:8:1  <table id="layout">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; table-caption (related-element): empty; summary (attribute): empty; title (attribute): empty
+      ~ ""
+ 3      A LayoutTableRow (internal role) (no accessible name)
+          tables.html:9:1  <tr>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ ""
+ 4        A LayoutTableCell (internal role) "Left"
+            tables.html:9:5  <td id="left">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "Left"
+ 5          A text "Left"
+            ~ "Left"
+ 6        A LayoutTableCell (internal role) "Right"
+            tables.html:9:28  <td id="right">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "Right"
+ 7          A text "Right"
+            ~ "Right"
+ 8    A table "Opening hours"
+        tables.html:11:1  <table id="data">
+        name from table-caption (related-element)
+          via <caption> #caption  "Opening hours"  tables.html:12:1
+        other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; summary (attribute): superseded; title (attribute): superseded
+      ~ "Opening hours, table"
+ 9      A caption (no accessible name)
+          tables.html:12:1  <caption id="caption">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+        ~ "caption"
+10        A text "Opening hours"
+          ~ "Opening hours"
+11      A row (no accessible name)
+          tables.html:13:1  <tr>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "row"
+12        A columnheader "Day"
+            tables.html:13:5  <th id="day">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "Day, columnheader"
+13          A text "Day"
+            ~ "Day"
+14        A columnheader "Hours"
+            tables.html:13:26  <th id="hours">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "Hours, columnheader"
+15          A text "Hours"
+            ~ "Hours"
+16      A row (no accessible name)
+          tables.html:14:1  <tr>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "row"
+17        A cell "Monday"
+            tables.html:14:5  <td id="monday">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "Monday, cell"
+18          A text "Monday"
+            ~ "Monday"
+19        A cell "9 to 5"
+            tables.html:14:32  <td id="nine">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "9 to 5, cell"
+20          A text "9 to 5"
+            ~ "9 to 5"
+
+Excluded
+  <html>  tables.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  tables.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  tables.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  tables.html:3:1 (computed by tool)
+  <title>  tables.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  tables.html:3:1 (computed by tool)
+  <body>  tables.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <tbody>  no source location: the HTML parser inserted this element (implied)
+    uninteresting (engine reason: uninteresting)
+  <tbody>  no source location: the HTML parser inserted this element (implied)
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

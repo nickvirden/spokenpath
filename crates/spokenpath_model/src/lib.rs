@@ -6,8 +6,9 @@
 //! structures, so every engine's adapter fills the same types
 //! (`docs/decisions/ADR-0002-browser-ground-truth-and-rust-core.md`). The adapters read what the
 //! engine exposes and never compute a name or a description text; the core does all
-//! interpretation. [`chromium::adapt`] is the adapter for Chromium snapshots. It does no file or
-//! network I/O.
+//! interpretation. [`chromium::adapt`] is the adapter for Chromium snapshots, and
+//! [`safari_webdriver::answers`] reads Safari's per-span role and label answers from a Safari
+//! `WebDriver` snapshot for a cross-check. Neither does file or network I/O.
 //!
 //! # Values computed by the tool
 //!
@@ -79,6 +80,7 @@ mod error;
 mod model;
 
 pub mod chromium;
+pub mod safari_webdriver;
 
 pub use error::AdaptError;
 pub use model::*;

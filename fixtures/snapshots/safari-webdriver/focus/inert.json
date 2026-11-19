@@ -1,0 +1,327 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/inert.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "inert.html",
+      "sha256": "01256327161a4d87f3351e7e0ce6dc6a7b97adea8e7f0803816bea4725778b86",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 381
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 99
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 91
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 100,
+        "end": 106
+      },
+      "element": {
+        "start": 100,
+        "end": 373
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 107,
+        "end": 110
+      },
+      "element": {
+        "start": 107,
+        "end": 163
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 110,
+        "end": 144
+      },
+      "element": {
+        "start": 110,
+        "end": 159
+      },
+      "line": 8,
+      "column": 4
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 164,
+        "end": 175
+      },
+      "element": {
+        "start": 164,
+        "end": 310
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 176,
+        "end": 179
+      },
+      "element": {
+        "start": 176,
+        "end": 244
+      },
+      "line": 10,
+      "column": 1
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 179,
+        "end": 219
+      },
+      "element": {
+        "start": 179,
+        "end": 240
+      },
+      "line": 10,
+      "column": 4
+    },
+    {
+      "id": 10,
+      "source": 0,
+      "start_tag": {
+        "start": 245,
+        "end": 248
+      },
+      "element": {
+        "start": 245,
+        "end": 303
+      },
+      "line": 11,
+      "column": 1
+    },
+    {
+      "id": 11,
+      "source": 0,
+      "start_tag": {
+        "start": 248,
+        "end": 285
+      },
+      "element": {
+        "start": 248,
+        "end": 299
+      },
+      "line": 11,
+      "column": 4
+    },
+    {
+      "id": 12,
+      "source": 0,
+      "start_tag": {
+        "start": 311,
+        "end": 314
+      },
+      "element": {
+        "start": 311,
+        "end": 365
+      },
+      "line": 13,
+      "column": 1
+    },
+    {
+      "id": 13,
+      "source": 0,
+      "start_tag": {
+        "start": 314,
+        "end": 347
+      },
+      "element": {
+        "start": 314,
+        "end": 361
+      },
+      "line": 13,
+      "column": 4
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 2,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "unknown error",
+          "message": ""
+        }
+      },
+      {
+        "span": 4,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 5,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 6,
+        "role": "button",
+        "label": "Before"
+      },
+      {
+        "span": 7,
+        "role": "generic",
+        "label": ""
+      },
+      {
+        "span": 8,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 9,
+        "role": "button",
+        "label": "Inert button"
+      },
+      {
+        "span": 10,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 11,
+        "role": "link",
+        "label": "Inert link"
+      },
+      {
+        "span": 12,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 13,
+        "role": "button",
+        "label": "After"
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}

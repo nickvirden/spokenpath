@@ -1,0 +1,1297 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Layout and data tables",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Layout and data tables",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/tables.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Layout and data tables"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTable",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "table",
+          "id": "layout"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 116,
+            "end": 135
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "table-caption",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "summary",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTableRow",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 10,
+          "tag": "tr"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 136,
+            "end": 140
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTableCell",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "td",
+          "id": "left"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 9,
+          "column": 5,
+          "start_tag": {
+            "start": 140,
+            "end": 154
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Left",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Left",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Left"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 4,
+      "parent": 4,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Left",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 12
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Left"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LayoutTableCell",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 13,
+          "tag": "td",
+          "id": "right"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 9,
+          "column": 28,
+          "start_tag": {
+            "start": 163,
+            "end": 178
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Right",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Right",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Right"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 4,
+      "parent": 6,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Right",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 14
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Right"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "table",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 15,
+          "tag": "table",
+          "id": "data"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 203,
+            "end": 220
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Opening hours",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "table-caption",
+              "value": "Opening hours",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 16,
+                    "tag": "caption",
+                    "id": "caption"
+                  },
+                  "idref": "caption",
+                  "text": "Opening hours",
+                  "source": {
+                    "class": "span",
+                    "path": "tables.html",
+                    "line": 12,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 221,
+                      "end": 243
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "summary",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {},
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 16,
+                    "tag": "caption",
+                    "id": "caption"
+                  },
+                  "idref": "caption",
+                  "text": "Opening hours",
+                  "source": {
+                    "class": "span",
+                    "path": "tables.html",
+                    "line": 12,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 221,
+                      "end": 243
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Opening hours, table"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 2,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "caption",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 16,
+          "tag": "caption",
+          "id": "caption"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 12,
+          "column": 1,
+          "start_tag": {
+            "start": 221,
+            "end": 243
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "caption"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 3,
+      "parent": 9,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Opening hours",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 17
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Opening hours"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 2,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "row",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 19,
+          "tag": "tr"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 13,
+          "column": 1,
+          "start_tag": {
+            "start": 267,
+            "end": 271
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "row"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 3,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "columnheader",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 20,
+          "tag": "th",
+          "id": "day"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 13,
+          "column": 5,
+          "start_tag": {
+            "start": 271,
+            "end": 284
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Day",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Day",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "required": false,
+          "readonly": false
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Day, columnheader"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 4,
+      "parent": 12,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Day",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 21
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Day"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 3,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "columnheader",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 22,
+          "tag": "th",
+          "id": "hours"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 13,
+          "column": 26,
+          "start_tag": {
+            "start": 292,
+            "end": 307
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Hours",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Hours",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "required": false,
+          "readonly": false
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Hours, columnheader"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 4,
+      "parent": 14,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Hours",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 23
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Hours"
+      }
+    },
+    {
+      "number": 16,
+      "depth": 2,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "row",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 24,
+          "tag": "tr"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 323,
+            "end": 327
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "row"
+      }
+    },
+    {
+      "number": 17,
+      "depth": 3,
+      "parent": 16,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "cell",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 25,
+          "tag": "td",
+          "id": "monday"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 14,
+          "column": 5,
+          "start_tag": {
+            "start": 327,
+            "end": 343
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Monday",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Monday",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Monday, cell"
+      }
+    },
+    {
+      "number": 18,
+      "depth": 4,
+      "parent": 17,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Monday",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 26
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Monday"
+      }
+    },
+    {
+      "number": 19,
+      "depth": 3,
+      "parent": 16,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "cell",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 27,
+          "tag": "td",
+          "id": "nine"
+        },
+        "source": {
+          "class": "span",
+          "path": "tables.html",
+          "line": 14,
+          "column": 32,
+          "start_tag": {
+            "start": 354,
+            "end": 368
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "9 to 5",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "9 to 5",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "9 to 5, cell"
+      }
+    },
+    {
+      "number": 20,
+      "depth": 4,
+      "parent": 19,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "9 to 5",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 28
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "9 to 5"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": []
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "tables.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "tables.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "tables.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "tables.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "tables.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "tables.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "tables.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 109,
+          "end": 115
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 9,
+        "tag": "tbody"
+      },
+      "source": {
+        "class": "implied"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 18,
+        "tag": "tbody"
+      },
+      "source": {
+        "class": "implied"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "left-page"
+        }
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "left-page",
+        "wording": "Focus left the page without stopping on any element."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

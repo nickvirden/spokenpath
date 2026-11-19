@@ -5,7 +5,8 @@
   "license": "MIT OR Apache-2.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./fixture-pages": "./src/fixture-pages.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

@@ -1133,3 +1133,427 @@ fn no_excerpt_is_printed_for_a_path_that_an_unmatched_source_shares() {
     // The shared path is ambiguous for every span on it, so none borrows the file's bytes.
     assert!(lines.contains(&"sign-in.html:11:1"), "{}", run.stdout);
 }
+
+fn safari_goldens_directory() -> PathBuf {
+    fixtures().join("snapshots/safari-webdriver")
+}
+
+/// Every Safari capture under `fixtures/snapshots/safari-webdriver/`, relative to it, found by
+/// listing the directories, so a new capture without a cross-check text golden fails the test.
+fn safari_golden_names() -> Vec<PathBuf> {
+    let root = safari_goldens_directory();
+    let mut names = Vec::new();
+    let mut directories = vec![root.clone()];
+    while let Some(directory) = directories.pop() {
+        let entries = std::fs::read_dir(&directory)
+            .unwrap_or_else(|error| panic!("{} is listable: {error}", directory.display()));
+        for entry in entries {
+            let path = entry.expect("directory entry").path();
+            if path.is_dir() {
+                directories.push(path);
+            } else if path
+                .extension()
+                .is_some_and(|extension| extension.eq_ignore_ascii_case("json"))
+            {
+                let relative = path.strip_prefix(&root).expect("listed under the root");
+                names.push(relative.to_path_buf());
+            }
+        }
+    }
+    names.sort();
+    names
+}
+
+#[test]
+fn every_safari_capture_matches_its_cross_check_text_golden() {
+    let names = safari_golden_names();
+    assert!(
+        names
+            .iter()
+            .any(|name| name.starts_with("cross-check") && name.ends_with("list-style-none.json")),
+        "{names:?}"
+    );
+    assert_eq!(
+        names,
+        golden_names()
+            .into_iter()
+            .filter(|name| names.contains(name))
+            .collect::<Vec<_>>(),
+        "every Safari capture has a Chromium capture at the same relative path"
+    );
+    for name in &names {
+        let run = run_paths(&[
+            &"transcript",
+            &goldens_directory().join(name),
+            &"--source",
+            &page_of(name),
+            &"--cross-check",
+            &safari_goldens_directory().join(name),
+        ]);
+        assert_eq!(run.code, 0, "{}: {run:?}", name.display());
+        insta::assert_snapshot!(
+            format!("safari-cross-check__{}", snapshot_name(name)),
+            run.stdout
+        );
+    }
+}
+
+fn basic_pair() -> (PathBuf, PathBuf, PathBuf) {
+    let snapshots = fixtures().join("snapshots");
+    (
+        snapshots.join("chromium-basic.json"),
+        snapshots.join("safari-webdriver-basic.json"),
+        snapshots.join("pages/basic.html"),
+    )
+}
+
+fn fixture_value(path: &Path) -> Value {
+    let text = std::fs::read_to_string(path)
+        .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
+    serde_json::from_str(&text)
+        .unwrap_or_else(|error| panic!("{} is JSON: {error}", path.display()))
+}
+
+#[test]
+fn the_hand_written_pair_matches_its_cross_check_goldens() {
+    let (chromium, safari, page) = basic_pair();
+    let text = run_paths(&[
+        &"transcript",
+        &chromium,
+        &"--source",
+        &page,
+        &"--cross-check",
+        &safari,
+    ]);
+    assert_eq!(text.code, 0, "{text:?}");
+    for line in [
+        "cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 4 elements compared: 2 differ, 2 not checked",
+        "differs in Safari: role \"\" in Safari 27.0.1, \"LabelText\" in Chromium 159.0.8154.6",
+        "not checked in Safari 27.0.1: role (Safari answered with error \"unknown error\")",
+        "not checked in Safari 27.0.1: role and name (no element with this tag was found in Safari)",
+    ] {
+        assert!(
+            text.stdout.lines().any(|printed| printed.trim() == line),
+            "no line {line}:\n{}",
+            text.stdout
+        );
+    }
+    insta::assert_snapshot!("safari-cross-check__basic", text.stdout);
+
+    let json = run_paths(&[
+        &"transcript",
+        &chromium,
+        &"--cross-check",
+        &safari,
+        &"--format",
+        &"json",
+    ]);
+    assert_eq!(json.code, 0, "{json:?}");
+    let value: Value = serde_json::from_str(&json.stdout).expect("JSON");
+    let items: Vec<Value> = value["nodes"]
+        .as_array()
+        .expect("nodes")
+        .iter()
+        .filter(|item| item.get("cross_check").is_some())
+        .map(|item| json!({ "number": item["number"], "cross_check": item["cross_check"] }))
+        .collect();
+    let fields = json!({ "cross_check": value["cross_check"], "items": items });
+    insta::assert_snapshot!(
+        "safari-cross-check__basic__json",
+        serde_json::to_string_pretty(&fields).expect("serialises")
+    );
+}
+
+#[test]
+fn the_aria_hidden_paragraph_chromium_excludes_gets_no_note() {
+    let (chromium, safari, page) = basic_pair();
+    let run = run_paths(&[
+        &"transcript",
+        &chromium,
+        &"--source",
+        &page,
+        &"--cross-check",
+        &safari,
+    ]);
+    assert_eq!(run.code, 0, "{run:?}");
+    assert!(
+        !run.stdout.contains("\"paragraph\""),
+        "Safari's answer for the paragraph is printed:\n{}",
+        run.stdout
+    );
+}
+
+#[test]
+fn notes_print_without_speech() {
+    let (chromium, safari, _) = basic_pair();
+    let run = run_paths(&[
+        &"transcript",
+        &chromium,
+        &"--cross-check",
+        &safari,
+        &"--no-speech",
+    ]);
+    assert_eq!(run.code, 0, "{run:?}");
+    assert!(!run.stdout.contains('~'), "{}", run.stdout);
+    assert_eq!(run.stdout.matches("differs in Safari: ").count(), 2);
+    assert_eq!(run.stdout.matches("not checked in Safari ").count(), 3);
+}
+
+#[test]
+fn the_cross_check_snapshot_can_come_from_stdin() {
+    let (chromium, safari, _) = basic_pair();
+    let from_file = run_paths(&[&"transcript", &chromium, &"--cross-check", &safari]);
+    let bytes = std::fs::read(&safari).expect("readable");
+    let args: Vec<OsString> = ["transcript", "--cross-check", "-"]
+        .iter()
+        .map(OsString::from)
+        .chain([chromium.into_os_string()])
+        .collect();
+    let from_stdin = run_with(&args.iter().collect::<Vec<_>>(), &mut &bytes[..]);
+    assert_eq!(from_stdin.code, 0, "{from_stdin:?}");
+    assert_eq!(from_stdin.stdout, from_file.stdout);
+}
+
+#[test]
+fn a_cross_check_from_another_page_exits_2_with_one_line() {
+    let (_, safari, _) = basic_pair();
+    let run = run_paths(&[
+        &"transcript",
+        &golden_path("sign-in.json"),
+        &"--cross-check",
+        &safari,
+    ]);
+    assert_one_failure_line(&run, 2);
+    assert_eq!(
+        run.stderr,
+        "spokenpath-core: the cross-check snapshot was captured from a different page: its sources or spans differ from the snapshot's\n"
+    );
+}
+
+#[test]
+fn a_chromium_cross_check_snapshot_exits_2_naming_its_engine() {
+    let run = run_paths(&[
+        &"transcript",
+        &golden_path("sign-in.json"),
+        &"--cross-check",
+        &golden_path("sign-in.json"),
+    ]);
+    assert_one_failure_line(&run, 2);
+    assert_eq!(run.stderr.lines().count(), 1, "{run:?}");
+    assert!(run.stderr.contains("the cross-check snapshot: "), "{run:?}");
+    assert!(run.stderr.contains("`chromium`"), "{run:?}");
+}
+
+#[test]
+fn an_oversized_cross_check_exits_2_without_parsing() {
+    let directory = TemporaryDirectory::new("oversized-cross-check");
+    let path = directory.join("large.json");
+    let (chromium, safari, _) = basic_pair();
+    let mut bytes = std::fs::read(safari).expect("readable");
+    let padding = usize::try_from(MAX_INPUT_BYTES).expect("the limit fits") + 1 - bytes.len();
+    bytes.extend(std::iter::repeat_n(b' ', padding));
+    std::fs::write(&path, &bytes).expect("the large file is written");
+    let run = run_paths(&[&"transcript", &chromium, &"--cross-check", &path]);
+    assert_one_failure_line(&run, 2);
+    assert!(run.stderr.contains("the cross-check snapshot"), "{run:?}");
+    assert!(run.stderr.contains("32 MiB input limit"), "{run:?}");
+}
+
+#[test]
+fn a_major_one_cross_check_exits_3() {
+    let directory = TemporaryDirectory::new("major-cross-check");
+    let path = directory.join("major.json");
+    let (chromium, safari, _) = basic_pair();
+    let mut value = fixture_value(&safari);
+    value["version"]["major"] = json!(1);
+    std::fs::write(&path, value.to_string()).expect("written");
+    let run = run_paths(&[&"transcript", &chromium, &"--cross-check", &path]);
+    assert_one_failure_line(&run, 3);
+    assert!(
+        run.stderr
+            .starts_with("spokenpath-core: the cross-check snapshot: snapshot major version 1"),
+        "{run:?}"
+    );
+}
+
+#[test]
+fn cross_check_usage_errors_exit_2_with_the_usage_line() {
+    let (chromium, safari, _) = basic_pair();
+    let (chromium, safari) = (
+        chromium.to_str().expect("UTF-8").to_owned(),
+        safari.to_str().expect("UTF-8").to_owned(),
+    );
+    for (case, args, says) in [
+        (
+            "two snapshots on stdin",
+            vec!["transcript", "-", "--cross-check", "-"],
+            "cannot both be `-`",
+        ),
+        (
+            "a repeated --cross-check",
+            vec![
+                "transcript",
+                &chromium,
+                "--cross-check",
+                &safari,
+                "--cross-check",
+                &safari,
+            ],
+            "`--cross-check` is given more than once",
+        ),
+        (
+            "a missing value",
+            vec!["transcript", &chromium, "--cross-check"],
+            "`--cross-check` needs a value",
+        ),
+    ] {
+        let run = run_args(&args);
+        assert_one_failure_line(&run, 2);
+        assert!(run.stderr.contains(says), "{case}: {run:?}");
+        assert!(
+            run.stderr.contains("[--cross-check <snapshot | ->]"),
+            "{case}: {run:?}"
+        );
+    }
+}
+
+#[test]
+fn cross_check_diagnostics_go_to_stderr_naming_their_engine() {
+    let directory = TemporaryDirectory::new("cross-check-diagnostics");
+    let path = directory.join("safari.json");
+    let (chromium, safari, _) = basic_pair();
+    let mut value = fixture_value(&safari);
+    value["diagnostics"] = json!([{ "code": "asset-not-found", "message": "a 404" }]);
+    std::fs::write(&path, value.to_string()).expect("written");
+    let run = run_paths(&[&"transcript", &chromium, &"--cross-check", &path]);
+    assert_eq!(run.code, 0, "{run:?}");
+    assert!(
+        run.stderr
+            .lines()
+            .any(|line| line
+                == "spokenpath-core: diagnostic safari-webdriver asset-not-found: a 404"),
+        "{run:?}"
+    );
+}
+
+/// The Chromium and Safari snapshots of the hand-written pair, as JSON values to poison.
+fn poisonable_pair() -> (Value, Value) {
+    let (chromium, safari, _) = basic_pair();
+    (fixture_value(&chromium), fixture_value(&safari))
+}
+
+fn safari_element(safari: &mut Value, span: u32) -> &mut Value {
+    safari["payload"]["elements"]
+        .as_array_mut()
+        .expect("elements")
+        .iter_mut()
+        .find(|element| element["span"] == json!(span))
+        .expect("an element for the span")
+}
+
+fn chromium_ax<'v>(chromium: &'v mut Value, role: &str) -> &'v mut Value {
+    chromium["payload"]["ax"]
+        .as_array_mut()
+        .expect("ax nodes")
+        .iter_mut()
+        .find(|node| node["role"]["value"] == json!(role))
+        .expect("an AX node with the role")
+}
+
+fn append(value: &mut Value) {
+    let text = value.as_str().expect("a string").to_owned();
+    *value = json!(format!("{text}{MARK}"));
+}
+
+#[test]
+fn every_cross_check_string_in_the_text_is_escaped_and_json_keeps_it_raw() {
+    type Poison = fn(&mut Value, &mut Value);
+    let fields: [(&str, Poison); 12] = [
+        ("Safari's role", |_, safari| {
+            append(&mut safari_element(safari, 2)["role"]);
+        }),
+        ("Safari's label", |_, safari| {
+            append(&mut safari_element(safari, 1)["label"]);
+        }),
+        ("Chromium's role beside Safari's", |chromium, _| {
+            append(&mut chromium_ax(chromium, "LabelText")["role"]["value"]);
+        }),
+        ("Chromium's name beside Safari's", |chromium, _| {
+            append(&mut chromium_ax(chromium, "heading")["name"]["value"]);
+        }),
+        ("the error code", |_, safari| {
+            append(&mut safari_element(safari, 3)["role_error"]["error"]);
+        }),
+        ("the error message", |_, safari| {
+            append(&mut safari_element(safari, 3)["label_error"]["message"]);
+        }),
+        ("Safari's version", |_, safari| {
+            append(&mut safari["capture"]["engine_version"]);
+        }),
+        ("Chromium's version", |chromium, _| {
+            append(&mut chromium["capture"]["engine_version"]);
+        }),
+        ("the macOS version", |_, safari| {
+            append(&mut safari["payload"]["macos_version"]);
+        }),
+        ("the macOS build", |_, safari| {
+            append(&mut safari["payload"]["macos_build"]);
+        }),
+        ("a diagnostic code", |_, safari| {
+            safari["diagnostics"] = json!([{ "code": format!("code{MARK}"), "message": "m" }]);
+        }),
+        ("a diagnostic message", |_, safari| {
+            safari["diagnostics"] = json!([{ "code": "code", "message": format!("m{MARK}") }]);
+        }),
+    ];
+    let directory = TemporaryDirectory::new("hostile-cross-check");
+    for (field, poison) in fields {
+        let (mut chromium, mut safari) = poisonable_pair();
+        poison(&mut chromium, &mut safari);
+        let chromium_path = directory.join("chromium.json");
+        let safari_path = directory.join("safari.json");
+        std::fs::write(&chromium_path, chromium.to_string()).expect("written");
+        std::fs::write(&safari_path, safari.to_string()).expect("written");
+
+        let text = run_paths(&[
+            &"transcript",
+            &chromium_path,
+            &"--cross-check",
+            &safari_path,
+        ]);
+        assert_eq!(text.code, 0, "{field}: {text:?}");
+        let printed = format!("{}{}", text.stdout, text.stderr);
+        for raw in MARK_RAW {
+            assert!(
+                !printed.contains(raw),
+                "{field} reaches the output with {raw:?} raw:\n{printed}"
+            );
+        }
+        assert!(
+            printed.contains(MARK_ESCAPED),
+            "{field} is not printed escaped:\n{printed}"
+        );
+
+        let json = run_paths(&[
+            &"transcript",
+            &chromium_path,
+            &"--cross-check",
+            &safari_path,
+            &"--format",
+            &"json",
+        ]);
+        assert_eq!(json.code, 0, "{field}: {json:?}");
+        for raw in MARK_RAW {
+            assert!(
+                !json.stderr.contains(raw),
+                "{field} reaches stderr with {raw:?} raw"
+            );
+        }
+        if !field.starts_with("a diagnostic") {
+            assert!(
+                json.stdout.contains("\\u001b[31m"),
+                "{field}: JSON keeps it raw"
+            );
+        }
+    }
+}

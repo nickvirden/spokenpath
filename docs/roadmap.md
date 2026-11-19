@@ -3,9 +3,7 @@
 spokenpath is pre-alpha. This page lists the planned work. The decisions behind it are in
 [the decision records](decisions/README.md).
 
-## Next, in order
-
-Each item builds on the ones before it.
+## Done
 
 1. **Workspaces.** Cargo and pnpm workspaces, a pinned toolchain, lints and dependency checks, and
    a release step that moves every crate and package to the same version.
@@ -27,16 +25,23 @@ Each item builds on the ones before it.
 7. **Announcements.** Reading order, navigation indexes (headings, landmarks, links, form controls,
    tab order), Layer A and neutral Layer B
    ([ADR-0001](decisions/ADR-0001-two-layer-output.md)).
-8. **CLI.** A command that takes an HTML file and prints the transcript as text or JSON.
+8. **CLI.** A command that takes an HTML file and prints the transcript as text or JSON
+   ([ADR-0013](decisions/ADR-0013-command-line-tool-and-transcript-output.md)).
 9. **Safari cross-check.** Computed role and label from real Safari over WebDriver, with notes
-   wherever Safari differs from Chromium.
-10. **Safari tree backend.** A native macOS helper that reads Safari's accessibility tree, and a
-    transcript per engine.
-11. **VoiceOver corpus and speech profile.** VoiceOver speech captured locally on macOS and
-    committed with its versions, and a "VoiceOver + Safari on macOS" profile that shows that
-    phrasing only for captured patterns.
-12. **Documentation.** An output reference, README examples produced by fixture tests, and the
-    drift-report process ([ADR-0007](decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)).
+   wherever Safari differs from Chromium
+   ([ADR-0014](decisions/ADR-0014-safari-webdriver-cross-check.md)).
+
+## Next, in order
+
+Each item builds on the ones before it.
+
+1. **Safari tree backend.** A native macOS helper that reads Safari's accessibility tree, and a
+   transcript per engine.
+2. **VoiceOver corpus and speech profile.** VoiceOver speech captured locally on macOS and
+   committed with its versions, and a "VoiceOver + Safari on macOS" profile that shows that
+   phrasing only for captured patterns.
+3. **Documentation.** An output reference, README examples produced by fixture tests, and the
+   drift-report process ([ADR-0007](decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)).
 
 ## Later, unordered
 

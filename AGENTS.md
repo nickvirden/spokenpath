@@ -87,6 +87,10 @@ package's tests, which capture pages in Chromium.
 CI runs the same checks on every pull request, plus a lint of the pull request title and a
 gitleaks scan of the pull request's commits.
 
+`pnpm test:safari` is a live check that runs only on a Mac with Safari automation enabled, awake
+and unlocked, outside `pnpm check` and CI. Run it when a Safari golden under
+`fixtures/snapshots/safari-webdriver/` or the Safari capture changes.
+
 ## Layout
 
 - `crates/`: the Rust core. `spokenpath_snapshot` (the snapshot contract), `spokenpath_model` (the

@@ -1,12 +1,25 @@
 import { execFile } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  closeSync,
+  mkdirSync,
+  mkdtempSync,
+  openSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { CaptureError as SafariCaptureError, captureSafari } from '@spokenpath/capture-safari';
+import { testDriverPath } from '@spokenpath/capture-safari/test-driver';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { afterAll, describe, expect, test } from 'vitest';
 import { binaryPath, repositoryRoot } from './binary.ts';
 import { escapeForTerminal } from './escape.ts';
+import { describeFailure, failureText } from './failure.ts';
+import { CROSS_CHECK_FD_PATH, transcribe } from './transcribe.ts';
 
 const cliPath = fileURLToPath(new URL('cli.ts', import.meta.url));
 const goldenPath = join(repositoryRoot, 'fixtures/transcripts/sign-in.txt');
@@ -154,6 +167,27 @@ test('the binary JSON output of every committed capture validates against the tr
   }
 });
 
+test('the binary JSON output of a cross-check validates against the transcript schema', async () => {
+  const snapshots = join(repositoryRoot, 'fixtures/snapshots');
+  const { code, stdout, stderr } = await runBinary([
+    'transcript',
+    join(snapshots, 'chromium-basic.json'),
+    '--cross-check',
+    join(snapshots, 'safari-webdriver-basic.json'),
+    '--format',
+    'json',
+  ]);
+  expect(code, stderr).toBe(0);
+  expect(schemaErrors(stdout)).toEqual([]);
+  const { nodes } = JSON.parse(stdout) as {
+    nodes: { cross_check?: { role: { outcome: string }; name: { outcome: string } } }[];
+  };
+  const outcomes = nodes.flatMap((node) =>
+    node.cross_check === undefined ? [] : [node.cross_check.role.outcome, node.cross_check.name.outcome],
+  );
+  expect(new Set(outcomes)).toEqual(new Set(['same', 'differs', 'not-checked']));
+});
+
 describe('--no-speech leaves out Layer B', () => {
   test('in text', async () => {
     const { code, stdout } = await runCli([signInPage, '--no-speech']);
@@ -267,6 +301,15 @@ describe('usage errors exit 2', () => {
     ['a repeated --format', [signInPage, '--format', 'text', '--format', 'json']],
     ['a repeated --wait-for', [signInPage, '--wait-for', 'main', '--wait-for', 'h1']],
     ['a value for a flag that takes none', [signInPage, '--no-speech=yes']],
+    ['an unknown engine', [signInPage, '--engine', 'safari']],
+    ['an unknown cross-check', [signInPage, '--cross-check', 'firefox']],
+    ['a repeated --engine', [signInPage, '--engine', 'chromium', '--engine', 'chromium']],
+    ['a repeated --cross-check', [signInPage, '--cross-check', 'safari', '--cross-check', 'safari']],
+    [
+      '--cross-check with --verify-instrumentation',
+      [signInPage, '--verify-instrumentation', '--cross-check', 'safari'],
+    ],
+    ['--help with a value', ['--help=x']],
     ['--help with a page', ['--help', signInPage]],
     ['-h with a page', ['-h', signInPage]],
     ['--version with a page', ['--version', signInPage]],
@@ -294,6 +337,29 @@ describe('argument errors are worded by the command', () => {
       [signInPage, '--format', 'json', '--format', 'json'],
       'spokenpath: "--format" is given more than once',
     ],
+    [
+      'a value for a flag that takes none',
+      [signInPage, '--no-speech=yes'],
+      'spokenpath: "--no-speech" takes no value',
+    ],
+    ['a value for --help', ['--help=x'], 'spokenpath: "--help" takes no value'],
+    ['--help with a page', ['--help', signInPage], 'spokenpath: "--help" takes no other arguments'],
+    ['--version with a page', ['--version', signInPage], 'spokenpath: "--version" takes no other arguments'],
+    [
+      'an unknown engine',
+      [signInPage, '--engine', 'safari'],
+      'spokenpath: unknown engine "safari"; the only engine is chromium',
+    ],
+    [
+      'an unknown cross-check',
+      [signInPage, '--cross-check', 'chromium'],
+      'spokenpath: unknown cross-check "chromium"; the only cross-check is safari',
+    ],
+    [
+      '--cross-check with --verify-instrumentation',
+      [signInPage, '--cross-check', 'safari', '--verify-instrumentation'],
+      'spokenpath: --cross-check cannot be used with --verify-instrumentation, which prints no transcript',
+    ],
   ])('%s', async (_name, args, message) => {
     const { code, stderr } = await runCli(args);
     expect(code).toBe(2);
@@ -312,7 +378,12 @@ test.each([['--help'], ['-h']])('%s prints the usage and every option to stdout'
   expect(stderr).toBe('');
   expect(code).toBe(0);
   expect(stdout).toMatch(/^usage: spokenpath <page\.html> /);
+  for (const part of ['[--engine chromium]', '[--cross-check safari]', '-h|--help', '--version']) {
+    expect(stdout.split('\n')[0]).toContain(part);
+  }
   for (const option of [
+    '--engine chromium',
+    '--cross-check safari',
     '--format',
     '--no-speech',
     '--wait-for',
@@ -401,4 +472,185 @@ test('escapeForTerminal escapes exactly what the binary escapes', async () => {
   const { code, stdout, stderr } = await runBinary(['transcript', path]);
   expect(code, stderr).toBe(0);
   expect(stdout).toContain(`A heading "${escapeForTerminal(name)}"`);
+});
+
+test('--engine chromium captures as it does without the option', async () => {
+  const { code, stdout } = await runCli([signInPage, '--engine', 'chromium']);
+  expect(code).toBe(0);
+  expect(normaliseVersion(stdout)).toBe(readFileSync(goldenPath, 'utf8'));
+});
+
+test.runIf(process.platform !== 'darwin')(
+  '--cross-check safari exits 1 off macOS before any capture',
+  async () => {
+    const { code, stdout, stderr } = await runCli([
+      'fixtures/pages/no-such-page.html',
+      '--cross-check',
+      'safari',
+    ]);
+    expect(code).toBe(1);
+    expect(stdout).toBe('');
+    expect(stderr).toBe(
+      'spokenpath: unsupported-platform: --cross-check safari needs macOS with Safari and safaridriver\n',
+    );
+  },
+);
+
+/** The body of an insta snapshot of the text printer, without its front matter. */
+function textGolden(name: string): string {
+  const text = readFileSync(
+    join(repositoryRoot, 'crates/spokenpath_cli/src/snapshots', `spokenpath_core__tests__${name}.snap`),
+    'utf8',
+  );
+  const end = text.indexOf('\n---\n', 4);
+  expect(text.startsWith('---\n') && end > 0, `${name} has front matter`).toBe(true);
+  return text.slice(end + '\n---\n'.length);
+}
+
+/** Where the cross-check snapshot reaches the binary: a file path, or the extra pipe on fd 3. */
+type CrossCheckRoute = 'path' | 'fd 3';
+
+/**
+ * Runs the binary with the Chromium snapshot on stdin and the Safari snapshot named by path, or, as
+ * the command does, written to the extra pipe on fd 3. Its stdout and stderr are captured in files.
+ */
+async function crossCheck(
+  route: CrossCheckRoute,
+  chromiumJson: string,
+  safari: string,
+  page: string,
+): Promise<Run> {
+  const directory = temporaryDirectory();
+  const stdoutPath = join(directory, 'stdout.txt');
+  const stderrPath = join(directory, 'stderr.txt');
+  const stdout = openSync(stdoutPath, 'w');
+  const stderr = openSync(stderrPath, 'w');
+  const args = ['transcript', '-', '--source', page, '--format', 'text', '--cross-check'];
+  try {
+    const code =
+      route === 'path'
+        ? await transcribe(binaryPath(), [...args, safari], chromiumJson, undefined, { stdout, stderr })
+        : await transcribe(
+            binaryPath(),
+            [...args, CROSS_CHECK_FD_PATH],
+            chromiumJson,
+            readFileSync(safari, 'utf8'),
+            {
+              stdout,
+              stderr,
+            },
+          );
+    return { code, stdout: readFileSync(stdoutPath, 'utf8'), stderr: readFileSync(stderrPath, 'utf8') };
+  } finally {
+    closeSync(stdout);
+    closeSync(stderr);
+  }
+}
+
+const snapshotsDirectory = join(repositoryRoot, 'fixtures/snapshots');
+
+/** A Chromium snapshot, its Safari snapshot, the page, and the cross-check text golden they print. */
+const crossCheckCases = [
+  ...(['cross-check/list-style-none', 'cross-check/select-optgroup'] as const).map((page) => ({
+    name: page,
+    chromium: join(snapshotsDirectory, 'chromium', `${page}.json`),
+    safari: join(snapshotsDirectory, 'safari-webdriver', `${page}.json`),
+    page: join(repositoryRoot, 'fixtures/pages', `${page}.html`),
+    golden: `safari-cross-check__${page.replace('/', '__')}`,
+  })),
+  {
+    name: 'the hand-written pair',
+    chromium: join(snapshotsDirectory, 'chromium-basic.json'),
+    safari: join(snapshotsDirectory, 'safari-webdriver-basic.json'),
+    page: join(snapshotsDirectory, 'pages/basic.html'),
+    golden: 'safari-cross-check__basic',
+  },
+];
+
+// The command passes the Safari snapshot on fd 3 only on macOS, where it runs; Linux cannot reopen
+// that socket by path, so every system checks the same output with the snapshot named by path.
+describe.each([
+  ['named by path', 'path', true],
+  ['fed on fd 3', 'fd 3', process.platform === 'darwin'],
+] as const)('the binary with a Safari snapshot %s', (_, route, runs) => {
+  test.runIf(runs).each(crossCheckCases)('prints the committed cross-check golden of $name', async (pair) => {
+    const run = await crossCheck(route, readFileSync(pair.chromium, 'utf8'), pair.safari, pair.page);
+    expect(run.code, run.stderr).toBe(0);
+    expect(normaliseVersion(run.stdout).trimEnd()).toBe(textGolden(pair.golden).trimEnd());
+  });
+
+  test.runIf(runs)('reports a Safari snapshot of another page with exit 2 and no transcript', async () => {
+    const run = await crossCheck(
+      route,
+      readFileSync(join(snapshotsDirectory, 'chromium/sign-in.json'), 'utf8'),
+      join(snapshotsDirectory, 'safari-webdriver-basic.json'),
+      join(repositoryRoot, 'fixtures/pages/sign-in.html'),
+    );
+    expect(run.code).toBe(2);
+    expect(run.stdout).toBe('');
+    expect(run.stderr).toMatch(
+      /^spokenpath-core: the cross-check snapshot was captured from a different page/,
+    );
+  });
+});
+
+test('passes through the exit code and message of a binary that rejects its stdin before reading fd 3', async () => {
+  // Far more than a pipe buffers, so the write is still in flight when the binary exits unread.
+  const unread = ' '.repeat(16 * 1024 * 1024);
+  const directory = temporaryDirectory();
+  const stderrPath = join(directory, 'stderr.txt');
+  const stderr = openSync(stderrPath, 'w');
+  try {
+    const code = await transcribe(
+      binaryPath(),
+      ['transcript', '-', '--format', 'text', '--cross-check', CROSS_CHECK_FD_PATH],
+      'not a snapshot',
+      unread,
+      { stdout: stderr, stderr },
+    );
+    expect(code).toBe(2);
+  } finally {
+    closeSync(stderr);
+  }
+  expect(readFileSync(stderrPath, 'utf8')).toBe(
+    'spokenpath-core: snapshot is not valid JSON: expected ident at line 1 column 2\n',
+  );
+});
+
+/** ESC with an SGR sequence, the C1 CSI introducer, a bidi override and a tag character. */
+const HOSTILE = '\u{1b}[31m\u{9b}2J\u{202e}\u{e0041}';
+
+/** The stderr line the command prints for a Safari capture with the test-double driver. */
+async function printedFailure(scenario: Record<string, unknown>): Promise<string> {
+  const directory = temporaryDirectory();
+  const scenarioPath = join(directory, 'scenario.json');
+  writeFileSync(scenarioPath, JSON.stringify({ ...scenario, log: join(directory, 'events.jsonl') }));
+  const error = await captureSafari(join(repositoryRoot, signInPage), {
+    driver: { command: process.execPath, args: [testDriverPath, scenarioPath], versions: {} },
+  }).then(
+    () => undefined,
+    (failure: unknown) => failure,
+  );
+  expect(error).toBeInstanceOf(SafariCaptureError);
+  return failureText(describeFailure(error));
+}
+
+describe('driver-originated text is printed escaped', () => {
+  test.each([
+    ['the session error code', { refuseSession: { error: `refused ${HOSTILE}`, message: '' } }],
+    [
+      'the session error message',
+      { refuseSession: { error: 'session not created', message: `no ${HOSTILE}` } },
+    ],
+    ["safaridriver's stderr", { stderr: `failed ${HOSTILE}`, exitAtStart: true }],
+  ])('%s', async (_field, scenario) => {
+    const line = await printedFailure(scenario);
+    expect(line).toMatch(/^spokenpath: safari-session-refused: /);
+    for (const raw of ['\u{1b}', '\u{9b}', '\u{202e}', '\u{e0041}']) {
+      expect(line.includes(raw), `${JSON.stringify(line)} holds ${JSON.stringify(raw)}`).toBe(false);
+    }
+    for (const escaped of ['[31m', '\\u{9b}', '\\u{202e}', '\\u{e0041}']) {
+      expect(line, escaped).toContain(escaped);
+    }
+  });
 });

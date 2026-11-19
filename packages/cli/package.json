@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@spokenpath/capture-chromium": "workspace:*",
+    "@spokenpath/capture-safari": "workspace:*",
     "@spokenpath/instrument-html": "workspace:*"
   },
   "devDependencies": {

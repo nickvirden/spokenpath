@@ -1,0 +1,81 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: text.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 4 elements compared: 2 differ, 2 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) (no accessible name)  focusable
+     no source location: the document itself (document)
+     no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (related-element): empty
+   ~ ""
+2    A heading "Café sign-up"  level 1
+       pages/basic.html:3:1  <h1>
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+       differs in Safari: name "Café sign up" in Safari 27.0.1, "Café sign-up" in Chromium 159.0.8154.6
+     ~ "Café sign-up, heading, level 1"
+3      A text "Café sign-up"
+       ~ "Café sign-up"
+4    A LabelText (internal role) (no accessible name)
+       pages/basic.html:4:1  <label for="email">
+       no accessible name; the engine reported no name sources
+       differs in Safari: role "" in Safari 27.0.1, "LabelText" in Chromium 159.0.8154.6
+     ~ ""
+5      A text "Email"
+       ~ "Email"
+6    A textbox "Email"  value ""  focusable
+       pages/basic.html:5:1  <input id="email" type="email">
+       name from label (related-element)
+         via <label>  "Email"  pages/basic.html:4:1
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded
+       not checked in Safari 27.0.1: role (Safari answered with error "unknown error")
+       not checked in Safari 27.0.1: name (Safari answered with error "stale element reference": The element is no longer attached to the document.)
+     ~ "Email, textbox"
+7    A button "Join"  focusable
+       pages/basic.html:5:35  <button>
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+       not checked in Safari 27.0.1: role and name (no element with this tag was found in Safari)
+     ~ "Join, button"
+8      A text "Join"
+       ~ "Join"
+9    A text "Hi"
+     ~ "Hi"
+
+Excluded
+  <html>  pages/basic.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  no source location: the HTML parser inserted this element (implied)
+    not-rendered (engine reason: notRendered)
+  <body>  no source location: the HTML parser inserted this element (implied)
+    uninteresting (engine reason: uninteresting)
+  <p>  pages/basic.html:6:1  <p aria-hidden="true">
+    aria-hidden (engine reason: ariaHiddenElement)
+  <x-card>  pages/basic.html:7:1  <x-card>
+    uninteresting (engine reason: uninteresting)
+  <span>  no source location: a page script created this element (script)
+    uninteresting (engine reason: uninteresting)
+  <script>  pages/basic.html:8:1  <script>
+    not-rendered (engine reason: notRendered)
+
+Headings
+  [2] heading "Café sign-up"  level 1
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [6] textbox "Email"
+  [7] button "Join"
+
+Tab order
+  1  [6] textbox "Email"
+  2  [7] button "Join"
+  3  left the page
+  4  [6] textbox "Email"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

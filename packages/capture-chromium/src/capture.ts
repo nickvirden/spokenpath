@@ -87,7 +87,7 @@ async function getDocument(session: PageSession, timeoutMs: number): Promise<Pro
 }
 
 /** Sorted by code, then node, then message, so the order requests finish in cannot reorder them. */
-function sortDiagnostics(diagnostics: readonly Diagnostic[]): Diagnostic[] {
+export function sortDiagnostics(diagnostics: readonly Diagnostic[]): Diagnostic[] {
   const nodeKey = (diagnostic: Diagnostic) => diagnostic.node ?? -1;
   return diagnostics.toSorted(
     (left, right) =>

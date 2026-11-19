@@ -1,19 +1,24 @@
-import { spawn } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { CaptureError, captureChromium, verifyInstrumentation } from '@spokenpath/capture-chromium';
+import { CaptureError as SafariCaptureError, captureSafari } from '@spokenpath/capture-safari';
 import { InstrumentHtmlError } from '@spokenpath/instrument-html';
 import { BUILD_COMMAND, binaryPath, repositoryRoot } from './binary.ts';
-import { escapeForTerminal, escapeLines } from './escape.ts';
+import { escapeForTerminal } from './escape.ts';
+import { describeFailure, failureText } from './failure.ts';
+import { CROSS_CHECK_FD_PATH, transcribe } from './transcribe.ts';
 
 const USAGE =
-  'usage: spokenpath <page.html> [--format text|json] [--no-speech] [--wait-for <selector>] [--verify-instrumentation]';
+  'usage: spokenpath <page.html> [--engine chromium] [--cross-check safari] [--format text|json] [--no-speech] [--wait-for <selector>] [--verify-instrumentation] | spokenpath -h|--help | spokenpath --version';
 
 const HELP = `${USAGE}
 
 Prints what the browser exposes for an HTML page, item by item, traced to the tags in the file.
 
+  --engine chromium          the engine to capture in; chromium is the only one
+  --cross-check safari       also ask real Safari for each element's role and name, and note
+                             where they differ from Chromium's (macOS only)
   --format text|json         the text transcript (the default), or JSON for tools
   --no-speech                leave out the illustrative speech (~ lines, approx in JSON)
   --wait-for <selector>      after load, wait until a CSS selector matches before capturing
@@ -26,10 +31,11 @@ Each option may be given once. See docs/usage.md for the output and the exit cod
 
 /**
  * Exit codes: 0 on success, 1 when capture fails for a reason other than the page or the binary
- * is missing, 2 for a usage error or a page that cannot be read or instrumented. Otherwise the
- * binary's own code passes through: 2 for a snapshot it rejects, 3 for an unsupported version.
+ * is missing, 2 for a usage error or a page that cannot be read or instrumented, and 130 or 143
+ * when SIGINT or SIGTERM stops a Safari capture. Otherwise the binary's own code passes through:
+ * 2 for a snapshot it rejects, 3 for an unsupported version.
  */
-const EXIT = { ok: 0, failed: 1, badInput: 2 } as const;
+const EXIT = { ok: 0, failed: 1, badInput: 2, sigint: 130, sigterm: 143 } as const;
 
 type Format = 'text' | 'json';
 
@@ -37,9 +43,18 @@ type Invocation =
   | { kind: 'help' }
   | { kind: 'version' }
   | { kind: 'verify'; page: string; waitFor?: string }
-  | { kind: 'transcript'; page: string; waitFor?: string; format: Format; noSpeech: boolean };
+  | {
+      kind: 'transcript';
+      page: string;
+      waitFor?: string;
+      format: Format;
+      noSpeech: boolean;
+      crossCheck: boolean;
+    };
 
 const OPTIONS = {
+  engine: { type: 'string' },
+  'cross-check': { type: 'string' },
   format: { type: 'string' },
   'no-speech': { type: 'boolean' },
   'wait-for': { type: 'string' },
@@ -51,11 +66,16 @@ const OPTIONS = {
 /**
  * The usage error a `parseArgs` failure stands for, in the command's own words. Node's messages
  * suggest `--` syntax and quote unevenly, so only the option they name is kept, found by the
- * error's code.
+ * error's code. Node names an option that has a short alias with both, as `'-h, --help'`, and one
+ * that takes a value with its placeholder, as `'--format <value>'`; the long name is kept.
  */
 function argumentError(error: TypeError): string {
   const code = 'code' in error ? error.code : undefined;
-  const named = /'(-{1,2}[^' <]+)/.exec(error.message)?.[1];
+  const quoted = /'(-[^']*)'/.exec(error.message)?.[1];
+  const named = quoted
+    ?.replace(/ <[^>]*>$/, '')
+    .split(', ')
+    .at(-1);
   if (code === 'ERR_PARSE_ARGS_UNKNOWN_OPTION' && named !== undefined) {
     return `unknown option ${JSON.stringify(named)}`;
   }
@@ -92,7 +112,9 @@ function parseInvocation(args: string[]): Invocation | { error: string } {
   }
   if (values.help === true || values.version === true) {
     if (args.length !== 1) {
-      return { error: `${values.help === true ? '--help' : '--version'} takes no other arguments` };
+      return {
+        error: `${JSON.stringify(values.help === true ? '--help' : '--version')} takes no other arguments`,
+      };
     }
     return { kind: values.help === true ? 'help' : 'version' };
   }
@@ -100,8 +122,20 @@ function parseInvocation(args: string[]): Invocation | { error: string } {
     return { error: positionals.length === 0 ? 'no page given' : 'more than one page given' };
   }
   const [page] = positionals as [string];
+  if (values.engine !== undefined && values.engine !== 'chromium') {
+    return { error: `unknown engine ${JSON.stringify(values.engine)}; the only engine is chromium` };
+  }
+  const crossCheck = values['cross-check'];
+  if (crossCheck !== undefined && crossCheck !== 'safari') {
+    return { error: `unknown cross-check ${JSON.stringify(crossCheck)}; the only cross-check is safari` };
+  }
   const waitFor = values['wait-for'] === undefined ? {} : { waitFor: values['wait-for'] };
   if (values['verify-instrumentation'] === true) {
+    if (crossCheck !== undefined) {
+      return {
+        error: '--cross-check cannot be used with --verify-instrumentation, which prints no transcript',
+      };
+    }
     if (values.format !== undefined || values['no-speech'] === true) {
       return {
         error:
@@ -114,42 +148,43 @@ function parseInvocation(args: string[]): Invocation | { error: string } {
   if (format !== 'text' && format !== 'json') {
     return { error: `unknown format ${JSON.stringify(format)}; the formats are text and json` };
   }
-  return { kind: 'transcript', page, ...waitFor, format, noSpeech: values['no-speech'] === true };
+  return {
+    kind: 'transcript',
+    page,
+    ...waitFor,
+    format,
+    noSpeech: values['no-speech'] === true,
+    crossCheck: crossCheck !== undefined,
+  };
 }
 
 function parse(args: string[]) {
   return parseArgs({ args, allowPositionals: true, strict: true, tokens: true, options: OPTIONS });
 }
 
-/** The error's message, prefixed with its code when it carries one. */
-function describeFailure(error: unknown): string {
-  if (!(error instanceof Error)) {
-    return String(error);
-  }
-  const code = 'code' in error && typeof error.code === 'string' ? error.code : undefined;
-  // Node's file system errors already start their message with the code.
-  return code === undefined || error.message.startsWith(`${code}:`)
-    ? error.message
-    : `${code}: ${error.message}`;
-}
-
-/** A page that cannot be read or that the instrumenter refuses is bad input; any other failure is not. */
+/**
+ * A page that cannot be read or that the instrumenter refuses is bad input; a Safari capture
+ * stopped by a signal exits as a process that signal ends would; any other failure is not.
+ */
 function exitCodeOf(error: unknown): number {
   if (error instanceof InstrumentHtmlError) {
     return EXIT.badInput;
   }
-  if (error instanceof CaptureError && error.code === 'page-unreadable') {
+  if (
+    (error instanceof CaptureError || error instanceof SafariCaptureError) &&
+    error.code === 'page-unreadable'
+  ) {
     return EXIT.badInput;
+  }
+  if (error instanceof SafariCaptureError && error.signal !== undefined) {
+    return error.signal === 'SIGINT' ? EXIT.sigint : EXIT.sigterm;
   }
   return EXIT.failed;
 }
 
-/**
- * Writes a failure to stderr, every line escaped. A multi-line message, such as Playwright's
- * with its call log, keeps its line breaks; every other control character is escaped.
- */
+/** Writes a failure to stderr, every line escaped. */
 function fail(message: string): void {
-  process.stderr.write(`spokenpath: ${escapeLines(message)}\n`);
+  process.stderr.write(failureText(message));
 }
 
 /** The workspace version, which the release commit sets in the root `package.json`. */
@@ -163,27 +198,6 @@ function version(): string {
   return value;
 }
 
-/**
- * Runs the binary on the snapshot, written to its stdin. Its stdout and stderr are the terminal's,
- * so its output and escaping arrive unchanged; the result is its exit code, or 1 when a signal
- * ends it.
- */
-function transcribe(binary: string, args: string[], snapshotJson: string): Promise<number> {
-  return new Promise((resolveCode, reject) => {
-    const child = spawn(binary, args, { stdio: ['pipe', 'inherit', 'inherit'] });
-    child.on('error', reject);
-    // The binary stops reading when it rejects the input, which closes the pipe early; its exit
-    // code and message report that, so the broken pipe itself is not a second failure.
-    child.stdin.on('error', (error: NodeJS.ErrnoException) => {
-      if (error.code !== 'EPIPE') {
-        reject(error);
-      }
-    });
-    child.on('close', (code) => resolveCode(code ?? EXIT.failed));
-    child.stdin.end(snapshotJson);
-  });
-}
-
 async function run(args: string[]): Promise<number> {
   const invocation = parseInvocation(args);
   if ('error' in invocation) {
@@ -195,13 +209,13 @@ async function run(args: string[]): Promise<number> {
     process.stdout.write(HELP);
     return EXIT.ok;
   }
-  if (invocation.kind === 'version') {
-    process.stdout.write(`spokenpath ${version()}\n`);
-    return EXIT.ok;
-  }
-  const page = resolve(process.cwd(), invocation.page);
-  const options = invocation.waitFor === undefined ? {} : { waitFor: invocation.waitFor };
   try {
+    if (invocation.kind === 'version') {
+      process.stdout.write(`spokenpath ${version()}\n`);
+      return EXIT.ok;
+    }
+    const page = resolve(process.cwd(), invocation.page);
+    const options = invocation.waitFor === undefined ? {} : { waitFor: invocation.waitFor };
     if (invocation.kind === 'verify') {
       const comparison = await verifyInstrumentation(page, options);
       const shown = escapeForTerminal(invocation.page);
@@ -215,17 +229,30 @@ async function run(args: string[]): Promise<number> {
       return EXIT.failed;
     }
 
+    if (invocation.crossCheck && process.platform !== 'darwin') {
+      fail('unsupported-platform: --cross-check safari needs macOS with Safari and safaridriver');
+      return EXIT.failed;
+    }
     const binary = binaryPath();
     if (!existsSync(binary)) {
       fail(`the spokenpath-core binary is not built at ${binary}; build it with \`${BUILD_COMMAND}\``);
       return EXIT.failed;
     }
     const snapshot = await captureChromium(page, options);
+    const safari = invocation.crossCheck ? await captureSafari(page, options) : undefined;
     const binaryArgs = ['transcript', '-', '--source', page, '--format', invocation.format];
+    if (safari !== undefined) {
+      binaryArgs.push('--cross-check', CROSS_CHECK_FD_PATH);
+    }
     if (invocation.noSpeech) {
       binaryArgs.push('--no-speech');
     }
-    return await transcribe(binary, binaryArgs, JSON.stringify(snapshot));
+    return await transcribe(
+      binary,
+      binaryArgs,
+      JSON.stringify(snapshot),
+      safari === undefined ? undefined : JSON.stringify(safari),
+    );
   } catch (error) {
     fail(describeFailure(error));
     return exitCodeOf(error);

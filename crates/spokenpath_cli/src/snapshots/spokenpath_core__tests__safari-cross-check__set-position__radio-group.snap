@@ -1,0 +1,104 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 8 elements compared: 1 differs, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Native and ARIA radio groups"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Native and ARIA radio groups"
+ 2    A group "Size"
+        radio-group.html:8:1  <fieldset>
+        name from legend (related-element)
+          via <legend>  "Size"  radio-group.html:9:1
+        other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+      ~ "Size, group"
+ 3      A Legend (internal role) (no accessible name)
+          radio-group.html:9:1  <legend>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+          differs in Safari: role "" in Safari 27.0.1, "Legend" in Chromium 159.0.8154.6
+        ~ ""
+ 4        A text "Size"
+          ~ "Size"
+ 5      A radio "Small"  not checked, focusable  1 of 3 (computed by tool)
+          radio-group.html:10:8  <input id="small" type="radio" name="size" value="small">
+          name from label-wrapped (related-element)
+            via <label>  " Small"  radio-group.html:10:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; contents: superseded; title (attribute): superseded
+        ~ "Small, radio, not checked, 1 of 3"
+ 6      A radio "Medium"  not checked, focusable  2 of 3 (computed by tool)
+          radio-group.html:11:8  <input id="medium" type="radio" name="size" value="medium">
+          name from label-wrapped (related-element)
+            via <label>  " Medium"  radio-group.html:11:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; contents: superseded; title (attribute): superseded
+        ~ "Medium, radio, not checked, 2 of 3"
+ 7      A radio "Large"  not checked, focusable  3 of 3 (computed by tool)
+          radio-group.html:12:8  <input id="large" type="radio" name="size" value="large">
+          name from label-wrapped (related-element)
+            via <label>  " Large"  radio-group.html:12:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; contents: superseded; title (attribute): superseded
+        ~ "Large, radio, not checked, 3 of 3"
+ 8    A radiogroup "Colour"
+        radio-group.html:14:1  <div id="colour" role="radiogroup" aria-label="Colour">
+        name from aria-label="Colour" (attribute)
+        other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+      ~ "Colour, radiogroup"
+ 9      A radio "Red"  checked, focusable  1 of 2 (computed by tool)
+          radio-group.html:15:1  <div id="red" role="radio" aria-checked="true" tabindex="0">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Red, radio, checked, 1 of 2"
+10        A text "Red"
+          ~ "Red"
+11      A radio "Blue"  not checked, focusable  2 of 2 (computed by tool)
+          radio-group.html:16:1  <div id="blue" role="radio" aria-checked="false" tabindex="-1">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Blue, radio, not checked, 2 of 2"
+12        A text "Blue"
+          ~ "Blue"
+
+Excluded
+  <html>  radio-group.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  radio-group.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  radio-group.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  radio-group.html:3:1 (computed by tool)
+  <title>  radio-group.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  radio-group.html:3:1 (computed by tool)
+  <body>  radio-group.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <label>  radio-group.html:10:1  <label>
+    label-for (engine reason: labelFor)
+  <label>  radio-group.html:11:1  <label>
+    label-for (engine reason: labelFor)
+  <label>  radio-group.html:12:1  <label>
+    label-for (engine reason: labelFor)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [5] radio "Small"
+  [6] radio "Medium"
+  [7] radio "Large"
+  [9] radio "Red"
+  [11] radio "Blue"
+
+Tab order
+  1  [5] radio "Small"
+  2  [9] radio "Red"
+  3  left the page
+  4  [5] radio "Small"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

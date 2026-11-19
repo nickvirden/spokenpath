@@ -618,8 +618,68 @@
       "description": "The Safari payload captured from the macOS accessibility tree. Its contents are added in later\nminor versions.",
       "type": "object"
     },
+    "SafariElement": {
+      "description": "Safari's answers for one tagged element. Exactly one of `role` and `role_error` is present, and\nexactly one of `label` and `label_error`.",
+      "properties": {
+        "label": {
+          "description": "The Get Computed Label answer, possibly empty.",
+          "type": "string"
+        },
+        "label_error": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/WebdriverError"
+            }
+          ],
+          "description": "The error Get Computed Label answered with instead of a label."
+        },
+        "role": {
+          "description": "The Get Computed Role answer, possibly empty.",
+          "type": "string"
+        },
+        "role_error": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/WebdriverError"
+            }
+          ],
+          "description": "The error Get Computed Role answered with instead of a role."
+        },
+        "span": {
+          "description": "The `id` of the span the element's `data-spokenpath-src` names.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "span"
+      ],
+      "type": "object"
+    },
     "SafariWebdriverPayload": {
-      "description": "The Safari payload captured through `WebDriver`. Its contents are added in later minor versions.",
+      "description": "What Safari answers over `WebDriver` for the page's tagged elements: the computed role and the\ncomputed label of each, with the Safari and macOS builds that answered. Minor version 1 adds\nevery field; a minor-0 payload has none and reads with no elements and no versions.",
+      "properties": {
+        "elements": {
+          "description": "One entry per element in Safari's DOM whose `data-spokenpath-src` value names a span, in\ndocument order.",
+          "items": {
+            "$ref": "#/$defs/SafariElement"
+          },
+          "type": "array"
+        },
+        "macos_build": {
+          "description": "The macOS build version, from `sw_vers`.",
+          "type": "string"
+        },
+        "macos_version": {
+          "description": "The macOS product version, from `sw_vers`.",
+          "type": "string"
+        },
+        "safari_build": {
+          "description": "Safari's `CFBundleVersion`.",
+          "type": "string"
+        }
+      },
       "type": "object"
     },
     "SchemaId": {
@@ -794,6 +854,24 @@
       },
       "required": [
         "captured_at"
+      ],
+      "type": "object"
+    },
+    "WebdriverError": {
+      "description": "A `WebDriver` error response, as the browser returned it, without its stack trace.",
+      "properties": {
+        "error": {
+          "description": "The `WebDriver` error code, such as `unknown error`.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The message, possibly empty.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "error",
+        "message"
       ],
       "type": "object"
     }

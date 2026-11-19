@@ -127,6 +127,57 @@
       ],
       "type": "object"
     },
+    "CrossCheck": {
+      "description": "The engine a transcript was cross-checked against and what the comparison found.",
+      "properties": {
+        "compared": {
+          "description": "The number of items with a cross-check.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "differs": {
+          "description": "The number of items with at least one field that differs.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "engine": {
+          "description": "The engine token of the cross-check snapshot, `safari-webdriver`.",
+          "type": "string"
+        },
+        "engine_version": {
+          "description": "Safari's version, as the browser reports it.",
+          "type": "string"
+        },
+        "macos_build": {
+          "description": "The macOS build version, when the capture recorded it.",
+          "type": "string"
+        },
+        "macos_version": {
+          "description": "The macOS product version, when the capture recorded it.",
+          "type": "string"
+        },
+        "not_checked": {
+          "description": "The number of items with at least one field that is not checked.",
+          "format": "uint",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "safari_build": {
+          "description": "Safari's build number, when the capture recorded it.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "engine",
+        "engine_version",
+        "compared",
+        "differs",
+        "not_checked"
+      ],
+      "type": "object"
+    },
     "DescriptionRecord": {
       "description": "An accessible description and where it came from.",
       "properties": {
@@ -275,6 +326,24 @@
         }
       ]
     },
+    "EngineErrorRecord": {
+      "description": "An error Safari answered a call with.",
+      "properties": {
+        "error": {
+          "description": "The `WebDriver` error code, such as `unknown error`.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The message, possibly empty.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "error",
+        "message"
+      ],
+      "type": "object"
+    },
     "Excluded": {
       "description": "A DOM element the engine leaves out of the exposed tree.",
       "properties": {
@@ -350,6 +419,79 @@
         "engine_reason"
       ],
       "type": "object"
+    },
+    "FieldCheck": {
+      "description": "What came of comparing one field.",
+      "oneOf": [
+        {
+          "description": "Both engines expose the same string.",
+          "properties": {
+            "chromium": {
+              "description": "The transcript engine's string, raw.",
+              "type": "string"
+            },
+            "outcome": {
+              "const": "same",
+              "type": "string"
+            },
+            "safari": {
+              "description": "Safari's string, raw.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "outcome",
+            "safari",
+            "chromium"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "The engines expose different strings.",
+          "properties": {
+            "chromium": {
+              "description": "The transcript engine's string, raw.",
+              "type": "string"
+            },
+            "outcome": {
+              "const": "differs",
+              "type": "string"
+            },
+            "safari": {
+              "description": "Safari's string, raw.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "outcome",
+            "safari",
+            "chromium"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "The field could not be compared.",
+          "properties": {
+            "error": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/NotChecked"
+                }
+              ],
+              "description": "Why: the error Safari answered with, or a reason."
+            },
+            "outcome": {
+              "const": "not-checked",
+              "type": "string"
+            }
+          },
+          "required": [
+            "outcome",
+            "error"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "Header": {
       "description": "The engine and versions a transcript came from.",
@@ -497,6 +639,14 @@
           ],
           "description": "The illustrative phrase, approximate; absent when Layer B is not produced."
         },
+        "cross_check": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ItemCrossCheck"
+            }
+          ],
+          "description": "The node's role and name compared with the cross-check engine's; absent when no\ncross-check ran or the item is not compared."
+        },
         "depth": {
           "description": "The depth in the exposed tree; the root is 0.",
           "format": "uint",
@@ -528,6 +678,32 @@
         "number",
         "depth",
         "layer_a"
+      ],
+      "type": "object"
+    },
+    "ItemCrossCheck": {
+      "description": "The cross-check of one item's role and name.",
+      "properties": {
+        "name": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/FieldCheck"
+            }
+          ],
+          "description": "The name, compared with Safari's computed label."
+        },
+        "role": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/FieldCheck"
+            }
+          ],
+          "description": "The role, compared with Safari's computed role."
+        }
+      },
+      "required": [
+        "role",
+        "name"
       ],
       "type": "object"
     },
@@ -890,6 +1066,42 @@
         "dom"
       ],
       "type": "object"
+    },
+    "NotChecked": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/EngineErrorRecord"
+            }
+          ],
+          "description": "Safari answered the call with this error."
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/NotCheckedReason"
+            }
+          ],
+          "description": "Safari's answer cannot be paired with the item."
+        }
+      ],
+      "description": "Why a field was not checked."
+    },
+    "NotCheckedReason": {
+      "description": "Why Safari's answer cannot be paired with an item.",
+      "oneOf": [
+        {
+          "const": "no-safari-element",
+          "description": "Safari's DOM holds no element with the item's span, such as an element inside a shadow\nroot, which `WebDriver` does not search.",
+          "type": "string"
+        },
+        {
+          "const": "span-not-unique",
+          "description": "More than one item, or more than one Safari element, has the span.",
+          "type": "string"
+        }
+      ]
     },
     "PropertyRecord": {
       "description": "A property the engine exposes that [`StatesRecord`] does not name.",
@@ -1461,6 +1673,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "The ordered transcript of one model: what the browser exposes, item by item, with the\nnavigation indexes, the excluded nodes and the tab order.",
   "properties": {
+    "cross_check": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/CrossCheck"
+        }
+      ],
+      "description": "The engine the roles and names were cross-checked against, and what it found; absent when\nno cross-check ran."
+    },
     "excluded": {
       "description": "The DOM elements the engine leaves out of the exposed tree, in DOM order.",
       "items": {

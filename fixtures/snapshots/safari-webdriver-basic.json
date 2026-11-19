@@ -1,0 +1,192 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 1
+  },
+  "producer": {
+    "name": "hand-written fixture",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1.0
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/basic.html",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "2026-11-17T12:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "pages/basic.html",
+      "sha256": "0f75ea5885e94f12118431e4cf9154e62ad237fd0f7edc7eaf54d6bfc7a0dcf5",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 37
+      },
+      "element": {
+        "start": 33,
+        "end": 55
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 56,
+        "end": 75
+      },
+      "element": {
+        "start": 56,
+        "end": 88
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 89,
+        "end": 120
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 125,
+        "end": 133
+      },
+      "element": {
+        "start": 125,
+        "end": 146
+      },
+      "line": 5,
+      "column": 35
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 147,
+        "end": 169
+      },
+      "element": {
+        "start": 147,
+        "end": 179
+      },
+      "line": 6,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 180,
+        "end": 188
+      },
+      "element": {
+        "start": 180,
+        "end": 197
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 198,
+        "end": 206
+      },
+      "element": {
+        "start": 198,
+        "end": 375
+      },
+      "line": 8,
+      "column": 1
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-webdriver",
+    "elements": [
+      {
+        "span": 0,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 1,
+        "role": "heading",
+        "label": "Café sign up"
+      },
+      {
+        "span": 2,
+        "role": "",
+        "label": ""
+      },
+      {
+        "span": 3,
+        "role_error": {
+          "error": "unknown error",
+          "message": ""
+        },
+        "label_error": {
+          "error": "stale element reference",
+          "message": "The element is no longer attached to the document."
+        }
+      },
+      {
+        "span": 5,
+        "role": "paragraph",
+        "label": ""
+      },
+      {
+        "span": 6,
+        "role": "generic",
+        "label": ""
+      },
+      {
+        "span": 7,
+        "role": "",
+        "label": ""
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}
