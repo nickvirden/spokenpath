@@ -198,7 +198,7 @@ fn read_capped(reader: &mut dyn Read) -> io::Result<Vec<u8>> {
 
 fn too_large_failure(what: &str, name: &str) -> Failure {
     Failure::Input(format!(
-        "{what} {name} is larger than the {MAX_INPUT_TEXT} input limit, so it is not read"
+        "{what} {name} is larger than the {MAX_INPUT_TEXT} input limit, so it is not parsed"
     ))
 }
 
