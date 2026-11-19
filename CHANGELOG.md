@@ -1,3 +1,9 @@
+## [0.6.0](https://github.com/nickvirden/spokenpath/compare/v0.5.0...v0.6.0) (2026-11-19)
+
+### Features
+
+* **cli:** add the spokenpath command and transcript output ([#51](https://github.com/nickvirden/spokenpath/issues/51)) ([c8859b8](https://github.com/nickvirden/spokenpath/commit/c8859b87c737acc7acca9099e7ed39e48db66a9b))
+
 ## [0.5.0](https://github.com/nickvirden/spokenpath/compare/v0.4.0...v0.5.0) (2026-11-19)
 
 ### Features
