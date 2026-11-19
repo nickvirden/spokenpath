@@ -21,11 +21,11 @@ carrying the JSON Pointer of the failing location.
 | Field | Contents |
 |---|---|
 | `schema` | Always `"spokenpath-snapshot"`. |
-| `version` | `{ major, minor }`. Writers write `{ "major": 0, "minor": 0 }`. |
+| `version` | `{ major, minor }`. Each writer writes the lowest minor version that defines every field it writes: Chromium capture writes `{ "major": 0, "minor": 0 }`, Safari capture `{ "major": 0, "minor": 1 }`. |
 | `producer` | `{ name, version }` of the program that wrote the snapshot. |
 | `capture.engine` | `chromium`, `safari-webdriver` or `safari-ax`; equal to `payload.engine`. |
 | `capture.engine_version` | The browser version, as the browser reports it. |
-| `capture.tool_version` | The version of the tool that drove the browser, for example Playwright. |
+| `capture.tool_version` | The version of the tool that drove the browser, for example Playwright or `safaridriver`. |
 | `capture.viewport` | `{ width, height, device_pixel_ratio }`, in CSS pixels; the ratio is a float. |
 | `capture.color_scheme` | `light`, `dark` or `no-preference`. |
 | `capture.reduced_motion` | `reduce` or `no-preference`. |
@@ -86,8 +86,28 @@ The accessibility nodes are typed for the fields the core reads: `nodeId`, `igno
 provenance (`name.sources`) and exclusion reasons (`ignoredReasons`) are optional, because not
 every engine provides them.
 
-The `safari-webdriver` and `safari-ax` payloads have no fields yet; their contents are added in
-later minor versions.
+## Safari WebDriver payload
+
+Minor 1 adds the `safari-webdriver` payload fields. Every one reads with a default, so a minor-0
+`safari-webdriver` envelope with an empty payload still reads, with no elements and no versions.
+
+| Field | Contents |
+|---|---|
+| `elements[]` | One entry per element in Safari's DOM whose `data-spokenpath-src` value names a span, in document order. |
+| `elements[].span` | The `id` of the span the element's `data-spokenpath-src` names; it must be in `spans`. |
+| `elements[].role` | Safari's Get Computed Role answer, possibly empty. |
+| `elements[].role_error` | `{ error, message }`: the WebDriver error Get Computed Role answered with instead, without its stack trace. |
+| `elements[].label` | Safari's Get Computed Label answer, possibly empty. |
+| `elements[].label_error` | `{ error, message }`: the WebDriver error Get Computed Label answered with instead. |
+| `safari_build` | Optional: Safari's `CFBundleVersion`. |
+| `macos_version`, `macos_build` | Optional: the macOS product and build versions, from `sw_vers`. |
+
+Each entry has exactly one of `role` and `role_error`, and exactly one of `label` and
+`label_error`; the Rust reader rejects an entry with both or neither, and one whose `span` names no
+span, naming the entry's path, such as `payload.elements[3]`. Safari's own version is
+`capture.engine_version`, the session's `browserVersion`.
+
+The `safari-ax` payload has no fields yet; its contents are added in a later minor version.
 
 ## Version rule
 
@@ -210,6 +230,60 @@ attributes in order (leaving out `data-spokenpath-src` on the instrumented side 
 child structure, ignoring protocol ids. It prints one line and exits 0 when they are equal and 1
 at the first difference. It writes no snapshot.
 
+## Safari WebDriver capture
+
+`@spokenpath/capture-safari` writes Safari WebDriver snapshots on macOS. It exports
+`captureSafari(pagePath, { waitFor, timeoutMs })` and `normaliseSafariForGolden(snapshot)`; the
+`spokenpath` command runs it for `--cross-check safari` ([usage.md](usage.md#cross-checking-against-safari)).
+Its WebDriver client uses Node built-ins only.
+
+**Serving.** The page is read and instrumented exactly as Chromium capture does it, with no class
+token, and served over HTTP on `127.0.0.1`, on a port the OS chooses, at `/<file name>`, for the
+length of the capture. Other paths are answered from the page's directory by the same rules as
+Chromium capture, with the same 404 and `asset-not-found` diagnostic, except Safari's own request
+for `/favicon.ico`, which gets a 404 and no diagnostic. A request naming another host gets 421.
+Every response carries the Content-Security-Policy
+`default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; form-action 'self'; base-uri 'self'`,
+which limits loads to the page's origin, so Safari blocks requests to other origins, as Chromium
+capture aborts them; blocked requests are not recorded as diagnostics. The server is closed on
+every exit path.
+
+**Driving Safari.** Capture runs `/usr/bin/safaridriver --port <n>` on a free loopback port, with
+an argument array and no shell, opens one session (`browserName: safari`), sets the window so the
+viewport is 1280 × 720 where the screen allows, and loads the page. It never runs
+`safaridriver --enable` or changes a setting. It settles the page with the strategy and names of
+Chromium capture (`load-fonts-frames`, or `load-selector-fonts-frames` with `waitFor`), then runs
+Find Elements for `[data-spokenpath-src]` and, for each element in turn, Get Element Attribute,
+Get Computed Role and Get Computed Label. A WebDriver error answering a role or label call is
+recorded in `role_error` or `label_error`, and capture continues. Every request has a deadline:
+`timeoutMs` (30 000 by default) bounds each call, and Safari's own page-load and script limits are
+set to the same value, so a call that gets no answer fails the capture with `timeout`. The session
+is deleted and `safaridriver` stopped on success, on any error, and on SIGINT or SIGTERM, after
+which capture fails with `interrupted`.
+
+**Versions and conditions.** `capture.engine_version` is the session's `browserVersion`,
+`capture.tool_version` is `safaridriver` followed by what `safaridriver --version` prints, and the
+payload records Safari's `CFBundleVersion` (from `defaults read`) and the macOS version and build
+(from `sw_vers`). WebDriver cannot set the viewport's pixel ratio, the colour scheme or reduced
+motion, so `capture.viewport`, `capture.color_scheme` and `capture.reduced_motion` are measured in
+the page after settling, with `matchMedia` for the two media features.
+
+**Failures.** `CaptureError` codes: `unsupported-platform` (not macOS), `safaridriver-not-found`,
+`safari-session-refused` (quoting what `safaridriver` or the session response said),
+`page-unreadable`, `asset-unreadable`, `page-hidden` (Safari reports the page as hidden, as on a
+locked or sleeping Mac, where animation frames never run), `timeout`, `interrupted`,
+`invalid-options` and `invalid-snapshot`. The snapshot passes `validateSnapshot` before it is
+returned.
+
+**Diagnostics.** Sorted as Chromium capture sorts them.
+
+| Code | Meaning |
+|---|---|
+| `asset-not-found` | A request on the page's origin named no file in its directory, or one outside it; it got a 404. The message names the path without the port. |
+| `unknown-source-attribute` | An element's `data-spokenpath-src` names no span, so it has no entry. |
+| `source-attribute-unreadable` | Safari answered Get Element Attribute with an error, so the element has no entry. |
+| `version-unreadable` | `defaults` or `sw_vers` failed, so a version field is absent. |
+
 ## Golden comparisons
 
 Golden comparisons compare a normalised copy of each snapshot
@@ -231,7 +305,28 @@ browser upgrade shows up as a reviewed diff. The capture goldens live in
 `names/`, `set-position/`, `excluded/`, `reading-order/` or `navigation/` directory, at the same
 relative path with `.json` in place of `.html`. Refresh them
 with `UPDATE_FIXTURES=1 pnpm test:capture`. Fixture text stays on one line at 1280 pixels, so
-fonts cannot change how text wraps.
+fonts cannot change how text wraps. The `cross-check/` pages are those where Safari's role or name
+is expected to differ from Chromium's.
+
+`normaliseSafariForGolden` rewrites the fields of a Safari snapshot that differ between runs or
+Macs of the same capture:
+
+| Field | Set to | Why it varies |
+|---|---|---|
+| `volatile.captured_at` | `1970-01-01T00:00:00Z` | The time of each run. |
+| `producer.version` | `0.0.0` | Every release bumps it. |
+| The port in `capture.url` | `0`, as in `http://127.0.0.1:0/<file name>` | The OS chooses it for each capture. |
+| `capture.viewport` | `{ "width": 1280, "height": 720, "device_pixel_ratio": 1 }` | It comes from the Mac's display. |
+| `capture.color_scheme` | `light` | It comes from the Mac's appearance setting. |
+| `capture.reduced_motion` | `no-preference` | It comes from the Mac's accessibility settings. |
+
+Everything else is compared, including `engine_version`, `tool_version`, `safari_build`, the macOS
+fields and every role, label and error, so a Safari or macOS upgrade shows as a reviewed diff. The
+Safari goldens live in `fixtures/snapshots/safari-webdriver/`, one per page in the Chromium golden
+list at the same relative path. They are captured live on a Mac, so only `pnpm test:safari`
+compares them, outside `pnpm check` and CI; refresh them with `UPDATE_FIXTURES=1 pnpm test:safari`.
+A package test checks that no committed Safari snapshot holds `/Users/`, `/home/`, `file:`, or the
+capturing machine's user or host name.
 
 ## Changing the format
 
@@ -250,7 +345,9 @@ from the committed schema. A change to the contract also needs an ADR
 
 `fixtures/snapshots/` holds valid snapshots. `chromium-basic.json` is hand-written from the page
 in `fixtures/snapshots/pages/basic.html`; a package test checks the source hash and slices every
-span by its byte range against that page. `chromium-from-typescript.json` is the JSON of the typed
+span by its byte range against that page. `safari-webdriver-basic.json` is a hand-written Safari
+snapshot of the same page, with the same `sources` and `spans`, whose answers exercise every
+cross-check outcome without Safari. `chromium-from-typescript.json` is the JSON of the typed
 sample in `@spokenpath/snapshot-types`. The Rust tests read and round-trip every `.json` file
 there, and the package tests validate every one. `fixtures/source-paths.json` lists the
 accepted and rejected source paths that both readers' tests use.

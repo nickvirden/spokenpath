@@ -167,7 +167,9 @@ print it as a transcript in which every line says where it came from.
   by pressing Tab in the browser.
 
 Layer A, Layer B, source tags and navigation work for Chromium from a checkout, through the
-`spokenpath` command ([docs/usage.md](docs/usage.md)); nothing is published yet, and Safari and
+`spokenpath` command ([docs/usage.md](docs/usage.md)). On a Mac, `--cross-check safari` also asks
+real Safari for each element's role and name and notes where they differ from Chromium's, without
+saying which engine is right. Nothing is published yet, and Safari's own accessibility tree and
 VoiceOver phrasing are not built. The [roadmap](docs/roadmap.md) lists the order the rest is being
 built in.
 The design is recorded in [ADR-0001](docs/decisions/ADR-0001-two-layer-output.md).

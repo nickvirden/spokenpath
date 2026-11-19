@@ -35,3 +35,11 @@ in your own browser.
 Capture is designed to serve the page locally and block external network requests by default.
 That is a design intent, not a sandbox: it limits accidental network access, but it does not
 isolate a hostile page from the browser or the machine running it.
+
+Chromium capture answers every request itself, by request interception, and opens no listening
+socket. Safari capture (`--cross-check safari`) cannot intercept requests, so it serves the page
+over HTTP on a loopback port (`127.0.0.1`) for the length of the capture, refuses requests that
+name another host, and sends a Content-Security-Policy that limits every load to that origin, so
+Safari blocks requests to other origins. This, too, is a design intent and not a sandbox: other
+programs on the same machine can reach the loopback port while the capture runs, and the page's
+scripts run in the Mac's real Safari.

@@ -14,7 +14,9 @@ a screen reader says or what users experience, and makes no WCAG or other confor
 ### `spokenpath`
 
 ```sh
-pnpm -s spokenpath <page.html> [--format text|json] [--no-speech] [--wait-for <selector>] [--verify-instrumentation]
+pnpm -s spokenpath <page.html> [--engine chromium] [--cross-check safari] [--format text|json] [--no-speech] [--wait-for <selector>] [--verify-instrumentation]
+pnpm -s spokenpath -h|--help
+pnpm -s spokenpath --version
 ```
 
 `pnpm spokenpath` builds the `spokenpath-core` binary when it is out of date (`cargo build --quiet
@@ -24,11 +26,16 @@ so stdout holds the transcript alone; without it, pnpm prints the banner before 
 
 The command instruments the page with its source locations, captures it in the pinned Chromium,
 and pipes the snapshot to `spokenpath-core transcript -` on stdin, with the page as `--source`. The
-binary's stdout and stderr are the command's, unchanged. No temporary file is written.
+binary's stdout and stderr are the command's, unchanged. No temporary file is written. With
+`--cross-check safari` it then captures the page in the Mac's real Safari as well, and pipes that
+snapshot to the binary on an extra pipe, fd 3, named to the binary as `--cross-check /dev/fd/3`
+([Cross-checking against Safari](#cross-checking-against-safari)).
 
 | Option | Meaning |
 |---|---|
 | `<page.html>` | The page to capture. Exactly one is required. |
+| `--engine chromium` | The engine the transcript comes from. `chromium`, the default, is the only engine. |
+| `--cross-check safari` | Also ask real Safari for each element's role and name, and note where they differ from Chromium's. macOS only; `safari` is the only value. It cannot be combined with `--verify-instrumentation`. |
 | `--format text` | The text transcript (the default). |
 | `--format json` | The transcript as JSON, for tools. |
 | `--no-speech` | Leave out Layer B: no `~` lines and no `approx` in JSON. |
@@ -51,12 +58,13 @@ and names `cargo build -p spokenpath_cli`.
 
 **Trust.** Capture loads the page in a real browser, which runs the page's scripts. Capture only
 pages you trust. Capture serves the page locally and blocks external network requests
-([SECURITY.md](../SECURITY.md#trust-model)).
+([SECURITY.md](../SECURITY.md#trust-model)). Safari capture serves it on a loopback port for the
+length of the capture.
 
 ### `spokenpath-core`
 
 ```sh
-target/debug/spokenpath-core transcript <snapshot | -> [--source <file>] [--format text|json] [--no-speech]
+target/debug/spokenpath-core transcript <snapshot | -> [--source <file>] [--cross-check <snapshot | ->] [--format text|json] [--no-speech]
 target/debug/spokenpath-core --version
 ```
 
@@ -71,20 +79,28 @@ SHA-256 and uses its bytes for the snapshot source with the same `sha256`; a fil
 source is an error. The source bytes give the text output its excerpts and let the adapter check
 every span against the file's length. Without `--source`, the text output shows locations and no
 excerpts. The binary never opens a path written inside a snapshot (`sources[].path` or a span's
-path): the only files it opens are the snapshot argument and `--source`.
+path): the only files it opens are the snapshot argument, `--source` and `--cross-check`.
 
-**Size limit.** The snapshot and the `--source` file may each be at most 32 MiB. A file's size is
-checked before it is read and stdin is read no further than the limit, so a larger input exits 2
-without being parsed.
+`--cross-check <snapshot | ->` names a Safari WebDriver snapshot of the same page (its payload is
+`safari-webdriver`), read from a file or from stdin, to compare roles and names with
+([Cross-checking against Safari](#cross-checking-against-safari)). At most one of the snapshot
+argument and `--cross-check` may be `-`, since stdin holds one snapshot. The cross-check snapshot
+must have the same `sources` and `spans` as the snapshot, which it does when both were captured
+from the same file.
+
+**Size limit.** The snapshot, the `--source` file and the cross-check snapshot may each be at most
+32 MiB. A file's size is checked before it is read and stdin is read no further than the limit, so
+a larger input exits 2 without being parsed.
 
 ## Exit codes
 
 | Code | `spokenpath` | `spokenpath-core` |
 |---|---|---|
 | 0 | The transcript was printed, or `--verify-instrumentation` found the same DOM. | The transcript was written. |
-| 1 | Capture failed (a timeout, the browser, an invalid snapshot), the binary is missing, `--verify-instrumentation` found a different DOM, or the binary was ended by a signal. | Writing stdout failed, for example to a closed pipe. |
-| 2 | A usage error, a page that cannot be read (`page-unreadable`), or a page the instrumenter refuses (its code, such as `attribute-present`). Also the binary's 2. | A usage error, or bad input: an unreadable file, an input over 32 MiB, text that is not JSON or not a snapshot, an engine mismatch, a field or reference error (naming its dotted path, such as `` `spans[2].source` ``), or a `--source` that matches no source. |
-| 3 | The binary's 3. | The snapshot's major version is not one the reader reads; the message names both majors. |
+| 1 | Capture failed (a timeout, the browser, an invalid snapshot), the binary is missing, `--verify-instrumentation` found a different DOM, or the binary was ended by a signal. With `--cross-check safari`: not macOS (`unsupported-platform`), no `safaridriver` (`safaridriver-not-found`), a refused session (`safari-session-refused`), a hidden page on a locked or sleeping Mac (`page-hidden`), or any other Safari capture failure; no transcript is printed. | Writing stdout failed, for example to a closed pipe. |
+| 2 | A usage error, a page that cannot be read (`page-unreadable`), or a page the instrumenter refuses (its code, such as `attribute-present`). Also the binary's 2. | A usage error, or bad input: an unreadable file, an input over 32 MiB, text that is not JSON or not a snapshot, an engine mismatch, a field or reference error (naming its dotted path, such as `` `spans[2].source` ``), or a `--source` that matches no source. For `--cross-check`, the same for the cross-check snapshot, named as such, and a cross-check snapshot whose payload is not `safari-webdriver` (naming its engine) or that was captured from a different page. |
+| 3 | The binary's 3. | The snapshot's or the cross-check snapshot's major version is not one the reader reads; the message names both majors. |
+| 130, 143 | SIGINT (Ctrl-C) or SIGTERM stopped Safari capture; the Safari session was deleted and `safaridriver` stopped first. | |
 
 Every failure writes a message to stderr: `spokenpath: <code>: <message>` from the command,
 `spokenpath-core: <message>` from the binary. A usage error is followed by a `usage:` line. A
@@ -93,8 +109,9 @@ is escaped as [Terminal escaping](#terminal-escaping) describes.
 
 **Diagnostics.** Problems the capture recorded rather than failed on, such as a blocked external
 request, are written to stderr by the binary, one per line, as
-`spokenpath-core: diagnostic <code>: <message>`, in both formats. They change neither the exit code
-nor stdout.
+`spokenpath-core: diagnostic <code>: <message>`, in both formats, and those of the cross-check
+snapshot as `spokenpath-core: diagnostic safari-webdriver <code>: <message>`. They change neither
+the exit code nor stdout.
 
 ## The text transcript
 
@@ -107,7 +124,8 @@ A = what the browser exposes   ~ = illustrative speech, approximate, not any spe
 ```
 
 - **Header.** The spokenpath version, the snapshot's version (`v<major>.<minor>`), the engine and
-  the browser version the capture came from, and the capture's viewport.
+  the browser version the capture came from, and the capture's viewport. With a cross-check, a
+  second line follows ([Cross-checking against Safari](#cross-checking-against-safari)).
 - **Legend.** `A` lines are what the browser exposes; `~` lines are illustrative speech,
   approximate. With `--no-speech` the legend has the `A` part only.
 
@@ -130,9 +148,9 @@ A = what the browser exposes   ~ = illustrative speech, approximate, not any spe
   `read-only`, `focusable`, `focused`, `level N`); then the set position, such as
   `2 of 3 (computed by tool)`. `(computed by tool)` marks a value the tool derived itself from what
   the browser exposes rather than read from the browser, as
-  [ADR-0001](decisions/ADR-0001-two-layer-output.md) defines it. A boolean state that is false is left out of the text, except
-  `expanded`, which shows as `collapsed`; the JSON keeps every state. A text run's `A` line is
-  `text` and its text in quotes.
+  [ADR-0001](decisions/ADR-0001-two-layer-output.md) defines it. A boolean state that is false is
+  left out of the text, except `expanded`, which shows as `collapsed`; the JSON keeps every state.
+  A text run's `A` line is `text` and its text in quotes.
 - **Location.** For an accessible item, `path:line:column` of its start tag (1-based, the column
   in Unicode scalar values) and the excerpt: the start tag's bytes from the `--source` file,
   decoded as UTF-8 (invalid bytes become U+FFFD), with each run of whitespace collapsed to one
@@ -152,6 +170,9 @@ A = what the browser exposes   ~ = illustrative speech, approximate, not any spe
 - **Description.** `description "…"` with the attribute it is attributed to and its marking, such as
   `from aria-describedby: <span> #hint  page.html:10:1 (computed by tool)`, or a statement that its
   source is not attributed.
+- **Cross-check notes.** With a cross-check, a compared item whose role or name differs in Safari,
+  or could not be checked, has one note line per such field after its description
+  ([Cross-checking against Safari](#cross-checking-against-safari)).
 - **`~` line.** The illustrative phrase in double quotes, exactly as the core rendered it. An item
   whose phrase is empty, such as an unnamed generic container, prints `~ ""`, so the item still
   shows that Layer B said nothing.
@@ -180,21 +201,101 @@ After the items:
 
 `--format json` writes one JSON document: the core's `Transcript` serialised as it is, with
 `header`, `nodes` (each with `number`, `depth`, `parent`, `layer_a` and, unless `--no-speech`,
-`approx`), `indexes`, `excluded` and `tab_order`. Nothing is added, renamed, removed or filtered,
-and strings are the page's raw strings with JSON escaping only. Its JSON Schema (draft 2020-12) is
-[`schema/transcript.v0.json`](../schema/transcript.v0.json), generated from the Rust types by
-`cargo xtask schema` and checked in CI with `cargo xtask schema --check`. The header's
+`approx`), `indexes`, `excluded` and `tab_order`, and, with a cross-check only, the top-level
+`cross_check` and each compared node's `cross_check`. Nothing is added, renamed, removed or
+filtered, and strings are the page's raw strings with JSON escaping only. Its JSON Schema (draft
+2020-12) is [`schema/transcript.v0.json`](../schema/transcript.v0.json), generated from the Rust
+types by `cargo xtask schema` and checked in CI with `cargo xtask schema --check`. The header's
 `tool_version` is the version of the tool that drove the browser (Playwright), while the text
 header names spokenpath's own version.
 
 Because the JSON keeps the page's raw strings, JSON from a page you do not trust can carry control
 characters and escape sequences: pipe it to a tool, and do not print it to a terminal unfiltered.
 
+## Cross-checking against Safari
+
+```sh
+pnpm -s spokenpath fixtures/pages/cross-check/list-style-none.html --engine chromium --cross-check safari
+```
+
+`--cross-check safari` asks the Mac's real Safari, over WebDriver, for the computed role and the
+computed label (the accessible name) of every tagged element, and compares each with what
+Chromium exposes for the same element. It shows what each browser exposes and where the two
+differ; it does not say which engine is right, and the notes are not a judgment of the page.
+
+**What is compared.** For every item that is an element located by its tag in the file, its role
+and its name, separately, each as an exact string: no synonym mapping, case folding or whitespace
+changes. An absent Chromium role or name compares as an empty string. Not compared: descriptions,
+states and values; the elements Chromium excludes; text runs, the document root, and elements the
+parser, a script or the browser created. Elements inside shadow roots show as not checked, because
+WebDriver does not search shadow roots.
+
+**The header line.** A second header line names the versions and counts:
+
+```text
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 18 elements compared: 2 differ, 1 not checked
+```
+
+`differ` counts the items with at least one field that differs, and `not checked` those with at
+least one field that could not be checked.
+
+**The notes.** Each compared item with a field that differs or is not checked gets one note line
+per such field, at its detail indent, after its description and before its `~` line. They print
+with `--no-speech` too. An item whose role and name are the same in both engines gets no line.
+
+```text
+differs in Safari: role "group" in Safari 27.0.1, "list" in Chromium 159.0.8154.6
+differs in Safari: name "" in Safari 27.0.1, "Prices" in Chromium 159.0.8154.6
+not checked in Safari 27.0.1: role (Safari answered with error "unknown error")
+not checked in Safari 27.0.1: role and name (no element with this tag was found in Safari)
+not checked in Safari 27.0.1: role and name (more than one element has this tag)
+```
+
+- **`differs in Safari`.** The field, Safari's value and Chromium's, each with its browser version.
+- **`not checked`.** Safari answered the call with an error (its WebDriver error code, and its
+  message after a colon when it gave one), Safari's DOM holds no element with the tag, or more than
+  one element or item has the tag. A field that was not checked is never counted as the same. When
+  both fields are not checked for the same reason, one line names both.
+
+In JSON, the top-level `cross_check` holds `engine` (`safari-webdriver`), `engine_version`,
+`safari_build`, `macos_version`, `macos_build`, `compared`, `differs` and `not_checked`. Each
+compared node's `cross_check` holds `role` and `name`, each `{ outcome, safari, chromium }` with
+`outcome` `same` or `differs`, or `{ outcome: "not-checked", error }` with Safari's
+`{ error, message }` or the reason `no-safari-element` or `span-not-unique`.
+
+**How it runs.** The page is instrumented exactly as for Chromium and served over HTTP on
+`127.0.0.1`, on a port the OS chooses, for the length of the capture, with a
+Content-Security-Policy that makes Safari block requests to other origins. The command starts
+`/usr/bin/safaridriver` on a free loopback port, opens one session, loads the page, waits for it to
+settle as Chromium capture does, reads every element's role and label one after another, then
+deletes the session and stops `safaridriver`, on every exit path. Ctrl-C (SIGINT) or SIGTERM during
+Safari capture does the same before the command exits 130 or 143. When Safari capture fails as a
+whole, the command prints `spokenpath: <code>: <message>`, exits 1 and prints no transcript, so a
+missing cross-check is never mistaken for agreement.
+
+### Enabling Safari automation
+
+Safari accepts WebDriver sessions only once remote automation is allowed, once per Mac. Either run
+
+```sh
+safaridriver --enable
+```
+
+which asks for an administrator password, or, in Safari, turn on Settings > Advanced > "Show
+features for web developers", then choose Develop > "Allow Remote Automation". spokenpath never
+runs `safaridriver --enable` or changes a setting itself; a refused session fails with
+`safari-session-refused` and quotes what `safaridriver` said.
+
+Each run opens a Safari automation window, which closes when the capture ends. Keep the Mac awake
+and unlocked while it runs: Safari reports the page as hidden on a locked or sleeping Mac, and a
+hidden page does not settle, so capture fails with `page-hidden`.
+
 ## Terminal escaping
 
 Page text reaches the terminal, so every page-controlled string the text output and the messages
 on stderr print (names, text, values, attribute values, role tokens, descriptions, paths,
-excerpts, diagnostics and error messages that echo input) has these characters written as
+excerpts, Safari's roles, labels, errors and versions, diagnostics and error messages that echo
+input) has these characters written as
 `\u{..}`, the code point in lowercase hexadecimal:
 
 - control characters: C0, DEL and C1, including ESC (`\u{1b}`) and the CSI introducer U+009B, so
@@ -222,4 +323,13 @@ output, with the header's spokenpath version normalised to `0.0.0`, with
 the text printer changes, and such a change is reviewed as drift
 ([ADR-0007](decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)). Refresh it with
 `UPDATE_FIXTURES=1 pnpm test:e2e` and review the diff. The text printer's goldens for every
-committed capture are under `crates/spokenpath_cli/src/snapshots/`.
+committed capture are under `crates/spokenpath_cli/src/snapshots/`, including a cross-check golden
+for every committed Safari snapshot.
+
+The Safari snapshots under `fixtures/snapshots/safari-webdriver/` are captured live on a Mac, so
+they are checked only by `pnpm test:safari`, which is not part of `pnpm check` or CI. It captures
+every fixture page in Safari, one after another, and compares each normalised snapshot with its
+committed file. Refresh them with `UPDATE_FIXTURES=1 pnpm test:safari` (with the Mac awake and
+unlocked, for example under `caffeinate -i`), review the diff as drift, and refresh the
+cross-check text goldens with `cargo insta test --accept -p spokenpath_cli` or
+`INSTA_UPDATE=always cargo test -p spokenpath_cli`.
