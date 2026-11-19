@@ -1,3 +1,9 @@
+## [0.5.0](https://github.com/nickvirden/spokenpath/compare/v0.4.0...v0.5.0) (2026-11-19)
+
+### Features
+
+* **announce:** add reading order, navigation indexes and output layers ([#46](https://github.com/nickvirden/spokenpath/issues/46)) ([297a613](https://github.com/nickvirden/spokenpath/commit/297a613e8faa24df5e6150d0f23f46b0a71bde88))
+
 ## [0.4.0](https://github.com/nickvirden/spokenpath/compare/v0.3.0...v0.4.0) (2026-11-18)
 
 ### Features
