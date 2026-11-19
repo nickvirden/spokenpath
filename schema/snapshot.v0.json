@@ -614,9 +614,325 @@
       ],
       "type": "string"
     },
-    "SafariAxPayload": {
-      "description": "The Safari payload captured from the macOS accessibility tree. Its contents are added in later\nminor versions.",
+    "SafariAxNode": {
+      "description": "One accessibility element of Safari's tree.",
+      "properties": {
+        "attributes": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SafariAxValue"
+          },
+          "description": "Every attribute `AXUIElementCopyAttributeNames` returned for the node, by name, with its\nvalue or the error reading it returned.",
+          "type": "object"
+        },
+        "children": {
+          "description": "The `id`s of the nodes this node's `AXChildren` lists, in that order. An element already\nrecorded elsewhere in the tree is not listed again; its `AXChildren` attribute still\nreferences it.",
+          "items": {
+            "format": "uint32",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The node's index in `nodes`.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "parent": {
+          "description": "The `id` of the node whose `AXChildren` first listed this one; absent for node 0.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "span": {
+          "description": "The `id` of the span its `AXDOMClassList` source token names, when it names one.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "children",
+        "attributes"
+      ],
       "type": "object"
+    },
+    "SafariAxPayload": {
+      "description": "Safari's macOS accessibility tree for the page, from its `AXWebArea` down, recorded raw: every\nattribute name each node reports, with its value or the error reading it returned, and no\ninterpretation. The platform provides no name provenance and no exclusion reasons, so the\npayload has no fields for them. Minor version 2 adds every field; a minor-0 or minor-1 payload\nhas none and reads with no nodes and no versions.",
+      "properties": {
+        "macos_build": {
+          "description": "The macOS build version, from `sw_vers`.",
+          "type": "string"
+        },
+        "macos_version": {
+          "description": "The macOS product version, from `sw_vers`.",
+          "type": "string"
+        },
+        "nodes": {
+          "description": "The nodes in pre-order through `AXChildren`, in Safari's order; node 0 is the web area.",
+          "items": {
+            "$ref": "#/$defs/SafariAxNode"
+          },
+          "type": "array"
+        },
+        "safari_build": {
+          "description": "Safari's `CFBundleVersion`.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SafariAxValue": {
+      "description": "One attribute value, encoded by its Core Foundation type, or the error reading it returned.",
+      "oneOf": [
+        {
+          "description": "A `CFString`. Unpaired UTF-16 surrogates are replaced with U+FFFD.",
+          "properties": {
+            "type": {
+              "const": "string",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A `CFBoolean`.",
+          "properties": {
+            "type": {
+              "const": "boolean",
+              "type": "string"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A `CFNumber`, integer or floating point as Safari delivered it.",
+          "properties": {
+            "type": {
+              "const": "number",
+              "type": "string"
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A `CFURL`, as its absolute string.",
+          "properties": {
+            "type": {
+              "const": "url",
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A `CFArray`, with its items in order.",
+          "properties": {
+            "items": {
+              "items": {
+                "$ref": "#/$defs/SafariAxValue"
+              },
+              "type": "array"
+            },
+            "type": {
+              "const": "array",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "items"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An `AXUIElement`. `node` is the `id` of the recorded node that is the same element, and is\nabsent when the element is outside the recorded tree, which records nothing else about it.",
+          "properties": {
+            "node": {
+              "format": "uint32",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "type": {
+              "const": "element",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An `AXValue` holding a `CGPoint`.",
+          "properties": {
+            "type": {
+              "const": "point",
+              "type": "string"
+            },
+            "x": {
+              "format": "double",
+              "type": "number"
+            },
+            "y": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "x",
+            "y"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An `AXValue` holding a `CGSize`.",
+          "properties": {
+            "height": {
+              "format": "double",
+              "type": "number"
+            },
+            "type": {
+              "const": "size",
+              "type": "string"
+            },
+            "width": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "width",
+            "height"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An `AXValue` holding a `CGRect`.",
+          "properties": {
+            "height": {
+              "format": "double",
+              "type": "number"
+            },
+            "type": {
+              "const": "rect",
+              "type": "string"
+            },
+            "width": {
+              "format": "double",
+              "type": "number"
+            },
+            "x": {
+              "format": "double",
+              "type": "number"
+            },
+            "y": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "x",
+            "y",
+            "width",
+            "height"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "An `AXValue` holding a `CFRange`.",
+          "properties": {
+            "length": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "location": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "range",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "location",
+            "length"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "A value of any other type, such as an opaque text marker, recorded by its type alone.",
+          "properties": {
+            "cf_type": {
+              "description": "The `CFCopyTypeIDDescription` of the value's type.",
+              "type": "string"
+            },
+            "type": {
+              "const": "unsupported",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "cf_type"
+          ],
+          "type": "object"
+        },
+        {
+          "description": "Reading the attribute failed.",
+          "properties": {
+            "code": {
+              "description": "The `AXError` the read returned.",
+              "format": "int32",
+              "type": "integer"
+            },
+            "type": {
+              "const": "error",
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "code"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "SafariElement": {
       "description": "Safari's answers for one tagged element. Exactly one of `role` and `role_error` is present, and\nexactly one of `label` and `label_error`.",
