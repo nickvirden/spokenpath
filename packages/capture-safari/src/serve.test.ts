@@ -50,14 +50,18 @@ test('the server listens on the loopback address only and serves the page at its
   expect(response.headers.get('content-type')).toBe('text/html; charset=utf-8');
 });
 
-test('every response carries the Content-Security-Policy that limits loads to the origin', async () => {
+test('every response carries the Content-Security-Policy and the same-origin resource policy', async () => {
   const { url } = await serve();
   const origin = new URL(url).origin;
   for (const path of ['/page%20one.html', '/assets/local-asset.css', '/missing.png']) {
     const response = await fetch(`${origin}${path}`);
     await response.body?.cancel();
     expect(response.headers.get('content-security-policy'), path).toBe(CONTENT_SECURITY_POLICY);
+    expect(response.headers.get('cross-origin-resource-policy'), path).toBe('same-origin');
   }
+  const misdirected = await get(url, 'localhost');
+  expect(misdirected.status).toBe(421);
+  expect(misdirected.headers['cross-origin-resource-policy']).toBe('same-origin');
   expect(CONTENT_SECURITY_POLICY).toMatch(/^default-src 'self' /);
   expect(CONTENT_SECURITY_POLICY).not.toMatch(/\*|https?:/);
 });

@@ -9,11 +9,13 @@ import { CaptureError } from './error.ts';
 export const HOST = '127.0.0.1';
 
 /**
- * The Content-Security-Policy every response carries. It limits every load to the page's own
- * origin, while allowing inline and `data:`/`blob:` content, so pages behave as they do under
- * Chromium capture, where requests to other origins are aborted. `WebDriver` cannot intercept
- * requests, so the browser's own policy enforcement does the blocking. It is a design intent, not
- * a sandbox: a page can still run its own scripts.
+ * The Content-Security-Policy every response carries. It limits the page's sub-resource loads and
+ * form submissions to its own origin, while allowing inline and `data:`/`blob:` content, so pages
+ * behave as they do under Chromium capture, where requests to other origins are aborted. WebDriver
+ * cannot intercept requests, so the browser's own policy enforcement does the blocking. The policy
+ * does not stop top-level navigation (a script setting `location`, a meta refresh), resource hints
+ * or WebRTC: capture detects a page that has navigated away and fails, but cannot prevent the
+ * request. It is a design intent, not a sandbox: a page can still run its own scripts.
  */
 export const CONTENT_SECURITY_POLICY =
   "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; form-action 'self'; base-uri 'self'";
@@ -51,7 +53,9 @@ function requestPath(url: URL): string {
 /**
  * Serves the page and its directory over HTTP on the loopback address, on a port the OS chooses,
  * for the length of the capture. A request whose `Host` is not the server's own address is refused
- * with 421, so a page on another name that resolves to the loopback address cannot read it.
+ * with 421, so a page on another name that resolves to the loopback address cannot read it, and
+ * every response carries `Cross-Origin-Resource-Policy: same-origin`, so a page on another origin
+ * cannot embed it.
  */
 export async function servePage(options: ServeOptions): Promise<PageServer> {
   const { root, fileName, body, diagnostics } = options;
@@ -63,6 +67,8 @@ export async function servePage(options: ServeOptions): Promise<PageServer> {
     response.writeHead(status, {
       'content-type': type,
       'content-security-policy': CONTENT_SECURITY_POLICY,
+      // A page open in another browser on the Mac cannot embed what this server answers.
+      'cross-origin-resource-policy': 'same-origin',
       'cache-control': 'no-store',
     });
     response.end(contents);
