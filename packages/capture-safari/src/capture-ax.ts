@@ -55,22 +55,38 @@ function withNonce(url: string): string {
   return `${url}?${NONCE_PARAMETER}=${randomBytes(16).toString('hex')}`;
 }
 
+/**
+ * The loaded page's title as WebDriver Get Title reports it, with whitespace collapsed, or
+ * `safari-window-not-identified` when it is empty, because the helper identifies the automation
+ * window by that title and would read nothing.
+ */
+async function pageTitle(session: Session): Promise<string> {
+  const title = await session.call("reading the page's title", 'GET', '/title');
+  if (typeof title !== 'string') {
+    throw new Error(`Safari answered Get Title with ${JSON.stringify(title)}, not a string`);
+  }
+  if (title === '') {
+    throw new CaptureError(
+      'safari-window-not-identified',
+      "the page has no title, and capture identifies Safari's automation window by the page's title and the window's position and size, so nothing was read; give the page a non-empty <title> element",
+    );
+  }
+  return title;
+}
+
 /** What Safari's WebDriver says identifies the automation window: the page's title and the window's rect. */
 async function readTarget(session: Session, url: string): Promise<ReadTarget> {
-  const title = await session.call("reading the page's title", 'GET', '/title');
+  const title = await pageTitle(session);
   const rect = await session.call("reading the window's rect", 'GET', '/window/rect');
   const record = typeof rect === 'object' && rect !== null ? (rect as Record<string, unknown>) : {};
   const { x, y, width, height } = record;
   if (
-    typeof title !== 'string' ||
     typeof x !== 'number' ||
     typeof y !== 'number' ||
     typeof width !== 'number' ||
     typeof height !== 'number'
   ) {
-    throw new Error(
-      `Safari answered the title and window rect with ${JSON.stringify(title)} and ${JSON.stringify(rect)}`,
-    );
+    throw new Error(`Safari answered Get Window Rect with ${JSON.stringify(rect)}`);
   }
   return { url, title, rect: { x, y, width, height } };
 }
@@ -100,7 +116,7 @@ async function requireVisible(session: Session, servedOrigin: string): Promise<v
 /**
  * Sets each node's `span` from the first source class token in its `AXDOMClassList` that names a
  * span, and records an `unknown-source-token` diagnostic for each token that names none. The
- * recorded attribute values are left as Safari delivered them, tokens included.
+ * recorded attribute values are left as the helper read them, tokens included.
  */
 export function mapSourceTokens(
   nodes: readonly SafariAxNode[],
@@ -138,11 +154,12 @@ export function mapSourceTokens(
 /**
  * Captures Safari's macOS accessibility tree for the HTML page at `pagePath`. The page is
  * instrumented with its source locations as class tokens, served on the loopback address at a
- * URL with a per-capture nonce, and loaded in one `safaridriver` session. First a built-in check
- * page is loaded and read, which tells a missing Accessibility permission apart from an empty
- * tree; then the page is loaded, settled and read by the `spokenpath-ax-macos` helper, which reads
- * only the automation window. Every node whose class list holds a token gets that token's span.
- * The tree is recorded as Safari delivered it and never interpreted.
+ * URL with a per-capture nonce, and loaded in one `safaridriver` session. The page is loaded once
+ * first, and refused when it has no title, by which the helper identifies the window. Then a
+ * built-in check page is loaded and read, which tells a missing Accessibility permission apart
+ * from an empty tree; then the page is loaded again, settled and read by the
+ * `spokenpath-ax-macos` helper, which reads only the automation window. Every node whose class list holds a token gets that token's span.
+ * The tree is recorded as the helper read it and never interpreted.
  *
  * SIGINT and SIGTERM are handled as `captureSafari` handles them; a helper still running is
  * killed before the session is deleted. No snapshot is returned after a check-page, permission,
@@ -150,9 +167,10 @@ export function mapSourceTokens(
  *
  * @throws {InstrumentHtmlError} when the instrumenter refuses the page.
  * @throws {CaptureError} for every failure `captureSafari` reports, and when the helper is not
- *   built, the permission is missing, Safari is not running, the window cannot be identified, the
- *   check page's tree is incomplete, the tree is too large, the screen is locked or the page is
- *   hidden after the read (`page-hidden`), or the helper fails in another way.
+ *   built, the permission is missing, Safari is not running, the page has no title or the window
+ *   cannot be identified, the check page's tree is incomplete, the tree is too large, the screen
+ *   is locked or the page is hidden after the read (`page-hidden`), or the helper fails in another
+ *   way.
  */
 export async function captureSafariAx(pagePath: string, options: AxCaptureOptions = {}): Promise<Snapshot> {
   const timeoutMs = timeoutOf(options);
@@ -168,21 +186,26 @@ export async function captureSafariAx(pagePath: string, options: AxCaptureOption
     const helperRun: HelperRun = { helper, timeoutMs, signal: interrupt.signal, processes };
     const toolVersion = await driverVersion(driverCommand, timeoutMs);
     const versions = await hostVersions(options.driver, diagnostics);
-    const canaryHtml = options.canaryPage ?? (await canaryPage(helperRun));
     const serve = async (name: string, body: Uint8Array): Promise<PageServer> => {
       const server = await servePage({ root, fileName: name, body, diagnostics });
       resources.servers.push(server);
       return server;
     };
-    const canaryServer = await serve(CANARY_FILE_NAME, new TextEncoder().encode(canaryHtml));
     const server = await serve(fileName, html);
     const { session, browserVersion } = await openSession(driverCommand, timeoutMs, interrupt, resources);
 
+    // The helper identifies the window by the page's title, so an untitled page is refused after
+    // one load, before the helper runs at all.
+    const url = withNonce(server.url);
+    await loadAndSettle(session, server, url, options.waitFor, timeoutMs);
+    await pageTitle(session);
+
+    const canaryHtml = options.canaryPage ?? (await canaryPage(helperRun));
+    const canaryServer = await serve(CANARY_FILE_NAME, new TextEncoder().encode(canaryHtml));
     const canaryUrl = withNonce(canaryServer.url);
     await loadAndSettle(session, canaryServer, canaryUrl, undefined, timeoutMs);
     await readCanary(helperRun, await readTarget(session, canaryUrl));
 
-    const url = withNonce(server.url);
     const settleName = await loadAndSettle(session, server, url, options.waitFor, timeoutMs);
     const servedOrigin = new URL(server.url).origin;
     const capturedAt = new Date().toISOString();

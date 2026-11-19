@@ -164,6 +164,7 @@ describe('a Safari AX capture with the test doubles', () => {
       'session-created',
       'navigated',
       'navigated',
+      'navigated',
       'session-deleted',
       'terminated',
     ]);
@@ -288,13 +289,40 @@ describe('a Safari AX capture that fails', () => {
   });
 
   test('fails with page-hidden, saying the page was hidden after the read, when it is', async () => {
-    const { driver, helper } = doubles({}, { visibilitySequence: ['visible', 'visible', 'hidden'] });
+    const { driver, helper } = doubles(
+      {},
+      { visibilitySequence: ['visible', 'visible', 'visible', 'hidden'] },
+    );
     const error = await failure(captureSafariAx(signInPage, { driver, helper }));
     expect(error.code).toBe('page-hidden');
     expect(error.message).toMatch(
       /^Safari reports the page as "hidden" after its macOS accessibility tree was read, so the tree may not be the page as it shows; keep the Mac awake and unlocked/,
     );
     expect(error.message).not.toContain('locked,');
+  });
+
+  test.each([
+    ['no title', '<!doctype html>\n<h1>Untitled</h1>\n'],
+    ['an empty title', '<!doctype html>\n<title> \n </title>\n<h1>Blank title</h1>\n'],
+  ])('fails with safari-window-not-identified, running no helper, for a page with %s', async (_, page) => {
+    const directory = mkdtempSync(join(tmpdir(), 'spokenpath-untitled-'));
+    directories.push(directory);
+    const path = join(directory, 'untitled.html');
+    writeFileSync(path, page);
+    const { driver, helper, helperEvents, driverEvents } = doubles();
+    const error = await failure(captureSafariAx(path, { driver, helper }));
+    expect(error.code).toBe('safari-window-not-identified');
+    expect(error.message).toBe(
+      "the page has no title, and capture identifies Safari's automation window by the page's title and the window's position and size, so nothing was read; give the page a non-empty <title> element",
+    );
+    expect(helperEvents()).toEqual([]);
+    expect(names(driverEvents())).toEqual([
+      'started',
+      'session-created',
+      'navigated',
+      'session-deleted',
+      'terminated',
+    ]);
   });
 
   test('fails with page-hidden when the check page cannot settle', async () => {
@@ -369,6 +397,20 @@ describe('a Safari AX capture that fails', () => {
     expect(error.message).toContain('cargo build -p spokenpath_ax_macos');
   });
 
+  test.runIf(process.platform !== 'win32')(
+    'fails with ax-helper-failed, naming only the error code, when the helper cannot be run',
+    async () => {
+      const directory = mkdtempSync(join(tmpdir(), 'spokenpath-helper-'));
+      directories.push(directory);
+      const command = join(directory, 'spokenpath-ax-macos');
+      writeFileSync(command, '#!/bin/sh\n', { mode: 0o600 });
+      const { driver } = doubles();
+      const error = await failure(captureSafariAx(signInPage, { driver, helper: { command, args: [] } }));
+      expect(error.code).toBe('ax-helper-failed');
+      expect(error.message).toBe('the spokenpath-ax-macos helper could not be started: EACCES');
+    },
+  );
+
   test('fails with ax-helper-failed, quoting stderr escaped, for output of no documented shape', async () => {
     const { driver, helper } = doubles({
       read: { kind: 'output', stdout: 'not json', stderr: 'panicked\u{1b}[31m at main', exit: 101 },
@@ -431,6 +473,7 @@ describe('an interrupted Safari AX capture', () => {
       expect(names(events)).toEqual([
         'started',
         'session-created',
+        'navigated',
         'navigated',
         'navigated',
         'session-deleted',

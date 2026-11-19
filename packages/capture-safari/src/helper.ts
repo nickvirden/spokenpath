@@ -165,14 +165,21 @@ export function runHelper<T>(
       }
     });
     child.once('error', (error) => {
+      const code = 'code' in error && typeof error.code === 'string' ? error.code : 'an unknown error';
       fail(
-        'code' in error && error.code === 'ENOENT'
+        code === 'ENOENT'
           ? new CaptureError(
               'ax-helper-not-found',
               `the spokenpath-ax-macos helper is not installed at ${helper.command}; build it with \`${HELPER_BUILD_COMMAND}\``,
               { cause: error },
             )
-          : error,
+          : new CaptureError(
+              'ax-helper-failed',
+              `the spokenpath-ax-macos helper could not be started: ${code}`,
+              {
+                cause: error,
+              },
+            ),
       );
     });
     child.once('close', (code) => {
