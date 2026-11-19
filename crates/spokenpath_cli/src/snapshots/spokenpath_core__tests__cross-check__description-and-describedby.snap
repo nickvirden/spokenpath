@@ -1,0 +1,56 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Description and describedby together"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Description and describedby together"
+2    A button "Save"  focusable
+       description-and-describedby.html:8:1  <button id="save" type="button" aria-description="Saves a draft" aria-describedb…
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       description "Drafts are kept for a week."  from aria-describedby: <p> #hint  description-and-describedby.html:9:1 (computed by tool)
+     ~ "Save, button"
+3      A text "Save"
+       ~ "Save"
+4    A paragraph (no accessible name)
+       description-and-describedby.html:9:1  <p id="hint">
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+5      A text "Drafts are kept for a week."
+       ~ "Drafts are kept for a week."
+
+Excluded
+  <html>  description-and-describedby.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  description-and-describedby.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  description-and-describedby.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  description-and-describedby.html:3:1 (computed by tool)
+  <title>  description-and-describedby.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  description-and-describedby.html:3:1 (computed by tool)
+  <body>  description-and-describedby.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [2] button "Save"
+
+Tab order
+  1  [2] button "Save"
+  2  left the page
+  3  [2] button "Save"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

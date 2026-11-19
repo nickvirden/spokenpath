@@ -19,8 +19,9 @@ export function htmlPagesIn(directory: string): string[] {
 
 /**
  * The pages that have committed goldens: the top level of `fixtures/pages/`, `focus/`, the
- * name-provenance, set-position and exclusion pages that the Rust model tests read, and the
- * `reading-order/` and `navigation/` pages that the Rust announce tests read.
+ * name-provenance, set-position and exclusion pages that the Rust model tests read, the
+ * `reading-order/` and `navigation/` pages that the Rust announce tests read, and the
+ * `cross-check/` pages where Safari's roles and names are expected to differ from Chromium's.
  */
 export const capturePages: string[] = [
   ...htmlPagesIn(''),
@@ -30,6 +31,7 @@ export const capturePages: string[] = [
   ...htmlPagesIn('excluded/'),
   ...htmlPagesIn('reading-order/'),
   ...htmlPagesIn('navigation/'),
+  ...htmlPagesIn('cross-check/'),
 ];
 
 /** The file system path of a page named relative to `fixtures/pages/`. */
