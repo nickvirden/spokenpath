@@ -393,6 +393,11 @@ fn a_source_that_matches_no_snapshot_source_exits_2() {
     ]);
     assert_one_failure_line(&run, 2);
     assert!(run.stderr.contains("matches no source"), "{run:?}");
+    assert!(
+        run.stderr
+            .contains("may have changed since it was captured"),
+        "{run:?}"
+    );
 }
 
 #[test]
@@ -593,8 +598,11 @@ const HOSTILE_ESCAPED: [&str; 8] = [
 fn hostile_capture() -> Value {
     let mut value = golden_value(Path::new("names/aria-label.json"));
     value["sources"][0]["path"] = json!(format!("aria{HOSTILE}label.html"));
-    value["diagnostics"] =
-        json!([{ "code": "hostile", "message": format!("diagnostic {HOSTILE}") }]);
+    value["capture"]["engine_version"] = json!(format!("159{HOSTILE}"));
+    value["diagnostics"] = json!([{
+        "code": format!("code{HOSTILE}"),
+        "message": format!("diagnostic {HOSTILE}"),
+    }]);
     let ax = value["payload"]["ax"].as_array_mut().expect("ax nodes");
     let button = ax
         .iter_mut()
@@ -640,15 +648,27 @@ fn strings_in<'v>(value: &'v Value, strings: &mut Vec<&'v str>) {
 #[test]
 fn hostile_strings_reach_the_terminal_only_escaped_and_json_keeps_them_raw() {
     let directory = TemporaryDirectory::new("hostile");
+    // The page with a hostile start tag appended, which the first span is pointed at, so its
+    // excerpt carries the hostile bytes; the snapshot's source hash is the new file's.
+    let mut page_bytes =
+        std::fs::read(page_of(Path::new("names/aria-label.json"))).expect("the page is readable");
+    let start = page_bytes.len();
+    page_bytes.extend(format!("<b title=\"excerpt {HOSTILE}\">").bytes());
+    let range = json!({ "start": start, "end": page_bytes.len() });
+    let page = directory.join("hostile.html");
+    std::fs::write(&page, &page_bytes).expect("the page is written");
+    let mut capture = hostile_capture();
+    capture["sources"][0]["sha256"] = json!(sha256_hex(&page_bytes));
+    capture["spans"][0]["start_tag"] = range.clone();
+    capture["spans"][0]["element"] = range;
     let path = directory.join("hostile.json");
-    std::fs::write(&path, hostile_capture().to_string()).expect("the capture is written");
-    let page = page_of(Path::new("names/aria-label.json"));
+    std::fs::write(&path, capture.to_string()).expect("the capture is written");
 
     let text = run_paths(&[&"transcript", &path, &"--source", &page]);
     assert_eq!(text.code, 0, "{text:?}");
     assert_escaped(&text.stdout, "the text output");
     assert_escaped(&text.stderr, "stderr");
-    for expected in ["name ", "text ", "attribute ", "aria"] {
+    for expected in ["name ", "text ", "attribute ", "aria", "excerpt ", "159"] {
         assert!(
             text.stdout.contains(&format!("{expected}\\u{{1b}}[31m")),
             "{expected}: {}",
@@ -657,6 +677,11 @@ fn hostile_strings_reach_the_terminal_only_escaped_and_json_keeps_them_raw() {
     }
     // The excerpt still comes from the page, under the hostile path.
     assert!(text.stdout.contains("label.html:"), "{}", text.stdout);
+    assert!(
+        text.stderr.contains("diagnostic code\\u{1b}[31m"),
+        "{}",
+        text.stderr
+    );
 
     let json = run_paths(&[
         &"transcript",
@@ -676,6 +701,7 @@ fn hostile_strings_reach_the_terminal_only_escaped_and_json_keeps_them_raw() {
         format!("text {HOSTILE}"),
         format!("attribute {HOSTILE}"),
         format!("aria{HOSTILE}label.html"),
+        format!("159{HOSTILE}"),
     ] {
         assert!(strings.contains(&raw.as_str()), "JSON keeps {raw:?} raw");
     }
@@ -712,4 +738,375 @@ fn a_line_break_in_a_text_run_shows_as_its_escape() {
         "{}",
         run.stdout
     );
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    use sha2::{Digest, Sha256};
+    use std::fmt::Write as _;
+    Sha256::digest(bytes)
+        .iter()
+        .fold(String::new(), |mut hex, byte| {
+            // Writing to a String cannot fail.
+            let _ = write!(hex, "{byte:02x}");
+            hex
+        })
+}
+
+/// The marker every string leaf of a poisoned transcript carries: ESC with an SGR sequence, CSI,
+/// a bidi override, a tag character and an invisible operator.
+const MARK: &str = "\u{1b}[31m\u{9b}\u{202e}\u{e0041}\u{2062}";
+const MARK_RAW: [char; 5] = ['\u{1b}', '\u{9b}', '\u{202e}', '\u{e0041}', '\u{2062}'];
+const MARK_ESCAPED: &str = "\\u{1b}[31m\\u{9b}\\u{202e}\\u{e0041}\\u{2062}";
+
+/// A start tag whose excerpt carries the marker; every span of a poisoned transcript points at it.
+fn marked_start_tag() -> String {
+    format!("<p title=\"{MARK}\">")
+}
+
+fn mark(text: &mut String) {
+    text.push_str(MARK);
+}
+
+/// `text` with the marker, as the `&'static str` some transcript fields hold.
+fn marked(text: &str) -> &'static str {
+    Box::leak(format!("{text}{MARK}").into_boxed_str())
+}
+
+fn mark_dom(dom: &mut spokenpath_announce::DomRecord) {
+    if let Some(tag) = &mut dom.tag {
+        mark(tag);
+    }
+    let id = dom.id.get_or_insert_with(String::new);
+    mark(id);
+}
+
+/// A span keeps its class, with a marked path and the marked start tag; any other class becomes
+/// one the printer does not know.
+fn mark_source(source: &mut spokenpath_announce::SourceRecord) {
+    if source.class == "span" {
+        if let Some(path) = &mut source.path {
+            mark(path);
+        }
+        source.start_tag = Some(spokenpath_announce::ByteRangeRecord {
+            start: 0,
+            end: marked_start_tag().len() as u64,
+        });
+    } else {
+        source.class = marked(source.class);
+    }
+}
+
+fn mark_related(node: &mut spokenpath_announce::RelatedRecord) {
+    if let Some(dom) = &mut node.dom {
+        mark_dom(dom);
+    }
+    for text in [&mut node.idref, &mut node.text].into_iter().flatten() {
+        mark(text);
+    }
+    if let Some(source) = &mut node.source {
+        mark_source(source);
+    }
+}
+
+/// A related node known only by its idref, whose text and idref both carry the marker.
+fn marked_idref() -> spokenpath_announce::RelatedRecord {
+    spokenpath_announce::RelatedRecord {
+        dom: None,
+        idref: Some(MARK.to_owned()),
+        text: Some(MARK.to_owned()),
+        source: None,
+    }
+}
+
+fn mark_name(name: &mut spokenpath_announce::NameRecord) {
+    use spokenpath_announce::NameSourceOutcome;
+    if let Some(text) = &mut name.text {
+        mark(text);
+    }
+    for (index, source) in name.sources.iter_mut().enumerate() {
+        mark(&mut source.kind);
+        for text in [
+            &mut source.attribute,
+            &mut source.native_source,
+            &mut source.value,
+        ]
+        .into_iter()
+        .flatten()
+        {
+            mark(text);
+        }
+        // The first source shows an attribute with its value, the others an attribute alone.
+        if index == 0 && source.attribute.is_some() {
+            source.attribute_value = Some(MARK.to_owned());
+        }
+        source.related_nodes.iter_mut().for_each(mark_related);
+        match source.outcome {
+            NameSourceOutcome::Used => source.related_nodes.push(marked_idref()),
+            NameSourceOutcome::Empty => {
+                source.outcome = NameSourceOutcome::Invalid;
+                source.invalid_reason = Some(MARK.to_owned());
+            }
+            NameSourceOutcome::Superseded | NameSourceOutcome::Invalid => {}
+        }
+    }
+}
+
+/// The sign-in transcript with the marker in every string the text printer may write, except the
+/// Layer B phrases and the tab-order ending, which the announce crate has already escaped. Every
+/// accessible item gains a value, an `invalid` token and a description, one tab stop loses its
+/// item so it prints as an element, and every span points at [`marked_start_tag`].
+fn poisoned_transcript() -> spokenpath_announce::Transcript {
+    use spokenpath_announce::{
+        DescriptionRecord, DescriptionSourceRecord, LayerA, Marked, Marking, Stop,
+    };
+    let mut transcript = announce(&adapted_sign_in(), Options::default());
+    transcript.header.engine = marked(transcript.header.engine);
+    mark(&mut transcript.header.engine_version);
+    for item in &mut transcript.nodes {
+        match &mut item.layer_a {
+            LayerA::TextRun(run) => mark(&mut run.text),
+            LayerA::Accessible(record) => {
+                if let Some(role) = &mut record.role {
+                    mark(&mut role.token);
+                }
+                if let Some(dom) = &mut record.dom {
+                    mark_dom(dom);
+                }
+                mark_source(&mut record.source);
+                mark_name(&mut record.name);
+                record.value = Some(MARK.to_owned());
+                record.states.invalid = Some(format!("token{MARK}"));
+                let mut element = marked_idref();
+                element.dom = record.dom.clone();
+                record.description = Some(DescriptionRecord {
+                    text: MARK.to_owned(),
+                    provenance: Some(Marked {
+                        value: DescriptionSourceRecord::AriaDescribedby {
+                            elements: vec![element],
+                        },
+                        by: Marking::ComputedByTool,
+                    }),
+                });
+            }
+        }
+    }
+    for excluded in &mut transcript.excluded {
+        mark_dom(&mut excluded.dom);
+        mark_source(&mut excluded.source);
+        for reason in &mut excluded.reasons {
+            reason.kind = marked(reason.kind);
+            mark(&mut reason.engine_reason);
+            if let Some(ancestor) = &mut reason.hiding_ancestor {
+                mark_dom(&mut ancestor.value.dom);
+                if let Some(source) = &mut ancestor.value.source {
+                    mark_source(source);
+                }
+            }
+        }
+    }
+    let indexes = &mut transcript.indexes;
+    let entries = indexes
+        .headings
+        .iter_mut()
+        .map(|heading| &mut heading.entry)
+        .chain(indexes.landmarks.iter_mut())
+        .chain(indexes.links.iter_mut())
+        .chain(indexes.form_controls.iter_mut());
+    for entry in entries {
+        mark(&mut entry.role);
+        if let Some(name) = &mut entry.name {
+            mark(name);
+        }
+    }
+    for (index, step) in transcript.tab_order.steps.iter_mut().enumerate() {
+        if let Stop::Element { dom, source, item } = &mut step.stop {
+            mark_dom(dom);
+            if let Some(source) = source {
+                mark_source(source);
+            }
+            if index == 1 {
+                *item = None;
+            }
+        }
+    }
+    transcript
+}
+
+#[test]
+fn every_page_controlled_string_in_the_text_is_escaped() {
+    let transcript = poisoned_transcript();
+    let source = crate::text::SourceText {
+        paths: [format!("sign-in.html{MARK}")].into(),
+        bytes: marked_start_tag().into_bytes(),
+    };
+    let context = crate::text::TextContext {
+        tool_version: "0.0.0",
+        snapshot_version: (0, 0),
+        viewport: (1280, 720),
+        layer_b: true,
+        source: Some(&source),
+    };
+    let mut out = Vec::new();
+    crate::text::write_text(&mut out, &transcript, &context).expect("writes to a vector");
+    let text = String::from_utf8(out).expect("UTF-8");
+    for raw in MARK_RAW {
+        assert!(!text.contains(raw), "{raw:?} reaches the text raw:\n{text}");
+    }
+    let e = MARK_ESCAPED;
+    let lines: Vec<&str> = text.lines().map(str::trim).collect();
+    let expected = [
+        // The header's engine token and version.
+        format!("chromium{e} 159.0.8154.6{e} · viewport"),
+        // An internal and an ARIA role token, a name, a value, the invalid token.
+        format!("A RootWebArea{e} (internal role) \"Sign in{e}\"  value \"{e}\""),
+        format!("A heading{e} \"Sign in{e}\"  value \"{e}\"  invalid (token{e})"),
+        // A text run.
+        format!("A text \"Sign in{e}\""),
+        // A span's path and its excerpt.
+        format!("sign-in.html{e}:8:1  <p title=\"{e}\">"),
+        // A class the printer does not know.
+        format!("no source location: (document{e})"),
+        // The winning source's kind and native source.
+        format!("name from title{e} (related-element{e})"),
+        // An attribute and its value, an invalid reason.
+        format!(
+            "aria-labelledby{e}=\"{e}\" (related-element{e}): invalid ({e}); aria-label{e} (attribute{e}): invalid ({e})"
+        ),
+        // A related node's tag, id, text and location.
+        format!("via <label{e}> #{e}  \"Email{e}\"  sign-in.html{e}:10:1"),
+        // A related node's idref and text.
+        format!("via idref \"{e}\"  \"{e}\"  no source location held"),
+        // A description and its element.
+        format!("description \"{e}\"  from aria-describedby: <h1{e}> #{e}  \"{e}\""),
+        // An excluded element, its kind and engine reason, and its hiding ancestor.
+        format!("<meta{e}> #{e}  sign-in.html{e}:4:1  <p title=\"{e}\">"),
+        format!(
+            "not-rendered{e} (engine reason: notRendered{e}); hidden by <head{e}> #{e}  sign-in.html{e}:3:1 (computed by tool)"
+        ),
+        // Index entries: role and name.
+        format!("[2] heading{e} \"Sign in{e}\"  level 1"),
+        format!("[10] button{e} (no accessible name)"),
+        // A tab stop cited by item, and one printed as an element.
+        format!("1  [7] textbox{e} \"Email{e}\""),
+        format!(
+            "2  <button{e}> #submit{e}  sign-in.html{e}:14:1  <p title=\"{e}\">  (not an item)"
+        ),
+    ];
+    for line in &expected {
+        assert!(
+            lines.iter().any(|printed| printed.contains(line.as_str())),
+            "no line holds {line}:\n{text}"
+        );
+    }
+}
+
+/// `sign-in.json` with its tree replaced by a chain of `depth` nested generic elements under the
+/// root.
+fn chain_snapshot(depth: u32) -> Value {
+    let mut value = golden_value(Path::new("sign-in.json"));
+    value["spans"] = json!([]);
+    value["diagnostics"] = json!([]);
+    let mut dom = vec![json!({
+        "id": 0, "backend_id": 1, "children": [1], "kind": "document", "attributes": []
+    })];
+    let mut ax = vec![json!({
+        "nodeId": "0", "ignored": false, "role": {"type": "internalRole", "value": "RootWebArea"},
+        "childIds": ["1"], "backendDOMNodeId": 1
+    })];
+    for id in 1..=depth {
+        let last = id == depth;
+        dom.push(json!({
+            "id": id, "backend_id": id + 1, "parent": id - 1,
+            "children": if last { json!([]) } else { json!([id + 1]) },
+            "kind": "element", "tag": "div", "attributes": [], "origin": "script"
+        }));
+        ax.push(json!({
+            "nodeId": id.to_string(), "ignored": false, "role": {"type": "role", "value": "generic"},
+            "parentId": (id - 1).to_string(),
+            "childIds": if last { json!([]) } else { json!([(id + 1).to_string()]) },
+            "backendDOMNodeId": id + 1
+        }));
+    }
+    let payload = value["payload"].as_object_mut().expect("a payload");
+    payload.insert("dom".to_owned(), Value::Array(dom));
+    payload.insert("ax".to_owned(), Value::Array(ax));
+    payload.insert("ax_forced".to_owned(), json!([]));
+    payload.insert("focus".to_owned(), json!({"steps": [], "truncated": false}));
+    payload.remove("dom_snapshot");
+    value
+}
+
+#[test]
+fn items_deeper_than_the_indent_cap_state_their_depth_and_are_indented_no_further() {
+    let run = run_stdin(chain_snapshot(200).to_string().as_bytes(), &[]);
+    assert_eq!(run.code, 0, "{run:?}");
+    let lines: Vec<&str> = run.stdout.lines().collect();
+    // Item k + 1 is the chain element at depth k.
+    let item = |number: usize| {
+        lines
+            .iter()
+            .find(|line| line.trim_start().starts_with(&format!("{number}  ")))
+            .copied()
+            .unwrap_or_else(|| panic!("no item {number}:\n{}", run.stdout))
+    };
+    assert!(!item(33).contains("[depth"), "{}", item(33));
+    assert!(
+        item(34).contains("[depth 33] A generic (no accessible name)"),
+        "{}",
+        item(34)
+    );
+    assert!(
+        item(201).contains("[depth 200] A generic (no accessible name)"),
+        "{}",
+        item(201)
+    );
+    // The number column (3), two spaces, 32 levels of two spaces, and the detail indent (2).
+    let widest = 3 + 2 + 2 * 32 + 2;
+    for line in &lines {
+        let content = line
+            .trim_start()
+            .trim_start_matches(|c: char| c.is_ascii_digit())
+            .trim_start();
+        let before_content = line.len() - content.len();
+        assert!(
+            before_content <= widest,
+            "{before_content} columns before {line:?}"
+        );
+    }
+}
+
+#[test]
+fn no_excerpt_is_printed_for_a_path_that_an_unmatched_source_shares() {
+    let mut value = golden_value(Path::new("sign-in.json"));
+    value["sources"]
+        .as_array_mut()
+        .expect("sources")
+        .push(json!({
+            "id": 1,
+            "path": "sign-in.html",
+            "sha256": "f".repeat(64),
+            "encoding": "utf-8"
+        }));
+    let heading = value["spans"]
+        .as_array_mut()
+        .expect("spans")
+        .iter_mut()
+        .find(|span| span["line"] == json!(8))
+        .expect("the heading's span");
+    heading["source"] = json!(1);
+    let directory = TemporaryDirectory::new("shared-path");
+    let path = directory.join("sign-in.json");
+    std::fs::write(&path, value.to_string()).expect("the snapshot is written");
+    let run = run_paths(&[
+        &"transcript",
+        &path,
+        &"--source",
+        &page_of(Path::new("sign-in.json")),
+    ]);
+    assert_eq!(run.code, 0, "{run:?}");
+    let lines: Vec<&str> = run.stdout.lines().map(str::trim).collect();
+    assert!(lines.contains(&"sign-in.html:8:1"), "{}", run.stdout);
+    assert!(!run.stdout.contains("<h1>"), "{}", run.stdout);
+    // The shared path is ambiguous for every span on it, so none borrows the file's bytes.
+    assert!(lines.contains(&"sign-in.html:11:1"), "{}", run.stdout);
 }

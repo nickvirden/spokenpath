@@ -241,7 +241,8 @@ fn matched_source(snapshot: &Snapshot, path: &Path) -> Result<MatchedSource, Fai
         .partition(|source| source.sha256 == hash);
     if matched.is_empty() {
         return Err(Failure::Input(format!(
-            "the source file `{}` matches no source in the snapshot: its SHA-256 is {hash}",
+            "the source file `{}` matches no source in the snapshot: its SHA-256 is {hash}; \
+             it may have changed since it was captured, or be another file",
             path.display()
         )));
     }
