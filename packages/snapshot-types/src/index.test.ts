@@ -212,7 +212,7 @@ describe('safari-ax-basic.json', () => {
     expect(errorPaths(snapshot)).toContain('/payload/nodes/1/attributes/AXTitle');
   });
 
-  test('is rejected with a range outside the 64-bit integer range', () => {
+  test('is rejected with an error code that is not a 32-bit integer', () => {
     const snapshot = readFixture('safari-ax-basic.json') as unknown as Snapshot;
     if (snapshot.payload.engine !== 'safari-ax') {
       throw new Error('a Safari AX payload');
@@ -221,8 +221,8 @@ describe('safari-ax-basic.json', () => {
     if (node === undefined) {
       throw new Error('the fixture has a node 0');
     }
-    node.attributes.AXVisibleCharacterRange = { type: 'range', location: 0.5, length: 2 };
-    expect(errorPaths(snapshot)).toContain('/payload/nodes/0/attributes/AXVisibleCharacterRange/location');
+    node.attributes.AXLinkedUIElements = { type: 'error', code: 2 ** 31 };
+    expect(errorPaths(snapshot)).toContain('/payload/nodes/0/attributes/AXLinkedUIElements/code');
   });
 });
 

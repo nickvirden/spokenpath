@@ -250,7 +250,10 @@ pub(crate) fn encode<E>(raw: Raw<E>, resolve: &impl Fn(&E) -> Option<u32>) -> Sa
             width,
             height,
         },
-        Raw::Range { location, length } => SafariAxValue::Range { location, length },
+        Raw::Range { location, length } => SafariAxValue::Range {
+            location: location.into(),
+            length: length.into(),
+        },
         Raw::Unsupported(units) => SafariAxValue::Unsupported {
             cf_type: String::from_utf16_lossy(&units),
         },
@@ -552,8 +555,18 @@ mod tests {
                     length: 9,
                 },
                 SafariAxValue::Range {
-                    location: 0,
-                    length: 9,
+                    location: 0.into(),
+                    length: 9.into(),
+                },
+            ),
+            (
+                Raw::Range {
+                    location: i64::MAX,
+                    length: 0,
+                },
+                SafariAxValue::Range {
+                    location: i64::MAX.into(),
+                    length: 0.into(),
                 },
             ),
             (

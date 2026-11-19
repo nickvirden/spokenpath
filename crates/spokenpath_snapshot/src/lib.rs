@@ -439,8 +439,12 @@ pub enum SafariAxValue {
         width: f64,
         height: f64,
     },
-    /// An `AXValue` holding a `CFRange`.
-    Range { location: i64, length: i64 },
+    /// An `AXValue` holding a `CFRange`. The integers are kept exactly as JSON numbers, which
+    /// JavaScript reads exactly only up to 2^53, as for `NSNotFound` in `location`.
+    Range {
+        location: serde_json::Number,
+        length: serde_json::Number,
+    },
     /// A value of any other type, such as an opaque text marker, recorded by its type alone.
     Unsupported {
         /// The `CFCopyTypeIDDescription` of the value's type.

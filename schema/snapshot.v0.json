@@ -873,15 +873,13 @@
           "type": "object"
         },
         {
-          "description": "An `AXValue` holding a `CFRange`.",
+          "description": "An `AXValue` holding a `CFRange`. The integers are kept exactly as JSON numbers, which\nJavaScript reads exactly only up to 2^53, as for `NSNotFound` in `location`.",
           "properties": {
             "length": {
-              "format": "int64",
-              "type": "integer"
+              "type": "number"
             },
             "location": {
-              "format": "int64",
-              "type": "integer"
+              "type": "number"
             },
             "type": {
               "const": "range",
