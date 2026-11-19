@@ -1,0 +1,4044 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Landmarks and headings",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Landmarks and headings",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/landmarks.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Landmarks and headings"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "banner",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "header",
+          "id": "banner"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 116,
+            "end": 136
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "banner"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 9,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 8,
+          "column": 21,
+          "start_tag": {
+            "start": 136,
+            "end": 139
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Site name",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 10
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Site name"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "navigation",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "nav",
+          "id": "site-nav"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 162,
+            "end": 199
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Site",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Site",
+              "value": "Site",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Site, navigation"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "link",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 12,
+          "tag": "a",
+          "id": "link-home"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 10,
+          "column": 1,
+          "start_tag": {
+            "start": 200,
+            "end": 236
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Home",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Home",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/index.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Home, link"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 3,
+      "parent": 6,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Home",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 13
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Home"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " ",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "not-in-dom"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " "
+      }
+    },
+    {
+      "number": 9,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "link",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 14,
+          "tag": "a",
+          "id": "link-about"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 245,
+            "end": 282
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "About",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "About",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/about.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "About, link"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 3,
+      "parent": 9,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "About",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 15
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "About"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "main",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 16,
+          "tag": "main",
+          "id": "main"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 13,
+          "column": 1,
+          "start_tag": {
+            "start": 299,
+            "end": 315
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "main"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 2,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 17,
+          "tag": "h1",
+          "id": "heading-1"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 316,
+            "end": 335
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Page title",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Page title",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "level": 1
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Page title, heading, level 1"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 3,
+      "parent": 12,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Page title",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 18
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Page title"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 2,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 19,
+          "tag": "h2",
+          "id": "heading-2"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 15,
+          "column": 1,
+          "start_tag": {
+            "start": 351,
+            "end": 370
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Section heading",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Section heading",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "level": 2
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Section heading, heading, level 2"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 3,
+      "parent": 14,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Section heading",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 20
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Section heading"
+      }
+    },
+    {
+      "number": 16,
+      "depth": 2,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 21,
+          "tag": "h3",
+          "id": "heading-3"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 391,
+            "end": 410
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Subsection heading",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Subsection heading",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "level": 3
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Subsection heading, heading, level 3"
+      }
+    },
+    {
+      "number": 17,
+      "depth": 3,
+      "parent": 16,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Subsection heading",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 22
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Subsection heading"
+      }
+    },
+    {
+      "number": 18,
+      "depth": 2,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "region",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 23,
+          "tag": "section",
+          "id": "region"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 17,
+          "column": 1,
+          "start_tag": {
+            "start": 434,
+            "end": 477
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Featured",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Featured",
+              "value": "Featured",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Featured, region"
+      }
+    },
+    {
+      "number": 19,
+      "depth": 3,
+      "parent": 18,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 24,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 18,
+          "column": 1,
+          "start_tag": {
+            "start": 478,
+            "end": 481
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 20,
+      "depth": 4,
+      "parent": 19,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Featured content",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 25
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Featured content"
+      }
+    },
+    {
+      "number": 21,
+      "depth": 2,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "form",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 26,
+          "tag": "form",
+          "id": "contact"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 20,
+          "column": 1,
+          "start_tag": {
+            "start": 513,
+            "end": 553
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Contact",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Contact",
+              "value": "Contact",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Contact, form"
+      }
+    },
+    {
+      "number": 22,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 27,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 21,
+          "column": 1,
+          "start_tag": {
+            "start": 554,
+            "end": 557
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 23,
+      "depth": 4,
+      "parent": 22,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LabelText",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 28,
+          "tag": "label"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 21,
+          "column": 4,
+          "start_tag": {
+            "start": 557,
+            "end": 580
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 24,
+      "depth": 5,
+      "parent": 23,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Full name",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 29
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Full name"
+      }
+    },
+    {
+      "number": 25,
+      "depth": 4,
+      "parent": 22,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 30,
+          "tag": "input",
+          "id": "full-name"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 21,
+          "column": 45,
+          "start_tag": {
+            "start": 598,
+            "end": 632
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Full name",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "Full name",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 28,
+                    "tag": "label"
+                  },
+                  "text": "Full name",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 21,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 557,
+                      "end": 580
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "aria-placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "required": false,
+          "invalid": "false",
+          "readonly": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          },
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "multiline",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 28,
+                    "tag": "label"
+                  },
+                  "text": "Full name",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 21,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 557,
+                      "end": 580
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Full name, textbox"
+      }
+    },
+    {
+      "number": 26,
+      "depth": 5,
+      "parent": 25,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "generic",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 32,
+          "tag": "div"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 27,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 33,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 22,
+          "column": 1,
+          "start_tag": {
+            "start": 637,
+            "end": 640
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 28,
+      "depth": 4,
+      "parent": 27,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "checkbox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 35,
+          "tag": "input",
+          "id": "subscribe"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 22,
+          "column": 11,
+          "start_tag": {
+            "start": 647,
+            "end": 685
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Subscribe",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-wrapped",
+              "value": "Subscribe",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 34,
+                    "tag": "label"
+                  },
+                  "text": " Subscribe",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 22,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 640,
+                      "end": 647
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "checked": "false",
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 34,
+                    "tag": "label"
+                  },
+                  "text": " Subscribe",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 22,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 640,
+                      "end": 647
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Subscribe, checkbox, not checked"
+      }
+    },
+    {
+      "number": 29,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 37,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 23,
+          "column": 1,
+          "start_tag": {
+            "start": 708,
+            "end": 711
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 30,
+      "depth": 4,
+      "parent": 29,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 39,
+          "tag": "input",
+          "id": "plan-basic"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 23,
+          "column": 11,
+          "start_tag": {
+            "start": 718,
+            "end": 780
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Basic",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-wrapped",
+              "value": "Basic",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 38,
+                    "tag": "label"
+                  },
+                  "text": " Basic",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 23,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 711,
+                      "end": 718
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "checked": "false",
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 38,
+                    "tag": "label"
+                  },
+                  "text": " Basic",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 23,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 711,
+                      "end": 718
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "set_position": {
+          "value": {
+            "position": 1,
+            "size": 2
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Basic, radio, not checked, 1 of 2"
+      }
+    },
+    {
+      "number": 31,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 41,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 24,
+          "column": 1,
+          "start_tag": {
+            "start": 799,
+            "end": 802
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 32,
+      "depth": 4,
+      "parent": 31,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 43,
+          "tag": "input",
+          "id": "plan-pro"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 24,
+          "column": 11,
+          "start_tag": {
+            "start": 809,
+            "end": 867
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Pro",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-wrapped",
+              "value": "Pro",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 42,
+                    "tag": "label"
+                  },
+                  "text": " Pro",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 24,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 802,
+                      "end": 809
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "checked": "false",
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 42,
+                    "tag": "label"
+                  },
+                  "text": " Pro",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 24,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 802,
+                      "end": 809
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "set_position": {
+          "value": {
+            "position": 2,
+            "size": 2
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Pro, radio, not checked, 2 of 2"
+      }
+    },
+    {
+      "number": 33,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 45,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 1,
+          "start_tag": {
+            "start": 884,
+            "end": 887
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 34,
+      "depth": 4,
+      "parent": 33,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LabelText",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 46,
+          "tag": "label"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 4,
+          "start_tag": {
+            "start": 887,
+            "end": 908
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 35,
+      "depth": 5,
+      "parent": 34,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Country",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 47
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Country"
+      }
+    },
+    {
+      "number": 36,
+      "depth": 4,
+      "parent": 33,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "combobox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 48,
+          "tag": "select",
+          "id": "country"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 41,
+          "start_tag": {
+            "start": 924,
+            "end": 945
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Country",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "Country",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 46,
+                    "tag": "label"
+                  },
+                  "text": "Country",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 25,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 887,
+                      "end": 908
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "value": "Canada",
+        "states": {
+          "expanded": false,
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "hasPopup",
+            "value": {
+              "type": "token",
+              "value": "menu"
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 46,
+                    "tag": "label"
+                  },
+                  "text": "Country",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 25,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 887,
+                      "end": 908
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Country, combobox, Canada, collapsed"
+      }
+    },
+    {
+      "number": 37,
+      "depth": 5,
+      "parent": 36,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "MenuListPopup",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 53,
+          "tag": "div"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 38,
+      "depth": 6,
+      "parent": 37,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "option",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 57,
+          "tag": "option"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 62,
+          "start_tag": {
+            "start": 945,
+            "end": 953
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Canada",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Canada",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "selected": true,
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Canada, option, selected"
+      }
+    },
+    {
+      "number": 39,
+      "depth": 6,
+      "parent": 37,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "option",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 63,
+          "tag": "option"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 85,
+          "start_tag": {
+            "start": 968,
+            "end": 976
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Mexico",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Mexico",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "selected": false,
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Mexico, option"
+      }
+    },
+    {
+      "number": 40,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 69,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 26,
+          "column": 1,
+          "start_tag": {
+            "start": 1005,
+            "end": 1008
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 41,
+      "depth": 4,
+      "parent": 40,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LabelText",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 70,
+          "tag": "label"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 26,
+          "column": 4,
+          "start_tag": {
+            "start": 1008,
+            "end": 1029
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 42,
+      "depth": 5,
+      "parent": 41,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Message",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 71
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Message"
+      }
+    },
+    {
+      "number": 43,
+      "depth": 4,
+      "parent": 40,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 72,
+          "tag": "textarea",
+          "id": "message"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 26,
+          "column": 41,
+          "start_tag": {
+            "start": 1045,
+            "end": 1068
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Message",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-for",
+              "value": "Message",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 70,
+                    "tag": "label"
+                  },
+                  "text": "Message",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 26,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 1008,
+                      "end": 1029
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "aria-placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "required": false,
+          "invalid": "false",
+          "readonly": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          },
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "multiline",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 70,
+                    "tag": "label"
+                  },
+                  "text": "Message",
+                  "source": {
+                    "class": "span",
+                    "path": "landmarks.html",
+                    "line": 26,
+                    "column": 4,
+                    "start_tag": {
+                      "start": 1008,
+                      "end": 1029
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Message, textbox"
+      }
+    },
+    {
+      "number": 44,
+      "depth": 5,
+      "parent": 43,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "generic",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 74,
+          "tag": "div"
+        },
+        "source": {
+          "class": "unknown"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 45,
+      "depth": 3,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 76,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 27,
+          "column": 1,
+          "start_tag": {
+            "start": 1084,
+            "end": 1087
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 46,
+      "depth": 4,
+      "parent": 45,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 77,
+          "tag": "button",
+          "id": "send"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 27,
+          "column": 4,
+          "start_tag": {
+            "start": 1087,
+            "end": 1119
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Send",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Send",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Send, button"
+      }
+    },
+    {
+      "number": 47,
+      "depth": 5,
+      "parent": 46,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Send",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 78
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Send"
+      }
+    },
+    {
+      "number": 48,
+      "depth": 2,
+      "parent": 11,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "search",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 79,
+          "tag": "search",
+          "id": "site-search"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 29,
+          "column": 1,
+          "start_tag": {
+            "start": 1145,
+            "end": 1170
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "search"
+      }
+    },
+    {
+      "number": 49,
+      "depth": 3,
+      "parent": 48,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 80,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 29,
+          "column": 26,
+          "start_tag": {
+            "start": 1170,
+            "end": 1173
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 50,
+      "depth": 4,
+      "parent": 49,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Search tools",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 81
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Search tools"
+      }
+    },
+    {
+      "number": 51,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "complementary",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 82,
+          "tag": "aside",
+          "id": "aside"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 31,
+          "column": 1,
+          "start_tag": {
+            "start": 1207,
+            "end": 1225
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "complementary"
+      }
+    },
+    {
+      "number": 52,
+      "depth": 2,
+      "parent": 51,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 83,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 31,
+          "column": 19,
+          "start_tag": {
+            "start": 1225,
+            "end": 1228
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 53,
+      "depth": 3,
+      "parent": 52,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Related reading",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 84
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Related reading"
+      }
+    },
+    {
+      "number": 54,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "contentinfo",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 85,
+          "tag": "footer",
+          "id": "footer"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 32,
+          "column": 1,
+          "start_tag": {
+            "start": 1256,
+            "end": 1276
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "contentinfo"
+      }
+    },
+    {
+      "number": 55,
+      "depth": 2,
+      "parent": 54,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "paragraph",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 86,
+          "tag": "p"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 32,
+          "column": 21,
+          "start_tag": {
+            "start": 1276,
+            "end": 1279
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "paragraph"
+      }
+    },
+    {
+      "number": 56,
+      "depth": 3,
+      "parent": 55,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Footer text",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 87
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Footer text"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 12,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Page title",
+        "level": 1
+      },
+      {
+        "item": 14,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Section heading",
+        "level": 2
+      },
+      {
+        "item": 16,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Subsection heading",
+        "level": 3
+      }
+    ],
+    "landmarks": [
+      {
+        "item": 2,
+        "role": "banner",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 5,
+        "role": "navigation",
+        "name_status": "named",
+        "name": "Site"
+      },
+      {
+        "item": 11,
+        "role": "main",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 18,
+        "role": "region",
+        "name_status": "named",
+        "name": "Featured"
+      },
+      {
+        "item": 21,
+        "role": "form",
+        "name_status": "named",
+        "name": "Contact"
+      },
+      {
+        "item": 48,
+        "role": "search",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 51,
+        "role": "complementary",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 54,
+        "role": "contentinfo",
+        "name_status": "no accessible name"
+      }
+    ],
+    "links": [
+      {
+        "item": 6,
+        "role": "link",
+        "name_status": "named",
+        "name": "Home"
+      },
+      {
+        "item": 9,
+        "role": "link",
+        "name_status": "named",
+        "name": "About"
+      }
+    ],
+    "form_controls": [
+      {
+        "item": 25,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Full name"
+      },
+      {
+        "item": 28,
+        "role": "checkbox",
+        "name_status": "named",
+        "name": "Subscribe"
+      },
+      {
+        "item": 30,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Basic"
+      },
+      {
+        "item": 32,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Pro"
+      },
+      {
+        "item": 36,
+        "role": "combobox",
+        "name_status": "named",
+        "name": "Country"
+      },
+      {
+        "item": 43,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Message"
+      },
+      {
+        "item": 46,
+        "role": "button",
+        "name_status": "named",
+        "name": "Send"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "landmarks.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "landmarks.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 109,
+          "end": 115
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 34,
+        "tag": "label"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 22,
+        "column": 4,
+        "start_tag": {
+          "start": 640,
+          "end": 647
+        }
+      },
+      "reasons": [
+        {
+          "kind": "label-for",
+          "engine_reason": "labelFor"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 38,
+        "tag": "label"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 23,
+        "column": 4,
+        "start_tag": {
+          "start": 711,
+          "end": 718
+        }
+      },
+      "reasons": [
+        {
+          "kind": "label-for",
+          "engine_reason": "labelFor"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 42,
+        "tag": "label"
+      },
+      "source": {
+        "class": "span",
+        "path": "landmarks.html",
+        "line": 24,
+        "column": 4,
+        "start_tag": {
+          "start": 802,
+          "end": 809
+        }
+      },
+      "reasons": [
+        {
+          "kind": "label-for",
+          "engine_reason": "labelFor"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 50,
+        "tag": "div"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 52,
+        "tag": "slot"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 54,
+        "tag": "slot",
+        "id": "select-options"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 55,
+        "tag": "div"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 56,
+        "tag": "div"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 59,
+        "tag": "span"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 61,
+        "tag": "slot"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 65,
+        "tag": "span"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 67,
+        "tag": "slot"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 75,
+        "tag": "br",
+        "id": "textarea-placeholder-break"
+      },
+      "source": {
+        "class": "unknown"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 12,
+            "tag": "a",
+            "id": "link-home"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 10,
+            "column": 1,
+            "start_tag": {
+              "start": 200,
+              "end": 236
+            }
+          },
+          "item": 6
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 14,
+            "tag": "a",
+            "id": "link-about"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 11,
+            "column": 1,
+            "start_tag": {
+              "start": 245,
+              "end": 282
+            }
+          },
+          "item": 9
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 30,
+            "tag": "input",
+            "id": "full-name"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 21,
+            "column": 45,
+            "start_tag": {
+              "start": 598,
+              "end": 632
+            }
+          },
+          "item": 25
+        }
+      },
+      {
+        "step": 4,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 35,
+            "tag": "input",
+            "id": "subscribe"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 22,
+            "column": 11,
+            "start_tag": {
+              "start": 647,
+              "end": 685
+            }
+          },
+          "item": 28
+        }
+      },
+      {
+        "step": 5,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 39,
+            "tag": "input",
+            "id": "plan-basic"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 23,
+            "column": 11,
+            "start_tag": {
+              "start": 718,
+              "end": 780
+            }
+          },
+          "item": 30
+        }
+      },
+      {
+        "step": 6,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 48,
+            "tag": "select",
+            "id": "country"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 25,
+            "column": 41,
+            "start_tag": {
+              "start": 924,
+              "end": 945
+            }
+          },
+          "item": 36
+        }
+      },
+      {
+        "step": 7,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 72,
+            "tag": "textarea",
+            "id": "message"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 26,
+            "column": 41,
+            "start_tag": {
+              "start": 1045,
+              "end": 1068
+            }
+          },
+          "item": 43
+        }
+      },
+      {
+        "step": 8,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 77,
+            "tag": "button",
+            "id": "send"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 27,
+            "column": 4,
+            "start_tag": {
+              "start": 1087,
+              "end": 1119
+            }
+          },
+          "item": 46
+        }
+      },
+      {
+        "step": 9,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 10,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 12,
+            "tag": "a",
+            "id": "link-home"
+          },
+          "source": {
+            "class": "span",
+            "path": "landmarks.html",
+            "line": 10,
+            "column": 1,
+            "start_tag": {
+              "start": 200,
+              "end": 236
+            }
+          },
+          "item": 6
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

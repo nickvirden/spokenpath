@@ -1,0 +1,1279 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Native and ARIA radio groups",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "Native and ARIA radio groups",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/radio-group.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Native and ARIA radio groups"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "group",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "fieldset"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 122,
+            "end": 132
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Size",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "legend",
+              "value": "Size",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 9,
+                    "tag": "legend"
+                  },
+                  "text": "Size",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 9,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 133,
+                      "end": 141
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "invalid": "false"
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 9,
+                    "tag": "legend"
+                  },
+                  "text": "Size",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 9,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 133,
+                      "end": 141
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Size, group"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "Legend",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 9,
+          "tag": "legend"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 133,
+            "end": 141
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Size",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 10
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Size"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 12,
+          "tag": "input",
+          "id": "small"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 10,
+          "column": 8,
+          "start_tag": {
+            "start": 162,
+            "end": 219
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Small",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-wrapped",
+              "value": "Small",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 11,
+                    "tag": "label"
+                  },
+                  "text": " Small",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 155,
+                      "end": 162
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "checked": "false",
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 11,
+                    "tag": "label"
+                  },
+                  "text": " Small",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 10,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 155,
+                      "end": 162
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "set_position": {
+          "value": {
+            "position": 1,
+            "size": 3
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Small, radio, not checked, 1 of 3"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 15,
+          "tag": "input",
+          "id": "medium"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 11,
+          "column": 8,
+          "start_tag": {
+            "start": 241,
+            "end": 300
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Medium",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-wrapped",
+              "value": "Medium",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 14,
+                    "tag": "label"
+                  },
+                  "text": " Medium",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 11,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 234,
+                      "end": 241
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "checked": "false",
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 14,
+                    "tag": "label"
+                  },
+                  "text": " Medium",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 11,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 234,
+                      "end": 241
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "set_position": {
+          "value": {
+            "position": 2,
+            "size": 3
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Medium, radio, not checked, 2 of 3"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 18,
+          "tag": "input",
+          "id": "large"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 12,
+          "column": 8,
+          "start_tag": {
+            "start": 323,
+            "end": 380
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Large",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label-wrapped",
+              "value": "Large",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 17,
+                    "tag": "label"
+                  },
+                  "text": " Large",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 12,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 316,
+                      "end": 323
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "contents",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "states": {
+          "checked": "false",
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 17,
+                    "tag": "label"
+                  },
+                  "text": " Large",
+                  "source": {
+                    "class": "span",
+                    "path": "radio-group.html",
+                    "line": 12,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 316,
+                      "end": 323
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "set_position": {
+          "value": {
+            "position": 3,
+            "size": 3
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Large, radio, not checked, 3 of 3"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radiogroup",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 20,
+          "tag": "div",
+          "id": "colour"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 407,
+            "end": 462
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Colour",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Colour",
+              "value": "Colour",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "required": false
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Colour, radiogroup"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 2,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 21,
+          "tag": "div",
+          "id": "red"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 15,
+          "column": 1,
+          "start_tag": {
+            "start": 463,
+            "end": 523
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Red",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Red",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "checked": "true",
+          "focusable": true
+        },
+        "properties": [],
+        "set_position": {
+          "value": {
+            "position": 1,
+            "size": 2
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Red, radio, checked, 1 of 2"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 3,
+      "parent": 9,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Red",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 22
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Red"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 2,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 23,
+          "tag": "div",
+          "id": "blue"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 533,
+            "end": 596
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Blue",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Blue",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "checked": "false",
+          "focusable": true
+        },
+        "properties": [],
+        "set_position": {
+          "value": {
+            "position": 2,
+            "size": 2
+          },
+          "by": "computed by tool"
+        }
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Blue, radio, not checked, 2 of 2"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 3,
+      "parent": 11,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Blue",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 24
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Blue"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 5,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Small"
+      },
+      {
+        "item": 6,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Medium"
+      },
+      {
+        "item": 7,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Large"
+      },
+      {
+        "item": 9,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Red"
+      },
+      {
+        "item": 11,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Blue"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "radio-group.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "radio-group.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 115,
+          "end": 121
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 11,
+        "tag": "label"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 10,
+        "column": 1,
+        "start_tag": {
+          "start": 155,
+          "end": 162
+        }
+      },
+      "reasons": [
+        {
+          "kind": "label-for",
+          "engine_reason": "labelFor"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 14,
+        "tag": "label"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 11,
+        "column": 1,
+        "start_tag": {
+          "start": 234,
+          "end": 241
+        }
+      },
+      "reasons": [
+        {
+          "kind": "label-for",
+          "engine_reason": "labelFor"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 17,
+        "tag": "label"
+      },
+      "source": {
+        "class": "span",
+        "path": "radio-group.html",
+        "line": 12,
+        "column": 1,
+        "start_tag": {
+          "start": 316,
+          "end": 323
+        }
+      },
+      "reasons": [
+        {
+          "kind": "label-for",
+          "engine_reason": "labelFor"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 12,
+            "tag": "input",
+            "id": "small"
+          },
+          "source": {
+            "class": "span",
+            "path": "radio-group.html",
+            "line": 10,
+            "column": 8,
+            "start_tag": {
+              "start": 162,
+              "end": 219
+            }
+          },
+          "item": 5
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 21,
+            "tag": "div",
+            "id": "red"
+          },
+          "source": {
+            "class": "span",
+            "path": "radio-group.html",
+            "line": 15,
+            "column": 1,
+            "start_tag": {
+              "start": 463,
+              "end": 523
+            }
+          },
+          "item": 9
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 4,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 12,
+            "tag": "input",
+            "id": "small"
+          },
+          "source": {
+            "class": "span",
+            "path": "radio-group.html",
+            "line": 10,
+            "column": 8,
+            "start_tag": {
+              "start": 162,
+              "end": 219
+            }
+          },
+          "item": 5
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

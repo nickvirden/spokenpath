@@ -1,0 +1,2270 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 0
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "CSS reading-flow",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "value": "CSS reading-flow",
+              "related_nodes": [],
+              "outcome": "used"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true,
+          "focused": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/reading-flow.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "CSS reading-flow"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "main",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 10,
+          "tag": "main"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 301,
+            "end": 307
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "main"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "h1"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 15,
+          "column": 1,
+          "start_tag": {
+            "start": 308,
+            "end": 312
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "reading-flow",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "reading-flow",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "level": 1
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "reading-flow, heading, level 1"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "reading-flow",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 12
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "reading-flow"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "group",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 13,
+          "tag": "div",
+          "id": "flex-reading-flow"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 330,
+            "end": 432
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Flex with reading-flow",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Flex with reading-flow",
+              "value": "Flex with reading-flow",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Flex with reading-flow, group"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 16,
+          "tag": "button",
+          "id": "flex-flow-2"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 18,
+          "column": 1,
+          "start_tag": {
+            "start": 512,
+            "end": 567
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, order 1",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 2, order 1",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, order 1, button"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 4,
+      "parent": 6,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 2, order 1",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 17
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 2, order 1"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 18,
+          "tag": "button",
+          "id": "flex-flow-3"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 19,
+          "column": 1,
+          "start_tag": {
+            "start": 591,
+            "end": 646
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, order 2",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 3, order 2",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, order 2, button"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 4,
+      "parent": 8,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 3, order 2",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 19
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 3, order 2"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 14,
+          "tag": "button",
+          "id": "flex-flow-1"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 17,
+          "column": 1,
+          "start_tag": {
+            "start": 433,
+            "end": 488
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, order 3",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 1, order 3",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, order 3, button"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 4,
+      "parent": 10,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 1, order 3",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 15
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 1, order 3"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "group",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 20,
+          "tag": "div",
+          "id": "flex-order-only"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 21,
+          "column": 1,
+          "start_tag": {
+            "start": 677,
+            "end": 763
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Flex with order only",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Flex with order only",
+              "value": "Flex with order only",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Flex with order only, group"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 3,
+      "parent": 12,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 21,
+          "tag": "button",
+          "id": "flex-order-1"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 22,
+          "column": 1,
+          "start_tag": {
+            "start": 764,
+            "end": 820
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, order 3",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 1, order 3",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, order 3, button"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 4,
+      "parent": 13,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 1, order 3",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 22
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 1, order 3"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 3,
+      "parent": 12,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 23,
+          "tag": "button",
+          "id": "flex-order-2"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 23,
+          "column": 1,
+          "start_tag": {
+            "start": 844,
+            "end": 900
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, order 1",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 2, order 1",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, order 1, button"
+      }
+    },
+    {
+      "number": 16,
+      "depth": 4,
+      "parent": 15,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 2, order 1",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 24
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 2, order 1"
+      }
+    },
+    {
+      "number": 17,
+      "depth": 3,
+      "parent": 12,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 25,
+          "tag": "button",
+          "id": "flex-order-3"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 24,
+          "column": 1,
+          "start_tag": {
+            "start": 924,
+            "end": 980
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, order 2",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 3, order 2",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, order 2, button"
+      }
+    },
+    {
+      "number": 18,
+      "depth": 4,
+      "parent": 17,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 3, order 2",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 26
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 3, order 2"
+      }
+    },
+    {
+      "number": 19,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "group",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 27,
+          "tag": "div",
+          "id": "grid-reading-flow"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 26,
+          "column": 1,
+          "start_tag": {
+            "start": 1011,
+            "end": 1111
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Grid with reading-flow",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Grid with reading-flow",
+              "value": "Grid with reading-flow",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Grid with reading-flow, group"
+      }
+    },
+    {
+      "number": 20,
+      "depth": 3,
+      "parent": 19,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 30,
+          "tag": "button",
+          "id": "grid-flow-2"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 28,
+          "column": 1,
+          "start_tag": {
+            "start": 1210,
+            "end": 1283
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, column 1",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 2, column 1",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, column 1, button"
+      }
+    },
+    {
+      "number": 21,
+      "depth": 4,
+      "parent": 20,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 2, column 1",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 31
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 2, column 1"
+      }
+    },
+    {
+      "number": 22,
+      "depth": 3,
+      "parent": 19,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 32,
+          "tag": "button",
+          "id": "grid-flow-3"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 29,
+          "column": 1,
+          "start_tag": {
+            "start": 1308,
+            "end": 1381
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, column 2",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 3, column 2",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, column 2, button"
+      }
+    },
+    {
+      "number": 23,
+      "depth": 4,
+      "parent": 22,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 3, column 2",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 33
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 3, column 2"
+      }
+    },
+    {
+      "number": 24,
+      "depth": 3,
+      "parent": 19,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 28,
+          "tag": "button",
+          "id": "grid-flow-1"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 27,
+          "column": 1,
+          "start_tag": {
+            "start": 1112,
+            "end": 1185
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, column 3",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 1, column 3",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, column 3, button"
+      }
+    },
+    {
+      "number": 25,
+      "depth": 4,
+      "parent": 24,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 1, column 3",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 29
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 1, column 3"
+      }
+    },
+    {
+      "number": 26,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "group",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "author",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 34,
+          "tag": "div",
+          "id": "grid-placement-only"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 31,
+          "column": 1,
+          "start_tag": {
+            "start": 1413,
+            "end": 1507
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Grid with placement only",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "attribute_value": "Grid with placement only",
+              "value": "Grid with placement only",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Grid with placement only, group"
+      }
+    },
+    {
+      "number": 27,
+      "depth": 3,
+      "parent": 26,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 35,
+          "tag": "button",
+          "id": "grid-place-1"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 32,
+          "column": 1,
+          "start_tag": {
+            "start": 1508,
+            "end": 1582
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, column 3",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 1, column 3",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, column 3, button"
+      }
+    },
+    {
+      "number": 28,
+      "depth": 4,
+      "parent": 27,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 1, column 3",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 36
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 1, column 3"
+      }
+    },
+    {
+      "number": 29,
+      "depth": 3,
+      "parent": 26,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 37,
+          "tag": "button",
+          "id": "grid-place-2"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 33,
+          "column": 1,
+          "start_tag": {
+            "start": 1607,
+            "end": 1681
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, column 1",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 2, column 1",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, column 1, button"
+      }
+    },
+    {
+      "number": 30,
+      "depth": 4,
+      "parent": 29,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 2, column 1",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 38
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 2, column 1"
+      }
+    },
+    {
+      "number": 31,
+      "depth": 3,
+      "parent": 26,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 39,
+          "tag": "button",
+          "id": "grid-place-3"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 34,
+          "column": 1,
+          "start_tag": {
+            "start": 1706,
+            "end": 1780
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, column 2",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "DOM 3, column 2",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, column 2, button"
+      }
+    },
+    {
+      "number": 32,
+      "depth": 4,
+      "parent": 31,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "DOM 3, column 2",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 40
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "DOM 3, column 2"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 3,
+        "role": "heading",
+        "name_status": "named",
+        "name": "reading-flow",
+        "level": 1
+      }
+    ],
+    "landmarks": [
+      {
+        "item": 2,
+        "role": "main",
+        "name_status": "no accessible name"
+      }
+    ],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 6,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, order 1"
+      },
+      {
+        "item": 8,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, order 2"
+      },
+      {
+        "item": 10,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, order 3"
+      },
+      {
+        "item": 13,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, order 3"
+      },
+      {
+        "item": 15,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, order 1"
+      },
+      {
+        "item": 17,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, order 2"
+      },
+      {
+        "item": 20,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, column 1"
+      },
+      {
+        "item": 22,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, column 2"
+      },
+      {
+        "item": 24,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, column 3"
+      },
+      {
+        "item": 27,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, column 3"
+      },
+      {
+        "item": 29,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, column 1"
+      },
+      {
+        "item": 31,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, column 2"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 2,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "reading-flow.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "head"
+      },
+      "source": {
+        "class": "span",
+        "path": "reading-flow.html",
+        "line": 3,
+        "column": 1,
+        "start_tag": {
+          "start": 33,
+          "end": 39
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "meta"
+      },
+      "source": {
+        "class": "span",
+        "path": "reading-flow.html",
+        "line": 4,
+        "column": 1,
+        "start_tag": {
+          "start": 40,
+          "end": 62
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "reading-flow.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "title"
+      },
+      "source": {
+        "class": "span",
+        "path": "reading-flow.html",
+        "line": 5,
+        "column": 1,
+        "start_tag": {
+          "start": 63,
+          "end": 70
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "reading-flow.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 7,
+        "tag": "style"
+      },
+      "source": {
+        "class": "span",
+        "path": "reading-flow.html",
+        "line": 6,
+        "column": 1,
+        "start_tag": {
+          "start": 95,
+          "end": 102
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered",
+          "hiding_ancestor": {
+            "value": {
+              "dom": {
+                "dom_id": 3,
+                "tag": "head"
+              },
+              "source": {
+                "class": "span",
+                "path": "reading-flow.html",
+                "line": 3,
+                "column": 1,
+                "start_tag": {
+                  "start": 33,
+                  "end": 39
+                }
+              }
+            },
+            "by": "computed by tool"
+          }
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 9,
+        "tag": "body"
+      },
+      "source": {
+        "class": "span",
+        "path": "reading-flow.html",
+        "line": 13,
+        "column": 1,
+        "start_tag": {
+          "start": 294,
+          "end": 300
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 16,
+            "tag": "button",
+            "id": "flex-flow-2"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 18,
+            "column": 1,
+            "start_tag": {
+              "start": 512,
+              "end": 567
+            }
+          },
+          "item": 6
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 18,
+            "tag": "button",
+            "id": "flex-flow-3"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 19,
+            "column": 1,
+            "start_tag": {
+              "start": 591,
+              "end": 646
+            }
+          },
+          "item": 8
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 14,
+            "tag": "button",
+            "id": "flex-flow-1"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 17,
+            "column": 1,
+            "start_tag": {
+              "start": 433,
+              "end": 488
+            }
+          },
+          "item": 10
+        }
+      },
+      {
+        "step": 4,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 21,
+            "tag": "button",
+            "id": "flex-order-1"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 22,
+            "column": 1,
+            "start_tag": {
+              "start": 764,
+              "end": 820
+            }
+          },
+          "item": 13
+        }
+      },
+      {
+        "step": 5,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 23,
+            "tag": "button",
+            "id": "flex-order-2"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 23,
+            "column": 1,
+            "start_tag": {
+              "start": 844,
+              "end": 900
+            }
+          },
+          "item": 15
+        }
+      },
+      {
+        "step": 6,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 25,
+            "tag": "button",
+            "id": "flex-order-3"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 24,
+            "column": 1,
+            "start_tag": {
+              "start": 924,
+              "end": 980
+            }
+          },
+          "item": 17
+        }
+      },
+      {
+        "step": 7,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 30,
+            "tag": "button",
+            "id": "grid-flow-2"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 28,
+            "column": 1,
+            "start_tag": {
+              "start": 1210,
+              "end": 1283
+            }
+          },
+          "item": 20
+        }
+      },
+      {
+        "step": 8,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 32,
+            "tag": "button",
+            "id": "grid-flow-3"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 29,
+            "column": 1,
+            "start_tag": {
+              "start": 1308,
+              "end": 1381
+            }
+          },
+          "item": 22
+        }
+      },
+      {
+        "step": 9,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 28,
+            "tag": "button",
+            "id": "grid-flow-1"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 27,
+            "column": 1,
+            "start_tag": {
+              "start": 1112,
+              "end": 1185
+            }
+          },
+          "item": 24
+        }
+      },
+      {
+        "step": 10,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 35,
+            "tag": "button",
+            "id": "grid-place-1"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 32,
+            "column": 1,
+            "start_tag": {
+              "start": 1508,
+              "end": 1582
+            }
+          },
+          "item": 27
+        }
+      },
+      {
+        "step": 11,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 37,
+            "tag": "button",
+            "id": "grid-place-2"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 33,
+            "column": 1,
+            "start_tag": {
+              "start": 1607,
+              "end": 1681
+            }
+          },
+          "item": 29
+        }
+      },
+      {
+        "step": 12,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 39,
+            "tag": "button",
+            "id": "grid-place-3"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 34,
+            "column": 1,
+            "start_tag": {
+              "start": 1706,
+              "end": 1780
+            }
+          },
+          "item": 31
+        }
+      },
+      {
+        "step": 13,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 14,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 16,
+            "tag": "button",
+            "id": "flex-flow-2"
+          },
+          "source": {
+            "class": "span",
+            "path": "reading-flow.html",
+            "line": 18,
+            "column": 1,
+            "start_tag": {
+              "start": 512,
+              "end": 567
+            }
+          },
+          "item": 6
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  }
+}

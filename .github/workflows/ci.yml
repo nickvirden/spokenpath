@@ -207,8 +207,9 @@ jobs:
       - name: Check the committed snapshot schema
         run: cargo xtask schema --check
 
-  # The model's tests read the committed captures and their pages from disk, so they also run
-  # where paths, line endings and checkouts differ. Linux runs them in test-rust.
+  # The model's and the announce crate's tests read the committed captures and their pages from
+  # disk, so they also run where paths, line endings and checkouts differ. Linux runs them in
+  # test-rust.
   test-model:
     name: test-model (${{ matrix.os }})
     strategy:
@@ -231,6 +232,9 @@ jobs:
 
       - name: Test the model crate
         run: cargo test -p spokenpath_model --locked
+
+      - name: Test the announce crate
+        run: cargo test -p spokenpath_announce --locked
 
   test-node:
     name: test-node
