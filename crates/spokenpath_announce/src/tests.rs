@@ -972,6 +972,14 @@ fn escape_for_terminal_escapes_only_characters_that_disturb_a_terminal() {
         ('\u{200d}', "\\u{200d}"),
         ('\u{2060}', "\\u{2060}"),
         ('\u{feff}', "\\u{feff}"),
+        // Invisible operators.
+        ('\u{2061}', "\\u{2061}"),
+        ('\u{2062}', "\\u{2062}"),
+        ('\u{2064}', "\\u{2064}"),
+        // Unicode tag characters.
+        ('\u{e0000}', "\\u{e0000}"),
+        ('\u{e0041}', "\\u{e0041}"),
+        ('\u{e007f}', "\\u{e007f}"),
     ];
     for (character, escaped) in cases {
         assert_eq!(
@@ -981,8 +989,28 @@ fn escape_for_terminal_escapes_only_characters_that_disturb_a_terminal() {
         );
     }
     // The neighbours of each escaped range are ordinary characters.
-    let neighbours = "\u{61b}\u{61d}\u{200a}\u{2010}\u{2027}\u{202f}\u{205f}\u{2061}\u{2065}\u{206a}\u{fefe}\u{ff00}";
+    let neighbours = "\u{61b}\u{61d}\u{200a}\u{2010}\u{2027}\u{202f}\u{205f}\u{2065}\u{206a}\u{fefe}\u{ff00}\u{dffff}\u{e0080}";
     assert!(matches!(escape_for_terminal(neighbours), Cow::Borrowed(_)));
+}
+
+#[test]
+fn escape_for_terminal_keeps_variation_selectors_so_emoji_keep_their_presentation() {
+    for kept in [
+        "\u{2764}\u{fe0f}",
+        "\u{263a}\u{fe0e}",
+        "\u{fe00}\u{fe0f}",
+        "\u{845b}\u{e0100}\u{e01ef}",
+    ] {
+        assert!(
+            matches!(escape_for_terminal(kept), Cow::Borrowed(text) if text == kept),
+            "{kept:?}"
+        );
+    }
+    // A subdivision flag is a black flag, tag letters and a cancel tag; the tags are escaped.
+    assert_eq!(
+        escape_for_terminal("\u{1f3f4}\u{e0067}\u{e0062}\u{e007f}"),
+        "\u{1f3f4}\\u{e0067}\\u{e0062}\\u{e007f}"
+    );
 }
 
 fn is_unsafe_for_a_terminal(character: char) -> bool {
@@ -995,8 +1023,9 @@ fn is_unsafe_for_a_terminal(character: char) -> bool {
                 | '\u{061C}'
                 | '\u{2028}'
                 | '\u{2029}'
-                | '\u{2060}'
+                | '\u{2060}'..='\u{2064}'
                 | '\u{FEFF}'
+                | '\u{E0000}'..='\u{E007F}'
         )
 }
 

@@ -1,12 +1,13 @@
 //! The tab order: the focus walk step by step, and how it ended.
 
+use schemars::JsonSchema;
 use serde::Serialize;
 use spokenpath_model::{FocusStop, FocusWalk, NodeIndex};
 
 use crate::transcript::{DomRecord, DomSources, Marked, Marking, SourceRecord, dom_record};
 
 /// The focus walk by repeated Tab presses, as captured, and how it ended.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct TabOrder {
     /// One entry per Tab press, in order.
     pub steps: Vec<TabStep>,
@@ -15,7 +16,7 @@ pub struct TabOrder {
 }
 
 /// Where focus was after one Tab press.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct TabStep {
     /// The 1-based step number.
     pub step: usize,
@@ -27,7 +28,7 @@ pub struct TabStep {
 }
 
 /// One stop of the focus walk.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(tag = "kind", rename_all = "kebab-case")]
 pub enum Stop {
     /// An element of the snapshot's DOM.
@@ -51,7 +52,7 @@ pub enum Stop {
 }
 
 /// How a focus walk ended.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct Ending {
     /// The kind of ending.
     pub kind: EndingKind,
@@ -60,7 +61,7 @@ pub struct Ending {
 }
 
 /// The kind of a focus walk's ending.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum EndingKind {
     /// The walk stopped at its step limit.

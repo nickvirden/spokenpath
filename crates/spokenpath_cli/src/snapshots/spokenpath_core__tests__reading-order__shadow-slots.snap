@@ -1,0 +1,101 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Shadow root slotting"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Shadow root slotting"
+ 2    A main (no accessible name)
+        shadow-slots.html:8:1  <main>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "main"
+ 3      A heading "Shadow slots"  level 1
+          shadow-slots.html:9:1  <h1>
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Shadow slots, heading, level 1"
+ 4        A text "Shadow slots"
+          ~ "Shadow slots"
+ 5      A group "Shadow host"
+          shadow-slots.html:10:1  <div id="host" role="group" aria-label="Shadow host">
+          name from aria-label="Shadow host" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Shadow host, group"
+ 6        A heading "Shadow heading"  level 2
+            shadow-slots.html:12:1  <h2 id="shadow-heading">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+          ~ "Shadow heading, heading, level 2"
+ 7          A text "Shadow heading"
+            ~ "Shadow heading"
+ 8        A button "Light titled"  focusable
+            shadow-slots.html:18:1  <button id="light-titled" type="button" slot="title">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "Light titled, button"
+ 9          A text "Light titled"
+            ~ "Light titled"
+10        A paragraph (no accessible name)
+            shadow-slots.html:14:1  <p id="shadow-paragraph">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+11          A text "Shadow paragraph between slots"
+            ~ "Shadow paragraph between slots"
+12        A button "Light default A"  focusable
+            shadow-slots.html:17:1  <button id="light-default-a" type="button">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "Light default A, button"
+13          A text "Light default A"
+            ~ "Light default A"
+14        A button "Light default B"  focusable
+            shadow-slots.html:19:1  <button id="light-default-b" type="button">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "Light default B, button"
+15          A text "Light default B"
+            ~ "Light default B"
+
+Excluded
+  <html>  shadow-slots.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  shadow-slots.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  shadow-slots.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  shadow-slots.html:3:1 (computed by tool)
+  <title>  shadow-slots.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  shadow-slots.html:3:1 (computed by tool)
+  <body>  shadow-slots.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <slot>  shadow-slots.html:13:1  <slot name="title">
+    uninteresting (engine reason: uninteresting)
+  <slot>  shadow-slots.html:15:1  <slot>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  [3] heading "Shadow slots"  level 1
+  [6] heading "Shadow heading"  level 2
+
+Landmarks
+  [2] main (no accessible name)
+
+Links
+  (none)
+
+Form controls
+  [8] button "Light titled"
+  [12] button "Light default A"
+  [14] button "Light default B"
+
+Tab order
+  1  [8] button "Light titled"
+  2  [12] button "Light default A"
+  3  [14] button "Light default B"
+  4  left the page
+  5  [8] button "Light titled"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

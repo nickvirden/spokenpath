@@ -8,12 +8,32 @@ const COMMANDS: &[(&str, &str)] = &[
     ("help", "List the available commands"),
     (
         "schema",
-        "Write schema/snapshot.v0.json from the snapshot types; --check compares it instead",
+        "Write schema/snapshot.v0.json from the snapshot types and schema/transcript.v0.json from \
+         the transcript types; --check compares them instead",
     ),
 ];
 
-/// The committed JSON Schema, relative to the repository root.
-const SCHEMA_PATH: &str = "schema/snapshot.v0.json";
+/// One committed JSON Schema: its path relative to the repository root, the types it is
+/// generated from, and the generator.
+struct SchemaFile {
+    path: &'static str,
+    types: &'static str,
+    generate: fn() -> serde_json::Value,
+}
+
+/// Every committed JSON Schema.
+const SCHEMAS: [SchemaFile; 2] = [
+    SchemaFile {
+        path: "schema/snapshot.v0.json",
+        types: "snapshot",
+        generate: spokenpath_snapshot::json_schema,
+    },
+    SchemaFile {
+        path: "schema/transcript.v0.json",
+        types: "transcript",
+        generate: spokenpath_announce::json_schema,
+    },
+];
 
 fn help() -> String {
     let commands: Vec<String> = COMMANDS
@@ -32,41 +52,42 @@ fn repository_root() -> PathBuf {
 }
 
 /// The schema file's contents: pretty-printed with 2-space indent and a trailing newline.
-fn generated_schema() -> Result<String, String> {
-    serde_json::to_string_pretty(&spokenpath_snapshot::json_schema())
+fn generated_schema(schema: &SchemaFile) -> Result<String, String> {
+    serde_json::to_string_pretty(&(schema.generate)())
         .map(|text| text + "\n")
-        .map_err(|error| format!("could not serialise the snapshot schema: {error}"))
+        .map_err(|error| format!("could not serialise the {} schema: {error}", schema.types))
 }
 
-/// Writes `contents` to `path`, creating its directory.
-fn write_schema(path: &Path, contents: &str) -> Result<String, String> {
+/// Writes `contents` to `schema`'s path under `root`, creating its directory.
+fn write_schema(root: &Path, schema: &SchemaFile, contents: &str) -> Result<String, String> {
+    let path = root.join(schema.path);
     if let Some(directory) = path.parent() {
         std::fs::create_dir_all(directory)
             .map_err(|error| format!("could not create {}: {error}", directory.display()))?;
     }
-    std::fs::write(path, contents)
-        .map_err(|error| format!("could not write {SCHEMA_PATH}: {error}"))?;
-    Ok(format!("wrote {SCHEMA_PATH}\n"))
+    std::fs::write(&path, contents)
+        .map_err(|error| format!("could not write {}: {error}", schema.path))?;
+    Ok(format!("wrote {}\n", schema.path))
 }
 
-/// Succeeds when the file at `path` is byte-identical to `contents`, and writes nothing.
-fn check_schema(path: &Path, contents: &str) -> Result<String, String> {
-    match std::fs::read(path) {
-        Ok(committed) if committed == contents.as_bytes() => {
-            Ok(format!("{SCHEMA_PATH} is up to date\n"))
-        }
+/// Succeeds when `schema`'s file under `root` is byte-identical to `contents`, and writes nothing.
+fn check_schema(root: &Path, schema: &SchemaFile, contents: &str) -> Result<String, String> {
+    let SchemaFile { path, types, .. } = schema;
+    match std::fs::read(root.join(path)) {
+        Ok(committed) if committed == contents.as_bytes() => Ok(format!("{path} is up to date\n")),
         Ok(_) => Err(format!(
-            "{SCHEMA_PATH} differs from the schema the snapshot types generate; run `cargo xtask schema` and commit the result"
+            "{path} differs from the schema the {types} types generate; run `cargo xtask schema` and commit the result"
         )),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Err(format!(
-            "{SCHEMA_PATH} is missing; run `cargo xtask schema` and commit the result"
+            "{path} is missing; run `cargo xtask schema` and commit the result"
         )),
-        Err(error) => Err(format!("could not read {SCHEMA_PATH}: {error}")),
+        Err(error) => Err(format!("could not read {path}: {error}")),
     }
 }
 
-/// Runs `schema` against the file at `path`: writes it, or with `--check` compares it.
-fn schema(flags: &[&str], path: &Path) -> Result<String, String> {
+/// Runs `schema` against the files under `root`: writes every schema, or with `--check` compares
+/// every one and reports each that differs.
+fn schema(flags: &[&str], root: &Path) -> Result<String, String> {
     let mut check = false;
     for flag in flags {
         match *flag {
@@ -78,11 +99,24 @@ fn schema(flags: &[&str], path: &Path) -> Result<String, String> {
             }
         }
     }
-    let contents = generated_schema()?;
-    if check {
-        check_schema(path, &contents)
+    let mut output = String::new();
+    let mut failures = Vec::new();
+    for file in &SCHEMAS {
+        let contents = generated_schema(file)?;
+        let result = if check {
+            check_schema(root, file, &contents)
+        } else {
+            write_schema(root, file, &contents)
+        };
+        match result {
+            Ok(line) => output.push_str(&line),
+            Err(message) => failures.push(message),
+        }
+    }
+    if failures.is_empty() {
+        Ok(output)
     } else {
-        write_schema(path, &contents)
+        Err(failures.join("\nerror: "))
     }
 }
 
@@ -91,7 +125,7 @@ fn schema(flags: &[&str], path: &Path) -> Result<String, String> {
 fn run(command: Option<&str>, flags: &[&str]) -> Result<String, String> {
     match command {
         None | Some("help") => Ok(help()),
-        Some("schema") => schema(flags, &repository_root().join(SCHEMA_PATH)),
+        Some("schema") => schema(flags, &repository_root()),
         Some(unknown) => Err(format!(
             "unknown command `{unknown}`; run `cargo xtask help` to list the commands"
         )),
@@ -117,7 +151,7 @@ fn main() -> ExitCode {
 mod tests {
     use std::path::{Path, PathBuf};
 
-    use super::{generated_schema, run, schema};
+    use super::{SCHEMAS, generated_schema, run, schema};
 
     /// A fresh directory under the system temporary directory, unique to this process and test,
     /// removed when the value drops.
@@ -132,6 +166,10 @@ mod tests {
             }
             std::fs::create_dir_all(&directory).expect("test directory is created");
             Self(directory)
+        }
+
+        fn path(&self) -> &Path {
+            &self.0
         }
 
         fn join(&self, path: impl AsRef<Path>) -> PathBuf {
@@ -152,6 +190,8 @@ mod tests {
         let output = run(Some("help"), &[]).expect("help succeeds");
         assert!(output.contains("  help"), "{output}");
         assert!(output.contains("  schema"), "{output}");
+        assert!(output.contains("schema/snapshot.v0.json"), "{output}");
+        assert!(output.contains("schema/transcript.v0.json"), "{output}");
     }
 
     #[test]
@@ -161,48 +201,87 @@ mod tests {
     }
 
     #[test]
-    fn schema_writes_a_file_that_check_then_accepts() {
+    fn schema_writes_every_file_that_check_then_accepts() {
         let directory = TemporaryDirectory::new("write");
-        let path = directory.join("schema/snapshot.v0.json");
-        schema(&[], &path).expect("schema writes the file");
-        let written = std::fs::read_to_string(&path).expect("the file exists");
-        assert_eq!(written, generated_schema().expect("schema serialises"));
-        assert!(written.ends_with("}\n"), "trailing newline");
-        let output = schema(&["--check"], &path).expect("check passes on matching content");
-        assert!(output.contains("up to date"), "{output}");
+        let output = schema(&[], directory.path()).expect("schema writes the files");
+        for file in &SCHEMAS {
+            assert!(output.contains(file.path), "{output}");
+            let written =
+                std::fs::read_to_string(directory.join(file.path)).expect("the file exists");
+            assert_eq!(written, generated_schema(file).expect("schema serialises"));
+            assert!(written.ends_with("}\n"), "trailing newline");
+            assert!(
+                written.contains("\"$schema\": \"https://json-schema.org/draft/2020-12/schema\""),
+                "{} is draft 2020-12",
+                file.path
+            );
+        }
+        let output =
+            schema(&["--check"], directory.path()).expect("check passes on matching content");
+        assert_eq!(
+            output.matches("up to date").count(),
+            SCHEMAS.len(),
+            "{output}"
+        );
     }
 
     #[test]
-    fn schema_check_fails_on_differing_content_and_writes_nothing() {
-        let directory = TemporaryDirectory::new("differ");
-        let path = directory.join("snapshot.v0.json");
-        let stale = generated_schema().expect("schema serialises") + " ";
-        std::fs::write(&path, &stale).expect("stale file is written");
-        let message = schema(&["--check"], &path).expect_err("check fails on differing content");
-        assert!(message.contains("schema/snapshot.v0.json"), "{message}");
-        assert!(message.contains("`cargo xtask schema`"), "{message}");
-        assert_eq!(std::fs::read_to_string(&path).expect("file remains"), stale);
+    fn the_transcript_schema_has_the_transcript_fields() {
+        let transcript = SCHEMAS
+            .iter()
+            .find(|file| file.path == "schema/transcript.v0.json")
+            .expect("the transcript schema is listed");
+        let value = (transcript.generate)();
+        let required = value["required"].as_array().expect("required fields");
+        for field in ["header", "nodes", "indexes", "excluded", "tab_order"] {
+            assert!(required.iter().any(|name| name == field), "{field}");
+        }
     }
 
     #[test]
-    fn schema_check_fails_when_the_file_is_missing() {
+    fn schema_check_fails_on_either_differing_file_and_writes_nothing() {
+        for stale_file in &SCHEMAS {
+            let directory = TemporaryDirectory::new("differ");
+            schema(&[], directory.path()).expect("schema writes the files");
+            let path = directory.join(stale_file.path);
+            let stale = generated_schema(stale_file).expect("schema serialises") + " ";
+            std::fs::write(&path, &stale).expect("stale file is written");
+            let message = schema(&["--check"], directory.path())
+                .expect_err("check fails on differing content");
+            assert!(message.contains(stale_file.path), "{message}");
+            assert!(message.contains("`cargo xtask schema`"), "{message}");
+            for other in SCHEMAS.iter().filter(|other| other.path != stale_file.path) {
+                assert!(!message.contains(other.path), "{message}");
+            }
+            assert_eq!(std::fs::read_to_string(&path).expect("file remains"), stale);
+        }
+    }
+
+    #[test]
+    fn schema_check_fails_when_the_files_are_missing() {
         let directory = TemporaryDirectory::new("missing");
-        let path = directory.join("snapshot.v0.json");
-        let message = schema(&["--check"], &path).expect_err("check fails on a missing file");
-        assert!(message.contains("schema/snapshot.v0.json"), "{message}");
+        let message =
+            schema(&["--check"], directory.path()).expect_err("check fails on missing files");
+        for file in &SCHEMAS {
+            assert!(message.contains(file.path), "{message}");
+            assert!(!directory.join(file.path).exists(), "check writes nothing");
+        }
         assert!(message.contains("`cargo xtask schema`"), "{message}");
-        assert!(!path.exists(), "check writes nothing");
     }
 
     #[test]
     fn schema_unknown_flag_is_an_error_naming_it() {
         let directory = TemporaryDirectory::new("flag");
-        let path = directory.join("snapshot.v0.json");
-        let message = schema(&["--nope"], &path).expect_err("an unknown flag fails");
+        let message = schema(&["--nope"], directory.path()).expect_err("an unknown flag fails");
         assert!(message.contains("`--nope`"), "{message}");
-        let message =
-            schema(&["--check", "--nope"], &path).expect_err("a trailing unknown flag fails");
+        let message = schema(&["--check", "--nope"], directory.path())
+            .expect_err("a trailing unknown flag fails");
         assert!(message.contains("`--nope`"), "{message}");
-        assert!(!path.exists(), "a rejected flag writes nothing");
+        for file in &SCHEMAS {
+            assert!(
+                !directory.join(file.path).exists(),
+                "a rejected flag writes nothing"
+            );
+        }
     }
 }

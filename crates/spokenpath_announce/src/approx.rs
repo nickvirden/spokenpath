@@ -2,6 +2,7 @@
 
 use std::borrow::Cow;
 
+use schemars::JsonSchema;
 use serde::Serialize;
 
 use crate::transcript::{
@@ -58,7 +59,7 @@ pub const TEMPLATES: [Template; 5] = [
 ];
 
 /// The illustrative phrase of one item, approximate, with the template that rendered it.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct Approx {
     /// The template's identifier.
     pub template: &'static str,
@@ -165,8 +166,11 @@ fn set_position(position: SetPositionRecord) -> String {
 /// Whether a terminal must not receive `character` raw: a control character (C0, DEL, or C1,
 /// which includes the CSI introducer U+009B); a bidirectional embedding, override or isolate
 /// control, or an implicit direction mark (U+200E, U+200F, U+061C), which reorder what a terminal
-/// shows; a line or paragraph separator (U+2028, U+2029), which can break a line; or a zero-width
-/// character (U+200B to U+200D, U+2060, U+FEFF), which hides text or makes two strings look equal.
+/// shows; a line or paragraph separator (U+2028, U+2029), which can break a line; a zero-width
+/// character (U+200B to U+200D, U+2060, U+FEFF) or an invisible operator (U+2061 to U+2064),
+/// which hides text or makes two strings look equal; or a Unicode tag character (U+E0000 to
+/// U+E007F), which a terminal shows as nothing and so can smuggle hidden text. Variation selectors
+/// (U+FE00 to U+FE0F, U+E0100 to U+E01EF) pass, so U+FE0F still selects an emoji's presentation.
 fn needs_escape(character: char) -> bool {
     character.is_control()
         || matches!(
@@ -179,15 +183,16 @@ fn needs_escape(character: char) -> bool {
                 | '\u{2028}'
                 | '\u{2029}'
                 | '\u{200B}'..='\u{200D}'
-                | '\u{2060}'
+                | '\u{2060}'..='\u{2064}'
                 | '\u{FEFF}'
+                | '\u{E0000}'..='\u{E007F}'
         )
 }
 
 /// `text` with each control character, bidirectional control or mark, line or paragraph
-/// separator, and zero-width character replaced by its `\u{..}` escape,
-/// as [`char::escape_unicode`] writes it; every other character passes unchanged. Borrows `text`
-/// when nothing needs escaping.
+/// separator, zero-width character, invisible operator and tag character replaced by its
+/// `\u{..}` escape, as [`char::escape_unicode`] writes it; every other character, variation
+/// selectors included, passes unchanged. Borrows `text` when nothing needs escaping.
 #[must_use]
 pub fn escape_for_terminal(text: &str) -> Cow<'_, str> {
     if !text.chars().any(needs_escape) {

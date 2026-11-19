@@ -11,5 +11,15 @@ publish.workspace = true
 name = "spokenpath-core"
 path = "src/main.rs"
 
+[dependencies]
+serde_json.workspace = true
+sha2.workspace = true
+spokenpath_announce.workspace = true
+spokenpath_model.workspace = true
+spokenpath_snapshot.workspace = true
+
+[dev-dependencies]
+insta.workspace = true
+
 [lints]
 workspace = true

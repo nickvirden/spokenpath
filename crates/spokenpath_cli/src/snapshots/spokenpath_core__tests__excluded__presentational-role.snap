@@ -1,0 +1,45 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Heading with a presentational role"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Heading with a presentational role"
+2    A text "Heading with role presentation"
+     ~ "Heading with role presentation"
+
+Excluded
+  <html>  presentational-role.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  presentational-role.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  presentational-role.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  presentational-role.html:3:1 (computed by tool)
+  <title>  presentational-role.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  presentational-role.html:3:1 (computed by tool)
+  <body>  presentational-role.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <h2> #target  presentational-role.html:8:1  <h2 id="target" role="presentation">
+    presentational-role (engine reason: presentationalRole)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

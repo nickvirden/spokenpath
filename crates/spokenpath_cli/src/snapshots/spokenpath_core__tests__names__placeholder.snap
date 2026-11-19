@@ -1,0 +1,57 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Name from placeholder"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Name from placeholder"
+2    A paragraph (no accessible name)
+       placeholder.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A textbox "Placeholder text"  focusable
+         placeholder.html:9:1  <input id="target" type="text" placeholder="Placeholder text">
+         name from placeholder="Placeholder text" (placeholder)
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): empty; aria-placeholder (placeholder): superseded; title (attribute): superseded
+       ~ "Placeholder text, textbox"
+4        A generic (no accessible name)
+           no source location: its origin could not be established (unknown)
+           no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+         ~ ""
+
+Excluded
+  <html>  placeholder.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  placeholder.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  placeholder.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  placeholder.html:3:1 (computed by tool)
+  <title>  placeholder.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  placeholder.html:3:1 (computed by tool)
+  <body>  placeholder.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <div> #placeholder  no source location: its origin could not be established (unknown)
+    no reason given by the engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] textbox "Placeholder text"
+
+Tab order
+  1  [3] textbox "Placeholder text"
+  2  left the page
+  3  [3] textbox "Placeholder text"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

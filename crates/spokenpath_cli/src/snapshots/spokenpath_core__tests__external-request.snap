@@ -1,0 +1,65 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "External request"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "External request"
+2    A heading "External request"  level 1
+       external-request.html:8:1  <h1>
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+     ~ "External request, heading, level 1"
+3      A text "External request"
+       ~ "External request"
+4    A paragraph (no accessible name)
+       external-request.html:9:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+5      A image "Remote pixel"
+         external-request.html:9:4  <img src="https://example.com/pixel.png?token=not-a-secret#frag" alt="Remote pix…
+         name from alt="Remote pixel" (attribute)
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+       ~ "Remote pixel, image"
+
+Excluded
+  <html>  external-request.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  external-request.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  external-request.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  external-request.html:3:1 (computed by tool)
+  <title>  external-request.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  external-request.html:3:1 (computed by tool)
+  <body>  external-request.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <span> #alttext-container  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <img> #alttext-image  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <span> #alttext  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <script>  external-request.html:10:1  <script>
+    not-rendered (engine reason: notRendered)
+
+Headings
+  [2] heading "External request"  level 1
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

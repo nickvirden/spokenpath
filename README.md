@@ -10,57 +10,142 @@ reader.
 
 ## Status
 
-spokenpath is **pre-alpha**. Nothing is installable yet and no package is published. Versions stay
-at 0.x until 1.0 is declared on purpose, and one version covers the whole repository.
+spokenpath is **pre-alpha**. Nothing is installable yet and no package is published: the
+`spokenpath` command runs from a checkout of this repository, for Chromium only
+([docs/usage.md](docs/usage.md)). Versions stay at 0.x until 1.0 is declared on purpose, and one
+version covers the whole repository.
 
 ## Example
 
-This example is a **design target: spokenpath does not produce this output yet.** It shows the
-shape the transcript is being built towards. Real output will come from tested fixtures, and this
-example will be replaced by one of them.
-
-Given this page, `form.html`:
+Given this page, [`fixtures/pages/sign-in.html`](fixtures/pages/sign-in.html):
 
 ```html
-<main>
-  <h1>Sign in</h1>
-  <form>
-    <label for="email">Email</label>
-    <input id="email" type="email" required>
-    <button type="button"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M2 8h12"/></svg></button>
-    <button type="submit">Sign in</button>
-  </form>
-</main>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in</title>
+</head>
+<body>
+<h1>Sign in</h1>
+<p>
+<label for="email">Email</label>
+<input id="email" type="email" autocomplete="email">
+</p>
+<p>
+<button id="submit" type="button"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12"/></svg></button>
+</p>
+<p><a id="help" href="help.html">Trouble signing in?</a></p>
+</body>
+</html>
 ```
 
-the transcript is designed to look like this:
+`pnpm -s spokenpath fixtures/pages/sign-in.html`, run from a checkout, prints this transcript:
 
 ```text
-spokenpath 0.1.0 · snapshot v0 · Chromium <version> · viewport 1280x720
-A = exposed by Chromium   ~ = illustrative speech, approximate, not any specific screen reader
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
 
- 1  A main                                         form.html:1:1   <main>
-    ~ "main"
- 2  A heading "Sign in"  level 1                   form.html:2:3   <h1>
-      name from contents
-    ~ "Sign in, heading level 1"
- 3  A textbox "Email"  required focusable          form.html:5:5   <input id="email" type="email" required>
-      name from <label for="email"> (form.html:4:5)
-    ~ "Email, edit text, required"
- 4  A button (no accessible name)  focusable       form.html:6:5   <button type="button">
-      name: contents empty; <svg> excluded (aria-hidden, form.html:6:27); no aria-label or title
-    ~ "button"
- 5  A button "Sign in"  focusable                  form.html:7:5   <button type="submit">
-      name from contents
-    ~ "Sign in, button"
+ 1  A RootWebArea (internal role) "Sign in"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Sign in"
+ 2    A heading "Sign in"  level 1
+        sign-in.html:8:1  <h1>
+        name from contents
+        other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+      ~ "Sign in, heading, level 1"
+ 3      A text "Sign in"
+        ~ "Sign in"
+ 4    A paragraph (no accessible name)
+        sign-in.html:9:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 5      A LabelText (internal role) (no accessible name)
+          sign-in.html:10:1  <label for="email">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ ""
+ 6        A text "Email"
+          ~ "Email"
+ 7      A textbox "Email"  focusable
+          sign-in.html:11:1  <input id="email" type="email" autocomplete="email">
+          name from label-for (related-element)
+            via <label>  "Email"  sign-in.html:10:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+        ~ "Email, textbox"
+ 8        A generic (no accessible name)
+            no source location: its origin could not be established (unknown)
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ ""
+ 9    A paragraph (no accessible name)
+        sign-in.html:13:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+10      A button (no accessible name)  focusable
+          sign-in.html:14:1  <button id="submit" type="button">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; contents: empty; title (attribute): empty
+        ~ "button"
+11        A image (no accessible name)
+            sign-in.html:14:35  <svg width="16" height="16" viewBox="0 0 16 16">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (related-element): empty; title (attribute): empty
+          ~ "image"
+12    A paragraph (no accessible name)
+        sign-in.html:16:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+13      A link "Trouble signing in?"  focusable
+          sign-in.html:16:4  <a id="help" href="help.html">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Trouble signing in?, link"
+14        A text "Trouble signing in?"
+          ~ "Trouble signing in?"
 
-Headings   [2] h1 "Sign in"
-Tab order  1 -> [3]  2 -> [4]  3 -> [5]   (3 stops, no cycle)
+Excluded
+  <html>  sign-in.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  sign-in.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  sign-in.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  sign-in.html:3:1 (computed by tool)
+  <title>  sign-in.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  sign-in.html:3:1 (computed by tool)
+  <body>  sign-in.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <path>  sign-in.html:14:83  <path d="M2 8h12"/>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  [2] heading "Sign in"  level 1
+
+Landmarks
+  (none)
+
+Links
+  [13] link "Trouble signing in?"
+
+Form controls
+  [7] textbox "Email"
+  [10] button (no accessible name)
+
+Tab order
+  1  [7] textbox "Email"
+  2  [10] button (no accessible name)
+  3  [13] link "Trouble signing in?"
+  4  left the page
+  5  [7] textbox "Email"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.
 ```
 
-Lines tagged `A` are what Chromium exposes. Lines tagged `~` are illustrative speech, approximate.
-Node 4 is a button with no accessible name: its only content is an icon hidden with
-`aria-hidden`, and the transcript says where the empty name comes from.
+This is the committed end-to-end golden,
+[`fixtures/transcripts/sign-in.txt`](fixtures/transcripts/sign-in.txt), with the spokenpath version
+in the header normalised to `0.0.0`; the `e2e` check fails when the command's output differs from
+it. Lines tagged `A` are what Chromium exposes. Lines tagged `~` are illustrative speech,
+approximate. Item 10 is a button with no accessible name: its only content is an SVG image (item 11) that has
+no name either, and the transcript lists every name source Chromium tried and found empty.
+[docs/usage.md](docs/usage.md) explains every line, the options, the JSON output and the exit
+codes.
 
 ## What it is
 
@@ -81,7 +166,10 @@ print it as a transcript in which every line says where it came from.
 - **Navigation.** Indexes of headings, landmarks, links and form controls, and the tab order found
   by pressing Tab in the browser.
 
-None of this is shipped yet; the [roadmap](docs/roadmap.md) lists the order it is being built in.
+Layer A, Layer B, source tags and navigation work for Chromium from a checkout, through the
+`spokenpath` command ([docs/usage.md](docs/usage.md)); nothing is published yet, and Safari and
+VoiceOver phrasing are not built. The [roadmap](docs/roadmap.md) lists the order the rest is being
+built in.
 The design is recorded in [ADR-0001](docs/decisions/ADR-0001-two-layer-output.md).
 
 ## What it is not

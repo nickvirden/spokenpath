@@ -202,14 +202,15 @@ jobs:
       - name: Test the Cargo workspace
         run: cargo test --workspace --locked
 
-      # The committed JSON Schema must be what the snapshot types generate, so
-      # the TypeScript types and validator built from it match the Rust reader.
-      - name: Check the committed snapshot schema
+      # The committed JSON Schemas must be what the types generate: the snapshot
+      # schema, so the TypeScript types and validator built from it match the
+      # Rust reader, and the transcript schema, so it describes the JSON output.
+      - name: Check the committed schemas
         run: cargo xtask schema --check
 
-  # The model's and the announce crate's tests read the committed captures and their pages from
-  # disk, so they also run where paths, line endings and checkouts differ. Linux runs them in
-  # test-rust.
+  # The model's, the announce crate's and the binary's tests read the committed captures and their
+  # pages from disk, so they also run where paths, line endings and checkouts differ. Linux runs
+  # them in test-rust.
   test-model:
     name: test-model (${{ matrix.os }})
     strategy:
@@ -235,6 +236,9 @@ jobs:
 
       - name: Test the announce crate
         run: cargo test -p spokenpath_announce --locked
+
+      - name: Test the spokenpath-core binary
+        run: cargo test -p spokenpath_cli --locked
 
   test-node:
     name: test-node
@@ -290,6 +294,42 @@ jobs:
       - name: Test Chromium capture
         run: pnpm test:capture
 
+  # The whole pipeline: the spokenpath command captures the sign-in page in the
+  # pinned Chromium and pipes the snapshot to the spokenpath-core binary, and the
+  # transcript must equal its committed golden.
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    # Long enough for the browser, its system dependencies and a cold Rust build.
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install the Rust toolchain
+        run: rustup toolchain install
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+
+      - name: Install the pnpm workspace
+        run: pnpm install --frozen-lockfile
+
+      - name: Install the pinned Chromium
+        run: pnpm --filter @spokenpath/capture-chromium exec playwright-core install --with-deps chromium
+
+      - name: Test the spokenpath command end to end
+        run: pnpm test:e2e
+
   # Scans every commit the pull request adds, so a secret committed without
   # the pre-commit hook (which skips when gitleaks is not installed) still
   # fails the pull request.
@@ -337,7 +377,7 @@ jobs:
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [pr-title, lint, zizmor, release-rules, test-rust, test-model, test-node, test-capture, gitleaks]
+    needs: [pr-title, lint, zizmor, release-rules, test-rust, test-model, test-node, test-capture, e2e, gitleaks]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}

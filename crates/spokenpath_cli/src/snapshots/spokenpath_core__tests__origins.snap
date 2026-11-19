@@ -1,0 +1,72 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Implied and script-created elements"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Implied and script-created elements"
+2    A LayoutTable (internal role) (no accessible name)
+       origins.html:8:1  <table id="table">
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; table-caption (related-element): empty; summary (attribute): empty; title (attribute): empty
+     ~ ""
+3      A LayoutTableRow (internal role) (no accessible name)
+         origins.html:9:1  <tr>
+         no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+       ~ ""
+4        A LayoutTableCell (internal role) "Cell text"
+           origins.html:9:5  <td>
+           name from contents
+           other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+         ~ "Cell text"
+5          A text "Cell text"
+           ~ "Cell text"
+6    A paragraph (no accessible name)
+       origins.html:11:1  <p id="slot">
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+7      A button "Added by script"  focusable
+         no source location: a page script created this element (script)
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "Added by script, button"
+8        A text "Added by script"
+         ~ "Added by script"
+
+Excluded
+  <html>  origins.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  origins.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  origins.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  origins.html:3:1 (computed by tool)
+  <title>  origins.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  origins.html:3:1 (computed by tool)
+  <body>  origins.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <tbody>  no source location: the HTML parser inserted this element (implied)
+    uninteresting (engine reason: uninteresting)
+  <script>  origins.html:12:1  <script>
+    not-rendered (engine reason: notRendered)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [7] button "Added by script"
+
+Tab order
+  1  [7] button "Added by script"
+  2  left the page
+  3  [7] button "Added by script"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

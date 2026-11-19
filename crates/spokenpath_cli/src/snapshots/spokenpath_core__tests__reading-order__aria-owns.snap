@@ -1,0 +1,93 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "aria-owns re-parenting"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "aria-owns re-parenting"
+ 2    A main (no accessible name)
+        aria-owns.html:8:1  <main>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "main"
+ 3      A heading "aria-owns"  level 1
+          aria-owns.html:9:1  <h1>
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "aria-owns, heading, level 1"
+ 4        A text "aria-owns"
+          ~ "aria-owns"
+ 5      A list "Owner list"
+          aria-owns.html:10:1  <ul id="owner" aria-label="Owner list" aria-owns="owned">
+          name from aria-label="Owner list" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Owner list, list"
+ 6        A listitem (no accessible name)  level 1  1 of 3 (computed by tool)
+            aria-owns.html:11:1  <li id="dom-first">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+          ~ "listitem, level 1, 1 of 3"
+ 7          A ListMarker (internal role) "• "
+              no source location: the snapshot's DOM does not hold this node (not-in-dom)
+              name from contents
+            ~ "• "
+ 8          A text "DOM item one"
+            ~ "DOM item one"
+ 9        A listitem (no accessible name)  level 1  2 of 3 (computed by tool)
+            aria-owns.html:12:1  <li id="dom-second">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+          ~ "listitem, level 1, 2 of 3"
+10          A ListMarker (internal role) "• "
+              no source location: the snapshot's DOM does not hold this node (not-in-dom)
+              name from contents
+            ~ "• "
+11          A text "DOM item two"
+            ~ "DOM item two"
+12        A listitem (no accessible name)  level 1  3 of 3 (computed by tool)
+            aria-owns.html:15:1  <div id="owned" role="listitem">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+          ~ "listitem, level 1, 3 of 3"
+13          A text "Owned item, outside the list in the DOM"
+            ~ "Owned item, outside the list in the DOM"
+14      A generic (no accessible name)
+          aria-owns.html:14:1  <div id="original-parent">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+        ~ ""
+15        A paragraph (no accessible name)
+            aria-owns.html:16:1  <p id="left-behind">
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+16          A text "Sibling left behind"
+            ~ "Sibling left behind"
+
+Excluded
+  <html>  aria-owns.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  aria-owns.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  aria-owns.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  aria-owns.html:3:1 (computed by tool)
+  <title>  aria-owns.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  aria-owns.html:3:1 (computed by tool)
+  <body>  aria-owns.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  [3] heading "aria-owns"  level 1
+
+Landmarks
+  [2] main (no accessible name)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

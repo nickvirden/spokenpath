@@ -1,0 +1,68 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Listbox with a selected option"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Listbox with a selected option"
+2    A listbox "Fruit"  focusable
+       listbox.html:8:1  <div id="fruit" role="listbox" aria-label="Fruit" tabindex="0">
+       name from aria-label="Fruit" (attribute)
+       other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+     ~ "Fruit, listbox"
+3      A option "Apple"  1 of 3 (computed by tool)
+         listbox.html:9:1  <div id="apple" role="option" aria-selected="false">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+       ~ "Apple, option, 1 of 3"
+4        A text "Apple"
+         ~ "Apple"
+5      A option "Pear"  selected  2 of 3 (computed by tool)
+         listbox.html:10:1  <div id="pear" role="option" aria-selected="true">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+       ~ "Pear, option, selected, 2 of 3"
+6        A text "Pear"
+         ~ "Pear"
+7      A option "Plum"  3 of 3 (computed by tool)
+         listbox.html:11:1  <div id="plum" role="option" aria-selected="false">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+       ~ "Plum, option, 3 of 3"
+8        A text "Plum"
+         ~ "Plum"
+
+Excluded
+  <html>  listbox.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  listbox.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  listbox.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  listbox.html:3:1 (computed by tool)
+  <title>  listbox.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  listbox.html:3:1 (computed by tool)
+  <body>  listbox.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [2] listbox "Fruit"
+
+Tab order
+  1  [2] listbox "Fruit"
+  2  left the page
+  3  [2] listbox "Fruit"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

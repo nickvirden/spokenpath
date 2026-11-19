@@ -69,15 +69,18 @@ and stops at the first failure:
 | 9 | Every package typechecks | `pnpm typecheck` |
 | 10 | Rust dependencies pass the licence, advisory, source and ban checks | `pnpm deny` |
 | 11 | Rust tests pass | `pnpm test:rust` |
-| 12 | Package tests pass, except Chromium capture | `pnpm test:node` |
+| 12 | Package tests pass, except Chromium capture and the CLI package | `pnpm test:node` |
 | 13 | Chromium capture matches its goldens (needs Setup step 5) | `pnpm test:capture` |
-| 14 | Every manifest carries the same version, and the version script moves them together | `pnpm test:versions` |
+| 14 | The `spokenpath` command matches its end-to-end golden and its JSON validates (needs Setup steps 5 and 6) | `pnpm test:e2e` |
+| 15 | Every manifest carries the same version, and the version script moves them together | `pnpm test:versions` |
 | all | Everything above | `pnpm check` |
 
 `pnpm lint:commits` (`scripts/lint-commits.mjs`) checks the commits between `origin/main` and
 `HEAD`, so fetch first (`git fetch origin`) if `origin/main` is stale. When there are no commits in
 that range, as on `main` itself, it passes without linting anything. When `origin/main` does not
-exist it fails. `pnpm test:release` needs step 4 of Setup, and `pnpm test:capture` needs step 5.
+exist it fails. `pnpm test:release` needs step 4 of Setup, `pnpm test:capture` needs step 5, and
+`pnpm test:e2e` needs steps 5 and 6: it builds the `spokenpath-core` binary, then runs the CLI
+package's tests, which capture pages in Chromium.
 `pnpm lint:biome` only reports; to apply its formatting, run
 `pnpm exec biome check --write <files>`.
 
@@ -88,17 +91,22 @@ gitleaks scan of the pull request's commits.
 
 - `crates/`: the Rust core. `spokenpath_snapshot` (the snapshot contract), `spokenpath_model` (the
   engine-neutral model), `spokenpath_announce` (reading order, navigation and the transcript) and
-  `spokenpath_cli`, which builds the `spokenpath-core` binary.
+  `spokenpath_cli`, which builds the `spokenpath-core` binary and holds the text printer's goldens
+  for every committed capture (`src/snapshots/`).
 - `tasks/xtask`: repository automation, run as `cargo xtask <command>`; `cargo xtask help` lists
   the commands.
 - `packages/`: the TypeScript packages. `@spokenpath/snapshot-types`,
   `@spokenpath/instrument-html` and `@spokenpath/capture-chromium` take the `@spokenpath/*` scope,
-  and the CLI package is `spokenpath`. Every package stays `"private": true` and every crate
+  and the CLI package is `spokenpath` (`packages/cli`, the `pnpm spokenpath` command). The CLI runs
+  `target/debug/spokenpath-core` under the repository root, or `$CARGO_TARGET_DIR/debug/` when
+  that is set, resolved against the root when relative; `pnpm spokenpath` and `pnpm test:e2e`
+  build it first. Every package stays `"private": true` and every crate
   `publish = false` until publishing is switched on.
-- `schema/`: `snapshot.v0.json`, the JSON Schema generated from the `spokenpath_snapshot` types.
-  Regenerate it with `cargo xtask schema`, then the TypeScript types with
-  `pnpm --filter @spokenpath/snapshot-types generate`; never edit either by hand. CI checks both
-  (`cargo xtask schema --check` and a package test).
+- `schema/`: `snapshot.v0.json`, the JSON Schema generated from the `spokenpath_snapshot` types,
+  and `transcript.v0.json`, the JSON Schema of the `--format json` output, generated from the
+  `spokenpath_announce` transcript types. Regenerate both with `cargo xtask schema`, then the
+  TypeScript types with `pnpm --filter @spokenpath/snapshot-types generate`; never edit any of
+  them by hand. CI checks them (`cargo xtask schema --check` and a package test).
 - `fixtures/snapshots/`: valid snapshots that the Rust and TypeScript tests read, with the page
   sources they describe under `pages/`. Every snapshot is hand-written except
   `chromium-from-typescript.json`, the JSON of the typed sample in `@spokenpath/snapshot-types`,
@@ -117,6 +125,10 @@ gitleaks scan of the pull request's commits.
   ([ADR-0007](docs/decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)). The
   `spokenpath_model` tests read every golden in this directory, with its page from
   `fixtures/pages/`, so a new golden is adapted without a test change.
+- `fixtures/transcripts/`: the end-to-end golden, `sign-in.txt`, the text transcript the
+  `spokenpath` command prints for `fixtures/pages/sign-in.html`, with the header's spokenpath
+  version normalised to `0.0.0`. Refresh it with `UPDATE_FIXTURES=1 pnpm test:e2e` and review the
+  diff as drift.
 - `fixtures/pages/torture/`: hostile HTML pages for `@spokenpath/instrument-html`, one parser
   corner per file, each of which it must tag without changing the parsed tree. `rejected/` holds
   pages it must refuse, each named for the error code it raises (`<code>.<case>.html`). The tests
@@ -196,6 +208,8 @@ writer than the one semantic-release bundles and fail mid-release.
 - `GOVERNANCE.md`: who may merge, and how approval could be delegated.
 - `CODE_OF_CONDUCT.md`: the Contributor Covenant that everyone taking part follows.
 - `docs/roadmap.md`: the ordered upcoming work and the later items.
+- `docs/usage.md`: the `spokenpath` and `spokenpath-core` commands, their options and exit codes,
+  the text and JSON output, and the terminal escaping.
 - `docs/snapshot-format.md`: the snapshot fields, span units, version rule and how to regenerate the
   schema and types.
 - `docs/research/`: the research the design rests on, with each claim's verification flag.
