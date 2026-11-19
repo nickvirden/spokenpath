@@ -841,7 +841,23 @@ fn mark_name(name: &mut spokenpath_announce::NameRecord) {
         }
         source.related_nodes.iter_mut().for_each(mark_related);
         match source.outcome {
-            NameSourceOutcome::Used => source.related_nodes.push(marked_idref()),
+            NameSourceOutcome::Used => {
+                source.related_nodes.push(marked_idref());
+                source
+                    .related_nodes
+                    .push(spokenpath_announce::RelatedRecord {
+                        dom: None,
+                        idref: Some("script-made".to_owned()),
+                        text: None,
+                        source: Some(spokenpath_announce::SourceRecord {
+                            class: marked("script"),
+                            path: None,
+                            line: None,
+                            column: None,
+                            start_tag: None,
+                        }),
+                    });
+            }
             NameSourceOutcome::Empty => {
                 source.outcome = NameSourceOutcome::Invalid;
                 source.invalid_reason = Some(MARK.to_owned());
@@ -853,8 +869,9 @@ fn mark_name(name: &mut spokenpath_announce::NameRecord) {
 
 /// The sign-in transcript with the marker in every string the text printer may write, except the
 /// Layer B phrases and the tab-order ending, which the announce crate has already escaped. Every
-/// accessible item gains a value, an `invalid` token and a description, one tab stop loses its
-/// item so it prints as an element, and every span points at [`marked_start_tag`].
+/// accessible item gains a value, an `invalid` token and a description, every winning name source
+/// gains related nodes known only by idref, one tab stop loses its item so it prints as an element
+/// and another cites a text run, and every span points at [`marked_start_tag`].
 fn poisoned_transcript() -> spokenpath_announce::Transcript {
     use spokenpath_announce::{
         DescriptionRecord, DescriptionSourceRecord, LayerA, Marked, Marking, Stop,
@@ -924,8 +941,11 @@ fn poisoned_transcript() -> spokenpath_announce::Transcript {
             if let Some(source) = source {
                 mark_source(source);
             }
-            if index == 1 {
-                *item = None;
+            match index {
+                1 => *item = None,
+                // A stop that cites a text run, which the printer quotes as one.
+                2 => *item = Some(3),
+                _ => {}
             }
         }
     }
@@ -976,6 +996,8 @@ fn every_page_controlled_string_in_the_text_is_escaped() {
         format!("via <label{e}> #{e}  \"Email{e}\"  sign-in.html{e}:10:1"),
         // A related node's idref and text.
         format!("via idref \"{e}\"  \"{e}\"  no source location held"),
+        // A related node whose source is not a span.
+        format!("via idref \"script-made\"  no source location (script{e})"),
         // A description and its element.
         format!("description \"{e}\"  from aria-describedby: <h1{e}> #{e}  \"{e}\""),
         // An excluded element, its kind and engine reason, and its hiding ancestor.
@@ -988,6 +1010,7 @@ fn every_page_controlled_string_in_the_text_is_escaped() {
         format!("[10] button{e} (no accessible name)"),
         // A tab stop cited by item, and one printed as an element.
         format!("1  [7] textbox{e} \"Email{e}\""),
+        format!("3  [3] text \"Sign in{e}\""),
         format!(
             "2  <button{e}> #submit{e}  sign-in.html{e}:14:1  <p title=\"{e}\">  (not an item)"
         ),
