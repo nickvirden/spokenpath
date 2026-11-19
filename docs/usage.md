@@ -29,7 +29,9 @@ and pipes the snapshot to `spokenpath-core transcript -` on stdin, with the page
 binary's stdout and stderr are the command's, unchanged. No temporary file is written. With
 `--cross-check safari` it then captures the page in the Mac's real Safari as well, and pipes that
 snapshot to the binary on an extra pipe, fd 3, named to the binary as `--cross-check /dev/fd/3`
-([Cross-checking against Safari](#cross-checking-against-safari)).
+([Cross-checking against Safari](#cross-checking-against-safari)). The extra pipe is a macOS
+route, where the cross-check runs: macOS reopens it through `/dev/fd/3`, and Linux does not. On
+other systems, give the binary the cross-check snapshot as a file path instead.
 
 | Option | Meaning |
 |---|---|
@@ -257,6 +259,13 @@ not checked in Safari 27.0.1: role and name (more than one element has this tag)
   one element or item has the tag. A field that was not checked is never counted as the same. When
   both fields are not checked for the same reason, one line names both.
 
+A quoted `""` is the engine's own answer: an empty role or an empty name. A field Safari did not
+answer shows as `not checked`, never as `""`. The two engines expose some elements differently, so
+some notes appear on most pages: Chromium's internal roles (marked `(internal role)` on the `A`
+line, such as `LabelText` and `LayoutTable`) and `generic` show as differences against the empty
+role Safari answers, and the names of `option` and `th` elements against the empty name Safari
+answers. The counts say how many items differ, not how well the page does.
+
 In JSON, the top-level `cross_check` holds `engine` (`safari-webdriver`), `engine_version`,
 `safari_build`, `macos_version`, `macos_build`, `compared`, `differs` and `not_checked`. Each
 compared node's `cross_check` holds `role` and `name`, each `{ outcome, safari, chromium }` with
@@ -264,8 +273,16 @@ compared node's `cross_check` holds `role` and `name`, each `{ outcome, safari, 
 `{ error, message }` or the reason `no-safari-element` or `span-not-unique`.
 
 **How it runs.** The page is instrumented exactly as for Chromium and served over HTTP on
-`127.0.0.1`, on a port the OS chooses, for the length of the capture, with a
-Content-Security-Policy that makes Safari block requests to other origins. The command starts
+`127.0.0.1`, on a port the OS chooses, for the length of the capture. A request naming another
+host is refused, and every response carries `Cross-Origin-Resource-Policy: same-origin` and a
+Content-Security-Policy that limits the page's sub-resource loads and form submissions to that
+origin. The policy does not stop top-level navigation (a script setting `location`, a meta
+refresh), resource hints or WebRTC. When the page is no longer on that origin after it settles or
+just before its elements are read, capture fails with `page-left-origin`: the navigation is
+detected, not prevented, so the page may already have made requests to other origins. A call that
+capture cannot do without, such as loading the page, that Safari answers with an error, or a lost
+session (`invalid session id`, `no such window`), fails it with `safari-call-failed`, naming the
+step. The command starts
 `/usr/bin/safaridriver` on a free loopback port, opens one session, loads the page, waits for it to
 settle as Chromium capture does, reads every element's role and label one after another, then
 deletes the session and stops `safaridriver`, on every exit path. Ctrl-C (SIGINT) or SIGTERM during
@@ -295,8 +312,7 @@ hidden page does not settle, so capture fails with `page-hidden`.
 Page text reaches the terminal, so every page-controlled string the text output and the messages
 on stderr print (names, text, values, attribute values, role tokens, descriptions, paths,
 excerpts, Safari's roles, labels, errors and versions, diagnostics and error messages that echo
-input) has these characters written as
-`\u{..}`, the code point in lowercase hexadecimal:
+input) has these characters written as `\u{..}`, the code point in lowercase hexadecimal:
 
 - control characters: C0, DEL and C1, including ESC (`\u{1b}`) and the CSI introducer U+009B, so
   ANSI escape sequences cannot reach the terminal;

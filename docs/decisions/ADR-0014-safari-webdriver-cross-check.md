@@ -89,14 +89,25 @@ never pass as agreement.
    --cross-check safari` captures in Chromium, then in Safari, and runs the binary with the
    Chromium snapshot on stdin and the Safari snapshot on an extra pipe at fd 3, named to the binary
    as `/dev/fd/3`. No temporary file is written, and the binary still opens only the files named
-   on its command line.
+   on its command line. The route is a macOS one, where the cross-check runs: Node gives the child a
+   socket on fd 3, which macOS reopens through `/dev/fd/3` and Linux refuses to open by path. On
+   other systems the binary takes the cross-check snapshot as a file path, which is how the tests
+   that run in CI on Linux feed it. Covering the fd-3 route on Linux would need framing on stdin,
+   which stays rejected (see Rejected alternatives).
 9. **Loopback serving with a Content-Security-Policy.** WebDriver cannot intercept requests, so
    Safari capture serves the instrumented page, which carries no class token, over HTTP on
    `127.0.0.1` on a port the OS chooses, for the length of the capture. Every response carries a
-   Content-Security-Policy that limits loads to the page's own origin while allowing inline and
-   `data:`/`blob:` content, so pages behave as they do under Chromium capture, where requests to
-   other origins are aborted. A request naming another host is refused. Blocked requests are not
-   recorded as diagnostics; the Chromium snapshot of the same run records them.
+   Content-Security-Policy that limits sub-resource loads and form submission to the page's own
+   origin while allowing inline and `data:`/`blob:` content, so pages behave as they do under
+   Chromium capture, where requests to other origins are aborted, and
+   `Cross-Origin-Resource-Policy: same-origin`, so a page on another origin cannot embed what the
+   server answers. A request naming another host is refused with 421. Blocked requests are not
+   recorded as diagnostics; the Chromium snapshot of the same run records them. The policy does not
+   stop top-level navigation (a script setting `location`, a meta refresh), resource hints or
+   WebRTC, so this is weaker than Chromium capture's interception. Capture reads the page's origin
+   after it settles and again just before it reads the elements, and fails with `page-left-origin`
+   when the page is no longer on the served origin: the navigation is detected, not prevented, and
+   the request the page made has already gone out.
 10. **When Safari capture fails as a whole, there is no transcript.** A refused session, a missing
     `safaridriver`, a timeout or a hidden page (a locked or sleeping Mac) makes the command print
     `spokenpath: <code>: <message>` and exit 1, because a transcript printed without the

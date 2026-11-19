@@ -244,9 +244,12 @@ Chromium capture, with the same 404 and `asset-not-found` diagnostic, except Saf
 for `/favicon.ico`, which gets a 404 and no diagnostic. A request naming another host gets 421.
 Every response carries the Content-Security-Policy
 `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; form-action 'self'; base-uri 'self'`,
-which limits loads to the page's origin, so Safari blocks requests to other origins, as Chromium
-capture aborts them; blocked requests are not recorded as diagnostics. The server is closed on
-every exit path.
+which limits sub-resource loads and form submission to the page's origin, as Chromium capture
+aborts requests to other origins, and `Cross-Origin-Resource-Policy: same-origin`. Blocked requests
+are not recorded as diagnostics. The policy does not stop top-level navigation, resource hints or
+WebRTC; capture reads the page's origin after settling and again before Find Elements, and fails
+with `page-left-origin` when it is not the served one, which detects the navigation without
+preventing it. The server is closed on every exit path.
 
 **Driving Safari.** Capture runs `/usr/bin/safaridriver --port <n>` on a free loopback port, with
 an argument array and no shell, opens one session (`browserName: safari`), sets the window so the
@@ -255,7 +258,10 @@ viewport is 1280 × 720 where the screen allows, and loads the page. It never ru
 Chromium capture (`load-fonts-frames`, or `load-selector-fonts-frames` with `waitFor`), then runs
 Find Elements for `[data-spokenpath-src]` and, for each element in turn, Get Element Attribute,
 Get Computed Role and Get Computed Label. A WebDriver error answering a role or label call is
-recorded in `role_error` or `label_error`, and capture continues. Every request has a deadline:
+recorded in `role_error` or `label_error`, and capture continues, except `invalid session id` and
+`no such window`, which mean the session is lost and fail the capture with `safari-call-failed`.
+An error answering a call capture cannot do without, such as loading the page, settling it or
+Find Elements, fails it the same way, naming the step. Every request has a deadline:
 `timeoutMs` (30 000 by default) bounds each call, and Safari's own page-load and script limits are
 set to the same value, so a call that gets no answer fails the capture with `timeout`. The session
 is deleted and `safaridriver` stopped on success, on any error, and on SIGINT or SIGTERM, after
