@@ -722,7 +722,7 @@
           "type": "object"
         },
         {
-          "description": "A `CFNumber`, integer or floating point as Safari delivered it.",
+          "description": "A `CFNumber`, integer or floating point as the helper reads it. A snapshot written by\ncapture holds a whole-valued float as an integer, because capture parses the helper's\noutput in JavaScript.",
           "properties": {
             "type": {
               "const": "number",
@@ -873,7 +873,7 @@
           "type": "object"
         },
         {
-          "description": "An `AXValue` holding a `CFRange`. The integers are kept exactly as JSON numbers, which\nJavaScript reads exactly only up to 2^53, as for `NSNotFound` in `location`.",
+          "description": "An `AXValue` holding a `CFRange`, as JSON integers. The helper writes them exactly, and the\nRust reader reads them exactly; a snapshot written by capture holds an integer beyond 2^53,\nsuch as `NSNotFound` in `location`, rounded, because capture parses the helper's output in\nJavaScript.",
           "properties": {
             "length": {
               "type": "number"

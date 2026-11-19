@@ -416,7 +416,9 @@ pub enum SafariAxValue {
     String { value: String },
     /// A `CFBoolean`.
     Boolean { value: bool },
-    /// A `CFNumber`, integer or floating point as Safari delivered it.
+    /// A `CFNumber`, integer or floating point as the helper reads it. A snapshot written by
+    /// capture holds a whole-valued float as an integer, because capture parses the helper's
+    /// output in JavaScript.
     Number { value: serde_json::Number },
     /// A `CFURL`, as its absolute string.
     Url { value: String },
@@ -439,8 +441,10 @@ pub enum SafariAxValue {
         width: f64,
         height: f64,
     },
-    /// An `AXValue` holding a `CFRange`. The integers are kept exactly as JSON numbers, which
-    /// JavaScript reads exactly only up to 2^53, as for `NSNotFound` in `location`.
+    /// An `AXValue` holding a `CFRange`, as JSON integers. The helper writes them exactly, and the
+    /// Rust reader reads them exactly; a snapshot written by capture holds an integer beyond 2^53,
+    /// such as `NSNotFound` in `location`, rounded, because capture parses the helper's output in
+    /// JavaScript.
     Range {
         location: serde_json::Number,
         length: serde_json::Number,
@@ -1593,6 +1597,52 @@ mod tests {
         assert_eq!(types.len(), 13, "{types:?}");
         assert!(payload.nodes.iter().any(|node| node.span.is_some()));
         assert_eq!(payload.nodes[0].parent, None);
+    }
+
+    /// Every `.json` file under `directory`, recursively, as paths relative to it.
+    fn json_files_under(directory: &Path) -> Vec<PathBuf> {
+        let mut found = Vec::new();
+        let mut pending = vec![directory.to_path_buf()];
+        while let Some(current) = pending.pop() {
+            for entry in std::fs::read_dir(&current)
+                .unwrap_or_else(|error| panic!("{} is readable: {error}", current.display()))
+            {
+                let path = entry.expect("directory entry").path();
+                if path.is_dir() {
+                    pending.push(path);
+                } else if path
+                    .extension()
+                    .is_some_and(|extension| extension == "json")
+                {
+                    found.push(path);
+                }
+            }
+        }
+        found.sort();
+        found
+    }
+
+    #[test]
+    fn every_committed_safari_ax_golden_reads() {
+        let goldens = json_files_under(&fixtures_directory().join("safari-ax"));
+        let snapshots: Vec<&PathBuf> = goldens
+            .iter()
+            .filter(|path| {
+                path.file_name()
+                    .is_some_and(|name| name != "source-mapping.json")
+            })
+            .collect();
+        assert!(snapshots.len() > 1, "{goldens:?}");
+        for path in snapshots {
+            let text = std::fs::read_to_string(path)
+                .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
+            let snapshot =
+                read(&text).unwrap_or_else(|error| panic!("{} reads: {error}", path.display()));
+            let Payload::SafariAx(payload) = &snapshot.payload else {
+                panic!("{} is a Safari AX snapshot", path.display());
+            };
+            assert!(!payload.nodes.is_empty(), "{} has nodes", path.display());
+        }
     }
 
     #[test]
