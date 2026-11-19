@@ -55,13 +55,18 @@ the Accessibility permission of the app that starts it, and that permission can 
 interface. The helper limits itself to Safari's automation window. It reads through Safari's
 application element only: it never creates the system-wide element or an element for any other
 process, and it fails when more than one Safari process runs. From Safari's window list it reads
-only each window's top-level title, and position and size for a window whose title matches,
-compared without being copied out, and it descends only into the single window whose title and
-rect are the automation window's, as WebDriver reports them. Inside it, it reads only the single
-web area whose URL is exactly the one capture served, nonce included, and checks that URL again
-after the walk. Anything else fails with `safari-window-not-identified`, nothing is read, and no
-message quotes another window. It never sets an attribute and never prompts for the permission. It
-accepts only URLs on `127.0.0.1`.
+only each window's top-level `AXTitle`, compared with the page's title without being copied out,
+and, for a window whose title matches, its `AXPosition` and `AXSize`. It descends only into the
+single window whose title and rect are the automation window's, as WebDriver reports them. Inside
+that window it reads `AXRole` and `AXChildren` of the elements of the window's own interface, and
+`AXURL` of each web area it finds there, to pick the single web area whose URL is exactly the one
+capture served, nonce included; only that web area's tree is output, and its URL is checked again
+after the walk. Anything else fails with `safari-window-not-identified`, nothing is output, and no
+message quotes another window. A page without a title is refused before the helper runs at all. It
+never sets an attribute and never prompts for the permission. It accepts only URLs on
+`127.0.0.1`. Capture runs it from the fixed path `target/debug/spokenpath-ax-macos` under the
+repository, or under `$CARGO_TARGET_DIR/debug/`, and it runs with the Accessibility permission of
+the app that started the capture, such as the terminal.
 
 The tree is recorded raw: its attributes hold the page's text, titles, values and URLs, as the
 DOM does, so treat a `safari-ax` snapshot like any other snapshot of the page (see "Sensitive

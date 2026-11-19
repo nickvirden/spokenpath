@@ -131,19 +131,20 @@ Each value is tagged by `type`, after its Core Foundation type:
 |---|---|---|
 | `string` | `value` | A `CFString`; unpaired UTF-16 surrogates become U+FFFD. |
 | `boolean` | `value` | A `CFBoolean`. |
-| `number` | `value` | A `CFNumber`, integer or floating point as Safari stores it. |
+| `number` | `value` | A `CFNumber`, integer or floating point as the helper reads it. A snapshot written by capture holds a whole-valued float as an integer, because capture parses the helper's output in JavaScript. |
 | `url` | `value` | A `CFURL`, as its absolute string. |
 | `array` | `items` | A `CFArray`, each item encoded the same way. |
 | `element` | `node?` | An `AXUIElement`: the `id` of the recorded node that is the same element (`CFEqual`), or no field at all for an element outside the recorded tree, such as the window, whose data is never recorded. |
 | `point` | `x`, `y` | An `AXValue` holding a `CGPoint`. |
 | `size` | `width`, `height` | An `AXValue` holding a `CGSize`. |
 | `rect` | `x`, `y`, `width`, `height` | An `AXValue` holding a `CGRect`. |
-| `range` | `location`, `length` | An `AXValue` holding a `CFRange`, as exact integers; `NSNotFound` is beyond what JavaScript reads exactly. |
+| `range` | `location`, `length` | An `AXValue` holding a `CFRange`, as integers. The helper writes them exactly and the Rust reader reads them exactly, but a snapshot written by capture holds an integer beyond 2^53, such as `NSNotFound` in `location`, rounded, because capture parses the helper's output in JavaScript. |
 | `unsupported` | `cf_type` | Any other type, by its `CFCopyTypeIDDescription`, such as `AXTextMarker`. |
 | `error` | `code` | Reading the attribute failed with this `AXError`, such as `-25212` (no value). |
 
 Parameterized attributes and actions are not read, and text-marker contents are not decoded. The
-values stay as Safari delivered them, source class tokens included. The payload has no fields for
+values stay as the helper read them, source class tokens included, within the JavaScript limits on
+numbers above. The payload has no fields for
 name provenance or exclusion reasons, because the platform does not provide them.
 
 The Rust reader rejects a node whose `id` is not its index, and a `parent`, `children` entry or
@@ -350,12 +351,21 @@ yet.
 **Serving.** The page is instrumented with `classToken: true`: every tagged start tag also gets
 the class token `sp-src-<line>-<column>`, added to its first `class` or in a new one, so the
 source location reaches `AXDOMClassList`, which exposes the class list but no other attribute.
-It is served as Safari WebDriver capture serves a page, at
+Every tagged element's class therefore changes, so a style or script selector that matches a whole
+`class` value or an element without a class (`[class="gone"]`, `:not([class])`) sees a different
+page than the author wrote; [ADR-0009](decisions/ADR-0009-safari-capture-route-and-source-locations.md)
+accepts this for the class-token carrier. It is served as Safari WebDriver capture serves a page, at
 `http://127.0.0.1:<port>/<file name>?spokenpath-nonce=<nonce>`, where the nonce is 32 lowercase
 hex characters from 16 random bytes, new for each capture, so a window left over from an earlier
 run cannot match. `capture.url` is that exact URL.
 
-**The check page.** Before the page, capture serves the helper's check page (`spokenpath-ax-macos
+**The title.** The helper identifies the automation window by the page's title and the window's
+rect, so the page needs a non-empty `<title>`. Capture loads the page once first and reads its
+title with WebDriver Get Title, which collapses whitespace; when it is empty, capture fails with
+`safari-window-not-identified` before the helper runs, and the helper reads nothing. The title is
+compared with each window's `AXTitle` as WebDriver reports it.
+
+**The check page.** Next, capture serves the helper's check page (`spokenpath-ax-macos
 canary-page`) on a second server with its own nonce, loads and settles it in the same session,
 and runs the helper on it with `--canary`. The check page has 3 elements, each with one check
 token, `sp-canary-1` to `sp-canary-3`. All 3 in the tree is a usable read; none, while the
@@ -363,7 +373,7 @@ process is trusted and the screen unlocked, is `accessibility-permission-missing
 can answer an untrusted process with an empty tree rather than an error; 1 or 2 is
 `ax-canary-incomplete`.
 
-**The page.** Capture loads and settles the page, measures it, reads its title and the window's
+**The page.** Capture loads and settles the page again, measures it, reads its title and the window's
 rect over WebDriver, and runs the helper, which identifies the automation window by that title
 and rect and the web area by the exact URL ([ADR-0015](decisions/ADR-0015-safari-ax-tree-capture.md)).
 It reads the page's visibility again after the helper returns and fails with `page-hidden` when it
@@ -379,7 +389,7 @@ deleted.
 | `accessibility-permission-missing` | macOS reports the process untrusted, refuses a request with `kAXErrorAPIDisabled`, or the check page's tree is empty. The message names the signal that fired and how to grant the permission. |
 | `ax-canary-incomplete` | The check page's tree has some but not all of its check nodes. |
 | `safari-not-running` | No single Safari process runs in the user's session. |
-| `safari-window-not-identified` | No single window has the page's title and the automation window's rect, or no single web area in it is at the exact URL. Nothing is read, and the message quotes nothing from any window. |
+| `safari-window-not-identified` | The page has no title, or no single window has the page's title and the automation window's rect, or no single web area in it is at the exact URL. Nothing is output, and the message quotes nothing from any window. |
 | `ax-tree-too-large` | The tree has more than 50 000 nodes, or the helper printed more than 32 MiB. |
 | `ax-helper-not-found` | The helper is not built; the message names `cargo build -p spokenpath_ax_macos`. |
 | `ax-helper-failed` | The helper failed with a code capture does not map, or printed something other than its documented JSON; the message quotes the start of its stderr, escaped. |

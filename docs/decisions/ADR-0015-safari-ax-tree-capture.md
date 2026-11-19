@@ -80,11 +80,15 @@ Window Rect.
    it reads only each window's top-level `AXTitle`, compared with the page's title by `CFEqual`
    without being copied out, and for a window with that title its `AXPosition` and `AXSize`,
    compared with the window rect within half a point. Exactly one window must match; only then
-   does it descend, through that window's own interface without entering any web area, to the
-   web areas, and exactly one must have an `AXURL` equal to `--url` character for character,
-   nonce included. Every other case is `safari-window-not-identified`, nothing is recorded, and
-   no message quotes anything read from a window. Capture passes the title and rect from WebDriver
-   Get Title and Get Window Rect, read just before the helper runs. The web area's `AXURL` is read
+   does it descend, reading `AXRole` and `AXChildren` of that window's own interface without
+   entering any web area, to the web areas, reading each one's `AXURL`, and exactly one must have
+   an `AXURL` equal to `--url` character for character, nonce included. Only that web area's tree
+   is output. Every other case is `safari-window-not-identified`, nothing is recorded, and no
+   message quotes anything read from a window. Capture passes the title and rect from WebDriver
+   Get Title, which collapses whitespace, and Get Window Rect, read just before the helper runs;
+   the title is compared as WebDriver reports it. A page whose title is empty is refused with
+   `safari-window-not-identified` after one load, before the helper runs at all, so the page
+   needs a non-empty `<title>`. The web area's `AXURL` is read
    again after the walk; a change is `page-left-origin`. `--url` must be an http URL on
    `127.0.0.1`.
 4. **Permission and lock checks, before any tree read.** `AXIsProcessTrusted()` false, or
@@ -93,7 +97,7 @@ Window Rect.
    is read before and after the read, and a locked screen is `screen-locked`, which capture
    reports as `page-hidden`. The permission message is a reason clause for the signal that fired
    followed by one how-to clause, and claims no cause the helper did not observe.
-5. **The check page and its outcomes.** Before the page, capture loads the helper's check page,
+5. **The check page and its outcomes.** Before the page is read, capture loads the helper's check page,
    whose 3 elements each carry one token `sp-canary-1` to `sp-canary-3`, in the same session with
    its own nonce, settles it and runs `read --canary`. All 3 tokens in an `AXDOMClassList` is a
    usable read. None, once the process is trusted and the screen unlocked, is
@@ -148,8 +152,14 @@ Window Rect.
   attribute but the display-dependent ones, so they also catch changes in what Safari reports.
   The Mac's appearance was not varied while the normalisation list was drawn up, because that is
   a setting of the maintainer's Mac.
-- Range integers beyond 2^53, such as `NSNotFound`, are exact in Rust and approximate in a
-  JavaScript reader.
+- The helper writes numbers exactly and the Rust reader reads them exactly, but capture parses the
+  helper's output in JavaScript, so a snapshot written by capture holds a whole-valued float as an
+  integer and a range integer beyond 2^53, such as `NSNotFound`, rounded.
+- A page needs a non-empty `<title>`; an untitled page is refused before anything is read.
+- Class-token mode changes every tagged element's class, so a selector that matches a whole
+  `class` value or an element without a class (`[class="gone"]`, `:not([class])`) sees a different
+  page; [ADR-0009](ADR-0009-safari-capture-route-and-source-locations.md) accepts this for the
+  class-token carrier.
 - The `safari-ax` adapter, role mapping and per-engine transcripts are the next step.
   `spokenpath-core` keeps rejecting a `safari-ax` snapshot until then.
 - The 18 spans no Safari node carries although Chromium exposes them are listed with the figure,
@@ -165,6 +175,10 @@ Window Rect.
 - **The window's `AXDocument`.** Safari reports it with no value, so it cannot pick the window.
 - **Walking every window to find the web area, as the probe did.** It reads other windows'
   interfaces, which the read scope forbids.
+- **Identifying an untitled page's window by its rect alone.** It drops the title pre-filter that
+  keeps the helper out of unrelated windows: the helper would read the position and size of every
+  window and descend into any one with a matching rect, reading a user's own window's interface
+  before the URL check rejects it. It would need its own security review.
 - **Safari's attribute names kept in their order beside the values.** The order carries no meaning
   in the API, and a keyed object is stable for goldens and lossless for every value.
 - **`objc2` crates for the Objective-C and Core Foundation calls.** They add pinned dependencies to

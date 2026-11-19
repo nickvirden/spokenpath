@@ -17,9 +17,11 @@
 //! error, 3 when the Accessibility permission is missing, and 1 for any other failure.
 //!
 //! The helper reads only through Safari's application element: never the system-wide element or
-//! another process, never the interface of a window other than the one identified, and it never
-//! sets an attribute or prompts for the permission. Off macOS, `read` fails with
-//! `unsupported-platform`.
+//! another process. Of each window it reads only `AXTitle`, and `AXPosition` and `AXSize` of a
+//! window whose title matches. Inside the identified window it reads `AXRole` and `AXChildren` of
+//! the window's own interface and `AXURL` of each web area there, and outputs only the tree of the
+//! single web area at the exact URL. It never sets an attribute or prompts for the permission.
+//! Off macOS, `read` fails with `unsupported-platform`.
 
 use std::io::Write;
 use std::process::ExitCode;

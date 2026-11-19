@@ -334,6 +334,10 @@ capture cannot read the tree it fails with one of these codes:
   the tree cannot be relied on. Run the capture again, and if it repeats, report it with the
   Safari and macOS versions.
 
+The helper identifies Safari's automation window by the page's title, so a page needs a non-empty
+`<title>`. A page without one fails with `safari-window-not-identified` before the helper reads
+anything.
+
 Keep the Mac awake and unlocked for the whole run, as for every Safari capture.
 
 ## Terminal escaping
