@@ -52,3 +52,4 @@ add the new ADR to the index. Fixing a typo or a broken link in an accepted ADR 
 | [ADR-0010](ADR-0010-voiceover-capture-feasibility-and-corpus.md) | VoiceOver capture feasibility and the speech corpus | Accepted |
 | [ADR-0011](ADR-0011-snapshot-format-and-versioning.md) | Snapshot format and versioning | Accepted |
 | [ADR-0012](ADR-0012-chromium-protocol-behaviours-and-hidden-content-names.md) | Chromium protocol behaviours and the hidden-content rule for names | Accepted |
+| [ADR-0013](ADR-0013-command-line-tool-and-transcript-output.md) | The command-line tool and the transcript output | Accepted |
