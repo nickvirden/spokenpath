@@ -337,9 +337,68 @@ export interface FocusStep {
   node?: number;
 }
 /**
- * The Safari payload captured through `WebDriver`. Its contents are added in later minor versions.
+ * What Safari answers over `WebDriver` for the page's tagged elements: the computed role and the
+ * computed label of each, with the Safari and macOS builds that answered. Minor version 1 adds
+ * every field; a minor-0 payload has none and reads with no elements and no versions.
  */
-export interface SafariWebdriverPayload {}
+export interface SafariWebdriverPayload {
+  /**
+   * One entry per element in Safari's DOM whose `data-spokenpath-src` value names a span, in
+   * document order.
+   */
+  elements?: SafariElement[];
+  /**
+   * The macOS build version, from `sw_vers`.
+   */
+  macos_build?: string;
+  /**
+   * The macOS product version, from `sw_vers`.
+   */
+  macos_version?: string;
+  /**
+   * Safari's `CFBundleVersion`.
+   */
+  safari_build?: string;
+}
+/**
+ * Safari's answers for one tagged element. Exactly one of `role` and `role_error` is present, and
+ * exactly one of `label` and `label_error`.
+ */
+export interface SafariElement {
+  /**
+   * The Get Computed Label answer, possibly empty.
+   */
+  label?: string;
+  /**
+   * The error Get Computed Label answered with instead of a label.
+   */
+  label_error?: WebdriverError;
+  /**
+   * The Get Computed Role answer, possibly empty.
+   */
+  role?: string;
+  /**
+   * The error Get Computed Role answered with instead of a role.
+   */
+  role_error?: WebdriverError;
+  /**
+   * The `id` of the span the element's `data-spokenpath-src` names.
+   */
+  span: number;
+}
+/**
+ * A `WebDriver` error response, as the browser returned it, without its stack trace.
+ */
+export interface WebdriverError {
+  /**
+   * The `WebDriver` error code, such as `unknown error`.
+   */
+  error: string;
+  /**
+   * The message, possibly empty.
+   */
+  message: string;
+}
 /**
  * The Safari payload captured from the macOS accessibility tree. Its contents are added in later
  * minor versions.

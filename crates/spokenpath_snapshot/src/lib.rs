@@ -8,6 +8,7 @@
 //! `schema/snapshot.v0.json`.
 
 use std::borrow::Cow;
+use std::collections::BTreeSet;
 use std::fmt;
 
 use schemars::{JsonSchema, Schema, SchemaGenerator, json_schema};
@@ -21,10 +22,12 @@ pub const SCHEMA_ID: &str = "spokenpath-snapshot";
 /// The one major version this reader reads.
 pub const SUPPORTED_MAJOR: u32 = 0;
 
-/// The version writers of this release put in `version`.
+/// The newest version this release defines. Each writer writes the lowest minor version that
+/// defines every field it writes, so a writer whose payload uses no field added since minor 0 keeps
+/// writing minor 0.
 pub const CURRENT_VERSION: Version = Version {
     major: SUPPORTED_MAJOR,
-    minor: 0,
+    minor: 1,
 };
 
 /// One capture of one page in one engine: the envelope that every engine shares, plus the
@@ -279,9 +282,90 @@ impl Payload {
     }
 }
 
-/// The Safari payload captured through `WebDriver`. Its contents are added in later minor versions.
+/// What Safari answers over `WebDriver` for the page's tagged elements: the computed role and the
+/// computed label of each, with the Safari and macOS builds that answered. Minor version 1 adds
+/// every field; a minor-0 payload has none and reads with no elements and no versions.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
-pub struct SafariWebdriverPayload {}
+pub struct SafariWebdriverPayload {
+    /// One entry per element in Safari's DOM whose `data-spokenpath-src` value names a span, in
+    /// document order.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub elements: Vec<SafariElement>,
+    /// Safari's `CFBundleVersion`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub safari_build: Option<String>,
+    /// The macOS product version, from `sw_vers`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub macos_version: Option<String>,
+    /// The macOS build version, from `sw_vers`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub macos_build: Option<String>,
+}
+
+/// Safari's answers for one tagged element. Exactly one of `role` and `role_error` is present, and
+/// exactly one of `label` and `label_error`.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+pub struct SafariElement {
+    /// The `id` of the span the element's `data-spokenpath-src` names.
+    pub span: u32,
+    /// The Get Computed Role answer, possibly empty.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub role: Option<String>,
+    /// The error Get Computed Role answered with instead of a role.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub role_error: Option<WebdriverError>,
+    /// The Get Computed Label answer, possibly empty.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
+    /// The error Get Computed Label answered with instead of a label.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label_error: Option<WebdriverError>,
+}
+
+/// One answer to a `WebDriver` call: the value, or the error the browser answered with.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum WebdriverAnswer<'a> {
+    /// The value the call returned.
+    Value(&'a str),
+    /// The error the call returned instead.
+    Error(&'a WebdriverError),
+}
+
+impl SafariElement {
+    /// The Get Computed Role answer, or `None` when the entry holds both or neither of `role` and
+    /// `role_error`, which [`read`] rejects.
+    #[must_use]
+    pub fn role_answer(&self) -> Option<WebdriverAnswer<'_>> {
+        answer(self.role.as_deref(), self.role_error.as_ref())
+    }
+
+    /// The Get Computed Label answer, or `None` when the entry holds both or neither of `label`
+    /// and `label_error`, which [`read`] rejects.
+    #[must_use]
+    pub fn label_answer(&self) -> Option<WebdriverAnswer<'_>> {
+        answer(self.label.as_deref(), self.label_error.as_ref())
+    }
+}
+
+fn answer<'a>(
+    value: Option<&'a str>,
+    error: Option<&'a WebdriverError>,
+) -> Option<WebdriverAnswer<'a>> {
+    match (value, error) {
+        (Some(value), None) => Some(WebdriverAnswer::Value(value)),
+        (None, Some(error)) => Some(WebdriverAnswer::Error(error)),
+        _ => None,
+    }
+}
+
+/// A `WebDriver` error response, as the browser returned it, without its stack trace.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+pub struct WebdriverError {
+    /// The `WebDriver` error code, such as `unknown error`.
+    pub error: String,
+    /// The message, possibly empty.
+    pub message: String,
+}
 
 /// The Safari payload captured from the macOS accessibility tree. Its contents are added in later
 /// minor versions.
@@ -680,7 +764,11 @@ pub fn read(json: &str) -> Result<Snapshot, ReadError> {
     let body = value.get("payload").unwrap_or(&Value::Null);
     let payload = match engine {
         Engine::Chromium => Payload::Chromium(deserialize_at("payload", body)?),
-        Engine::SafariWebdriver => Payload::SafariWebdriver(deserialize_at("payload", body)?),
+        Engine::SafariWebdriver => {
+            let payload: SafariWebdriverPayload = deserialize_at("payload", body)?;
+            check_safari_elements(&payload, &envelope.spans)?;
+            Payload::SafariWebdriver(payload)
+        }
         Engine::SafariAx => Payload::SafariAx(deserialize_at("payload", body)?),
     };
     Ok(Snapshot {
@@ -694,6 +782,37 @@ pub fn read(json: &str) -> Result<Snapshot, ReadError> {
         diagnostics: envelope.diagnostics,
         payload,
     })
+}
+
+/// Rejects a Safari element that holds both or neither of an answer and its error, or whose span
+/// is not in `spans`.
+fn check_safari_elements(
+    payload: &SafariWebdriverPayload,
+    spans: &[Span],
+) -> Result<(), ReadError> {
+    let span_ids: BTreeSet<u32> = spans.iter().map(|span| span.id).collect();
+    for (index, element) in payload.elements.iter().enumerate() {
+        let path = format!("payload.elements[{index}]");
+        if element.role_answer().is_none() {
+            return Err(ReadError::Field {
+                path,
+                message: "expected exactly one of `role` and `role_error`".to_owned(),
+            });
+        }
+        if element.label_answer().is_none() {
+            return Err(ReadError::Field {
+                path,
+                message: "expected exactly one of `label` and `label_error`".to_owned(),
+            });
+        }
+        if !span_ids.contains(&element.span) {
+            return Err(ReadError::Field {
+                path: format!("{path}.span"),
+                message: format!("no span has the id {}", element.span),
+            });
+        }
+    }
+    Ok(())
 }
 
 /// Deserialises `value`, which sits at `prefix` in the snapshot, reporting a failure with its full
@@ -818,7 +937,9 @@ mod tests {
 
     use serde_json::{Value, json};
 
-    use super::{CURRENT_VERSION, Engine, Payload, ReadError, SCHEMA_ID, json_schema, read};
+    use super::{
+        CURRENT_VERSION, Engine, Payload, ReadError, SCHEMA_ID, WebdriverAnswer, json_schema, read,
+    };
 
     fn fixtures_directory() -> PathBuf {
         Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/snapshots")
@@ -882,8 +1003,8 @@ mod tests {
     }
 
     #[test]
-    fn current_version_is_zero_zero() {
-        assert_eq!((CURRENT_VERSION.major, CURRENT_VERSION.minor), (0, 0));
+    fn current_version_is_zero_one() {
+        assert_eq!((CURRENT_VERSION.major, CURRENT_VERSION.minor), (0, 1));
         assert_eq!(SCHEMA_ID, "spokenpath-snapshot");
     }
 
@@ -1164,6 +1285,102 @@ mod tests {
             assert!(!matches!(snapshot.payload, Payload::Chromium(_)));
             assert_eq!(serde_json::to_value(&snapshot).expect("serialises"), value);
         }
+    }
+
+    /// `chromium-basic.json` as a minor-1 Safari `WebDriver` snapshot whose elements are `elements`.
+    fn safari_with(elements: &Value) -> Value {
+        let mut value = basic();
+        value["version"]["minor"] = json!(1);
+        value["capture"]["engine"] = json!("safari-webdriver");
+        value["payload"] = json!({
+            "engine": "safari-webdriver",
+            "elements": elements,
+            "safari_build": "22625.1.29.11.28",
+            "macos_version": "27.0.1",
+            "macos_build": "26A434",
+        });
+        value
+    }
+
+    #[test]
+    fn safari_elements_with_answers_and_errors_read_and_round_trip() {
+        let value = safari_with(&json!([
+            { "span": 1, "role": "heading", "label": "" },
+            {
+                "span": 2,
+                "role_error": { "error": "unknown error", "message": "" },
+                "label": "Email",
+            },
+        ]));
+        let snapshot = read_value(&value).expect("a Safari snapshot reads");
+        let Payload::SafariWebdriver(payload) = &snapshot.payload else {
+            panic!("a Safari payload: {:?}", snapshot.payload);
+        };
+        assert_eq!(payload.elements.len(), 2);
+        assert_eq!(
+            payload.elements[0].role_answer(),
+            Some(WebdriverAnswer::Value("heading"))
+        );
+        assert!(matches!(
+            payload.elements[1].role_answer(),
+            Some(WebdriverAnswer::Error(error)) if error.error == "unknown error"
+        ));
+        assert_eq!(payload.macos_build.as_deref(), Some("26A434"));
+        assert_eq!(serde_json::to_value(&snapshot).expect("serialises"), value);
+    }
+
+    #[test]
+    fn safari_element_with_both_or_neither_answer_names_its_entry() {
+        let error = json!({ "error": "unknown error", "message": "" });
+        for (element, says) in [
+            (
+                json!({ "span": 1, "label": "x" }),
+                "`role` and `role_error`",
+            ),
+            (
+                json!({ "span": 1, "role": "x", "role_error": error, "label": "x" }),
+                "`role` and `role_error`",
+            ),
+            (
+                json!({ "span": 1, "role": "x" }),
+                "`label` and `label_error`",
+            ),
+            (
+                json!({ "span": 1, "role": "x", "label": "x", "label_error": error }),
+                "`label` and `label_error`",
+            ),
+        ] {
+            let value = safari_with(&json!([{ "span": 0, "role": "", "label": "" }, element]));
+            let message = read_value(&value)
+                .expect_err("an ambiguous entry is rejected")
+                .to_string();
+            assert!(
+                message.starts_with(
+                    "invalid snapshot at `payload.elements[1]`: expected exactly one of "
+                ),
+                "{message}"
+            );
+            assert!(message.contains(says), "{message}");
+        }
+    }
+
+    #[test]
+    fn safari_element_naming_no_span_is_rejected() {
+        let value = safari_with(&json!([{ "span": 99, "role": "", "label": "" }]));
+        let error = read_value(&value).expect_err("an unknown span is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.elements[0].span`: no span has the id 99");
+    }
+
+    #[test]
+    fn malformed_safari_error_names_its_path() {
+        let value = safari_with(&json!([{ "span": 0, "role_error": { "error": 3 }, "label": "" }]));
+        let error = read_value(&value).expect_err("a numeric error code is rejected");
+        assert!(
+            error
+                .to_string()
+                .contains("`payload.elements[0].role_error.error`"),
+            "{error}"
+        );
     }
 
     #[test]
