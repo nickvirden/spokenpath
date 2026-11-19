@@ -238,7 +238,8 @@ function callFailed(what: string, error: WebDriverError): CaptureError {
 /**
  * Fails the capture when the page is no longer on the origin capture served it on: a page can
  * navigate itself away, which the Content-Security-Policy does not stop, and the elements read
- * would then be another page's.
+ * would then be another page's. This catches a navigation that has finished between two calls;
+ * one still under way when a script runs ends that script instead (see `runInPage`).
  */
 function requireServedOrigin(origin: unknown, servedOrigin: string, before: string): void {
   if (origin !== servedOrigin) {
@@ -249,6 +250,59 @@ function requireServedOrigin(origin: unknown, servedOrigin: string, before: stri
         'and does not prevent it, so the page may already have made requests to other origins',
     );
   }
+}
+
+/**
+ * Runs one of capture's scripts in the loaded page, before its elements are read. Safari answers
+ * a script whose page goes away under it, as a page that navigates away does, with
+ * `no such window`, while the window itself stays open on wherever the page went; capture then
+ * fails with `page-left-origin`, naming that origin when Safari can still report the window's URL.
+ */
+async function runInPage(
+  session: Session,
+  servedOrigin: string,
+  what: string,
+  kind: 'sync' | 'async',
+  script: string,
+  args: unknown[],
+): Promise<unknown> {
+  try {
+    return await session.call(what, 'POST', `/execute/${kind}`, { script, args });
+  } catch (error) {
+    if (
+      error instanceof CaptureError &&
+      error.code === 'safari-call-failed' &&
+      error.cause instanceof WebDriverError &&
+      error.cause.error === 'no such window'
+    ) {
+      throw new CaptureError(
+        'page-left-origin',
+        `${what}: the page left the browsing context it was served in, on ${JSON.stringify(servedOrigin)}, ` +
+          `as a page does when it navigates away (Safari answered with error "no such window"); ` +
+          `${await whereTheWindowWent(session)}; capture detects such a navigation and does not prevent it, ` +
+          'so the page may already have made requests to other origins',
+        { cause: error.cause },
+      );
+    }
+    throw error;
+  }
+}
+
+/** What Safari's Get Current URL says about the window's origin, or why it says nothing. */
+async function whereTheWindowWent(session: Session): Promise<string> {
+  let url: unknown;
+  try {
+    url = await session.ask("reading the window's URL", 'GET', '/url');
+  } catch (error) {
+    if (error instanceof CaptureError || error instanceof WebDriverError) {
+      return `Safari cannot say where the window went (${describe(error)})`;
+    }
+    throw error;
+  }
+  if (typeof url !== 'string' || !URL.canParse(url)) {
+    return `Safari cannot say where the window went (Get Current URL answered ${JSON.stringify(url)})`;
+  }
+  return `Safari reports the window's origin as ${JSON.stringify(new URL(url).origin)}`;
 }
 
 interface StartedSession {
@@ -336,16 +390,16 @@ async function sizeWindow(session: Session): Promise<void> {
  */
 async function settle(
   session: Session,
+  servedOrigin: string,
   waitFor: string | undefined,
   timeoutMs: number,
 ): Promise<'load-fonts-frames' | 'load-selector-fonts-frames'> {
   if (waitFor !== undefined) {
     const deadline = Date.now() + timeoutMs;
     for (;;) {
-      const found = await session.call('checking the selector', 'POST', '/execute/sync', {
-        script: SELECTOR_SCRIPT,
-        args: [waitFor],
-      });
+      const found = await runInPage(session, servedOrigin, 'checking the selector', 'sync', SELECTOR_SCRIPT, [
+        waitFor,
+      ]);
       if (found === true) {
         break;
       }
@@ -359,10 +413,14 @@ async function settle(
     }
   }
   // A hidden page runs no animation frames, so waiting for two would only end in a timeout.
-  const visibility = await session.call("reading the page's visibility", 'POST', '/execute/sync', {
-    script: VISIBILITY_SCRIPT,
-    args: [],
-  });
+  const visibility = await runInPage(
+    session,
+    servedOrigin,
+    "reading the page's visibility",
+    'sync',
+    VISIBILITY_SCRIPT,
+    [],
+  );
   if (visibility !== 'visible') {
     throw new CaptureError(
       'page-hidden',
@@ -370,10 +428,7 @@ async function settle(
         'keep the Mac awake and unlocked while Safari capture runs (see "Enabling Safari automation" in docs/usage.md)',
     );
   }
-  await session.call("the page's fonts and animation frames", 'POST', '/execute/async', {
-    script: SETTLE_SCRIPT,
-    args: [],
-  });
+  await runInPage(session, servedOrigin, "the page's fonts and animation frames", 'async', SETTLE_SCRIPT, []);
   return waitFor === undefined ? 'load-fonts-frames' : 'load-selector-fonts-frames';
 }
 
@@ -386,10 +441,7 @@ async function conditions(
   servedOrigin: string,
 ): Promise<Pick<Capture, 'viewport' | 'color_scheme' | 'reduced_motion'>> {
   const measured = measurement(
-    await session.call('measuring the viewport', 'POST', '/execute/sync', {
-      script: MEASURE_SCRIPT,
-      args: [],
-    }),
+    await runInPage(session, servedOrigin, 'measuring the viewport', 'sync', MEASURE_SCRIPT, []),
   );
   if (measured === undefined) {
     throw new Error('measuring the viewport returned an unexpected value');
@@ -435,10 +487,7 @@ async function readElements(
   diagnostics: Diagnostic[],
 ): Promise<SafariElement[]> {
   requireServedOrigin(
-    await session.call("reading the page's origin", 'POST', '/execute/sync', {
-      script: ORIGIN_SCRIPT,
-      args: [],
-    }),
+    await runInPage(session, servedOrigin, "reading the page's origin", 'sync', ORIGIN_SCRIPT, []),
     servedOrigin,
     'its elements were read',
   );
@@ -503,8 +552,8 @@ async function readElements(
  * @throws {CaptureError} when the options are unusable, the platform or the driver is missing,
  *   Safari refuses the session, the page cannot be read, a call gets no answer in time, a call
  *   capture cannot do without answers with an error or the session is lost, the page navigates
- *   away from the origin it was served on, the capture is interrupted, or the snapshot fails the
- *   schema.
+ *   away from the origin it was served on before its elements are read, the capture is
+ *   interrupted, or the snapshot fails the schema.
  */
 export async function captureSafari(pagePath: string, options: CaptureOptions = {}): Promise<Snapshot> {
   const timeoutMs = timeoutOf(options);
@@ -544,9 +593,9 @@ export async function captureSafari(pagePath: string, options: CaptureOptions = 
     await sizeWindow(session);
     await session.call('loading the page', 'POST', '/url', { url: server.url });
     server.throwIfServingFailed();
-    const settleName = await settle(session, options.waitFor, timeoutMs);
-    const capturedAt = new Date().toISOString();
     const servedOrigin = new URL(server.url).origin;
+    const settleName = await settle(session, servedOrigin, options.waitFor, timeoutMs);
+    const capturedAt = new Date().toISOString();
     const measured = await conditions(session, servedOrigin);
     const elements = await readElements(session, servedOrigin, spanIds, diagnostics);
     server.throwIfServingFailed();

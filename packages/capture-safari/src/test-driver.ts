@@ -46,14 +46,34 @@ export interface DriverScenario {
   /** The page's `document.visibilityState`; `visible` by default. */
   visibility?: string;
   /**
-   * What the page measures; the defaults are a 1280 × 720 light viewport, with the origin of the
-   * loaded page, or `null` before one has loaded.
+   * What the page measures, apart from its origin, which is the current page's; the defaults are
+   * a 1280 × 720 light viewport.
    */
-  measurement?: Partial<Measurement>;
-  /** The origin the page reports just before its elements are found; the loaded page's by default. */
-  originBeforeElements?: string;
+  measurement?: Partial<Omit<Measurement, 'origin'>>;
+  /** The loaded page navigates itself to another URL, as Safari 27 answers it. */
+  navigation?: PageNavigation;
+  /** Answer Get Current URL with this WebDriver error. */
+  currentUrlError?: { error: string; message: string };
   /** Answer the navigation with this WebDriver error instead of loading the page. */
   loadError?: { error: string; message: string };
+}
+
+/**
+ * A navigation the loaded page starts by itself, and when it lands relative to capture's calls.
+ * Safari 27 answers a script whose page goes away under it with `no such window` and keeps the
+ * window on the new page; scripts after a navigation that has finished run in the new page; and
+ * an element of the old page answers with `stale element reference`.
+ */
+export interface PageNavigation {
+  /** Where the page goes. */
+  to: string;
+  /**
+   * `settling`: under the settle script, which Safari ends with `no such window`.
+   * `after-settling`: once the settle script has answered, so the measurement runs in the new page.
+   * `after-measuring`: once the page is measured, so the origin read before the elements runs in it.
+   * `element-reads`: once the elements are found, so every element answers as stale.
+   */
+  during: 'settling' | 'after-settling' | 'after-measuring' | 'element-reads';
 }
 
 /** One line of the log. */
@@ -99,7 +119,16 @@ function main(args: string[]): void {
 
   const sessionId = 'test-session';
   let sources: string[] = [];
-  let origin = 'null';
+  let currentUrl = 'about:blank';
+  let loaded = false;
+  let elementsStale = false;
+  const navigateAway = (during: PageNavigation['during']) => {
+    if (scenario.navigation?.during !== during) {
+      return false;
+    }
+    currentUrl = scenario.navigation.to;
+    return true;
+  };
   const send = (response: ServerResponse, status: number, value: unknown) => {
     response.writeHead(status, { 'content-type': 'application/json; charset=utf-8' });
     response.end(JSON.stringify({ value }));
@@ -151,13 +180,22 @@ function main(args: string[]): void {
       send(response, 200, null);
       return;
     }
+    if (method === 'GET' && command === '/url') {
+      if (scenario.currentUrlError !== undefined) {
+        send(response, 404, { ...scenario.currentUrlError, stacktrace: '' });
+        return;
+      }
+      send(response, 200, currentUrl);
+      return;
+    }
     if (command === '/url') {
       if (scenario.loadError !== undefined) {
         send(response, 500, { ...scenario.loadError, stacktrace: '' });
         return;
       }
       const page = await fetch(String(parsed.url));
-      origin = new URL(String(parsed.url)).origin;
+      currentUrl = String(parsed.url);
+      loaded = true;
       const html = await page.text();
       log({ event: 'navigated', status: page.status, csp: page.headers.get('content-security-policy') });
       sources = [...html.matchAll(/data-spokenpath-src="([^"]*)"/g)].map((match) => match[1] ?? '');
@@ -167,19 +205,25 @@ function main(args: string[]): void {
     }
     if (command === '/execute/sync' || command === '/execute/async') {
       const script = parsed.script;
+      const origin = new URL(currentUrl).origin;
       if (script === MEASURE_SCRIPT) {
-        // Before navigation the page is `about:blank`, and an origin override applies only after it.
-        const measured = {
-          ...DEFAULT_MEASUREMENT,
-          origin,
-          ...(origin === 'null' ? {} : scenario.measurement),
-        };
-        send(response, 200, measured);
+        // Before the page is loaded the window is on `about:blank`, which the overrides do not describe.
+        send(response, 200, { ...DEFAULT_MEASUREMENT, ...(loaded ? scenario.measurement : {}), origin });
+        if (loaded) {
+          navigateAway('after-measuring');
+        }
       } else if (script === ORIGIN_SCRIPT) {
-        send(response, 200, scenario.originBeforeElements ?? origin);
+        send(response, 200, origin);
       } else if (script === VISIBILITY_SCRIPT) {
         send(response, 200, scenario.visibility ?? 'visible');
-      } else if (script === SELECTOR_SCRIPT || script === SETTLE_SCRIPT) {
+      } else if (script === SETTLE_SCRIPT) {
+        if (navigateAway('settling')) {
+          send(response, 404, { error: 'no such window', message: '', stacktrace: '' });
+          return;
+        }
+        send(response, 200, true);
+        navigateAway('after-settling');
+      } else if (script === SELECTOR_SCRIPT) {
         send(response, 200, true);
       } else {
         send(response, 500, { error: 'javascript error', message: 'unknown script' });
@@ -192,12 +236,18 @@ function main(args: string[]): void {
         200,
         sources.map((_, index) => ({ [ELEMENT_KEY]: `element-${index}` })),
       );
+      // The elements found are the old page's, so each answers as stale once the page has gone.
+      elementsStale = navigateAway('element-reads');
       return;
     }
     const element = /^\/element\/element-(\d+)\/(.+)$/.exec(command);
     const source = element === null ? undefined : sources[Number(element[1])];
     if (element === null || source === undefined) {
       send(response, 404, { error: 'no such element', message: command });
+      return;
+    }
+    if (elementsStale) {
+      send(response, 404, { error: 'stale element reference', message: '', stacktrace: '' });
       return;
     }
     const what = element[2];

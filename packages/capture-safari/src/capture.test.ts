@@ -215,20 +215,50 @@ describe('a capture that fails', () => {
     expect(names(events())).toContain('session-deleted');
   });
 
-  test('fails with page-left-origin when the page has navigated away by the time it settles', async () => {
-    const { driver, events } = double({ measurement: { origin: 'https://other.example' } });
+  test('fails with page-left-origin, naming where the window went, when the page navigates away while it settles', async () => {
+    const { driver, events } = double({
+      navigation: { to: 'https://other.example/elsewhere.html', during: 'settling' },
+    });
+    const error = await failure(captureSafari(signInPage, { driver }));
+    expect(error.code).toBe('page-left-origin');
+    expect(error.message).toMatch(
+      /^the page's fonts and animation frames: the page left the browsing context it was served in, on "http:\/\/127\.0\.0\.1:\d+", as a page does when it navigates away \(Safari answered with error "no such window"\); Safari reports the window's origin as "https:\/\/other\.example"; capture detects such a navigation and does not prevent it, so the page may already have made requests to other origins$/,
+    );
+    const log = events();
+    expect(log.some((event) => event.path?.endsWith('/elements') === true)).toBe(false);
+    expect(names(log)).toEqual(['started', 'session-created', 'navigated', 'session-deleted', 'terminated']);
+    expect(isRunning(driverPid(log))).toBe(false);
+  });
+
+  test('fails with page-left-origin and says so when Safari cannot report where the window went', async () => {
+    const { driver } = double({
+      navigation: { to: 'https://other.example/elsewhere.html', during: 'settling' },
+      currentUrlError: { error: 'no such window', message: '' },
+    });
+    const error = await failure(captureSafari(signInPage, { driver }));
+    expect(error.code).toBe('page-left-origin');
+    expect(error.message).toContain(
+      `Safari cannot say where the window went (reading the window's URL: Safari answered with error "no such window")`,
+    );
+    expect(error.message).not.toContain('other.example');
+  });
+
+  test('fails with page-left-origin when the navigation has finished by the time the page is measured', async () => {
+    const { driver, events } = double({
+      navigation: { to: 'https://other.example/elsewhere.html', during: 'after-settling' },
+    });
     const error = await failure(captureSafari(signInPage, { driver }));
     expect(error.code).toBe('page-left-origin');
     expect(error.message).toMatch(
       /^the page left the origin it was served on, "http:\/\/127\.0\.0\.1:\d+", before it was measured: Safari reports its origin as "https:\/\/other\.example"; capture detects such a navigation and does not prevent it/,
     );
-    const log = events();
-    expect(log.some((event) => event.path?.endsWith('/elements') === true)).toBe(false);
-    expect(names(log)).toEqual(['started', 'session-created', 'navigated', 'session-deleted', 'terminated']);
+    expect(events().some((event) => event.path?.endsWith('/elements') === true)).toBe(false);
   });
 
-  test('fails with page-left-origin when the page navigates away before its elements are read', async () => {
-    const { driver, events } = double({ originBeforeElements: 'http://127.0.0.1:1' });
+  test('fails with page-left-origin when the navigation has finished just before the elements are read', async () => {
+    const { driver, events } = double({
+      navigation: { to: 'http://127.0.0.1:1/', during: 'after-measuring' },
+    });
     const error = await failure(captureSafari(signInPage, { driver }));
     expect(error.code).toBe('page-left-origin');
     expect(error.message).toContain('before its elements were read');
@@ -236,6 +266,24 @@ describe('a capture that fails', () => {
     const log = events();
     expect(log.some((event) => event.path?.endsWith('/elements') === true)).toBe(false);
     expect(names(log)).toContain('session-deleted');
+  });
+
+  test('records no entry for the elements of a page that navigates away while they are read', async () => {
+    const { driver } = double({
+      navigation: { to: 'https://other.example/elsewhere.html', during: 'element-reads' },
+    });
+    const snapshot = await captureSafari(signInPage, { driver });
+    if (snapshot.payload.engine !== 'safari-webdriver') {
+      throw new Error('a Safari payload');
+    }
+    expect(snapshot.payload.elements).toEqual([]);
+    expect(snapshot.diagnostics).toHaveLength(snapshot.spans.length);
+    expect(new Set(snapshot.diagnostics.map((diagnostic) => diagnostic.message))).toEqual(
+      new Set([
+        'Safari answered Get Element Attribute with error "stale element reference", so the element has no entry.',
+      ]),
+    );
+    expect(validateSnapshot(snapshot).ok).toBe(true);
   });
 
   test('fails with safari-call-failed, naming the step, when loading the page answers with an error', async () => {

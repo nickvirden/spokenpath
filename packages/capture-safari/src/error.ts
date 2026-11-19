@@ -18,8 +18,10 @@ export type CaptureErrorCode =
    */
   | 'page-hidden'
   /**
-   * The page navigated away from the loopback origin capture served it on before its elements were
-   * read. Capture detects the navigation after it happens; it does not prevent it.
+   * The page navigated away from the loopback origin capture served it on while it settled or was
+   * measured, before its elements were read. Capture detects the navigation after it happens; it
+   * does not prevent it. A navigation during the element reads is not this failure: Safari answers
+   * those reads with `stale element reference`, and the elements are recorded without an entry.
    */
   | 'page-left-origin'
   /** A call into Safari that capture cannot do without, such as loading the page, answered with an error. */

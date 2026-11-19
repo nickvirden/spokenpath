@@ -14,8 +14,9 @@ export const HOST = '127.0.0.1';
  * behave as they do under Chromium capture, where requests to other origins are aborted. WebDriver
  * cannot intercept requests, so the browser's own policy enforcement does the blocking. The policy
  * does not stop top-level navigation (a script setting `location`, a meta refresh), resource hints
- * or WebRTC: capture detects a page that has navigated away and fails, but cannot prevent the
- * request. It is a design intent, not a sandbox: a page can still run its own scripts.
+ * or WebRTC: capture detects a page that navigates away before its elements are read and fails,
+ * but cannot prevent the request. It is a design intent, not a sandbox: a page can still run its
+ * own scripts.
  */
 export const CONTENT_SECURITY_POLICY =
   "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; form-action 'self'; base-uri 'self'";
