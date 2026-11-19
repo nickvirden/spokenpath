@@ -352,9 +352,9 @@ describe('an interrupted capture', () => {
     const { driver, events } = double({ answers: { '2': { role: 'hang' } } });
     const directory = mkdtempSync(join(tmpdir(), 'spokenpath-runner-'));
     directories.push(directory);
-    const driverPath = join(directory, 'driver.json');
-    writeFileSync(driverPath, JSON.stringify({ ...driver, timeoutMs: 60_000 }));
-    const child = spawn(process.execPath, [runnerPath, signInPage, driverPath], {
+    const optionsPath = join(directory, 'options.json');
+    writeFileSync(optionsPath, JSON.stringify({ driver, timeoutMs: 60_000 }));
+    const child = spawn(process.execPath, [runnerPath, signInPage, optionsPath], {
       stdio: ['ignore', 'pipe', 'pipe'],
     });
     let stdout = '';

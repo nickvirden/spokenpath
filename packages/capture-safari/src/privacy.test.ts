@@ -6,15 +6,24 @@ import { expect, test } from 'vitest';
 
 const snapshots = fileURLToPath(new URL('../../../fixtures/snapshots/', import.meta.url));
 
-/** Every committed Safari snapshot: the live goldens and the hand-written fixture. */
-function committedSafariSnapshots(): string[] {
-  const goldens = join(snapshots, 'safari-webdriver');
-  const live = existsSync(goldens)
+/** The live goldens under `directory`, a directory of `fixtures/snapshots/`. */
+function liveGoldens(directory: string): string[] {
+  const goldens = join(snapshots, directory);
+  return existsSync(goldens)
     ? readdirSync(goldens, { recursive: true, encoding: 'utf8' })
-        .filter((path) => path.endsWith('.json'))
+        .filter((path) => path.endsWith('.json') && path !== 'source-mapping.json')
         .map((path) => join(goldens, path))
     : [];
-  return [...live, join(snapshots, 'safari-webdriver-basic.json')].sort();
+}
+
+/** Every committed Safari snapshot: the live goldens of both engines and the hand-written fixtures. */
+function committedSafariSnapshots(): string[] {
+  return [
+    ...liveGoldens('safari-webdriver'),
+    ...liveGoldens('safari-ax'),
+    join(snapshots, 'safari-webdriver-basic.json'),
+    join(snapshots, 'safari-ax-basic.json'),
+  ].sort();
 }
 
 /**
@@ -31,6 +40,7 @@ function wholeWord(name: string): RegExp {
 test('no committed Safari snapshot holds a home directory, a user name or a file URL', () => {
   const files = committedSafariSnapshots();
   expect(files.some((file) => file.includes('safari-webdriver/'))).toBe(true);
+  expect(files.some((file) => file.includes('safari-ax/'))).toBe(true);
   for (const file of files) {
     const text = readFileSync(file, 'utf8');
     for (const marker of ['/Users/', '/home/', 'file:']) {

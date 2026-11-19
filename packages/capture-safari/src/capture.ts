@@ -13,6 +13,7 @@ import {
   type WebdriverError,
 } from '@spokenpath/snapshot-types';
 import { CaptureError, type InterruptSignal } from './error.ts';
+import type { HelperProcesses } from './helper.ts';
 import {
   MEASURE_SCRIPT,
   measurement,
@@ -67,13 +68,13 @@ export interface CaptureOptions {
   driver?: TestDriver;
 }
 
-interface PageFile {
+export interface PageFile {
   root: string;
   fileName: string;
   bytes: Uint8Array;
 }
 
-function timeoutOf(options: CaptureOptions): number {
+export function timeoutOf(options: Pick<CaptureOptions, 'timeoutMs'>): number {
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
     throw new CaptureError(
@@ -85,7 +86,7 @@ function timeoutOf(options: CaptureOptions): number {
 }
 
 /** `/usr/bin/safaridriver`, on macOS where it is installed. */
-function safaridriver(): DriverCommand {
+export function safaridriver(): DriverCommand {
   if (process.platform !== 'darwin') {
     throw new CaptureError('unsupported-platform', 'Safari capture needs macOS with Safari and safaridriver');
   }
@@ -99,7 +100,7 @@ function safaridriver(): DriverCommand {
  * Reads the page file, naming it by its base name and the reason by its code only, as Chromium
  * capture does, so the error carries no absolute path.
  */
-async function readPage(pagePath: string): Promise<PageFile> {
+export async function readPage(pagePath: string): Promise<PageFile> {
   const absolute = resolve(pagePath);
   const fileName = basename(absolute);
   try {
@@ -119,7 +120,7 @@ async function readPage(pagePath: string): Promise<PageFile> {
  * Catches SIGINT and SIGTERM for the length of a capture, so the session is deleted and the
  * driver stopped before the process ends; the first signal aborts every request in flight.
  */
-class Interrupt {
+export class Interrupt {
   readonly #controller = new AbortController();
   #received: InterruptSignal | undefined;
   readonly #onSigint = () => this.#receive('SIGINT');
@@ -152,7 +153,7 @@ class Interrupt {
 }
 
 /** A WebDriver session on a running driver, with every call bounded by the capture's time limit. */
-class Session {
+export class Session {
   readonly #driver: Driver;
   readonly #id: string;
   readonly #timeoutMs: number;
@@ -258,7 +259,7 @@ function requireServedOrigin(origin: unknown, servedOrigin: string, before: stri
  * `no such window`, while the window itself stays open on wherever the page went; capture then
  * fails with `page-left-origin`, naming that origin when Safari can still report the window's URL.
  */
-async function runInPage(
+export async function runInPage(
   session: Session,
   servedOrigin: string,
   what: string,
@@ -388,7 +389,7 @@ async function sizeWindow(session: Session): Promise<void> {
  * navigation waits for; then the selector, when one is given; then `document.fonts.ready` and two
  * animation frames.
  */
-async function settle(
+export async function settle(
   session: Session,
   servedOrigin: string,
   waitFor: string | undefined,
@@ -436,7 +437,7 @@ async function settle(
  * The conditions the page was captured under, as measured in the page after settling, which
  * fails the capture when the page has left the origin it was served on.
  */
-async function conditions(
+export async function conditions(
   session: Session,
   servedOrigin: string,
 ): Promise<Pick<Capture, 'viewport' | 'color_scheme' | 'reduced_motion'>> {
@@ -563,93 +564,162 @@ export async function captureSafari(pagePath: string, options: CaptureOptions = 
   const spanIds = new Set(spans.map((span) => span.id));
   const diagnostics: Diagnostic[] = [];
 
-  const interrupt = new Interrupt();
-  interrupt.listen();
-  let server: PageServer | undefined;
-  let driver: Driver | undefined;
-  let session: Session | undefined;
-
-  const run = async (): Promise<Snapshot> => {
+  return runCapture(async (resources, interrupt) => {
     const toolVersion = await driverVersion(driverCommand, timeoutMs);
-    let versions: HostVersions;
-    if (options.driver === undefined) {
-      const read = await readHostVersions();
-      versions = read.versions;
-      for (const problem of read.unread) {
-        diagnostics.push({ code: 'version-unreadable', message: `A version was not recorded: ${problem}.` });
-      }
-    } else {
-      versions = options.driver.versions;
-    }
-    server = await servePage({ root, fileName, body: html, diagnostics });
-    driver = await Driver.start(driverCommand, interrupt.signal);
-    const started = await startSession(driver, timeoutMs, interrupt.signal);
-    session = new Session(driver, started.id, timeoutMs, interrupt.signal);
-    await session.call('setting the time limits', 'POST', '/timeouts', {
-      implicit: 0,
-      pageLoad: timeoutMs,
-      script: timeoutMs,
-    });
-    await sizeWindow(session);
-    await session.call('loading the page', 'POST', '/url', { url: server.url });
-    server.throwIfServingFailed();
+    const versions = await hostVersions(options.driver, diagnostics);
+    const server = await servePage({ root, fileName, body: html, diagnostics });
+    resources.servers.push(server);
+    const { session, browserVersion } = await openSession(driverCommand, timeoutMs, interrupt, resources);
+    const settleName = await loadAndSettle(session, server, server.url, options.waitFor, timeoutMs);
     const servedOrigin = new URL(server.url).origin;
-    const settleName = await settle(session, servedOrigin, options.waitFor, timeoutMs);
     const capturedAt = new Date().toISOString();
     const measured = await conditions(session, servedOrigin);
     const elements = await readElements(session, servedOrigin, spanIds, diagnostics);
     server.throwIfServingFailed();
 
-    const snapshot: Snapshot = {
+    return validated({
       schema: 'spokenpath-snapshot',
       version: { major: 0, minor: 1 },
       producer: { name: '@spokenpath/capture-safari', version: producerVersion },
       capture: {
         engine: 'safari-webdriver',
-        engine_version: started.browserVersion,
+        engine_version: browserVersion,
         tool_version: `safaridriver ${toolVersion}`,
         ...measured,
         url: server.url,
         settle: settleName,
       },
       volatile: { captured_at: capturedAt },
-      sources: [
-        {
-          id: 0,
-          path: fileName,
-          sha256: createHash('sha256').update(bytes).digest('hex'),
-          encoding: 'utf-8',
-        },
-      ],
+      sources: [pageSource(fileName, bytes)],
       spans,
       diagnostics: sortDiagnostics(diagnostics),
       payload: {
         engine: 'safari-webdriver',
         elements,
-        ...(versions.safariBuild === undefined ? {} : { safari_build: versions.safariBuild }),
-        ...(versions.macosVersion === undefined ? {} : { macos_version: versions.macosVersion }),
-        ...(versions.macosBuild === undefined ? {} : { macos_build: versions.macosBuild }),
+        ...versionFields(versions),
       },
-    };
-    const result = validateSnapshot(snapshot);
-    if (!result.ok) {
-      const issues = result.errors.map((issue) => `${issue.path || '/'}: ${issue.message}`).join('; ');
-      throw new CaptureError(
-        'invalid-snapshot',
-        `the captured snapshot fails the snapshot schema at ${issues}`,
-      );
-    }
-    return result.snapshot;
-  };
+    });
+  });
+}
 
+/**
+ * The Safari and macOS versions to record: read from the Mac, with a `version-unreadable`
+ * diagnostic for each that cannot be read, or the test-double driver's.
+ */
+export async function hostVersions(
+  testDriver: TestDriver | undefined,
+  diagnostics: Diagnostic[],
+): Promise<HostVersions> {
+  if (testDriver !== undefined) {
+    return testDriver.versions;
+  }
+  const read = await readHostVersions();
+  for (const problem of read.unread) {
+    diagnostics.push({ code: 'version-unreadable', message: `A version was not recorded: ${problem}.` });
+  }
+  return read.versions;
+}
+
+/** The payload fields of the versions that were read. */
+export function versionFields(versions: HostVersions): {
+  safari_build?: string;
+  macos_version?: string;
+  macos_build?: string;
+} {
+  return {
+    ...(versions.safariBuild === undefined ? {} : { safari_build: versions.safariBuild }),
+    ...(versions.macosVersion === undefined ? {} : { macos_version: versions.macosVersion }),
+    ...(versions.macosBuild === undefined ? {} : { macos_build: versions.macosBuild }),
+  };
+}
+
+/** The snapshot's one source: the page file, by its base name and SHA-256. */
+export function pageSource(fileName: string, bytes: Uint8Array): Snapshot['sources'][number] {
+  return {
+    id: 0,
+    path: fileName,
+    sha256: createHash('sha256').update(bytes).digest('hex'),
+    encoding: 'utf-8',
+  };
+}
+
+/** What a capture holds open, which `runCapture` releases on every exit path. */
+export interface CaptureResources {
+  servers: PageServer[];
+  driver?: Driver;
+  session?: Session;
+  helpers?: HelperProcesses;
+}
+
+/**
+ * Starts the driver and the session, sets the session's time limits and sizes the window,
+ * recording each in `resources` as soon as it exists so cleanup can release it.
+ */
+export async function openSession(
+  driverCommand: DriverCommand,
+  timeoutMs: number,
+  interrupt: Interrupt,
+  resources: CaptureResources,
+): Promise<{ session: Session; browserVersion: string }> {
+  const driver = await Driver.start(driverCommand, interrupt.signal);
+  resources.driver = driver;
+  const started = await startSession(driver, timeoutMs, interrupt.signal);
+  const session = new Session(driver, started.id, timeoutMs, interrupt.signal);
+  resources.session = session;
+  await session.call('setting the time limits', 'POST', '/timeouts', {
+    implicit: 0,
+    pageLoad: timeoutMs,
+    script: timeoutMs,
+  });
+  await sizeWindow(session);
+  return { session, browserVersion: started.browserVersion };
+}
+
+/** Loads `url`, which `server` answers, and waits for the page to settle. */
+export async function loadAndSettle(
+  session: Session,
+  server: PageServer,
+  url: string,
+  waitFor: string | undefined,
+  timeoutMs: number,
+): Promise<'load-fonts-frames' | 'load-selector-fonts-frames'> {
+  await session.call('loading the page', 'POST', '/url', { url });
+  server.throwIfServingFailed();
+  return settle(session, new URL(server.url).origin, waitFor, timeoutMs);
+}
+
+/** The snapshot once it passes the snapshot schema, or `invalid-snapshot` naming where it fails. */
+export function validated(snapshot: Snapshot): Snapshot {
+  const result = validateSnapshot(snapshot);
+  if (!result.ok) {
+    const issues = result.errors.map((issue) => `${issue.path || '/'}: ${issue.message}`).join('; ');
+    throw new CaptureError(
+      'invalid-snapshot',
+      `the captured snapshot fails the snapshot schema at ${issues}`,
+    );
+  }
+  return result.snapshot;
+}
+
+/**
+ * Runs one capture with SIGINT and SIGTERM handled: the first signal aborts every request in
+ * flight, and the capture then fails with `interrupted`, naming it. Whatever `run` opened is
+ * released on every exit path, helpers first, before the session is deleted.
+ */
+export async function runCapture(
+  run: (resources: CaptureResources, interrupt: Interrupt) => Promise<Snapshot>,
+): Promise<Snapshot> {
+  const interrupt = new Interrupt();
+  interrupt.listen();
+  const resources: CaptureResources = { servers: [] };
   let snapshot: Snapshot | undefined;
   let failure: unknown;
   try {
-    snapshot = await run();
+    snapshot = await run(resources, interrupt);
   } catch (error) {
     failure = error;
   }
-  const cleanupFailures = await cleanUp(session, driver, server);
+  const cleanupFailures = await cleanUp(resources);
   interrupt.unlisten();
 
   const signal = interrupt.received;
@@ -680,12 +750,11 @@ function describe(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-/** Deletes the session, stops the driver and closes the server, each even when another fails. */
-async function cleanUp(
-  session: Session | undefined,
-  driver: Driver | undefined,
-  server: PageServer | undefined,
-): Promise<unknown[]> {
+/**
+ * Stops any helper still running, deletes the session, stops the driver and closes the servers,
+ * each even when another fails.
+ */
+async function cleanUp(resources: CaptureResources): Promise<unknown[]> {
   const failures: unknown[] = [];
   const attempt = async (step: () => Promise<unknown>) => {
     try {
@@ -694,13 +763,17 @@ async function cleanUp(
       failures.push(error);
     }
   };
+  const { helpers, session, driver, servers } = resources;
+  if (helpers !== undefined) {
+    await attempt(() => helpers.stop());
+  }
   if (session !== undefined) {
     await attempt(() => session.delete());
   }
   if (driver !== undefined) {
     await attempt(() => driver.stop());
   }
-  if (server !== undefined) {
+  for (const server of servers) {
     await attempt(() => server.close());
   }
   return failures;

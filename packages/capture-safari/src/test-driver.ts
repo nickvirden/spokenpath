@@ -46,6 +46,11 @@ export interface DriverScenario {
   /** The page's `document.visibilityState`; `visible` by default. */
   visibility?: string;
   /**
+   * The answers to successive visibility reads, the last repeated, instead of `visibility`, for a
+   * page that is hidden only after a given read.
+   */
+  visibilitySequence?: string[];
+  /**
    * What the page measures, apart from its origin, which is the current page's; the defaults are
    * a 1280 × 720 light viewport.
    */
@@ -87,6 +92,9 @@ export interface DriverEvent {
   signal?: string;
 }
 
+/** The window rect Get Window Rect answers. */
+export const TEST_WINDOW_RECT = { x: 0, y: 25, width: 1280, height: 800 } as const;
+
 const DEFAULT_MEASUREMENT: Omit<Measurement, 'origin'> = {
   innerWidth: 1280,
   innerHeight: 720,
@@ -119,6 +127,8 @@ function main(args: string[]): void {
 
   const sessionId = 'test-session';
   let sources: string[] = [];
+  let title = '';
+  let visibilityReads = 0;
   let currentUrl = 'about:blank';
   let loaded = false;
   let elementsStale = false;
@@ -176,6 +186,14 @@ function main(args: string[]): void {
       send(response, 200, null);
       return;
     }
+    if (method === 'GET' && command === '/window/rect') {
+      send(response, 200, TEST_WINDOW_RECT);
+      return;
+    }
+    if (method === 'GET' && command === '/title') {
+      send(response, 200, title);
+      return;
+    }
     if (command === '/timeouts' || command === '/window/rect') {
       send(response, 200, null);
       return;
@@ -199,6 +217,7 @@ function main(args: string[]): void {
       const html = await page.text();
       log({ event: 'navigated', status: page.status, csp: page.headers.get('content-security-policy') });
       sources = [...html.matchAll(/data-spokenpath-src="([^"]*)"/g)].map((match) => match[1] ?? '');
+      title = /<title[^>]*>([^<]*)<\/title>/i.exec(html)?.[1]?.trim() ?? '';
       sources.push(...(scenario.extraSources ?? []));
       send(response, 200, null);
       return;
@@ -215,7 +234,13 @@ function main(args: string[]): void {
       } else if (script === ORIGIN_SCRIPT) {
         send(response, 200, origin);
       } else if (script === VISIBILITY_SCRIPT) {
-        send(response, 200, scenario.visibility ?? 'visible');
+        const sequence = scenario.visibilitySequence;
+        const answer =
+          sequence === undefined
+            ? scenario.visibility
+            : sequence[Math.min(visibilityReads, sequence.length - 1)];
+        visibilityReads += 1;
+        send(response, 200, answer ?? 'visible');
       } else if (script === SETTLE_SCRIPT) {
         if (navigateAway('settling')) {
           send(response, 404, { error: 'no such window', message: '', stacktrace: '' });
