@@ -603,25 +603,42 @@ mod tests {
         }
     }
 
+    /// Every point, size and rect with `bad` in exactly one component, each component in turn.
+    fn geometry_with_one_bad_component(bad: f64) -> Vec<Raw<usize>> {
+        let mut cases = Vec::new();
+        for component in 0..2 {
+            let mut values = [1.0, 2.0];
+            values[component] = bad;
+            cases.push(Raw::Point {
+                x: values[0],
+                y: values[1],
+            });
+            cases.push(Raw::Size {
+                width: values[0],
+                height: values[1],
+            });
+        }
+        for component in 0..4 {
+            let mut values = [1.0, 2.0, 3.0, 4.0];
+            values[component] = bad;
+            cases.push(Raw::Rect {
+                x: values[0],
+                y: values[1],
+                width: values[2],
+                height: values[3],
+            });
+        }
+        cases
+    }
+
     #[test]
-    fn geometry_that_is_not_finite_is_recorded_as_unsupported_and_never_as_null() {
+    fn geometry_that_is_not_finite_in_any_component_is_recorded_as_unsupported_and_never_as_null() {
         let unsupported = SafariAxValue::Unsupported {
             cf_type: "AXValue".to_owned(),
         };
         for bad in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
-            let cases: [Raw<usize>; 3] = [
-                Raw::Point { x: 1.0, y: bad },
-                Raw::Size {
-                    width: bad,
-                    height: 2.0,
-                },
-                Raw::Rect {
-                    x: 0.0,
-                    y: 0.0,
-                    width: 3.0,
-                    height: bad,
-                },
-            ];
+            let cases = geometry_with_one_bad_component(bad);
+            assert_eq!(cases.len(), 8);
             for raw in cases {
                 let mut tree = Plain::new(vec![vec![role("AXWebArea"), ("AXFrame", raw.clone())]]);
                 let (nodes, _) = walk(&mut tree, 0).expect("the walk succeeds");
