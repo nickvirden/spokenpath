@@ -12,6 +12,7 @@ use spokenpath_model::{
 };
 
 use crate::approx::Approx;
+use crate::cross_check::{CrossCheck, ItemCrossCheck};
 use crate::tab_order::TabOrder;
 
 /// The ordered transcript of one model: what the browser exposes, item by item, with the
@@ -20,6 +21,10 @@ use crate::tab_order::TabOrder;
 pub struct Transcript {
     /// The engine and versions every Layer A record came from.
     pub header: Header,
+    /// The engine the roles and names were cross-checked against, and what it found; absent when
+    /// no cross-check ran.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cross_check: Option<CrossCheck>,
     /// The exposed tree in reading order, one item per exposed node.
     pub nodes: Vec<Item>,
     /// The navigation indexes, each in reading order.
@@ -53,6 +58,10 @@ pub struct Item {
     pub parent: Option<usize>,
     /// What the browser exposes for the node.
     pub layer_a: LayerA,
+    /// The node's role and name compared with the cross-check engine's; absent when no
+    /// cross-check ran or the item is not compared.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cross_check: Option<ItemCrossCheck>,
     /// The illustrative phrase, approximate; absent when Layer B is not produced.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub approx: Option<Approx>,

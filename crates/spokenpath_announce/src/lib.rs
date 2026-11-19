@@ -6,6 +6,8 @@
 //! [`announce`] is the one entry point. It does no file, network or environment I/O, never opens a
 //! path the model names, and never fails: a [`NodeIndex`] that does not resolve in the model leaves
 //! that reference absent. The rules follow `docs/decisions/ADR-0001-two-layer-output.md`.
+//! [`cross_check`] then optionally compares the transcript's roles and names with Safari's answers
+//! for the same page (`docs/decisions/ADR-0014-safari-webdriver-cross-check.md`).
 //!
 //! # Reading order
 //!
@@ -129,6 +131,7 @@
 //! writes to `schema/transcript.v0.json`.
 
 mod approx;
+mod cross_check;
 mod tab_order;
 mod transcript;
 
@@ -138,6 +141,10 @@ mod tests;
 pub use approx::{
     Approx, NAMED, NAMED_UNSPOKEN_ROLE, TEMPLATES, TEXT_RUN, Template, UNNAMED,
     UNNAMED_UNSPOKEN_ROLE, escape_for_terminal,
+};
+pub use cross_check::{
+    CrossCheck, EngineErrorRecord, FieldCheck, ItemCrossCheck, NotChecked, NotCheckedReason,
+    cross_check,
 };
 pub use tab_order::{ENDING_WORDING, Ending, EndingKind, EndingWording, Stop, TabOrder, TabStep};
 pub use transcript::*;
@@ -205,6 +212,7 @@ pub fn announce(model: &Model, options: Options) -> Transcript {
             depth,
             parent,
             layer_a,
+            cross_check: None,
             approx,
         });
         pending.extend(
@@ -225,6 +233,7 @@ pub fn announce(model: &Model, options: Options) -> Transcript {
             engine_version: model.engine_version.clone(),
             tool_version: model.tool_version.clone(),
         },
+        cross_check: None,
         nodes,
         indexes,
         excluded: model
