@@ -17,6 +17,13 @@ export type CaptureErrorCode =
    * frames do not run and the page cannot settle.
    */
   | 'page-hidden'
+  /**
+   * The page navigated away from the loopback origin capture served it on before its elements were
+   * read. Capture detects the navigation after it happens; it does not prevent it.
+   */
+  | 'page-left-origin'
+  /** A call into Safari that capture cannot do without, such as loading the page, answered with an error. */
+  | 'safari-call-failed'
   /** The page did not load or settle, or Safari or `safaridriver` did not answer, in time. */
   | 'timeout'
   /** The process received SIGINT or SIGTERM during capture; the session and driver were stopped. */

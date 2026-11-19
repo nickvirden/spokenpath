@@ -3,7 +3,10 @@
  * identity, so each is defined once, here.
  */
 
-/** Returns the viewport, the device pixel ratio, the window's outer size and the media features. */
+/**
+ * Returns the viewport, the device pixel ratio, the window's outer size, the media features and
+ * the page's origin.
+ */
 export const MEASURE_SCRIPT = `return {
   innerWidth: window.innerWidth,
   innerHeight: window.innerHeight,
@@ -13,7 +16,11 @@ export const MEASURE_SCRIPT = `return {
   dark: window.matchMedia('(prefers-color-scheme: dark)').matches,
   light: window.matchMedia('(prefers-color-scheme: light)').matches,
   reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  origin: location.origin,
 };`;
+
+/** Returns the page's origin, `location.origin`. */
+export const ORIGIN_SCRIPT = 'return location.origin;';
 
 /** Returns `document.visibilityState`. */
 export const VISIBILITY_SCRIPT = 'return document.visibilityState;';
@@ -35,6 +42,8 @@ export interface Measurement {
   dark: boolean;
   light: boolean;
   reducedMotion: boolean;
+  /** `location.origin`: the string `null` before the page has loaded. */
+  origin: string;
 }
 
 /** The measurement, when `value` has its shape. */
@@ -47,7 +56,8 @@ export function measurement(value: unknown): Measurement | undefined {
   const flags = ['dark', 'light', 'reducedMotion'] as const;
   if (
     numbers.every((key) => typeof record[key] === 'number' && Number.isFinite(record[key])) &&
-    flags.every((key) => typeof record[key] === 'boolean')
+    flags.every((key) => typeof record[key] === 'boolean') &&
+    typeof record.origin === 'string'
   ) {
     return record as unknown as Measurement;
   }

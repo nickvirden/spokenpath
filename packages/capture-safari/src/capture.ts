@@ -13,7 +13,14 @@ import {
   type WebdriverError,
 } from '@spokenpath/snapshot-types';
 import { CaptureError, type InterruptSignal } from './error.ts';
-import { MEASURE_SCRIPT, measurement, SELECTOR_SCRIPT, SETTLE_SCRIPT, VISIBILITY_SCRIPT } from './scripts.ts';
+import {
+  MEASURE_SCRIPT,
+  measurement,
+  ORIGIN_SCRIPT,
+  SELECTOR_SCRIPT,
+  SETTLE_SCRIPT,
+  VISIBILITY_SCRIPT,
+} from './scripts.ts';
 import { type PageServer, servePage } from './serve.ts';
 import { type HostVersions, producerVersion, readHostVersions } from './versions.ts';
 import {
@@ -33,6 +40,12 @@ export const VIEWPORT = { width: 1280, height: 720 } as const;
 
 /** How often the `waitFor` selector is checked. */
 const SELECTOR_POLL_MS = 100;
+
+/**
+ * The WebDriver errors that mean the session or its window is gone, such as when the automation
+ * window is closed during capture; every later call would fail too, so they fail the capture.
+ */
+const SESSION_LOST: ReadonlySet<string> = new Set(['invalid session id', 'no such window']);
 
 /**
  * A WebDriver server to run instead of `/usr/bin/safaridriver`, with the host versions to record.
@@ -153,11 +166,28 @@ class Session {
   }
 
   /**
-   * One command on the session. A WebDriver `timeout` or `script timeout` error, which Safari
-   * returns when its own limit (set to the same `timeoutMs`) runs out first, fails the capture
-   * with `timeout`, as a command that gets no answer does.
+   * One command on the session that capture cannot do without: any WebDriver error fails the
+   * capture, naming the step.
    */
   async call(what: string, method: 'GET' | 'POST', path: string, body?: unknown): Promise<unknown> {
+    try {
+      return await this.ask(what, method, path, body);
+    } catch (error) {
+      if (error instanceof WebDriverError) {
+        throw callFailed(what, error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * One command whose WebDriver error capture records rather than fails on, such as an element's
+   * role, which throws that `WebDriverError`. A WebDriver `timeout` or `script timeout` error,
+   * which Safari returns when its own limit (set to the same `timeoutMs`) runs out first, fails the
+   * capture with `timeout`, as a command that gets no answer does; an error that means the session
+   * is lost fails it with `safari-call-failed`.
+   */
+  async ask(what: string, method: 'GET' | 'POST', path: string, body?: unknown): Promise<unknown> {
     try {
       return await this.#driver.command(
         what,
@@ -176,6 +206,9 @@ class Session {
           cause: error,
         });
       }
+      if (error instanceof WebDriverError && SESSION_LOST.has(error.error)) {
+        throw callFailed(what, error);
+      }
       throw error;
     }
   }
@@ -188,6 +221,32 @@ class Session {
       undefined,
       Driver.cleanupTimeoutMs,
       AbortSignal.timeout(Driver.cleanupTimeoutMs),
+    );
+  }
+}
+
+/** The capture failure for a call into Safari that answered with an error. */
+function callFailed(what: string, error: WebDriverError): CaptureError {
+  const detail = error.detail === '' ? '' : `: ${JSON.stringify(error.detail)}`;
+  return new CaptureError(
+    'safari-call-failed',
+    `${what}: Safari answered with error ${JSON.stringify(error.error)}${detail}`,
+    { cause: error },
+  );
+}
+
+/**
+ * Fails the capture when the page is no longer on the origin capture served it on: a page can
+ * navigate itself away, which the Content-Security-Policy does not stop, and the elements read
+ * would then be another page's.
+ */
+function requireServedOrigin(origin: unknown, servedOrigin: string, before: string): void {
+  if (origin !== servedOrigin) {
+    throw new CaptureError(
+      'page-left-origin',
+      `the page left the origin it was served on, ${JSON.stringify(servedOrigin)}, before ${before}: ` +
+        `Safari reports its origin as ${JSON.stringify(origin)}; capture detects such a navigation ` +
+        'and does not prevent it, so the page may already have made requests to other origins',
     );
   }
 }
@@ -245,7 +304,7 @@ async function startSession(driver: Driver, timeoutMs: number, signal: AbortSign
 async function sizeWindow(session: Session): Promise<void> {
   const setRect = async (width: number, height: number) => {
     try {
-      await session.call('sizing the window', 'POST', '/window/rect', { width, height });
+      await session.ask('sizing the window', 'POST', '/window/rect', { width, height });
     } catch (error) {
       // Safari refuses a size its screen cannot hold; the measured viewport is what is recorded.
       if (!(error instanceof WebDriverError)) {
@@ -318,9 +377,13 @@ async function settle(
   return waitFor === undefined ? 'load-fonts-frames' : 'load-selector-fonts-frames';
 }
 
-/** The conditions the page was captured under, as measured in the page after settling. */
+/**
+ * The conditions the page was captured under, as measured in the page after settling, which
+ * fails the capture when the page has left the origin it was served on.
+ */
 async function conditions(
   session: Session,
+  servedOrigin: string,
 ): Promise<Pick<Capture, 'viewport' | 'color_scheme' | 'reduced_motion'>> {
   const measured = measurement(
     await session.call('measuring the viewport', 'POST', '/execute/sync', {
@@ -331,6 +394,7 @@ async function conditions(
   if (measured === undefined) {
     throw new Error('measuring the viewport returned an unexpected value');
   }
+  requireServedOrigin(measured.origin, servedOrigin, 'it was measured');
   return {
     viewport: {
       width: Math.max(0, Math.round(measured.innerWidth)),
@@ -345,7 +409,7 @@ async function conditions(
 /** The answer to one role or label call: the string, or the error Safari answered with. */
 async function answer(session: Session, what: string, path: string): Promise<string | WebdriverError> {
   try {
-    const value = await session.call(what, 'GET', path);
+    const value = await session.ask(what, 'GET', path);
     if (typeof value !== 'string') {
       throw new Error(`${what} answered with ${JSON.stringify(value)}, not a string`);
     }
@@ -360,14 +424,24 @@ async function answer(session: Session, what: string, path: string): Promise<str
 
 /**
  * Asks Safari for the computed role and label of every element carrying the source attribute, in
- * document order, one call after another. Elements inside shadow roots are not found, because
- * Find Elements does not search them.
+ * document order, one call after another, once the page is confirmed to be on the origin it was
+ * served on. Elements inside shadow roots are not found, because Find Elements does not search
+ * them.
  */
 async function readElements(
   session: Session,
+  servedOrigin: string,
   spanIds: ReadonlySet<number>,
   diagnostics: Diagnostic[],
 ): Promise<SafariElement[]> {
+  requireServedOrigin(
+    await session.call("reading the page's origin", 'POST', '/execute/sync', {
+      script: ORIGIN_SCRIPT,
+      args: [],
+    }),
+    servedOrigin,
+    'its elements were read',
+  );
   const ids = elementIds(
     await session.call('finding the tagged elements', 'POST', '/elements', {
       using: 'css selector',
@@ -379,7 +453,7 @@ async function readElements(
     const path = `/element/${id}`;
     let value: unknown;
     try {
-      value = await session.call(
+      value = await session.ask(
         "reading an element's source attribute",
         'GET',
         `${path}/attribute/${SOURCE_ATTRIBUTE}`,
@@ -416,7 +490,8 @@ async function readElements(
 /**
  * Captures what Safari answers over WebDriver for the HTML page at `pagePath`: the page is
  * instrumented with its source locations exactly as Chromium capture instruments it, served on
- * the loopback address with a Content-Security-Policy that blocks other origins, loaded in one
+ * the loopback address with a Content-Security-Policy that limits its sub-resource loads to that
+ * origin, loaded in one
  * `safaridriver` session and settled, and every tagged element's computed role and label are
  * read. Capture records Safari's answers as delivered, errors included, and never corrects them.
  *
@@ -426,8 +501,10 @@ async function readElements(
  *
  * @throws {InstrumentHtmlError} when the instrumenter refuses the page.
  * @throws {CaptureError} when the options are unusable, the platform or the driver is missing,
- *   Safari refuses the session, the page cannot be read, a call gets no answer in time, the
- *   capture is interrupted, or the snapshot fails the schema.
+ *   Safari refuses the session, the page cannot be read, a call gets no answer in time, a call
+ *   capture cannot do without answers with an error or the session is lost, the page navigates
+ *   away from the origin it was served on, the capture is interrupted, or the snapshot fails the
+ *   schema.
  */
 export async function captureSafari(pagePath: string, options: CaptureOptions = {}): Promise<Snapshot> {
   const timeoutMs = timeoutOf(options);
@@ -469,8 +546,9 @@ export async function captureSafari(pagePath: string, options: CaptureOptions = 
     server.throwIfServingFailed();
     const settleName = await settle(session, options.waitFor, timeoutMs);
     const capturedAt = new Date().toISOString();
-    const measured = await conditions(session);
-    const elements = await readElements(session, spanIds, diagnostics);
+    const servedOrigin = new URL(server.url).origin;
+    const measured = await conditions(session, servedOrigin);
+    const elements = await readElements(session, servedOrigin, spanIds, diagnostics);
     server.throwIfServingFailed();
 
     const snapshot: Snapshot = {

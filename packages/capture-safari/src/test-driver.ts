@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import {
   MEASURE_SCRIPT,
   type Measurement,
+  ORIGIN_SCRIPT,
   SELECTOR_SCRIPT,
   SETTLE_SCRIPT,
   VISIBILITY_SCRIPT,
@@ -44,8 +45,15 @@ export interface DriverScenario {
   extraSources?: string[];
   /** The page's `document.visibilityState`; `visible` by default. */
   visibility?: string;
-  /** What the page measures; the defaults are a 1280 × 720 light viewport. */
+  /**
+   * What the page measures; the defaults are a 1280 × 720 light viewport, with the origin of the
+   * loaded page, or `null` before one has loaded.
+   */
   measurement?: Partial<Measurement>;
+  /** The origin the page reports just before its elements are found; the loaded page's by default. */
+  originBeforeElements?: string;
+  /** Answer the navigation with this WebDriver error instead of loading the page. */
+  loadError?: { error: string; message: string };
 }
 
 /** One line of the log. */
@@ -59,7 +67,7 @@ export interface DriverEvent {
   signal?: string;
 }
 
-const DEFAULT_MEASUREMENT: Measurement = {
+const DEFAULT_MEASUREMENT: Omit<Measurement, 'origin'> = {
   innerWidth: 1280,
   innerHeight: 720,
   outerWidth: 1280,
@@ -91,6 +99,7 @@ function main(args: string[]): void {
 
   const sessionId = 'test-session';
   let sources: string[] = [];
+  let origin = 'null';
   const send = (response: ServerResponse, status: number, value: unknown) => {
     response.writeHead(status, { 'content-type': 'application/json; charset=utf-8' });
     response.end(JSON.stringify({ value }));
@@ -143,7 +152,12 @@ function main(args: string[]): void {
       return;
     }
     if (command === '/url') {
+      if (scenario.loadError !== undefined) {
+        send(response, 500, { ...scenario.loadError, stacktrace: '' });
+        return;
+      }
       const page = await fetch(String(parsed.url));
+      origin = new URL(String(parsed.url)).origin;
       const html = await page.text();
       log({ event: 'navigated', status: page.status, csp: page.headers.get('content-security-policy') });
       sources = [...html.matchAll(/data-spokenpath-src="([^"]*)"/g)].map((match) => match[1] ?? '');
@@ -154,7 +168,15 @@ function main(args: string[]): void {
     if (command === '/execute/sync' || command === '/execute/async') {
       const script = parsed.script;
       if (script === MEASURE_SCRIPT) {
-        send(response, 200, { ...DEFAULT_MEASUREMENT, ...scenario.measurement });
+        // Before navigation the page is `about:blank`, and an origin override applies only after it.
+        const measured = {
+          ...DEFAULT_MEASUREMENT,
+          origin,
+          ...(origin === 'null' ? {} : scenario.measurement),
+        };
+        send(response, 200, measured);
+      } else if (script === ORIGIN_SCRIPT) {
+        send(response, 200, scenario.originBeforeElements ?? origin);
       } else if (script === VISIBILITY_SCRIPT) {
         send(response, 200, scenario.visibility ?? 'visible');
       } else if (script === SELECTOR_SCRIPT || script === SETTLE_SCRIPT) {

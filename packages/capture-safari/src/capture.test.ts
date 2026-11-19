@@ -215,6 +215,61 @@ describe('a capture that fails', () => {
     expect(names(events())).toContain('session-deleted');
   });
 
+  test('fails with page-left-origin when the page has navigated away by the time it settles', async () => {
+    const { driver, events } = double({ measurement: { origin: 'https://other.example' } });
+    const error = await failure(captureSafari(signInPage, { driver }));
+    expect(error.code).toBe('page-left-origin');
+    expect(error.message).toMatch(
+      /^the page left the origin it was served on, "http:\/\/127\.0\.0\.1:\d+", before it was measured: Safari reports its origin as "https:\/\/other\.example"; capture detects such a navigation and does not prevent it/,
+    );
+    const log = events();
+    expect(log.some((event) => event.path?.endsWith('/elements') === true)).toBe(false);
+    expect(names(log)).toEqual(['started', 'session-created', 'navigated', 'session-deleted', 'terminated']);
+  });
+
+  test('fails with page-left-origin when the page navigates away before its elements are read', async () => {
+    const { driver, events } = double({ originBeforeElements: 'http://127.0.0.1:1' });
+    const error = await failure(captureSafari(signInPage, { driver }));
+    expect(error.code).toBe('page-left-origin');
+    expect(error.message).toContain('before its elements were read');
+    expect(error.message).toContain('Safari reports its origin as "http://127.0.0.1:1"');
+    const log = events();
+    expect(log.some((event) => event.path?.endsWith('/elements') === true)).toBe(false);
+    expect(names(log)).toContain('session-deleted');
+  });
+
+  test('fails with safari-call-failed, naming the step, when loading the page answers with an error', async () => {
+    const { driver, events } = double({ loadError: { error: 'unknown error', message: 'load failed' } });
+    const error = await failure(captureSafari(signInPage, { driver }));
+    expect(error.code).toBe('safari-call-failed');
+    expect(error.message).toBe('loading the page: Safari answered with error "unknown error": "load failed"');
+    expect(names(events())).toEqual(['started', 'session-created', 'session-deleted', 'terminated']);
+  });
+
+  test('fails with safari-call-failed when the session is lost while elements are read', async () => {
+    const { driver, events } = double({
+      answers: { '3': { role: { error: 'no such window', message: 'the window was closed' } } },
+    });
+    const error = await failure(captureSafari(signInPage, { driver }));
+    expect(error.code).toBe('safari-call-failed');
+    expect(error.message).toBe(
+      'Get Computed Role: Safari answered with error "no such window": "the window was closed"',
+    );
+    const log = events();
+    expect(names(log)).toContain('session-deleted');
+    expect(isRunning(driverPid(log))).toBe(false);
+  });
+
+  test('records a stale element as role_error and carries on, as it is not a lost session', async () => {
+    const stale = { error: 'stale element reference', message: '' };
+    const { driver } = double({ answers: { '3': { role: stale } } });
+    const snapshot = await captureSafari(signInPage, { driver });
+    if (snapshot.payload.engine !== 'safari-webdriver') {
+      throw new Error('a Safari payload');
+    }
+    expect(snapshot.payload.elements?.[3]).toEqual({ span: 3, role_error: stale, label: '' });
+  });
+
   test('fails with safaridriver-not-found when the driver is not installed', async () => {
     const driver: TestDriver = { command: join(tmpdir(), 'no-such-safaridriver'), args: [], versions: {} };
     const error = await failure(captureSafari(signInPage, { driver }));
