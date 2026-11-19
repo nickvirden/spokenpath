@@ -247,9 +247,14 @@ Every response carries the Content-Security-Policy
 which limits sub-resource loads and form submission to the page's origin, as Chromium capture
 aborts requests to other origins, and `Cross-Origin-Resource-Policy: same-origin`. Blocked requests
 are not recorded as diagnostics. The policy does not stop top-level navigation, resource hints or
-WebRTC; capture reads the page's origin after settling and again before Find Elements, and fails
-with `page-left-origin` when it is not the served one, which detects the navigation without
-preventing it. The server is closed on every exit path.
+WebRTC. Capture fails with `page-left-origin` when the page navigates away before Find Elements.
+That is either when a script capture runs in the page (the selector, visibility, settle,
+measurement and origin scripts) answers `no such window`, after which capture reports the origin
+Get Current URL gives, or when the origin the page reports after settling, or again before Find
+Elements, is not the served one. A navigation after Find Elements is not detected: the old
+elements answer `stale element reference`, each gets a `source-attribute-unreadable` diagnostic
+and no entry, and the capture succeeds. None of this prevents the navigation. The server is closed
+on every exit path.
 
 **Driving Safari.** Capture runs `/usr/bin/safaridriver --port <n>` on a free loopback port, with
 an argument array and no shell, opens one session (`browserName: safari`), sets the window so the
@@ -259,7 +264,8 @@ Chromium capture (`load-fonts-frames`, or `load-selector-fonts-frames` with `wai
 Find Elements for `[data-spokenpath-src]` and, for each element in turn, Get Element Attribute,
 Get Computed Role and Get Computed Label. A WebDriver error answering a role or label call is
 recorded in `role_error` or `label_error`, and capture continues, except `invalid session id` and
-`no such window`, which mean the session is lost and fail the capture with `safari-call-failed`.
+`no such window`, which mean the session is lost while the elements are read and fail the capture
+with `safari-call-failed`.
 An error answering a call capture cannot do without, such as loading the page, settling it or
 Find Elements, fails it the same way, naming the step. Every request has a deadline:
 `timeoutMs` (30 000 by default) bounds each call, and Safari's own page-load and script limits are

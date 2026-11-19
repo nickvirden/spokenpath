@@ -42,8 +42,10 @@ over HTTP on a loopback port (`127.0.0.1`) for the length of the capture. It ref
 name another host, sends `Cross-Origin-Resource-Policy: same-origin` so a page on another origin
 cannot embed what it serves, and sends a Content-Security-Policy that limits the page's
 sub-resource loads and form submissions to that origin. The policy does not stop top-level
-navigation (a script setting `location`, a meta refresh), resource hints or WebRTC. Capture detects
-a page that has navigated away from the served origin and fails with `page-left-origin`, but it
-does not prevent the request the page made. This, too, is a design intent and not a sandbox: other
-programs on the same machine can reach the loopback port while the capture runs, and the page's
-scripts run in the Mac's real Safari.
+navigation (a script setting `location`, a meta refresh), resource hints or WebRTC. Capture
+detects a page that navigates away before its elements are read, including one whose own script
+navigates as it loads, and fails with `page-left-origin`. It does not detect a navigation while
+the elements are being read: those elements show as not checked and the command exits 0. In
+neither case does it prevent the request the page made. This, too, is a design intent and not a
+sandbox: other programs on the same machine can reach the loopback port while the capture runs,
+and the page's scripts run in the Mac's real Safari.

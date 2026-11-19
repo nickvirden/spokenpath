@@ -277,12 +277,16 @@ compared node's `cross_check` holds `role` and `name`, each `{ outcome, safari, 
 host is refused, and every response carries `Cross-Origin-Resource-Policy: same-origin` and a
 Content-Security-Policy that limits the page's sub-resource loads and form submissions to that
 origin. The policy does not stop top-level navigation (a script setting `location`, a meta
-refresh), resource hints or WebRTC. When the page is no longer on that origin after it settles or
-just before its elements are read, capture fails with `page-left-origin`: the navigation is
-detected, not prevented, so the page may already have made requests to other origins. A call that
-capture cannot do without, such as loading the page, that Safari answers with an error, or a lost
-session (`invalid session id`, `no such window`), fails it with `safari-call-failed`, naming the
-step. The command starts
+refresh), resource hints or WebRTC. A page that navigates away before its elements are read,
+including one whose own script navigates as it loads, fails the capture with `page-left-origin`.
+Safari then reports either the window's new origin or, for a navigation still under way,
+`no such window` for the page's script. A page that navigates away while its elements are being
+read is not detected. Safari answers those reads with `stale element reference`, each such element
+shows as `not checked` (no element with this tag was found in Safari), and the command exits 0.
+None of this prevents the navigation, so the page may already have made requests to other
+origins. A call that capture cannot do without, such as loading the page, that Safari answers with
+an error, or a lost session (`invalid session id`, or `no such window` while the elements are
+read), fails it with `safari-call-failed`, naming the step. The command starts
 `/usr/bin/safaridriver` on a free loopback port, opens one session, loads the page, waits for it to
 settle as Chromium capture does, reads every element's role and label one after another, then
 deletes the session and stops `safaridriver`, on every exit path. Ctrl-C (SIGINT) or SIGTERM during

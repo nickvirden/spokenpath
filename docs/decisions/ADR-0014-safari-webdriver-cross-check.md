@@ -104,10 +104,18 @@ never pass as agreement.
    server answers. A request naming another host is refused with 421. Blocked requests are not
    recorded as diagnostics; the Chromium snapshot of the same run records them. The policy does not
    stop top-level navigation (a script setting `location`, a meta refresh), resource hints or
-   WebRTC, so this is weaker than Chromium capture's interception. Capture reads the page's origin
-   after it settles and again just before it reads the elements, and fails with `page-left-origin`
-   when the page is no longer on the served origin: the navigation is detected, not prevented, and
-   the request the page made has already gone out.
+   WebRTC, so this is weaker than Chromium capture's interception. Capture fails with
+   `page-left-origin` when the page navigates away before its elements are read. Safari 27 shows
+   such a navigation in one of two ways. A navigation still under way ends the script capture is
+   running with `no such window`, while the window stays open on the new page, whose origin capture
+   reads with Get Current URL. A navigation that has finished leaves the next script running in the
+   new page, so the page's origin, read after it settles and again just before the elements, is no
+   longer the served one. A navigation while the elements are being read is not detected: Safari
+   answers each old element with `stale element reference`, the element gets no entry and shows as
+   not checked, and the run succeeds. Checking the origin again after the reads would turn that
+   into a failure, but it is not done, because the reads already report nothing for those elements
+   and claim no agreement. None of this prevents the navigation, and the request the page made has
+   already gone out.
 10. **When Safari capture fails as a whole, there is no transcript.** A refused session, a missing
     `safaridriver`, a timeout or a hidden page (a locked or sleeping Mac) makes the command print
     `spokenpath: <code>: <message>` and exit 1, because a transcript printed without the
