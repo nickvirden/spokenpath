@@ -88,8 +88,11 @@ Window Rect.
    Get Title, which collapses whitespace, and Get Window Rect, read just before the helper runs;
    the title is compared as WebDriver reports it. A page whose title is empty is refused with
    `safari-window-not-identified` after one load, before the helper runs at all, so the page
-   needs a non-empty `<title>`. The web area's `AXURL` is read
-   again after the walk; a change is `page-left-origin`. `--url` must be an http URL on
+   needs a non-empty `<title>`. The order is fixed: a helper file that is missing or not
+   executable is refused before `safaridriver` starts, without running the helper; an untitled
+   page is refused after one load, before the helper runs at all; and a helper that passes the
+   file check but cannot be started fails at its first run, after that. The web area's `AXURL` is
+   read again after the walk; a change is `page-left-origin`. `--url` must be an http URL on
    `127.0.0.1`.
 4. **Permission and lock checks, before any tree read.** `AXIsProcessTrusted()` false, or
    `kAXErrorAPIDisabled` from the first application-level read, is

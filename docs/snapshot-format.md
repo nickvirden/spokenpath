@@ -363,7 +363,10 @@ run cannot match. `capture.url` is that exact URL.
 rect, so the page needs a non-empty `<title>`. Capture loads the page once first and reads its
 title with WebDriver Get Title, which collapses whitespace; when it is empty, capture fails with
 `safari-window-not-identified` before the helper runs, and the helper reads nothing. The title is
-compared with each window's `AXTitle` as WebDriver reports it.
+compared with each window's `AXTitle` as WebDriver reports it. The order of these refusals is fixed: a helper file that is missing or not executable is refused
+before `safaridriver` starts, without running the helper; an untitled page is refused after one
+load, before the helper runs at all; and a helper that passes the file check but cannot be
+started fails at its first run, after that.
 
 **The check page.** Next, capture serves the helper's check page (`spokenpath-ax-macos
 canary-page`) on a second server with its own nonce, loads and settles it in the same session,
@@ -391,8 +394,8 @@ deleted.
 | `safari-not-running` | No single Safari process runs in the user's session. |
 | `safari-window-not-identified` | The page has no title, or no single window has the page's title and the automation window's rect, or no single web area in it is at the exact URL. Nothing is output, and the message quotes nothing from any window. |
 | `ax-tree-too-large` | The tree has more than 50 000 nodes, or the helper printed more than 32 MiB. |
-| `ax-helper-not-found` | The helper is not built; the message names `cargo build -p spokenpath_ax_macos`. |
-| `ax-helper-failed` | The helper failed with a code capture does not map, or printed something other than its documented JSON; the message quotes the start of its stderr, escaped. |
+| `ax-helper-not-found` | The helper is not built; the message names `cargo build -p spokenpath_ax_macos`. When the file is missing it is raised before `safaridriver` starts. |
+| `ax-helper-failed` | The helper failed with a code capture does not map, or printed something other than its documented JSON; the message quotes the start of its stderr, escaped. For a helper file that is not executable, or that cannot be started, the message names only the error code; a file that is not executable is refused before `safaridriver` starts. |
 | `page-hidden` | Also when the helper finds the Mac's screen locked, or the page is hidden after the read; the message says which. |
 
 The helper's `page-left-origin` (the web area's URL changed during the read), `timeout` and
