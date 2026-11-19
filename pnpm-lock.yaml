@@ -46,11 +46,30 @@ importers:
         specifier: 24.19.2
         version: 24.19.2
 
+  packages/capture-safari:
+    dependencies:
+      '@spokenpath/capture-chromium':
+        specifier: workspace:*
+        version: link:../capture-chromium
+      '@spokenpath/instrument-html':
+        specifier: workspace:*
+        version: link:../instrument-html
+      '@spokenpath/snapshot-types':
+        specifier: workspace:*
+        version: link:../snapshot-types
+    devDependencies:
+      '@types/node':
+        specifier: 24.19.2
+        version: 24.19.2
+
   packages/cli:
     dependencies:
       '@spokenpath/capture-chromium':
         specifier: workspace:*
         version: link:../capture-chromium
+      '@spokenpath/capture-safari':
+        specifier: workspace:*
+        version: link:../capture-safari
       '@spokenpath/instrument-html':
         specifier: workspace:*
         version: link:../instrument-html

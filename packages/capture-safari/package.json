@@ -1,0 +1,24 @@
+{
+  "name": "@spokenpath/capture-safari",
+  "version": "0.6.0",
+  "private": true,
+  "license": "MIT OR Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./test-driver": "./src/test-driver.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:live": "vitest run --config vitest.live.config.ts"
+  },
+  "dependencies": {
+    "@spokenpath/capture-chromium": "workspace:*",
+    "@spokenpath/instrument-html": "workspace:*",
+    "@spokenpath/snapshot-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2"
+  }
+}
