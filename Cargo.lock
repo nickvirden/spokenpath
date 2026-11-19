@@ -329,6 +329,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "spokenpath_ax_macos"
+version = "0.7.0"
+dependencies = [
+ "serde_json",
+ "spokenpath_snapshot",
+]
+
+[[package]]
 name = "spokenpath_cli"
 version = "0.7.0"
 dependencies = [

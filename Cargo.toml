@@ -5,6 +5,7 @@ members = [
   "crates/spokenpath_model",
   "crates/spokenpath_announce",
   "crates/spokenpath_cli",
+  "crates/spokenpath_ax_macos",
   "tasks/xtask",
 ]
 

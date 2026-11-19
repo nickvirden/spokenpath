@@ -1,0 +1,19 @@
+[package]
+name = "spokenpath_ax_macos"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "spokenpath-ax-macos"
+path = "src/main.rs"
+
+[dependencies]
+serde_json.workspace = true
+spokenpath_snapshot.workspace = true
+
+[lints]
+workspace = true
