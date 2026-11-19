@@ -1,5 +1,6 @@
-//! The text transcript: a header, a legend, every item in reading order, the excluded elements,
-//! the navigation indexes and the tab order.
+//! The text transcript: a header, with a cross-check line when the transcript was cross-checked, a
+//! legend, every item in reading order with its cross-check notes, the excluded elements, the
+//! navigation indexes and the tab order.
 //!
 //! Every page-controlled string passes through [`escape_for_terminal`] before it is written.
 //! Layer B phrases and the tab-order ending are written as the announce crate renders them, since
@@ -11,10 +12,11 @@ use std::fmt::Write as _;
 use std::io::{self, Write};
 
 use spokenpath_announce::{
-    AccessibleRecord, DescriptionRecord, DescriptionSourceRecord, DomRecord, Excluded,
-    ExclusionRecord, IndexEntry, Item, LayerA, Marking, NameRecord, NameSourceOutcome,
-    NameSourceRecord, NameStatus, RelatedRecord, RoleKind, RoleRecord, SourceRecord, StatesRecord,
-    Stop, Transcript, TristateToken, escape_for_terminal,
+    AccessibleRecord, CrossCheck, DescriptionRecord, DescriptionSourceRecord, DomRecord, Excluded,
+    ExclusionRecord, FieldCheck, IndexEntry, Item, ItemCrossCheck, LayerA, Marking, NameRecord,
+    NameSourceOutcome, NameSourceRecord, NameStatus, NotChecked, NotCheckedReason, RelatedRecord,
+    RoleKind, RoleRecord, SourceRecord, StatesRecord, Stop, Transcript, TristateToken,
+    escape_for_terminal,
 };
 
 /// The most characters of a start tag an excerpt shows before `…` marks the cut.
@@ -74,6 +76,9 @@ pub(crate) fn write_text(
         context.viewport.0,
         context.viewport.1,
     )?;
+    if let Some(cross_check) = &transcript.cross_check {
+        writeln!(out, "{}", cross_check_header(cross_check))?;
+    }
     if context.layer_b {
         writeln!(
             out,
@@ -127,6 +132,12 @@ impl Printer<'_> {
             }
             if let Some(description) = &record.description {
                 writeln!(out, "{detail}{}", description_line(description))?;
+            }
+        }
+        if let (Some(check), Some(summary)) = (&item.cross_check, &self.transcript.cross_check) {
+            let chromium = &self.transcript.header.engine_version;
+            for line in cross_check_notes(check, &summary.engine_version, chromium) {
+                writeln!(out, "{detail}{line}")?;
             }
         }
         if let Some(approx) = &item.approx {
@@ -585,4 +596,85 @@ fn index_entry(entry: &IndexEntry) -> String {
         _ => "(no accessible name)".to_owned(),
     };
     format!("[{}] {} {name}", entry.item, esc(&entry.role))
+}
+
+/// The second header line of a cross-checked transcript: the Safari and macOS versions, and what
+/// the comparison found.
+fn cross_check_header(cross_check: &CrossCheck) -> String {
+    let mut platform = format!("Safari {}", esc(&cross_check.engine_version));
+    if let Some(macos) = &cross_check.macos_version {
+        // Writing to a String cannot fail.
+        let _ = write!(platform, " on macOS {}", esc(macos));
+        if let Some(build) = &cross_check.macos_build {
+            let _ = write!(platform, " ({})", esc(build));
+        }
+    }
+    let elements = if cross_check.compared == 1 {
+        "element"
+    } else {
+        "elements"
+    };
+    let differ = if cross_check.differs == 1 {
+        "differs"
+    } else {
+        "differ"
+    };
+    format!(
+        "cross-check · {platform} over WebDriver · role and name of {} {elements} compared: {} {differ}, {} not checked",
+        cross_check.compared, cross_check.differs, cross_check.not_checked
+    )
+}
+
+/// The note lines of one compared item: one per field that differs or is not checked, and one for
+/// both fields when neither is checked for the same reason. A field that is the same in both
+/// engines gets no line. No line says which engine is right.
+fn cross_check_notes(check: &ItemCrossCheck, safari: &str, chromium: &str) -> Vec<String> {
+    let (safari, chromium) = (esc(safari), esc(chromium));
+    if let (FieldCheck::NotChecked { error: role }, FieldCheck::NotChecked { error: name }) =
+        (&check.role, &check.name)
+        && role == name
+    {
+        return vec![format!(
+            "not checked in Safari {safari}: role and name ({})",
+            not_checked_reason(role)
+        )];
+    }
+    check
+        .fields()
+        .into_iter()
+        .filter_map(|(field, outcome)| match outcome {
+            FieldCheck::Same { .. } => None,
+            FieldCheck::Differs {
+                safari: safari_value,
+                chromium: chromium_value,
+            } => Some(format!(
+                "differs in Safari: {field} \"{}\" in Safari {safari}, \"{}\" in Chromium {chromium}",
+                esc(safari_value),
+                esc(chromium_value)
+            )),
+            FieldCheck::NotChecked { error } => Some(format!(
+                "not checked in Safari {safari}: {field} ({})",
+                not_checked_reason(error)
+            )),
+        })
+        .collect()
+}
+
+fn not_checked_reason(reason: &NotChecked) -> String {
+    match reason {
+        NotChecked::Engine(error) if error.message.is_empty() => {
+            format!("Safari answered with error \"{}\"", esc(&error.error))
+        }
+        NotChecked::Engine(error) => format!(
+            "Safari answered with error \"{}\": {}",
+            esc(&error.error),
+            esc(&error.message)
+        ),
+        NotChecked::Reason(NotCheckedReason::NoSafariElement) => {
+            "no element with this tag was found in Safari".to_owned()
+        }
+        NotChecked::Reason(NotCheckedReason::SpanNotUnique) => {
+            "more than one element has this tag".to_owned()
+        }
+    }
 }

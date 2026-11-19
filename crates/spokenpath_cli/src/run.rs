@@ -1,4 +1,5 @@
-//! One run of the binary: read the snapshot and the source, adapt, announce, write.
+//! One run of the binary: read the snapshot and the source, adapt, announce, cross-check when
+//! asked, write.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsString;
@@ -7,9 +8,10 @@ use std::io::{self, BufWriter, Read, Write};
 use std::path::Path;
 
 use sha2::{Digest, Sha256};
-use spokenpath_announce::{Options, announce, escape_for_terminal};
+use spokenpath_announce::{Options, announce, cross_check, escape_for_terminal};
 use spokenpath_model::chromium::adapt;
-use spokenpath_snapshot::{ReadError, Snapshot, read};
+use spokenpath_model::safari_webdriver::{SafariAnswers, answers};
+use spokenpath_snapshot::{Diagnostic, ReadError, Snapshot, read};
 
 use crate::args::{self, Command, Format, Input, TranscriptArgs, USAGE};
 use crate::text::{self, SourceText, TextContext};
@@ -106,7 +108,7 @@ fn transcript(
     stderr: &mut dyn Write,
     tool_version: &str,
 ) -> Result<(), Failure> {
-    let snapshot = read_snapshot(&args.snapshot, stdin)?;
+    let snapshot = read_snapshot(&args.snapshot, stdin, "the snapshot")?;
     let source = args
         .source
         .as_deref()
@@ -117,6 +119,11 @@ fn transcript(
         .flat_map(|source| source.ids.iter().map(|&id| (id, source.length)))
         .collect();
     let model = adapt(&snapshot, &lengths).map_err(|error| Failure::Input(error.to_string()))?;
+    let safari = args
+        .cross_check
+        .as_ref()
+        .map(|input| read_cross_check(input, stdin, &snapshot))
+        .transpose()?;
 
     let mut diagnostics = String::new();
     for diagnostic in &model.diagnostics {
@@ -128,15 +135,21 @@ fn transcript(
             escape_for_terminal(&diagnostic.message)
         );
     }
+    if let Some((safari_snapshot, _)) = &safari {
+        write_engine_diagnostics(&mut diagnostics, safari_snapshot);
+    }
     // Diagnostics are advice: a stderr that cannot take them does not fail the transcript.
     let _ = stderr.write_all(diagnostics.as_bytes());
 
-    let transcript = announce(
+    let mut transcript = announce(
         &model,
         Options {
             layer_b: !args.no_speech,
         },
     );
+    if let Some((_, answers)) = &safari {
+        cross_check(&mut transcript, &model, answers);
+    }
     let mut out = BufWriter::new(stdout);
     match args.format {
         Format::Json => {
@@ -202,14 +215,58 @@ fn too_large_failure(what: &str, name: &str) -> Failure {
     ))
 }
 
-fn read_snapshot(input: &Input, stdin: &mut dyn Read) -> Result<Snapshot, Failure> {
-    let bytes = read_limited(input, stdin, "the snapshot")?;
+/// Reads the snapshot `what` names (`the snapshot` or `the cross-check snapshot`). The reader's
+/// own message names the cross-check snapshot when it is that one, since both can fail alike.
+fn read_snapshot(input: &Input, stdin: &mut dyn Read, what: &str) -> Result<Snapshot, Failure> {
+    let bytes = read_limited(input, stdin, what)?;
     let text = String::from_utf8(bytes)
-        .map_err(|error| Failure::Input(format!("the snapshot is not valid UTF-8: {error}")))?;
+        .map_err(|error| Failure::Input(format!("{what} is not valid UTF-8: {error}")))?;
+    let named = |error: &dyn std::fmt::Display| {
+        if what == "the snapshot" {
+            error.to_string()
+        } else {
+            format!("{what}: {error}")
+        }
+    };
     read(&text).map_err(|error| match error {
-        ReadError::UnsupportedMajor { .. } => Failure::UnsupportedVersion(error.to_string()),
-        _ => Failure::Input(error.to_string()),
+        ReadError::UnsupportedMajor { .. } => Failure::UnsupportedVersion(named(&error)),
+        _ => Failure::Input(named(&error)),
     })
+}
+
+/// Reads the Safari snapshot to cross-check against, with Safari's answers, after checking that it
+/// came from the same page as `snapshot`: the same sources and the same spans, so a span id names
+/// the same start tag in both.
+fn read_cross_check(
+    input: &Input,
+    stdin: &mut dyn Read,
+    snapshot: &Snapshot,
+) -> Result<(Snapshot, SafariAnswers), Failure> {
+    let what = "the cross-check snapshot";
+    let safari = read_snapshot(input, stdin, what)?;
+    let answers = answers(&safari).map_err(|error| Failure::Input(format!("{what}: {error}")))?;
+    if safari.sources != snapshot.sources || safari.spans != snapshot.spans {
+        return Err(Failure::Input(
+            "the cross-check snapshot was captured from a different page: its sources or spans \
+             differ from the snapshot's"
+                .to_owned(),
+        ));
+    }
+    Ok((safari, answers))
+}
+
+/// Writes the diagnostics of a cross-check snapshot, each line naming its engine.
+fn write_engine_diagnostics(out: &mut String, snapshot: &Snapshot) {
+    let engine = snapshot.payload.engine();
+    for Diagnostic { code, message, .. } in &snapshot.diagnostics {
+        // Writing to a String cannot fail.
+        let _ = writeln!(
+            out,
+            "spokenpath-core: diagnostic {engine} {}: {}",
+            escape_for_terminal(code),
+            escape_for_terminal(message)
+        );
+    }
 }
 
 /// The `--source` file and the snapshot sources whose SHA-256 it matches.

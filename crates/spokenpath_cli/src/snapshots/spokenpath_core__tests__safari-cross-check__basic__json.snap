@@ -1,0 +1,80 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: "serde_json::to_string_pretty(&fields).expect(\"serialises\")"
+---
+{
+  "cross_check": {
+    "compared": 4,
+    "differs": 2,
+    "engine": "safari-webdriver",
+    "engine_version": "27.0.1",
+    "macos_build": "26A434",
+    "macos_version": "27.0.1",
+    "not_checked": 2,
+    "safari_build": "22625.1.29.11.28"
+  },
+  "items": [
+    {
+      "cross_check": {
+        "name": {
+          "chromium": "Café sign-up",
+          "outcome": "differs",
+          "safari": "Café sign up"
+        },
+        "role": {
+          "chromium": "heading",
+          "outcome": "same",
+          "safari": "heading"
+        }
+      },
+      "number": 2
+    },
+    {
+      "cross_check": {
+        "name": {
+          "chromium": "",
+          "outcome": "same",
+          "safari": ""
+        },
+        "role": {
+          "chromium": "LabelText",
+          "outcome": "differs",
+          "safari": ""
+        }
+      },
+      "number": 4
+    },
+    {
+      "cross_check": {
+        "name": {
+          "error": {
+            "error": "stale element reference",
+            "message": "The element is no longer attached to the document."
+          },
+          "outcome": "not-checked"
+        },
+        "role": {
+          "error": {
+            "error": "unknown error",
+            "message": ""
+          },
+          "outcome": "not-checked"
+        }
+      },
+      "number": 6
+    },
+    {
+      "cross_check": {
+        "name": {
+          "error": "no-safari-element",
+          "outcome": "not-checked"
+        },
+        "role": {
+          "error": "no-safari-element",
+          "outcome": "not-checked"
+        }
+      },
+      "number": 7
+    }
+  ]
+}
