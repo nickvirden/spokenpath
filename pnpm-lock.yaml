@@ -46,7 +46,21 @@ importers:
         specifier: 24.19.2
         version: 24.19.2
 
-  packages/cli: {}
+  packages/cli:
+    dependencies:
+      '@spokenpath/capture-chromium':
+        specifier: workspace:*
+        version: link:../capture-chromium
+      '@spokenpath/instrument-html':
+        specifier: workspace:*
+        version: link:../instrument-html
+    devDependencies:
+      '@types/node':
+        specifier: 24.19.2
+        version: 24.19.2
+      ajv:
+        specifier: 8.20.0
+        version: 8.20.0
 
   packages/instrument-html:
     dependencies:

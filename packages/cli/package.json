@@ -7,5 +7,13 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
+  },
+  "dependencies": {
+    "@spokenpath/capture-chromium": "workspace:*",
+    "@spokenpath/instrument-html": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "ajv": "8.20.0"
   }
 }
