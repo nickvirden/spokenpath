@@ -1,0 +1,3164 @@
+{
+  "pages": {
+    "cross-check/description-and-describedby.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "cross-check/display-contents.html": {
+      "tagged": 10,
+      "mapped": 4,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "style",
+          "line": 6,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 5,
+          "tag": "body",
+          "line": 8,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "cross-check/list-style-none.html": {
+      "tagged": 11,
+      "mapped": 5,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "style",
+          "line": 6,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 5,
+          "tag": "body",
+          "line": 8,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 7,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 9,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "cross-check/owns-in-name.html": {
+      "tagged": 7,
+      "mapped": 1,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 6,
+          "tag": "span",
+          "line": 9,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.5,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "cross-check/select-optgroup.html": {
+      "tagged": 10,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        },
+        {
+          "span": 7,
+          "tag": "optgroup",
+          "line": 10,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        },
+        {
+          "span": 8,
+          "tag": "option",
+          "line": 11,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        },
+        {
+          "span": 9,
+          "tag": "option",
+          "line": 12,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.3333333333333333,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "cross-check/tables.html": {
+      "tagged": 17,
+      "mapped": 10,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 5,
+          "tag": "table",
+          "line": 8,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        },
+        {
+          "span": 6,
+          "tag": "tr",
+          "line": 9,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.8333333333333334,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 4,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 7,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 10,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 12,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 15,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 17,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 18,
+          "role": "AXColumn",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 19,
+          "role": "AXColumn",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 20,
+          "role": "AXGroup",
+          "reason": "no-source-token"
+        }
+      ]
+    },
+    "excluded/aria-hidden.html": {
+      "tagged": 10,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "div",
+          "line": 9,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 8,
+          "tag": "p",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 9,
+          "tag": "button",
+          "line": 10,
+          "column": 4,
+          "reason": "ignored in Chromium: ariaHiddenSubtree"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "excluded/display-none.html": {
+      "tagged": 10,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "div",
+          "line": 9,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 8,
+          "tag": "p",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 9,
+          "tag": "button",
+          "line": 10,
+          "column": 4,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "excluded/inert.html": {
+      "tagged": 10,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "div",
+          "line": 9,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 8,
+          "tag": "p",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 9,
+          "tag": "button",
+          "line": 10,
+          "column": 4,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "excluded/presentational-role.html": {
+      "tagged": 6,
+      "mapped": 0,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 5,
+          "tag": "h2",
+          "line": 8,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 1,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "excluded/visibility-hidden.html": {
+      "tagged": 10,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "div",
+          "line": 9,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 8,
+          "tag": "p",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 9,
+          "tag": "button",
+          "line": 10,
+          "column": 4,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "external-request.html": {
+      "tagged": 9,
+      "mapped": 3,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 8,
+          "tag": "script",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "focus/added-on-tab.html": {
+      "tagged": 8,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "script",
+          "line": 9,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "focus/closed-shadow.html": {
+      "tagged": 15,
+      "mapped": 8,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 8,
+          "tag": "template",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 7,
+          "tag": "div",
+          "line": 9,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.8888888888888888,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "focus/date-input.html": {
+      "tagged": 12,
+      "mapped": 7,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 7,
+          "role": "AXGroup",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 8,
+          "role": "AXGroup",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 9,
+          "role": "AXIncrementor",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 10,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 11,
+          "role": "AXIncrementor",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 12,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 13,
+          "role": "AXIncrementor",
+          "reason": "no-source-token"
+        }
+      ]
+    },
+    "focus/delegates-focus.html": {
+      "tagged": 13,
+      "mapped": 7,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 8,
+          "tag": "template",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "focus/disabled.html": {
+      "tagged": 11,
+      "mapped": 6,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "focus/iframe.html": {
+      "tagged": 11,
+      "mapped": 5,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 8,
+          "tag": "iframe",
+          "line": 9,
+          "column": 4,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.8333333333333334,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 4,
+          "role": "AXScrollArea",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 5,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 6,
+          "role": "AXButton",
+          "reason": "no-source-token"
+        },
+        {
+          "id": 7,
+          "role": "AXButton",
+          "reason": "no-source-token"
+        }
+      ]
+    },
+    "focus/inert.html": {
+      "tagged": 14,
+      "mapped": 4,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "div",
+          "line": 9,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 8,
+          "tag": "p",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 9,
+          "tag": "button",
+          "line": 10,
+          "column": 4,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 10,
+          "tag": "p",
+          "line": 11,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 11,
+          "tag": "a",
+          "line": 11,
+          "column": 4,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "focus/long.html": {
+      "tagged": 207,
+      "mapped": 201,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "style",
+          "line": 6,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 5,
+          "tag": "body",
+          "line": 8,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "focus/no-focusable.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 4,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "focus/positive-tabindex.html": {
+      "tagged": 13,
+      "mapped": 8,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "focus/self-trap.html": {
+      "tagged": 13,
+      "mapped": 7,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 12,
+          "tag": "script",
+          "line": 14,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "focus/trap.html": {
+      "tagged": 12,
+      "mapped": 6,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 11,
+          "tag": "script",
+          "line": 11,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "local-asset.html": {
+      "tagged": 9,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "link",
+          "line": 6,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 5,
+          "tag": "body",
+          "line": 8,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 8,
+          "tag": "p",
+          "line": 11,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 4,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "names/aria-label.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "names/description-aria-description.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "names/description-describedby.html": {
+      "tagged": 8,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 7,
+          "tag": "span",
+          "line": 10,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.6666666666666666,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "names/description-title.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "names/icon-button.html": {
+      "tagged": 9,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "svg",
+          "line": 9,
+          "column": 35,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 8,
+          "tag": "path",
+          "line": 9,
+          "column": 112,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "names/img-alt.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "names/label-for.html": {
+      "tagged": 8,
+      "mapped": 3,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "names/label-wrapped.html": {
+      "tagged": 8,
+      "mapped": 3,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "names/labelledby-hidden.html": {
+      "tagged": 8,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 6,
+          "tag": "span",
+          "line": 9,
+          "column": 1,
+          "reason": "ignored in Chromium: notRendered"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "names/labelledby-over-label.html": {
+      "tagged": 8,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 6,
+          "tag": "span",
+          "line": 9,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.6666666666666666,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "names/placeholder.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXGroup",
+          "subrole": "AXEmptyGroup",
+          "reason": "no-source-token"
+        }
+      ]
+    },
+    "names/title.html": {
+      "tagged": 7,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "navigation/landmarks.html": {
+      "tagged": 45,
+      "mapped": 38,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 32,
+          "tag": "option",
+          "line": 25,
+          "column": 62,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        },
+        {
+          "span": 33,
+          "tag": "option",
+          "line": 25,
+          "column": 85,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.95,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 6,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 8,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 11,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 13,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 15,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 18,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 22,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 27,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 31,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 35,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 38,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 42,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 48,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 51,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 54,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "origins.html": {
+      "tagged": 10,
+      "mapped": 2,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 9,
+          "tag": "script",
+          "line": 12,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 5,
+          "tag": "table",
+          "line": 8,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        },
+        {
+          "span": 6,
+          "tag": "tr",
+          "line": 9,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.5,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 4,
+          "role": "AXButton",
+          "reason": "no-source-token"
+        }
+      ]
+    },
+    "reading-order/aria-owns.html": {
+      "tagged": 13,
+      "mapped": 7,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 10,
+          "tag": "div",
+          "line": 14,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.875,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 6,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 8,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 10,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 12,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "reading-order/reading-flow.html": {
+      "tagged": 24,
+      "mapped": 18,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "style",
+          "line": 6,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 5,
+          "tag": "body",
+          "line": 13,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "reading-order/shadow-slots.html": {
+      "tagged": 16,
+      "mapped": 8,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 8,
+          "tag": "template",
+          "line": 11,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 10,
+          "tag": "slot",
+          "line": 13,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 12,
+          "tag": "slot",
+          "line": 15,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 6,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 9,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "set-position/list.html": {
+      "tagged": 10,
+      "mapped": 4,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 7,
+          "tag": "li",
+          "line": 10,
+          "column": 1,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 3,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 7,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "set-position/listbox.html": {
+      "tagged": 9,
+      "mapped": 4,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [],
+      "figure": 1,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        }
+      ]
+    },
+    "set-position/radio-group.html": {
+      "tagged": 16,
+      "mapped": 10,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 6,
+          "tag": "legend",
+          "line": 9,
+          "column": 1,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.9090909090909091,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 8,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 11,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    },
+    "sign-in.html": {
+      "tagged": 15,
+      "mapped": 8,
+      "mapped_to_several": [],
+      "not_in_tree": [
+        {
+          "span": 0,
+          "tag": "html",
+          "line": 2,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 1,
+          "tag": "head",
+          "line": 3,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 2,
+          "tag": "meta",
+          "line": 4,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 3,
+          "tag": "title",
+          "line": 5,
+          "column": 1,
+          "reason": "no Chromium node"
+        },
+        {
+          "span": 4,
+          "tag": "body",
+          "line": 7,
+          "column": 1,
+          "reason": "ignored in Chromium: uninteresting"
+        },
+        {
+          "span": 12,
+          "tag": "path",
+          "line": 14,
+          "column": 83,
+          "reason": "no Chromium node"
+        }
+      ],
+      "unmapped_in_tree": [
+        {
+          "span": 11,
+          "tag": "svg",
+          "line": 14,
+          "column": 35,
+          "reason": "exposed in Chromium; no Safari node carries its token"
+        }
+      ],
+      "figure": 0.8888888888888888,
+      "unmapped_nodes": [
+        {
+          "id": 0,
+          "role": "AXWebArea",
+          "reason": "web-area"
+        },
+        {
+          "id": 2,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 5,
+          "role": "AXStaticText",
+          "reason": "text"
+        },
+        {
+          "id": 11,
+          "role": "AXStaticText",
+          "reason": "text"
+        }
+      ]
+    }
+  },
+  "total": {
+    "tagged": 711,
+    "mapped": 425,
+    "mapped_to_several": 0,
+    "not_in_tree": 268,
+    "unmapped_in_tree": 18,
+    "figure": 0.9593679458239278,
+    "unmapped_nodes": 126
+  }
+}

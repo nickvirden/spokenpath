@@ -1,0 +1,746 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 2
+  },
+  "producer": {
+    "name": "@spokenpath/capture-safari",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-ax",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/visibility-hidden.html?spokenpath-nonce=0",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "1970-01-01T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "visibility-hidden.html",
+      "sha256": "f26b8c443e5e72ff86f0b5924222edee5b80fac70c74836e02590b2a8a1066ff",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "element": {
+        "start": 16,
+        "end": 330
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 39
+      },
+      "element": {
+        "start": 33,
+        "end": 121
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 40,
+        "end": 62
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 63,
+        "end": 70
+      },
+      "element": {
+        "start": 63,
+        "end": 113
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 122,
+        "end": 128
+      },
+      "element": {
+        "start": 122,
+        "end": 322
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 129,
+        "end": 132
+      },
+      "element": {
+        "start": 129,
+        "end": 185
+      },
+      "line": 8,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 132,
+        "end": 166
+      },
+      "element": {
+        "start": 132,
+        "end": 181
+      },
+      "line": 8,
+      "column": 4
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 186,
+        "end": 232
+      },
+      "element": {
+        "start": 186,
+        "end": 314
+      },
+      "line": 9,
+      "column": 1
+    },
+    {
+      "id": 8,
+      "source": 0,
+      "start_tag": {
+        "start": 233,
+        "end": 236
+      },
+      "element": {
+        "start": 233,
+        "end": 307
+      },
+      "line": 10,
+      "column": 1
+    },
+    {
+      "id": 9,
+      "source": 0,
+      "start_tag": {
+        "start": 236,
+        "end": 270
+      },
+      "element": {
+        "start": 236,
+        "end": 303
+      },
+      "line": 10,
+      "column": 4
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-ax",
+    "nodes": [
+      {
+        "attributes": {
+          "AXBlockQuoteLevel": {
+            "type": "number",
+            "value": 0
+          },
+          "AXCaretBrowsingEnabled": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXChildren": {
+            "type": "array",
+            "items": [
+              {
+                "node": 1,
+                "type": "element"
+              }
+            ]
+          },
+          "AXChildrenInNavigationOrder": {
+            "type": "array",
+            "items": [
+              {
+                "node": 1,
+                "type": "element"
+              }
+            ]
+          },
+          "AXCustomActions": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXCustomContent": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXDescription": {
+            "type": "string",
+            "value": "Subtree hidden by visibility hidden"
+          },
+          "AXElementBusy": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXEnabled": {
+            "type": "boolean",
+            "value": true
+          },
+          "AXEndTextMarker": {
+            "cf_type": "AXTextMarker",
+            "type": "unsupported"
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "AXHelp": {
+            "type": "string",
+            "value": ""
+          },
+          "AXIdentifier": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXLanguage": {
+            "type": "string",
+            "value": ""
+          },
+          "AXLayoutCount": {
+            "type": "number",
+            "value": 0
+          },
+          "AXLinkUIElements": {
+            "type": "array",
+            "items": []
+          },
+          "AXLinkedUIElements": {
+            "type": "array",
+            "items": []
+          },
+          "AXLoaded": {
+            "type": "boolean",
+            "value": true
+          },
+          "AXLoadingProgress": {
+            "type": "number",
+            "value": 1
+          },
+          "AXParent": {
+            "type": "element"
+          },
+          "AXPerformsOwnTextStitching": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 0,
+            "y": 0
+          },
+          "AXPostsOwnLiveRegionAnnouncements": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXPreventKeyboardDOMEventDispatch": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXWebArea"
+          },
+          "AXRoleDescription": {
+            "type": "string",
+            "value": "HTML content"
+          },
+          "AXSelected": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXSelectedTextMarkerRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 0,
+            "height": 0
+          },
+          "AXStartTextMarker": {
+            "cf_type": "AXTextMarker",
+            "type": "unsupported"
+          },
+          "AXTextInputMarkedRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTextInputMarkedTextMarkerRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTitle": {
+            "type": "string",
+            "value": ""
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXURL": {
+            "type": "url",
+            "value": "http://127.0.0.1:0/visibility-hidden.html?spokenpath-nonce=0"
+          },
+          "AXValue": {
+            "type": "string",
+            "value": ""
+          },
+          "AXVisibleCharacterRange": {
+            "type": "range",
+            "location": 0,
+            "length": 0
+          },
+          "AXVisited": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXWindow": {
+            "type": "element"
+          },
+          "_AXPrimaryScreenHeight": {
+            "type": "number",
+            "value": 0
+          }
+        },
+        "children": [
+          1
+        ],
+        "id": 0
+      },
+      {
+        "attributes": {
+          "AXBlockQuoteLevel": {
+            "type": "number",
+            "value": 0
+          },
+          "AXChildren": {
+            "type": "array",
+            "items": [
+              {
+                "node": 2,
+                "type": "element"
+              }
+            ]
+          },
+          "AXChildrenInNavigationOrder": {
+            "type": "array",
+            "items": [
+              {
+                "node": 2,
+                "type": "element"
+              }
+            ]
+          },
+          "AXCustomActions": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXCustomContent": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "value": "sp-src-8-1"
+              }
+            ]
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXDescription": {
+            "type": "string",
+            "value": ""
+          },
+          "AXEditableAncestor": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXElementBusy": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXEnabled": {
+            "type": "boolean",
+            "value": true
+          },
+          "AXEndTextMarker": {
+            "cf_type": "AXTextMarker",
+            "type": "unsupported"
+          },
+          "AXFocusableAncestor": {
+            "node": 0,
+            "type": "element"
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "AXHelp": {
+            "type": "string",
+            "value": ""
+          },
+          "AXHighestEditableAncestor": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXIdentifier": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXLanguage": {
+            "type": "string",
+            "value": "en"
+          },
+          "AXLinkedUIElements": {
+            "type": "array",
+            "items": []
+          },
+          "AXParent": {
+            "node": 0,
+            "type": "element"
+          },
+          "AXPerformsOwnTextStitching": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 0,
+            "y": 0
+          },
+          "AXPostsOwnLiveRegionAnnouncements": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXGroup"
+          },
+          "AXRoleDescription": {
+            "type": "string",
+            "value": "group"
+          },
+          "AXSelected": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXSelectedTextMarkerRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 0,
+            "height": 0
+          },
+          "AXStartTextMarker": {
+            "cf_type": "AXTextMarker",
+            "type": "unsupported"
+          },
+          "AXSubrole": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTextInputMarkedRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTextInputMarkedTextMarkerRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTitle": {
+            "type": "string",
+            "value": ""
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXValue": {
+            "type": "string",
+            "value": ""
+          },
+          "AXVisibleCharacterRange": {
+            "type": "range",
+            "location": 0,
+            "length": 0
+          },
+          "AXVisited": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXWindow": {
+            "type": "element"
+          },
+          "_AXPrimaryScreenHeight": {
+            "type": "number",
+            "value": 0
+          }
+        },
+        "children": [
+          2
+        ],
+        "id": 1,
+        "parent": 0,
+        "span": 5
+      },
+      {
+        "attributes": {
+          "AXAccessKey": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXBlockQuoteLevel": {
+            "type": "number",
+            "value": 0
+          },
+          "AXChildren": {
+            "type": "array",
+            "items": []
+          },
+          "AXChildrenInNavigationOrder": {
+            "type": "array",
+            "items": []
+          },
+          "AXCustomActions": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXCustomContent": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "value": "sp-src-8-4"
+              }
+            ]
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": "before"
+          },
+          "AXDescription": {
+            "type": "string",
+            "value": ""
+          },
+          "AXEditableAncestor": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXElementBusy": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXEnabled": {
+            "type": "boolean",
+            "value": true
+          },
+          "AXEndTextMarker": {
+            "cf_type": "AXTextMarker",
+            "type": "unsupported"
+          },
+          "AXFocusableAncestor": {
+            "node": 0,
+            "type": "element"
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "AXHelp": {
+            "type": "string",
+            "value": ""
+          },
+          "AXHighestEditableAncestor": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXIdentifier": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXInvalid": {
+            "type": "string",
+            "value": "false"
+          },
+          "AXLanguage": {
+            "type": "string",
+            "value": "en"
+          },
+          "AXLinkedUIElements": {
+            "type": "array",
+            "items": []
+          },
+          "AXParent": {
+            "node": 1,
+            "type": "element"
+          },
+          "AXPerformsOwnTextStitching": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 0,
+            "y": 0
+          },
+          "AXPostsOwnLiveRegionAnnouncements": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXButton"
+          },
+          "AXRoleDescription": {
+            "type": "string",
+            "value": "button"
+          },
+          "AXSelected": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXSelectedTextMarkerRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 0,
+            "height": 0
+          },
+          "AXStartTextMarker": {
+            "cf_type": "AXTextMarker",
+            "type": "unsupported"
+          },
+          "AXSubrole": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTextInputMarkedRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTextInputMarkedTextMarkerRange": {
+            "code": -25212,
+            "type": "error"
+          },
+          "AXTitle": {
+            "type": "string",
+            "value": "Before"
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXVisibleCharacterRange": {
+            "type": "range",
+            "location": 0,
+            "length": 0
+          },
+          "AXVisited": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXWindow": {
+            "type": "element"
+          },
+          "_AXPrimaryScreenHeight": {
+            "type": "number",
+            "value": 0
+          }
+        },
+        "children": [],
+        "id": 2,
+        "parent": 1,
+        "span": 6
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}
