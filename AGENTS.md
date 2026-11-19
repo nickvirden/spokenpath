@@ -87,16 +87,21 @@ package's tests, which capture pages in Chromium.
 CI runs the same checks on every pull request, plus a lint of the pull request title and a
 gitleaks scan of the pull request's commits.
 
-`pnpm test:safari` is a live check that runs only on a Mac with Safari automation enabled, awake
-and unlocked, outside `pnpm check` and CI. Run it when a Safari golden under
-`fixtures/snapshots/safari-webdriver/` or the Safari capture changes.
+`pnpm test:safari` is a live check that runs only on a Mac with Safari automation enabled, the
+Accessibility permission granted to the app that runs it (see "Granting the Accessibility
+permission" in `docs/usage.md`), awake and unlocked, outside `pnpm check` and CI. It builds the
+`spokenpath-ax-macos` helper first, then compares both Safari golden sets:
+`fixtures/snapshots/safari-webdriver/` and `fixtures/snapshots/safari-ax/`. Run it when a Safari
+golden or the Safari capture changes.
 
 ## Layout
 
 - `crates/`: the Rust core. `spokenpath_snapshot` (the snapshot contract), `spokenpath_model` (the
   engine-neutral model), `spokenpath_announce` (reading order, navigation and the transcript) and
   `spokenpath_cli`, which builds the `spokenpath-core` binary and holds the text printer's goldens
-  for every committed capture (`src/snapshots/`).
+  for every committed capture (`src/snapshots/`), and `spokenpath_ax_macos`, which builds the
+  `spokenpath-ax-macos` helper that reads Safari's macOS accessibility tree (a stub off macOS, and
+  the one crate with `unsafe` code, in its FFI module).
 - `tasks/xtask`: repository automation, run as `cargo xtask <command>`; `cargo xtask help` lists
   the commands.
 - `packages/`: the TypeScript packages. `@spokenpath/snapshot-types`,
@@ -129,6 +134,11 @@ and unlocked, outside `pnpm check` and CI. Run it when a Safari golden under
   ([ADR-0007](docs/decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)). The
   `spokenpath_model` tests read every golden in this directory, with its page from
   `fixtures/pages/`, so a new golden is adapted without a test change.
+- `fixtures/snapshots/safari-webdriver/` and `fixtures/snapshots/safari-ax/`: the Safari goldens,
+  one per page in the Chromium golden list, captured live on a Mac with
+  `UPDATE_FIXTURES=1 pnpm test:safari`. `safari-ax/source-mapping.json` is the measured share of
+  source locations Safari's tree carries, which a `pnpm test:node` test recomputes from the
+  goldens and refreshes with `UPDATE_FIXTURES=1 pnpm --filter @spokenpath/capture-safari test`.
 - `fixtures/transcripts/`: the end-to-end golden, `sign-in.txt`, the text transcript the
   `spokenpath` command prints for `fixtures/pages/sign-in.html`, with the header's spokenpath
   version normalised to `0.0.0`. Refresh it with `UPDATE_FIXTURES=1 pnpm test:e2e` and review the

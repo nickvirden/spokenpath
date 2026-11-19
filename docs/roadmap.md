@@ -30,12 +30,15 @@ spokenpath is pre-alpha. This page lists the planned work. The decisions behind 
 9. **Safari cross-check.** Computed role and label from real Safari over WebDriver, with notes
    wherever Safari differs from Chromium
    ([ADR-0014](decisions/ADR-0014-safari-webdriver-cross-check.md)).
+10. **Safari tree capture.** A native macOS helper that reads Safari's macOS accessibility tree for
+    the automation window only, recorded raw as a `safari-ax` snapshot with every node traced to
+    its source tag ([ADR-0015](decisions/ADR-0015-safari-ax-tree-capture.md)).
 
 ## Next, in order
 
 Each item builds on the ones before it.
 
-1. **Safari tree backend.** A native macOS helper that reads Safari's accessibility tree, and a
+1. **Safari adapter and per-engine transcripts.** A `safari-ax` adapter in the Rust model, and a
    transcript per engine.
 2. **VoiceOver corpus and speech profile.** VoiceOver speech captured locally on macOS and
    committed with its versions, and a "VoiceOver + Safari on macOS" profile that shows that

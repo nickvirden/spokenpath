@@ -49,3 +49,21 @@ the elements are being read: those elements show as not checked and the command 
 neither case does it prevent the request the page made. This, too, is a design intent and not a
 sandbox: other programs on the same machine can reach the loopback port while the capture runs,
 and the page's scripts run in the Mac's real Safari.
+
+Capturing Safari's macOS accessibility tree uses the `spokenpath-ax-macos` helper, which runs with
+the Accessibility permission of the app that starts it, and that permission can read any app's
+interface. The helper limits itself to Safari's automation window. It reads through Safari's
+application element only: it never creates the system-wide element or an element for any other
+process, and it fails when more than one Safari process runs. From Safari's window list it reads
+only each window's top-level title, and position and size for a window whose title matches,
+compared without being copied out, and it descends only into the single window whose title and
+rect are the automation window's, as WebDriver reports them. Inside it, it reads only the single
+web area whose URL is exactly the one capture served, nonce included, and checks that URL again
+after the walk. Anything else fails with `safari-window-not-identified`, nothing is read, and no
+message quotes another window. It never sets an attribute and never prompts for the permission. It
+accepts only URLs on `127.0.0.1`.
+
+The tree is recorded raw: its attributes hold the page's text, titles, values and URLs, as the
+DOM does, so treat a `safari-ax` snapshot like any other snapshot of the page (see "Sensitive
+content" in [docs/snapshot-format.md](docs/snapshot-format.md)). The helper's output is capped at
+32 MiB and its run at the capture's time limit plus 5 seconds, after which capture kills it.

@@ -311,6 +311,31 @@ Each run opens a Safari automation window, which closes when the capture ends. K
 and unlocked while it runs: Safari reports the page as hidden on a locked or sleeping Mac, and a
 hidden page does not settle, so capture fails with `page-hidden`.
 
+### Granting the Accessibility permission
+
+Capturing Safari's macOS accessibility tree (`captureSafariAx`, run by `pnpm test:safari`) reads
+it through the `spokenpath-ax-macos` helper, which needs the macOS Accessibility permission.
+macOS grants it to the app the helper runs under: the terminal app (such as Terminal or iTerm2),
+or the editor or other app that started the command. Grant it once in System Settings > Privacy &
+Security > Accessibility by turning that app on, then quit and reopen the app.
+
+spokenpath never prompts for, grants or changes the permission or any other setting, and the
+helper reads the tree of the automation window only, never another window's contents or another
+app ([SECURITY.md](../SECURITY.md#trust-model) states its read scope). When the
+capture cannot read the tree it fails with one of these codes:
+
+- `accessibility-permission-missing`: the app lacks the permission. The message says which sign
+  macOS gave: the process is not trusted for Accessibility, macOS refused a request with
+  `kAXErrorAPIDisabled` (-25211), or the check page capture loads first came back with none of its
+  expected nodes.
+- `page-hidden`: the Mac's screen is locked, or Safari reports the page as hidden; the message says
+  which.
+- `ax-canary-incomplete`: the check page came back with some but not all of its expected nodes, so
+  the tree cannot be relied on. Run the capture again, and if it repeats, report it with the
+  Safari and macOS versions.
+
+Keep the Mac awake and unlocked for the whole run, as for every Safari capture.
+
 ## Terminal escaping
 
 Page text reaches the terminal, so every page-controlled string the text output and the messages
