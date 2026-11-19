@@ -34,6 +34,11 @@ binary's stdout and stderr are the command's, unchanged. No temporary file is wr
 | `--no-speech` | Leave out Layer B: no `~` lines and no `approx` in JSON. |
 | `--wait-for <selector>` | After the `load` event, wait until a CSS selector matches before capturing. |
 | `--verify-instrumentation` | Check that the instrumented page builds the same DOM as the original, print one line, and capture nothing. It cannot be combined with `--format` or `--no-speech`. |
+| `-h`, `--help` | Print the usage line and a summary of the options to stdout, and exit 0. |
+| `--version` | Print `spokenpath <version>`, the workspace version, and exit 0. |
+
+Each option may be given once; a repeated option is a usage error. `--help`, `-h` and `--version`
+take no other arguments.
 
 **Paths.** The page path resolves against the process's working directory. Under `pnpm spokenpath`
 that is the repository root, wherever the command is typed, so name pages relative to the root
@@ -82,7 +87,9 @@ without being parsed.
 | 3 | The binary's 3. | The snapshot's major version is not one the reader reads; the message names both majors. |
 
 Every failure writes a message to stderr: `spokenpath: <code>: <message>` from the command,
-`spokenpath-core: <message>` from the binary. A usage error is followed by a `usage:` line.
+`spokenpath-core: <message>` from the binary. A usage error is followed by a `usage:` line. A
+multi-line message, such as a browser error with its call log, keeps its line breaks, and each line
+is escaped as [Terminal escaping](#terminal-escaping) describes.
 
 **Diagnostics.** Problems the capture recorded rather than failed on, such as a blocked external
 request, are written to stderr by the binary, one per line, as
@@ -121,7 +128,9 @@ A = what the browser exposes   ~ = illustrative speech, approximate, not any spe
   exposed states as words (`checked`, `not checked`, `checked mixed`, `pressed`, `not pressed`,
   `pressed mixed`, `expanded`, `collapsed`, `selected`, `disabled`, `required`, `invalid`,
   `read-only`, `focusable`, `focused`, `level N`); then the set position, such as
-  `2 of 3 (computed by tool)`. A boolean state that is false is left out of the text, except
+  `2 of 3 (computed by tool)`. `(computed by tool)` marks a value the tool derived itself from what
+  the browser exposes rather than read from the browser, as
+  [ADR-0001](decisions/ADR-0001-two-layer-output.md) defines it. A boolean state that is false is left out of the text, except
   `expanded`, which shows as `collapsed`; the JSON keeps every state. A text run's `A` line is
   `text` and its text in quotes.
 - **Location.** For an accessible item, `path:line:column` of its start tag (1-based, the column
@@ -137,7 +146,8 @@ A = what the browser exposes   ~ = illustrative speech, approximate, not any spe
   when it is the element's contents), and `from hidden content (computed by tool)` when the name
   draws on content the engine hides. Each node the source drew on follows on a `via` line with its
   text and location. `other sources:` lists every other source the engine tried, each with its
-  outcome (`empty`, `superseded` or `invalid`). For an unnamed item, `no accessible name; tried:`
+  outcome (`empty`, `superseded` or `invalid`). The same source can appear twice, because the
+  engine reports it once for each mechanism it tries. For an unnamed item, `no accessible name; tried:`
   lists every source with its outcome, or the line says the engine reported none.
 - **Description.** `description "…"` with the attribute it is attributed to and its marking, such as
   `from aria-describedby: <span> #hint  page.html:10:1 (computed by tool)`, or a statement that its
@@ -176,6 +186,9 @@ and strings are the page's raw strings with JSON escaping only. Its JSON Schema 
 `cargo xtask schema` and checked in CI with `cargo xtask schema --check`. The header's
 `tool_version` is the version of the tool that drove the browser (Playwright), while the text
 header names spokenpath's own version.
+
+Because the JSON keeps the page's raw strings, JSON from a page you do not trust can carry control
+characters and escape sequences: pipe it to a tool, and do not print it to a terminal unfiltered.
 
 ## Terminal escaping
 
