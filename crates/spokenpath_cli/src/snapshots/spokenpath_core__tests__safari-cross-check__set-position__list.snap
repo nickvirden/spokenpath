@@ -1,0 +1,78 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 4 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "List with a hidden item"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "List with a hidden item"
+ 2    A list (no accessible name)
+        list.html:8:1  <ul id="list">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "list"
+ 3      A listitem (no accessible name)  level 1  1 of 3 (computed by tool)
+          list.html:9:1  <li id="first">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "listitem, level 1, 1 of 3"
+ 4        A ListMarker (internal role) "• "
+            no source location: the snapshot's DOM does not hold this node (not-in-dom)
+            name from contents
+          ~ "• "
+ 5        A text "First"
+          ~ "First"
+ 6      A listitem (no accessible name)  level 1  2 of 3 (computed by tool)
+          list.html:11:1  <li id="second">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "listitem, level 1, 2 of 3"
+ 7        A ListMarker (internal role) "• "
+            no source location: the snapshot's DOM does not hold this node (not-in-dom)
+            name from contents
+          ~ "• "
+ 8        A text "Second"
+          ~ "Second"
+ 9      A listitem (no accessible name)  level 1  3 of 3 (computed by tool)
+          list.html:12:1  <li id="third">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "listitem, level 1, 3 of 3"
+10        A ListMarker (internal role) "• "
+            no source location: the snapshot's DOM does not hold this node (not-in-dom)
+            name from contents
+          ~ "• "
+11        A text "Third"
+          ~ "Third"
+
+Excluded
+  <html>  list.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  list.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  list.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  list.html:3:1 (computed by tool)
+  <title>  list.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  list.html:3:1 (computed by tool)
+  <body>  list.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <li> #hidden  list.html:10:1  <li id="hidden" hidden>
+    not-rendered (engine reason: notRendered)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

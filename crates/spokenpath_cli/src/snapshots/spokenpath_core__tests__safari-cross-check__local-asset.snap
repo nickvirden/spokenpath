@@ -1,0 +1,59 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 2 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Local asset"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Local asset"
+2    A heading "Local asset"  level 1
+       local-asset.html:9:1  <h1>
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+     ~ "Local asset, heading, level 1"
+3      A text "Local asset"
+       ~ "Local asset"
+4    A paragraph (no accessible name)
+       local-asset.html:10:1  <p id="shown">
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+5      A text "Shown by default."
+       ~ "Shown by default."
+
+Excluded
+  <html>  local-asset.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  local-asset.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  local-asset.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  local-asset.html:3:1 (computed by tool)
+  <title>  local-asset.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  local-asset.html:3:1 (computed by tool)
+  <link>  local-asset.html:6:1  <link rel="stylesheet" href="assets/local-asset.css">
+    not-rendered (engine reason: notRendered); hidden by <head>  local-asset.html:3:1 (computed by tool)
+  <body>  local-asset.html:8:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <p> #hidden  local-asset.html:11:1  <p id="hidden" class="hidden-by-asset">
+    not-rendered (engine reason: notRendered)
+
+Headings
+  [2] heading "Local asset"  level 1
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

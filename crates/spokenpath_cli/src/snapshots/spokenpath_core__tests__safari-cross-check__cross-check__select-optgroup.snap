@@ -1,0 +1,104 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 6 elements compared: 5 differ, 1 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "A closed select with an option group"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "A closed select with an option group"
+2    A generic (no accessible name)
+       select-optgroup.html:7:1  <body>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+       differs in Safari: role "" in Safari 27.0.1, "generic" in Chromium 159.0.8154.6
+     ~ ""
+3      A LabelText (internal role) (no accessible name)
+         select-optgroup.html:8:1  <label for="flavour">
+         no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+         differs in Safari: role "" in Safari 27.0.1, "LabelText" in Chromium 159.0.8154.6
+       ~ ""
+4        A text "Flavour"
+         ~ "Flavour"
+5      A combobox "Flavour"  value "Apple"  collapsed, focusable
+         select-optgroup.html:9:1  <select id="flavour">
+         name from label-for (related-element)
+           via <label>  "Flavour"  select-optgroup.html:8:1
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+         differs in Safari: role "button" in Safari 27.0.1, "combobox" in Chromium 159.0.8154.6
+       ~ "Flavour, combobox, Apple, collapsed"
+6        A MenuListPopup (internal role) (no accessible name)
+           no source location: its origin could not be established (unknown)
+           no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+         ~ ""
+7          A group "Fruit"
+             select-optgroup.html:10:1  <optgroup id="fruit" label="Fruit">
+             name from attribute
+             other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+             not checked in Safari 27.0.1: role and name (Safari answered with error "unknown error")
+           ~ "Fruit, group"
+8            A option "Apple"  selected, focusable
+               select-optgroup.html:11:1  <option id="apple">
+               name from contents
+               other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+               differs in Safari: name "" in Safari 27.0.1, "Apple" in Chromium 159.0.8154.6
+             ~ "Apple, option, selected"
+9            A option "Pear"  focusable
+               select-optgroup.html:12:1  <option id="pear">
+               name from contents
+               other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+               differs in Safari: name "" in Safari 27.0.1, "Pear" in Chromium 159.0.8154.6
+             ~ "Pear, option"
+
+Excluded
+  <html>  select-optgroup.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  select-optgroup.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  select-optgroup.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  select-optgroup.html:3:1 (computed by tool)
+  <title>  select-optgroup.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  select-optgroup.html:3:1 (computed by tool)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot> #select-options  no source location: its origin could not be established (unknown)
+    uninteresting (engine reason: uninteresting)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    uninteresting (engine reason: uninteresting)
+  <span>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <span>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [5] combobox "Flavour"
+
+Tab order
+  1  [5] combobox "Flavour"
+  2  left the page
+  3  [5] combobox "Flavour"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

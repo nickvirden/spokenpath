@@ -1,0 +1,75 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 4 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "display: contents"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "display: contents"
+ 2    A list (no accessible name)
+        display-contents.html:9:1  <ul id="list" class="contents">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "list"
+ 3      A listitem (no accessible name)  level 1  1 of 2 (computed by tool)
+          display-contents.html:10:1  <li id="one">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "listitem, level 1, 1 of 2"
+ 4        A ListMarker (internal role) "• "
+            no source location: the snapshot's DOM does not hold this node (not-in-dom)
+            name from contents
+          ~ "• "
+ 5        A text "One"
+          ~ "One"
+ 6      A listitem (no accessible name)  level 1  2 of 2 (computed by tool)
+          display-contents.html:11:1  <li id="two">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "listitem, level 1, 2 of 2"
+ 7        A ListMarker (internal role) "• "
+            no source location: the snapshot's DOM does not hold this node (not-in-dom)
+            name from contents
+          ~ "• "
+ 8        A text "Two"
+          ~ "Two"
+ 9    A button "Send"
+        display-contents.html:13:1  <button id="send" class="contents" type="button">
+        name from contents
+        other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+      ~ "Send, button"
+10      A text "Send"
+        ~ "Send"
+
+Excluded
+  <html>  display-contents.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  display-contents.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  display-contents.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  display-contents.html:3:1 (computed by tool)
+  <title>  display-contents.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  display-contents.html:3:1 (computed by tool)
+  <style>  display-contents.html:6:1  <style>
+    not-rendered (engine reason: notRendered); hidden by <head>  display-contents.html:3:1 (computed by tool)
+  <body>  display-contents.html:8:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [9] button "Send"
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.

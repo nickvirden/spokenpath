@@ -1,0 +1,90 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 7 elements compared: 1 differs, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Focus held on one control"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Focus held on one control"
+ 2    A paragraph (no accessible name)
+        self-trap.html:8:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 3      A button "Before"  focusable
+          self-trap.html:8:4  <button id="before" type="button">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "Before, button"
+ 4        A text "Before"
+          ~ "Before"
+ 5    A paragraph (no accessible name)
+        self-trap.html:9:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 6      A LabelText (internal role) (no accessible name)
+          self-trap.html:10:1  <label for="trapped">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+          differs in Safari: role "" in Safari 27.0.1, "LabelText" in Chromium 159.0.8154.6
+        ~ ""
+ 7        A text "Trapped"
+          ~ "Trapped"
+ 8      A textbox "Trapped"  focusable
+          self-trap.html:11:1  <input id="trapped" type="text">
+          name from label-for (related-element)
+            via <label>  "Trapped"  self-trap.html:10:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+        ~ "Trapped, textbox"
+ 9        A generic (no accessible name)
+            no source location: its origin could not be established (unknown)
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ ""
+10    A paragraph (no accessible name)
+        self-trap.html:13:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+11      A button "After"  focusable
+          self-trap.html:13:4  <button id="after" type="button">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "After, button"
+12        A text "After"
+          ~ "After"
+
+Excluded
+  <html>  self-trap.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  self-trap.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  self-trap.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  self-trap.html:3:1 (computed by tool)
+  <title>  self-trap.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  self-trap.html:3:1 (computed by tool)
+  <body>  self-trap.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <script>  self-trap.html:14:1  <script>
+    not-rendered (engine reason: notRendered)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Before"
+  [8] textbox "Trapped"
+  [11] button "After"
+
+Tab order
+  1  [3] button "Before"
+  2  [8] textbox "Trapped"
+  3  [8] textbox "Trapped"  repeats step 2
+  ending (computed by tool): Tab returned to step 2 without focus leaving the page: a focus trap.

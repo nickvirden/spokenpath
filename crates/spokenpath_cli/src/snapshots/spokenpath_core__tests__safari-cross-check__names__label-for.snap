@@ -1,0 +1,64 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 3 elements compared: 1 differs, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Name from a label for"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Name from a label for"
+2    A paragraph (no accessible name)
+       label-for.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A LabelText (internal role) (no accessible name)
+         label-for.html:9:1  <label id="label" for="target">
+         no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+         differs in Safari: role "" in Safari 27.0.1, "LabelText" in Chromium 159.0.8154.6
+       ~ ""
+4        A text "Label for text"
+         ~ "Label for text"
+5      A textbox "Label for text"  focusable
+         label-for.html:10:1  <input id="target" type="text">
+         name from label-for (related-element)
+           via <label> #label  "Label for text"  label-for.html:9:1
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+       ~ "Label for text, textbox"
+6        A generic (no accessible name)
+           no source location: its origin could not be established (unknown)
+           no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+         ~ ""
+
+Excluded
+  <html>  label-for.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  label-for.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  label-for.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  label-for.html:3:1 (computed by tool)
+  <title>  label-for.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  label-for.html:3:1 (computed by tool)
+  <body>  label-for.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [5] textbox "Label for text"
+
+Tab order
+  1  [5] textbox "Label for text"
+  2  left the page
+  3  [5] textbox "Label for text"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

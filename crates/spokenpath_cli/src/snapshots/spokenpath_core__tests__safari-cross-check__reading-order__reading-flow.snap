@@ -1,0 +1,182 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 18 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "CSS reading-flow"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "CSS reading-flow"
+ 2    A main (no accessible name)
+        reading-flow.html:14:1  <main>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "main"
+ 3      A heading "reading-flow"  level 1
+          reading-flow.html:15:1  <h1>
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "reading-flow, heading, level 1"
+ 4        A text "reading-flow"
+          ~ "reading-flow"
+ 5      A group "Flex with reading-flow"
+          reading-flow.html:16:1  <div id="flex-reading-flow" class="flex flex-visual" role="group" aria-label="Fl…
+          name from aria-label="Flex with reading-flow" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Flex with reading-flow, group"
+ 6        A button "DOM 2, order 1"  focusable
+            reading-flow.html:18:1  <button id="flex-flow-2" type="button" style="order:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 2, order 1, button"
+ 7          A text "DOM 2, order 1"
+            ~ "DOM 2, order 1"
+ 8        A button "DOM 3, order 2"  focusable
+            reading-flow.html:19:1  <button id="flex-flow-3" type="button" style="order:2">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 3, order 2, button"
+ 9          A text "DOM 3, order 2"
+            ~ "DOM 3, order 2"
+10        A button "DOM 1, order 3"  focusable
+            reading-flow.html:17:1  <button id="flex-flow-1" type="button" style="order:3">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 1, order 3, button"
+11          A text "DOM 1, order 3"
+            ~ "DOM 1, order 3"
+12      A group "Flex with order only"
+          reading-flow.html:21:1  <div id="flex-order-only" class="flex" role="group" aria-label="Flex with order …
+          name from aria-label="Flex with order only" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Flex with order only, group"
+13        A button "DOM 1, order 3"  focusable
+            reading-flow.html:22:1  <button id="flex-order-1" type="button" style="order:3">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 1, order 3, button"
+14          A text "DOM 1, order 3"
+            ~ "DOM 1, order 3"
+15        A button "DOM 2, order 1"  focusable
+            reading-flow.html:23:1  <button id="flex-order-2" type="button" style="order:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 2, order 1, button"
+16          A text "DOM 2, order 1"
+            ~ "DOM 2, order 1"
+17        A button "DOM 3, order 2"  focusable
+            reading-flow.html:24:1  <button id="flex-order-3" type="button" style="order:2">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 3, order 2, button"
+18          A text "DOM 3, order 2"
+            ~ "DOM 3, order 2"
+19      A group "Grid with reading-flow"
+          reading-flow.html:26:1  <div id="grid-reading-flow" class="grid grid-rows" role="group" aria-label="Grid…
+          name from aria-label="Grid with reading-flow" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Grid with reading-flow, group"
+20        A button "DOM 2, column 1"  focusable
+            reading-flow.html:28:1  <button id="grid-flow-2" type="button" style="grid-column:1; grid-row:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 2, column 1, button"
+21          A text "DOM 2, column 1"
+            ~ "DOM 2, column 1"
+22        A button "DOM 3, column 2"  focusable
+            reading-flow.html:29:1  <button id="grid-flow-3" type="button" style="grid-column:2; grid-row:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 3, column 2, button"
+23          A text "DOM 3, column 2"
+            ~ "DOM 3, column 2"
+24        A button "DOM 1, column 3"  focusable
+            reading-flow.html:27:1  <button id="grid-flow-1" type="button" style="grid-column:3; grid-row:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 1, column 3, button"
+25          A text "DOM 1, column 3"
+            ~ "DOM 1, column 3"
+26      A group "Grid with placement only"
+          reading-flow.html:31:1  <div id="grid-placement-only" class="grid" role="group" aria-label="Grid with pl…
+          name from aria-label="Grid with placement only" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Grid with placement only, group"
+27        A button "DOM 1, column 3"  focusable
+            reading-flow.html:32:1  <button id="grid-place-1" type="button" style="grid-column:3; grid-row:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 1, column 3, button"
+28          A text "DOM 1, column 3"
+            ~ "DOM 1, column 3"
+29        A button "DOM 2, column 1"  focusable
+            reading-flow.html:33:1  <button id="grid-place-2" type="button" style="grid-column:1; grid-row:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 2, column 1, button"
+30          A text "DOM 2, column 1"
+            ~ "DOM 2, column 1"
+31        A button "DOM 3, column 2"  focusable
+            reading-flow.html:34:1  <button id="grid-place-3" type="button" style="grid-column:2; grid-row:1">
+            name from contents
+            other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+          ~ "DOM 3, column 2, button"
+32          A text "DOM 3, column 2"
+            ~ "DOM 3, column 2"
+
+Excluded
+  <html>  reading-flow.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  reading-flow.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  reading-flow.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  reading-flow.html:3:1 (computed by tool)
+  <title>  reading-flow.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  reading-flow.html:3:1 (computed by tool)
+  <style>  reading-flow.html:6:1  <style>
+    not-rendered (engine reason: notRendered); hidden by <head>  reading-flow.html:3:1 (computed by tool)
+  <body>  reading-flow.html:13:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  [3] heading "reading-flow"  level 1
+
+Landmarks
+  [2] main (no accessible name)
+
+Links
+  (none)
+
+Form controls
+  [6] button "DOM 2, order 1"
+  [8] button "DOM 3, order 2"
+  [10] button "DOM 1, order 3"
+  [13] button "DOM 1, order 3"
+  [15] button "DOM 2, order 1"
+  [17] button "DOM 3, order 2"
+  [20] button "DOM 2, column 1"
+  [22] button "DOM 3, column 2"
+  [24] button "DOM 1, column 3"
+  [27] button "DOM 1, column 3"
+  [29] button "DOM 2, column 1"
+  [31] button "DOM 3, column 2"
+
+Tab order
+   1  [6] button "DOM 2, order 1"
+   2  [8] button "DOM 3, order 2"
+   3  [10] button "DOM 1, order 3"
+   4  [13] button "DOM 1, order 3"
+   5  [15] button "DOM 2, order 1"
+   6  [17] button "DOM 3, order 2"
+   7  [20] button "DOM 2, column 1"
+   8  [22] button "DOM 3, column 2"
+   9  [24] button "DOM 1, column 3"
+  10  [27] button "DOM 1, column 3"
+  11  [29] button "DOM 2, column 1"
+  12  [31] button "DOM 3, column 2"
+  13  left the page
+  14  [6] button "DOM 2, order 1"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

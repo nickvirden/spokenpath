@@ -1,0 +1,93 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 8 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Positive tabindex"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Positive tabindex"
+ 2    A paragraph (no accessible name)
+        positive-tabindex.html:8:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 3      A button "Natural first"  focusable
+          positive-tabindex.html:8:4  <button id="natural-first" type="button">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "Natural first, button"
+ 4        A text "Natural first"
+          ~ "Natural first"
+ 5    A paragraph (no accessible name)
+        positive-tabindex.html:9:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 6      A button "Tabindex two"  focusable
+          positive-tabindex.html:9:4  <button id="tabindex-two" type="button" tabindex="2">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "Tabindex two, button"
+ 7        A text "Tabindex two"
+          ~ "Tabindex two"
+ 8    A paragraph (no accessible name)
+        positive-tabindex.html:10:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 9      A button "Tabindex one"  focusable
+          positive-tabindex.html:10:4  <button id="tabindex-one" type="button" tabindex="1">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "Tabindex one, button"
+10        A text "Tabindex one"
+          ~ "Tabindex one"
+11    A paragraph (no accessible name)
+        positive-tabindex.html:11:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+12      A button "Natural last"  focusable
+          positive-tabindex.html:11:4  <button id="natural-last" type="button">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "Natural last, button"
+13        A text "Natural last"
+          ~ "Natural last"
+
+Excluded
+  <html>  positive-tabindex.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  positive-tabindex.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  positive-tabindex.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  positive-tabindex.html:3:1 (computed by tool)
+  <title>  positive-tabindex.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  positive-tabindex.html:3:1 (computed by tool)
+  <body>  positive-tabindex.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Natural first"
+  [6] button "Tabindex two"
+  [9] button "Tabindex one"
+  [12] button "Natural last"
+
+Tab order
+  1  [9] button "Tabindex one"
+  2  [6] button "Tabindex two"
+  3  [3] button "Natural first"
+  4  [12] button "Natural last"
+  5  left the page
+  6  [9] button "Tabindex one"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

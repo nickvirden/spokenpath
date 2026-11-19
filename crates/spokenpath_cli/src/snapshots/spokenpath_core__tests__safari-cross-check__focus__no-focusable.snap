@@ -1,0 +1,55 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+cross-check · Safari 27.0.1 on macOS 27.0.1 (26A434) over WebDriver · role and name of 2 elements compared: 0 differ, 0 not checked
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Nothing focusable"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Nothing focusable"
+2    A heading "Nothing focusable"  level 1
+       no-focusable.html:8:1  <h1>
+       name from contents
+       other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+     ~ "Nothing focusable, heading, level 1"
+3      A text "Nothing focusable"
+       ~ "Nothing focusable"
+4    A paragraph (no accessible name)
+       no-focusable.html:9:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+5      A text "This page has no tab stops."
+       ~ "This page has no tab stops."
+
+Excluded
+  <html>  no-focusable.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  no-focusable.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  no-focusable.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  no-focusable.html:3:1 (computed by tool)
+  <title>  no-focusable.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  no-focusable.html:3:1 (computed by tool)
+  <body>  no-focusable.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  [2] heading "Nothing focusable"  level 1
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  1  left the page
+  2  left the page
+  ending (computed by tool): Focus left the page without stopping on any element.
