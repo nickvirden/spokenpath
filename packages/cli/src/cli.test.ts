@@ -507,24 +507,39 @@ function textGolden(name: string): string {
   return text.slice(end + '\n---\n'.length);
 }
 
+/** Where the cross-check snapshot reaches the binary: a file path, or the extra pipe on fd 3. */
+type CrossCheckRoute = 'path' | 'fd 3';
+
 /**
- * Runs the binary the way the command does with a cross-check: the Chromium snapshot on stdin and
- * the Safari snapshot on the extra pipe at fd 3, with stdout captured in a file.
+ * Runs the binary with the Chromium snapshot on stdin and the Safari snapshot named by path, or, as
+ * the command does, written to the extra pipe on fd 3. Its stdout and stderr are captured in files.
  */
-async function crossCheckThroughPipes(chromium: string, safari: string, page: string): Promise<Run> {
+async function crossCheck(
+  route: CrossCheckRoute,
+  chromiumJson: string,
+  safari: string,
+  page: string,
+): Promise<Run> {
   const directory = temporaryDirectory();
   const stdoutPath = join(directory, 'stdout.txt');
   const stderrPath = join(directory, 'stderr.txt');
   const stdout = openSync(stdoutPath, 'w');
   const stderr = openSync(stderrPath, 'w');
+  const args = ['transcript', '-', '--source', page, '--format', 'text', '--cross-check'];
   try {
-    const code = await transcribe(
-      binaryPath(),
-      ['transcript', '-', '--source', page, '--format', 'text', '--cross-check', CROSS_CHECK_FD_PATH],
-      readFileSync(chromium, 'utf8'),
-      readFileSync(safari, 'utf8'),
-      { stdout, stderr },
-    );
+    const code =
+      route === 'path'
+        ? await transcribe(binaryPath(), [...args, safari], chromiumJson, undefined, { stdout, stderr })
+        : await transcribe(
+            binaryPath(),
+            [...args, CROSS_CHECK_FD_PATH],
+            chromiumJson,
+            readFileSync(safari, 'utf8'),
+            {
+              stdout,
+              stderr,
+            },
+          );
     return { code, stdout: readFileSync(stdoutPath, 'utf8'), stderr: readFileSync(stderrPath, 'utf8') };
   } finally {
     closeSync(stdout);
@@ -532,36 +547,43 @@ async function crossCheckThroughPipes(chromium: string, safari: string, page: st
   }
 }
 
-describe('the binary fed a Safari snapshot on fd 3', () => {
-  test.each([
-    ['cross-check/list-style-none', 'safari-cross-check__cross-check__list-style-none'],
-    ['cross-check/select-optgroup', 'safari-cross-check__cross-check__select-optgroup'],
-  ])('prints the committed cross-check golden of %s', async (page, golden) => {
-    const run = await crossCheckThroughPipes(
-      join(repositoryRoot, 'fixtures/snapshots/chromium', `${page}.json`),
-      join(repositoryRoot, 'fixtures/snapshots/safari-webdriver', `${page}.json`),
-      join(repositoryRoot, 'fixtures/pages', `${page}.html`),
-    );
+const snapshotsDirectory = join(repositoryRoot, 'fixtures/snapshots');
+
+/** A Chromium snapshot, its Safari snapshot, the page, and the cross-check text golden they print. */
+const crossCheckCases = [
+  ...(['cross-check/list-style-none', 'cross-check/select-optgroup'] as const).map((page) => ({
+    name: page,
+    chromium: join(snapshotsDirectory, 'chromium', `${page}.json`),
+    safari: join(snapshotsDirectory, 'safari-webdriver', `${page}.json`),
+    page: join(repositoryRoot, 'fixtures/pages', `${page}.html`),
+    golden: `safari-cross-check__${page.replace('/', '__')}`,
+  })),
+  {
+    name: 'the hand-written pair',
+    chromium: join(snapshotsDirectory, 'chromium-basic.json'),
+    safari: join(snapshotsDirectory, 'safari-webdriver-basic.json'),
+    page: join(snapshotsDirectory, 'pages/basic.html'),
+    golden: 'safari-cross-check__basic',
+  },
+];
+
+// The command passes the Safari snapshot on fd 3 only on macOS, where it runs; Linux cannot reopen
+// that socket by path, so every system checks the same output with the snapshot named by path.
+describe.each([
+  ['named by path', 'path', true],
+  ['fed on fd 3', 'fd 3', process.platform === 'darwin'],
+] as const)('the binary with a Safari snapshot %s', (_, route, runs) => {
+  test.runIf(runs).each(crossCheckCases)('prints the committed cross-check golden of $name', async (pair) => {
+    const run = await crossCheck(route, readFileSync(pair.chromium, 'utf8'), pair.safari, pair.page);
     expect(run.code, run.stderr).toBe(0);
-    expect(normaliseVersion(run.stdout).trimEnd()).toBe(textGolden(golden).trimEnd());
+    expect(normaliseVersion(run.stdout).trimEnd()).toBe(textGolden(pair.golden).trimEnd());
   });
 
-  test('prints the committed cross-check golden of the hand-written pair', async () => {
-    const snapshots = join(repositoryRoot, 'fixtures/snapshots');
-    const run = await crossCheckThroughPipes(
-      join(snapshots, 'chromium-basic.json'),
-      join(snapshots, 'safari-webdriver-basic.json'),
-      join(snapshots, 'pages/basic.html'),
-    );
-    expect(run.code, run.stderr).toBe(0);
-    expect(normaliseVersion(run.stdout).trimEnd()).toBe(textGolden('safari-cross-check__basic').trimEnd());
-  });
-
-  test('reports a Safari snapshot of another page with exit 2 and no transcript', async () => {
-    const snapshots = join(repositoryRoot, 'fixtures/snapshots');
-    const run = await crossCheckThroughPipes(
-      join(snapshots, 'chromium/sign-in.json'),
-      join(snapshots, 'safari-webdriver-basic.json'),
+  test.runIf(runs)('reports a Safari snapshot of another page with exit 2 and no transcript', async () => {
+    const run = await crossCheck(
+      route,
+      readFileSync(join(snapshotsDirectory, 'chromium/sign-in.json'), 'utf8'),
+      join(snapshotsDirectory, 'safari-webdriver-basic.json'),
       join(repositoryRoot, 'fixtures/pages/sign-in.html'),
     );
     expect(run.code).toBe(2);
@@ -570,6 +592,29 @@ describe('the binary fed a Safari snapshot on fd 3', () => {
       /^spokenpath-core: the cross-check snapshot was captured from a different page/,
     );
   });
+});
+
+test('passes through the exit code and message of a binary that rejects its stdin before reading fd 3', async () => {
+  // Far more than a pipe buffers, so the write is still in flight when the binary exits unread.
+  const unread = ' '.repeat(16 * 1024 * 1024);
+  const directory = temporaryDirectory();
+  const stderrPath = join(directory, 'stderr.txt');
+  const stderr = openSync(stderrPath, 'w');
+  try {
+    const code = await transcribe(
+      binaryPath(),
+      ['transcript', '-', '--format', 'text', '--cross-check', CROSS_CHECK_FD_PATH],
+      'not a snapshot',
+      unread,
+      { stdout: stderr, stderr },
+    );
+    expect(code).toBe(2);
+  } finally {
+    closeSync(stderr);
+  }
+  expect(readFileSync(stderrPath, 'utf8')).toBe(
+    'spokenpath-core: snapshot is not valid JSON: expected ident at line 1 column 2\n',
+  );
 });
 
 /** ESC with an SGR sequence, the C1 CSI introducer, a bidi override and a tag character. */
