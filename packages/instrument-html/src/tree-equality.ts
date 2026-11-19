@@ -12,6 +12,16 @@ export type TreeComparison =
       reason: string;
     };
 
+export interface CompareOptions {
+  /**
+   * The class token added to each tagged element, by its source attribute value. When given, the
+   * one change that adds the token to an element's `class` is ignored too: a new `class` whose
+   * value is exactly the token, or a `class` whose value is the original value, one space and the
+   * token.
+   */
+  classTokens?: ReadonlyMap<string, string>;
+}
+
 /** A pair of nodes at the same place in both trees; one side is missing when the counts differ. */
 interface Pair {
   original: ChildNode | undefined;
@@ -25,9 +35,14 @@ interface Pair {
  * element of the instrumented tree; everything else that shapes the DOM a browser builds is
  * compared: the document mode, the doctype, node types, element namespaces, names and attributes
  * (name, namespace, prefix and value, in order), text and comment data, the order and number of
- * children, and `template` contents.
+ * children, and `template` contents. With `classTokens`, the class token added to each tagged
+ * element is ignored as well, and any other change to its `class` is a difference.
  */
-export function compareTrees(original: Document, instrumented: Document): TreeComparison {
+export function compareTrees(
+  original: Document,
+  instrumented: Document,
+  options: CompareOptions = {},
+): TreeComparison {
   if (original.mode !== instrumented.mode) {
     return {
       equal: false,
@@ -42,7 +57,7 @@ export function compareTrees(original: Document, instrumented: Document): TreeCo
     if (left === undefined || right === undefined) {
       return { equal: false, path, reason: left === undefined ? 'the node is added' : 'the node is removed' };
     }
-    const reason = compareNodes(left, right);
+    const reason = compareNodes(left, right, options);
     if (reason !== undefined) {
       return { equal: false, path, reason };
     }
@@ -81,7 +96,7 @@ function childPairs(original: ParentNode, instrumented: ParentNode, parentPath: 
 }
 
 /** What differs between two nodes, ignoring their children, or nothing. */
-function compareNodes(left: ChildNode, right: ChildNode): string | undefined {
+function compareNodes(left: ChildNode, right: ChildNode, options: CompareOptions): string | undefined {
   if (left.nodeName !== right.nodeName) {
     return `${left.nodeName} became ${right.nodeName}`;
   }
@@ -105,12 +120,41 @@ function compareNodes(left: ChildNode, right: ChildNode): string | undefined {
     if (left.tagName !== right.tagName) {
       return `tag ${left.tagName} became ${right.tagName}`;
     }
+    const token = options.classTokens?.get(
+      right.attrs.find((attr) => attr.name === SOURCE_ATTRIBUTE)?.value ?? '',
+    );
+    const rightAttrs = right.attrs.filter((attr) => attr.name !== SOURCE_ATTRIBUTE);
     return compareAttributes(
       left.attrs,
-      right.attrs.filter((attr) => attr.name !== SOURCE_ATTRIBUTE),
+      token === undefined ? rightAttrs : withoutToken(left.attrs, rightAttrs, token),
     );
   }
   return undefined;
+}
+
+/**
+ * The instrumented element's attributes with the class token's one change undone, when the
+ * change is exactly the expected one; otherwise the attributes as they are, so the comparison
+ * reports the difference.
+ */
+function withoutToken(
+  original: Token.Attribute[],
+  instrumented: Token.Attribute[],
+  token: string,
+): Token.Attribute[] {
+  const isClass = (attr: Token.Attribute) => attr.name === 'class' && attr.namespace === undefined;
+  const originalClass = original.find(isClass);
+  const index = instrumented.findIndex(isClass);
+  const instrumentedClass = instrumented[index];
+  if (instrumentedClass === undefined) {
+    return instrumented;
+  }
+  if (originalClass === undefined) {
+    return instrumentedClass.value === token ? instrumented.toSpliced(index, 1) : instrumented;
+  }
+  return instrumentedClass.value === `${originalClass.value} ${token}`
+    ? instrumented.with(index, { ...instrumentedClass, value: originalClass.value })
+    : instrumented;
 }
 
 function compareAttributes(left: Token.Attribute[], right: Token.Attribute[]): string | undefined {

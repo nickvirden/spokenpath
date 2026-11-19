@@ -5,14 +5,22 @@ import { captureChromium, verifyInstrumentation } from './capture.ts';
 import { capturePages, htmlPagesIn, pageBytes, pagePath, sourceTaggingProblems } from './fixture-pages.ts';
 
 const torturePages = htmlPagesIn('torture/');
-const rejectedPages = htmlPagesIn('torture/rejected/');
+/**
+ * The pages the instrumenter refuses only in its class-token mode, which Chromium capture does not
+ * use, so Chromium captures them as it does any page.
+ */
+const tokenModeRejections = htmlPagesIn('torture/rejected/').filter((page) =>
+  page.slice(page.lastIndexOf('/') + 1).startsWith('class-token-present.'),
+);
+const rejectedPages = htmlPagesIn('torture/rejected/').filter((page) => !tokenModeRejections.includes(page));
 
 test('the torture directories hold pages', () => {
   expect(torturePages.length).toBeGreaterThan(0);
   expect(rejectedPages.length).toBeGreaterThan(0);
+  expect(tokenModeRejections.length).toBeGreaterThan(0);
 });
 
-describe.each(torturePages)('%s', (page) => {
+describe.each([...torturePages, ...tokenModeRejections])('%s', (page) => {
   test('captures a valid snapshot whose source elements locate their tags', async () => {
     const snapshot = await captureChromium(pagePath(page));
     const result = validateSnapshot(snapshot);
