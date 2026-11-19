@@ -1,0 +1,55 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Name from title"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Name from title"
+2    A paragraph (no accessible name)
+       title.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A textbox "Title text"  focusable
+         title.html:9:1  <input id="target" type="text" title="Title text">
+         name from title="Title text" (attribute)
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title="Title text" (attribute): superseded
+       ~ "Title text, textbox"
+4        A generic (no accessible name)
+           no source location: its origin could not be established (unknown)
+           no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+         ~ ""
+
+Excluded
+  <html>  title.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  title.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  title.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  title.html:3:1 (computed by tool)
+  <title>  title.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  title.html:3:1 (computed by tool)
+  <body>  title.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] textbox "Title text"
+
+Tab order
+  1  [3] textbox "Title text"
+  2  left the page
+  3  [3] textbox "Title text"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

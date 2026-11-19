@@ -1,0 +1,53 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Name from aria-label"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Name from aria-label"
+2    A paragraph (no accessible name)
+       aria-label.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A button "Aria label text"  focusable
+         aria-label.html:9:1  <button id="target" type="button" aria-label="Aria label text">
+         name from aria-label="Aria label text" (attribute)
+         other sources: aria-labelledby (related-element): empty; label (related-element): superseded; contents: superseded; title (attribute): superseded
+       ~ "Aria label text, button"
+4        A text "Button content"
+         ~ "Button content"
+
+Excluded
+  <html>  aria-label.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  aria-label.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  aria-label.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  aria-label.html:3:1 (computed by tool)
+  <title>  aria-label.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  aria-label.html:3:1 (computed by tool)
+  <body>  aria-label.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Aria label text"
+
+Tab order
+  1  [3] button "Aria label text"
+  2  left the page
+  3  [3] button "Aria label text"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

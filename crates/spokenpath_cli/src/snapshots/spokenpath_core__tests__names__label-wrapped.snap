@@ -1,0 +1,62 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Name from a wrapping label"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Name from a wrapping label"
+2    A paragraph (no accessible name)
+       label-wrapped.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A LabelText (internal role) (no accessible name)
+         label-wrapped.html:9:1  <label id="label">
+         no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+       ~ ""
+4        A text "Wrapped label text "
+         ~ "Wrapped label text "
+5        A textbox "Wrapped label text"  focusable
+           label-wrapped.html:9:38  <input id="target" type="text">
+           name from label-wrapped (related-element)
+             via <label> #label  "Wrapped label text "  label-wrapped.html:9:1
+           other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+         ~ "Wrapped label text, textbox"
+6          A generic (no accessible name)
+             no source location: its origin could not be established (unknown)
+             no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+           ~ ""
+
+Excluded
+  <html>  label-wrapped.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  label-wrapped.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  label-wrapped.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  label-wrapped.html:3:1 (computed by tool)
+  <title>  label-wrapped.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  label-wrapped.html:3:1 (computed by tool)
+  <body>  label-wrapped.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [5] textbox "Wrapped label text"
+
+Tab order
+  1  [5] textbox "Wrapped label text"
+  2  left the page
+  3  [5] textbox "Wrapped label text"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

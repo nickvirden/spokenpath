@@ -1,0 +1,77 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Frame"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Frame"
+2    A paragraph (no accessible name)
+       iframe.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A button "Before"  focusable
+         iframe.html:8:4  <button id="before" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "Before, button"
+4        A text "Before"
+         ~ "Before"
+5    A paragraph (no accessible name)
+       iframe.html:9:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+6      A Iframe (internal role) "Inner frame"
+         iframe.html:9:4  <iframe id="frame" title="Inner frame" srcdoc="<button id=inner-first>Inner firs…
+         name from title="Inner frame" (attribute)
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty
+       ~ "Inner frame"
+7    A paragraph (no accessible name)
+       iframe.html:10:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+8      A button "After"  focusable
+         iframe.html:10:4  <button id="after" type="button">
+         name from contents
+         other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+       ~ "After, button"
+9        A text "After"
+         ~ "After"
+
+Excluded
+  <html>  iframe.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  iframe.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  iframe.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  iframe.html:3:1 (computed by tool)
+  <title>  iframe.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  iframe.html:3:1 (computed by tool)
+  <body>  iframe.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Before"
+  [8] button "After"
+
+Tab order
+  1  [3] button "Before"
+  2  [6] Iframe (internal role) "Inner frame"
+  3  [6] Iframe (internal role) "Inner frame"
+  4  [8] button "After"
+  5  left the page
+  6  [3] button "Before"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

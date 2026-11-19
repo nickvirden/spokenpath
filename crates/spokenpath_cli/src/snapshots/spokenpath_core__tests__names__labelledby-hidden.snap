@@ -1,0 +1,54 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A RootWebArea (internal role) "Name from a hidden aria-labelledby target"  focusable, focused
+     no source location: the document itself (document)
+     name from title (related-element)
+     other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+   ~ "Name from a hidden aria-labelledby target"
+2    A paragraph (no accessible name)
+       labelledby-hidden.html:8:1  <p>
+       no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+     ~ "paragraph"
+3      A button "Hidden label text"  focusable
+         labelledby-hidden.html:10:1  <button id="target" type="button" aria-labelledby="label">
+         name from aria-labelledby="label" (related-element), from hidden content (computed by tool)
+           via <span> #label  "Hidden label text"  labelledby-hidden.html:9:1
+         other sources: aria-label (attribute): superseded; label (related-element): superseded; contents: superseded; title (attribute): superseded
+       ~ "Hidden label text, button"
+
+Excluded
+  <html>  labelledby-hidden.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  labelledby-hidden.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  labelledby-hidden.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  labelledby-hidden.html:3:1 (computed by tool)
+  <title>  labelledby-hidden.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  labelledby-hidden.html:3:1 (computed by tool)
+  <body>  labelledby-hidden.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <span> #label  labelledby-hidden.html:9:1  <span id="label" hidden>
+    not-rendered (engine reason: notRendered)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Hidden label text"
+
+Tab order
+  1  [3] button "Hidden label text"
+  2  left the page
+  3  [3] button "Hidden label text"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

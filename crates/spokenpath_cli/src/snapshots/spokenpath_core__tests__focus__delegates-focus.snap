@@ -1,0 +1,88 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Delegated focus"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Delegated focus"
+ 2    A paragraph (no accessible name)
+        delegates-focus.html:8:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+ 3      A button "Before"  focusable
+          delegates-focus.html:8:4  <button id="before" type="button">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "Before, button"
+ 4        A text "Before"
+          ~ "Before"
+ 5    A generic (no accessible name)
+        delegates-focus.html:9:1  <div id="host">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ ""
+ 6      A LabelText (internal role) (no accessible name)
+          delegates-focus.html:11:1  <label for="inner">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ ""
+ 7        A text "Inner"
+          ~ "Inner"
+ 8      A textbox "Inner"  focusable
+          delegates-focus.html:12:1  <input id="inner" type="text">
+          name from label-for (related-element)
+            via <label>  "Inner"  delegates-focus.html:11:1
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+        ~ "Inner, textbox"
+ 9        A generic (no accessible name)
+            no source location: its origin could not be established (unknown)
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ ""
+10    A paragraph (no accessible name)
+        delegates-focus.html:15:1  <p>
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+      ~ "paragraph"
+11      A button "After"  focusable
+          delegates-focus.html:15:4  <button id="after" type="button">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+        ~ "After, button"
+12        A text "After"
+          ~ "After"
+
+Excluded
+  <html>  delegates-focus.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  delegates-focus.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  delegates-focus.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  delegates-focus.html:3:1 (computed by tool)
+  <title>  delegates-focus.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  delegates-focus.html:3:1 (computed by tool)
+  <body>  delegates-focus.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Before"
+  [8] textbox "Inner"
+  [11] button "After"
+
+Tab order
+  1  [3] button "Before"
+  2  [8] textbox "Inner"
+  3  [11] button "After"
+  4  left the page
+  5  [3] button "Before"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.

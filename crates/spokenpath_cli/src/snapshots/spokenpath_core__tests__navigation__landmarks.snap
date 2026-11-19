@@ -1,0 +1,304 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A RootWebArea (internal role) "Landmarks and headings"  focusable, focused
+      no source location: the document itself (document)
+      name from title (related-element)
+      other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; aria-label (attribute): superseded
+    ~ "Landmarks and headings"
+ 2    A banner (no accessible name)
+        landmarks.html:8:1  <header id="banner">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "banner"
+ 3      A paragraph (no accessible name)
+          landmarks.html:8:21  <p>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+        ~ "paragraph"
+ 4        A text "Site name"
+          ~ "Site name"
+ 5    A navigation "Site"
+        landmarks.html:9:1  <nav id="site-nav" aria-label="Site">
+        name from aria-label="Site" (attribute)
+        other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+      ~ "Site, navigation"
+ 6      A link "Home"  focusable
+          landmarks.html:10:1  <a id="link-home" href="index.html">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Home, link"
+ 7        A text "Home"
+          ~ "Home"
+ 8      A text " "
+        ~ " "
+ 9      A link "About"  focusable
+          landmarks.html:11:1  <a id="link-about" href="about.html">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "About, link"
+10        A text "About"
+          ~ "About"
+11    A main (no accessible name)
+        landmarks.html:13:1  <main id="main">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "main"
+12      A heading "Page title"  level 1
+          landmarks.html:14:1  <h1 id="heading-1">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Page title, heading, level 1"
+13        A text "Page title"
+          ~ "Page title"
+14      A heading "Section heading"  level 2
+          landmarks.html:15:1  <h2 id="heading-2">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Section heading, heading, level 2"
+15        A text "Section heading"
+          ~ "Section heading"
+16      A heading "Subsection heading"  level 3
+          landmarks.html:16:1  <h3 id="heading-3">
+          name from contents
+          other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+        ~ "Subsection heading, heading, level 3"
+17        A text "Subsection heading"
+          ~ "Subsection heading"
+18      A region "Featured"
+          landmarks.html:17:1  <section id="region" aria-label="Featured">
+          name from aria-label="Featured" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Featured, region"
+19        A paragraph (no accessible name)
+            landmarks.html:18:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+20          A text "Featured content"
+            ~ "Featured content"
+21      A form "Contact"
+          landmarks.html:20:1  <form id="contact" aria-label="Contact">
+          name from aria-label="Contact" (attribute)
+          other sources: aria-labelledby (related-element): empty; title (attribute): superseded
+        ~ "Contact, form"
+22        A paragraph (no accessible name)
+            landmarks.html:21:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+23          A LabelText (internal role) (no accessible name)
+              landmarks.html:21:4  <label for="full-name">
+              no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+            ~ ""
+24            A text "Full name"
+              ~ "Full name"
+25          A textbox "Full name"  focusable
+              landmarks.html:21:45  <input id="full-name" type="text">
+              name from label-for (related-element)
+                via <label>  "Full name"  landmarks.html:21:4
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+            ~ "Full name, textbox"
+26            A generic (no accessible name)
+                no source location: its origin could not be established (unknown)
+                no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+              ~ ""
+27        A paragraph (no accessible name)
+            landmarks.html:22:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+28          A checkbox "Subscribe"  not checked, focusable
+              landmarks.html:22:11  <input id="subscribe" type="checkbox">
+              name from label-wrapped (related-element)
+                via <label>  " Subscribe"  landmarks.html:22:4
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; contents: superseded; title (attribute): superseded
+            ~ "Subscribe, checkbox, not checked"
+29        A paragraph (no accessible name)
+            landmarks.html:23:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+30          A radio "Basic"  not checked, focusable  1 of 2 (computed by tool)
+              landmarks.html:23:11  <input id="plan-basic" type="radio" name="plan" value="basic">
+              name from label-wrapped (related-element)
+                via <label>  " Basic"  landmarks.html:23:4
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; contents: superseded; title (attribute): superseded
+            ~ "Basic, radio, not checked, 1 of 2"
+31        A paragraph (no accessible name)
+            landmarks.html:24:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+32          A radio "Pro"  not checked, focusable  2 of 2 (computed by tool)
+              landmarks.html:24:11  <input id="plan-pro" type="radio" name="plan" value="pro">
+              name from label-wrapped (related-element)
+                via <label>  " Pro"  landmarks.html:24:4
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; contents: superseded; title (attribute): superseded
+            ~ "Pro, radio, not checked, 2 of 2"
+33        A paragraph (no accessible name)
+            landmarks.html:25:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+34          A LabelText (internal role) (no accessible name)
+              landmarks.html:25:4  <label for="country">
+              no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+            ~ ""
+35            A text "Country"
+              ~ "Country"
+36          A combobox "Country"  value "Canada"  collapsed, focusable
+              landmarks.html:25:41  <select id="country">
+              name from label-for (related-element)
+                via <label>  "Country"  landmarks.html:25:4
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+            ~ "Country, combobox, Canada, collapsed"
+37            A MenuListPopup (internal role) (no accessible name)
+                no source location: its origin could not be established (unknown)
+                no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+              ~ ""
+38              A option "Canada"  selected, focusable
+                  landmarks.html:25:62  <option>
+                  name from contents
+                  other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+                ~ "Canada, option, selected"
+39              A option "Mexico"  focusable
+                  landmarks.html:25:85  <option>
+                  name from contents
+                  other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded
+                ~ "Mexico, option"
+40        A paragraph (no accessible name)
+            landmarks.html:26:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+41          A LabelText (internal role) (no accessible name)
+              landmarks.html:26:4  <label for="message">
+              no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+            ~ ""
+42            A text "Message"
+              ~ "Message"
+43          A textbox "Message"  focusable
+              landmarks.html:26:41  <textarea id="message">
+              name from label-for (related-element)
+                via <label>  "Message"  landmarks.html:26:4
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): superseded; placeholder (placeholder): superseded; aria-placeholder (placeholder): superseded; title (attribute): superseded
+            ~ "Message, textbox"
+44            A generic (no accessible name)
+                no source location: its origin could not be established (unknown)
+                no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+              ~ ""
+45        A paragraph (no accessible name)
+            landmarks.html:27:1  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+46          A button "Send"  focusable
+              landmarks.html:27:4  <button id="send" type="submit">
+              name from contents
+              other sources: aria-labelledby (related-element): empty; aria-label (attribute): empty; label (related-element): empty; title (attribute): superseded
+            ~ "Send, button"
+47            A text "Send"
+              ~ "Send"
+48      A search (no accessible name)
+          landmarks.html:29:1  <search id="site-search">
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+        ~ "search"
+49        A paragraph (no accessible name)
+            landmarks.html:29:26  <p>
+            no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+          ~ "paragraph"
+50          A text "Search tools"
+            ~ "Search tools"
+51    A complementary (no accessible name)
+        landmarks.html:31:1  <aside id="aside">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "complementary"
+52      A paragraph (no accessible name)
+          landmarks.html:31:19  <p>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+        ~ "paragraph"
+53        A text "Related reading"
+          ~ "Related reading"
+54    A contentinfo (no accessible name)
+        landmarks.html:32:1  <footer id="footer">
+        no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty; title (attribute): empty
+      ~ "contentinfo"
+55      A paragraph (no accessible name)
+          landmarks.html:32:21  <p>
+          no accessible name; tried: aria-labelledby (related-element): empty; aria-label (attribute): empty
+        ~ "paragraph"
+56        A text "Footer text"
+          ~ "Footer text"
+
+Excluded
+  <html>  landmarks.html:2:1  <html lang="en">
+    uninteresting (engine reason: uninteresting)
+  <head>  landmarks.html:3:1  <head>
+    not-rendered (engine reason: notRendered)
+  <meta>  landmarks.html:4:1  <meta charset="utf-8">
+    not-rendered (engine reason: notRendered); hidden by <head>  landmarks.html:3:1 (computed by tool)
+  <title>  landmarks.html:5:1  <title>
+    not-rendered (engine reason: notRendered); hidden by <head>  landmarks.html:3:1 (computed by tool)
+  <body>  landmarks.html:7:1  <body>
+    uninteresting (engine reason: uninteresting)
+  <label>  landmarks.html:22:4  <label>
+    label-for (engine reason: labelFor)
+  <label>  landmarks.html:23:4  <label>
+    label-for (engine reason: labelFor)
+  <label>  landmarks.html:24:4  <label>
+    label-for (engine reason: labelFor)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot> #select-options  no source location: its origin could not be established (unknown)
+    uninteresting (engine reason: uninteresting)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <div>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <span>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <span>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <slot>  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+  <br> #textarea-placeholder-break  no source location: its origin could not be established (unknown)
+    not-rendered (engine reason: notRendered)
+
+Headings
+  [12] heading "Page title"  level 1
+  [14] heading "Section heading"  level 2
+  [16] heading "Subsection heading"  level 3
+
+Landmarks
+  [2] banner (no accessible name)
+  [5] navigation "Site"
+  [11] main (no accessible name)
+  [18] region "Featured"
+  [21] form "Contact"
+  [48] search (no accessible name)
+  [51] complementary (no accessible name)
+  [54] contentinfo (no accessible name)
+
+Links
+  [6] link "Home"
+  [9] link "About"
+
+Form controls
+  [25] textbox "Full name"
+  [28] checkbox "Subscribe"
+  [30] radio "Basic"
+  [32] radio "Pro"
+  [36] combobox "Country"
+  [43] textbox "Message"
+  [46] button "Send"
+
+Tab order
+   1  [6] link "Home"
+   2  [9] link "About"
+   3  [25] textbox "Full name"
+   4  [28] checkbox "Subscribe"
+   5  [30] radio "Basic"
+   6  [36] combobox "Country"
+   7  [43] textbox "Message"
+   8  [46] button "Send"
+   9  left the page
+  10  [6] link "Home"  repeats step 1
+  ending (computed by tool): Focus left the page and Tab returned to step 1, the normal end of a walk.
