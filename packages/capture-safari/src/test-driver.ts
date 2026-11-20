@@ -59,6 +59,8 @@ export interface DriverScenario {
   navigation?: PageNavigation;
   /** Answer Get Current URL with this WebDriver error. */
   currentUrlError?: { error: string; message: string };
+  /** Answer Set Timeouts with this WebDriver error. */
+  timeoutsError?: { error: string; message: string };
   /** Answer the navigation with this WebDriver error instead of loading the page. */
   loadError?: { error: string; message: string };
   /**
@@ -197,6 +199,10 @@ function main(args: string[]): void {
     }
     if (method === 'GET' && command === '/title') {
       send(response, 200, title);
+      return;
+    }
+    if (command === '/timeouts' && scenario.timeoutsError !== undefined) {
+      send(response, 500, { ...scenario.timeoutsError, stacktrace: '' });
       return;
     }
     if (command === '/timeouts' || command === '/window/rect') {

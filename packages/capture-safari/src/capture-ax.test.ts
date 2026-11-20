@@ -1,11 +1,11 @@
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 import { pagePath } from '@spokenpath/capture-chromium/fixture-pages';
-import { sourceClassToken } from '@spokenpath/instrument-html';
+import { InstrumentHtmlError, sourceClassToken } from '@spokenpath/instrument-html';
 import { type SafariAxNode, type Snapshot, validateSnapshot } from '@spokenpath/snapshot-types';
 import { afterAll, describe, expect, test } from 'vitest';
 import { captureSafariAx, mapSourceTokens } from './capture-ax.ts';
@@ -530,6 +530,8 @@ interface Step {
   driverEvents: string[];
   /** The helper commands run up to the failure. */
   helperRuns: string[];
+  /** Runs a driver command that does not exist instead of the test double. */
+  missingDriver?: true;
 }
 
 const CLEANUP = ['session-deleted', 'terminated'];
@@ -557,10 +559,24 @@ const steps: Step[] = [
     helperRuns: [],
   },
   {
+    step: 'running safaridriver, which is not installed',
+    code: 'safaridriver-not-found',
+    missingDriver: true,
+    driverEvents: [],
+    helperRuns: [],
+  },
+  {
     step: 'opening the session',
     code: 'safari-session-refused',
     driver: { refuseSession: { error: 'session not created', message: 'automation is off' } },
     driverEvents: ['started', 'terminated'],
+    helperRuns: [],
+  },
+  {
+    step: 'setting the session time limits',
+    code: 'safari-call-failed',
+    driver: { timeoutsError: { error: 'invalid argument', message: 'no limits' } },
+    driverEvents: ['started', 'session-created', ...CLEANUP],
     helperRuns: [],
   },
   {
@@ -574,6 +590,13 @@ const steps: Step[] = [
     step: 'settling the first page load',
     code: 'page-hidden',
     driver: { visibility: 'hidden' },
+    driverEvents: ['started', 'session-created', 'navigated', ...CLEANUP],
+    helperRuns: [],
+  },
+  {
+    step: 'the first page load navigating away while it settles',
+    code: 'page-left-origin',
+    driver: { navigation: { to: 'https://other.example/elsewhere.html', during: 'settling' } },
     driverEvents: ['started', 'session-created', 'navigated', ...CLEANUP],
     helperRuns: [],
   },
@@ -650,7 +673,10 @@ describe('each step of a Safari AX capture', () => {
       step.page === undefined ? signInPage : step.page.startsWith('<') ? pageWith(step.page) : step.page;
     const error = await failure(
       captureSafariAx(page, {
-        driver,
+        driver:
+          step.missingDriver === true
+            ? { ...driver, command: join(tmpdir(), 'no-such-safaridriver'), args: [] }
+            : driver,
         helper,
         ...(step.timeoutMs === undefined ? {} : { timeoutMs: step.timeoutMs }),
       }),
@@ -659,6 +685,36 @@ describe('each step of a Safari AX capture', () => {
     expect(names(driverEvents())).toEqual(step.driverEvents);
     expect(helperCommands(helperEvents())).toEqual(step.helperRuns);
   });
+
+  test('fails at instrumenting a page the instrumenter refuses, before the driver starts', async () => {
+    const { driver, helper, driverEvents, helperEvents } = doubles();
+    const page = pageWith('<!doctype html>\n<title>t</title>\n<p data-spokenpath-src="3">x</p>\n');
+    const error = await captureSafariAx(page, { driver, helper }).then(
+      () => undefined,
+      (error: unknown) => error,
+    );
+    expect(error).toBeInstanceOf(InstrumentHtmlError);
+    expect((error as InstrumentHtmlError).code).toBe('attribute-present');
+    expect(driverEvents()).toEqual([]);
+    expect(helperEvents()).toEqual([]);
+  });
+
+  // File modes do not apply on Windows, and do not stop root from reading.
+  test.runIf(process.platform !== 'win32' && process.getuid?.() !== 0)(
+    'fails at serving an asset of the first page load that cannot be read, with asset-unreadable',
+    async () => {
+      const page = pageWith('<!doctype html>\n<title>Asset</title>\n<img src="locked.png" alt="x">\n');
+      writeFileSync(join(dirname(page), 'locked.png'), 'x', { mode: 0o000 });
+      const { driver, helper, driverEvents, helperEvents } = doubles(
+        {},
+        { fetchOnNavigate: ['/locked.png'] },
+      );
+      const error = await failure(captureSafariAx(page, { driver, helper }));
+      expect(error.code).toBe('asset-unreadable');
+      expect(names(driverEvents())).toEqual(['started', 'session-created', 'navigated', ...CLEANUP]);
+      expect(helperEvents()).toEqual([]);
+    },
+  );
 
   test('fails at resolving the built helper with ax-helper-not-found, before the driver starts', async () => {
     const { driver, driverEvents } = doubles();
