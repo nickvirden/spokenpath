@@ -363,10 +363,11 @@ run cannot match. `capture.url` is that exact URL.
 rect, so the page needs a non-empty `<title>`. Capture loads the page once first and reads its
 title with WebDriver Get Title, which collapses whitespace; when it is empty, capture fails with
 `safari-window-not-identified` before the helper runs, and the helper reads nothing. The title is
-compared with each window's `AXTitle` as WebDriver reports it. The order of these refusals is fixed: a helper file that is missing or not executable is refused
-before `safaridriver` starts, without running the helper; an untitled page is refused after one
-load, before the helper runs at all; and a helper that passes the file check but cannot be
-started fails at its first run, after that.
+compared with each window's `AXTitle` as WebDriver reports it. The order of these refusals is
+fixed: a helper file that is missing or not executable is refused before `safaridriver` starts,
+without running the helper; an untitled page is refused after one load, before the helper runs at
+all; and a helper that passes the file check but cannot be started fails at its first run, after
+that.
 
 **The check page.** Next, capture serves the helper's check page (`spokenpath-ax-macos
 canary-page`) on a second server with its own nonce, loads and settles it in the same session,
