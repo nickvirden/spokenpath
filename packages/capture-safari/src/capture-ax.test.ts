@@ -7,13 +7,34 @@ import { fileURLToPath } from 'node:url';
 import { pagePath } from '@spokenpath/capture-chromium/fixture-pages';
 import { InstrumentHtmlError, sourceClassToken } from '@spokenpath/instrument-html';
 import { type SafariAxNode, type Snapshot, validateSnapshot } from '@spokenpath/snapshot-types';
-import { afterAll, describe, expect, test } from 'vitest';
+import { afterAll, describe, expect, test, vi } from 'vitest';
 import { captureSafariAx, mapSourceTokens } from './capture-ax.ts';
 import type { TestDriver } from './capture.ts';
 import { CaptureError } from './error.ts';
 import type { HelperCommand } from './helper.ts';
 import { type DriverEvent, type DriverScenario, testDriverPath } from './test-driver.ts';
 import { type HelperEvent, type HelperReply, type HelperScenario, testHelperPath } from './test-helper.ts';
+
+/**
+ * Host-version reads to report as failed. A capture with the test-double driver reads no versions
+ * from the Mac, so a `version-unreadable` diagnostic, which capture records before the page first
+ * loads, can only come from here; every other test leaves it empty and gets the real behaviour.
+ */
+const unreadVersions = vi.hoisted(() => ({ problems: [] as string[] }));
+
+vi.mock('./capture.ts', async (importOriginal) => {
+  const original = await importOriginal<typeof import('./capture.ts')>();
+  return {
+    ...original,
+    hostVersions: async (...args: Parameters<typeof original.hostVersions>) => {
+      const [, diagnostics] = args;
+      for (const problem of unreadVersions.problems) {
+        diagnostics.push({ code: 'version-unreadable', message: `A version was not recorded: ${problem}.` });
+      }
+      return original.hostVersions(...args);
+    },
+  };
+});
 
 const runnerPath = fileURLToPath(new URL('capture-runner.ts', import.meta.url));
 const signInPage = pagePath('sign-in.html');
@@ -508,6 +529,27 @@ describe('a Safari AX capture records each asset request of the page it reads on
       },
     ]);
     expect(names(driverEvents()).filter((name) => name === 'navigated')).toHaveLength(3);
+  });
+
+  test('keeps a diagnostic recorded before the page first loads', async () => {
+    const page = pageWith('<!doctype html>\n<title>Asset</title>\n<img src="missing.png" alt="x">\n');
+    const { driver, helper } = doubles({}, { fetchOnNavigate: ['/missing.png'] });
+    unreadVersions.problems = ['sw_vers -buildVersion printed nothing'];
+    try {
+      const snapshot = await captureSafariAx(page, { driver, helper });
+      expect(snapshot.diagnostics).toEqual([
+        {
+          code: 'asset-not-found',
+          message: "No file in the page's directory answers /missing.png, so it was answered with 404.",
+        },
+        {
+          code: 'version-unreadable',
+          message: 'A version was not recorded: sw_vers -buildVersion printed nothing.',
+        },
+      ]);
+    } finally {
+      unreadVersions.problems = [];
+    }
   });
 });
 
