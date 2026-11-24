@@ -1,3 +1,9 @@
+## [0.8.0](https://github.com/nickvirden/spokenpath/compare/v0.7.0...v0.8.0) (2026-11-24)
+
+### Features
+
+* **safari:** capture Safari's macOS accessibility tree ([#76](https://github.com/nickvirden/spokenpath/issues/76)) ([935e17f](https://github.com/nickvirden/spokenpath/commit/935e17f952dd5053e63f67dec73914a875b8a422))
+
 ## [0.7.0](https://github.com/nickvirden/spokenpath/compare/v0.6.0...v0.7.0) (2026-11-19)
 
 ### Features
