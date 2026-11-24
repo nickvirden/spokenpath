@@ -209,8 +209,10 @@ jobs:
         run: cargo xtask schema --check
 
   # The model's, the announce crate's and the binary's tests read the committed captures and their
-  # pages from disk, so they also run where paths, line endings and checkouts differ. Linux runs
-  # them in test-rust.
+  # pages from disk, so they also run where paths, line endings and checkouts differ. The Safari
+  # accessibility helper is a stub off macOS, so its tests run here too, on Windows against the
+  # stub and on macOS against the real FFI path, which only the macOS clippy step lints. Linux runs
+  # every test in test-rust and lints the stub in lint.
   test-model:
     name: test-model (${{ matrix.os }})
     strategy:
@@ -239,6 +241,13 @@ jobs:
 
       - name: Test the spokenpath-core binary
         run: cargo test -p spokenpath_cli --locked
+
+      - name: Test the Safari accessibility helper
+        run: cargo test -p spokenpath_ax_macos --locked
+
+      - name: Lint the Safari accessibility helper's macOS FFI
+        if: runner.os == 'macOS'
+        run: cargo clippy -p spokenpath_ax_macos --all-targets --locked -- -D warnings
 
   test-node:
     name: test-node

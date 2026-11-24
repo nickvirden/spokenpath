@@ -190,6 +190,42 @@ test('safari-webdriver-basic.json is a Safari snapshot of the same page as chrom
   expect(safari.version).toEqual({ major: 0, minor: 1 });
 });
 
+describe('safari-ax-basic.json', () => {
+  test('is a Safari AX snapshot of the same page as chromium-basic.json, at minor version 2', () => {
+    const chromium = readFixture('chromium-basic.json');
+    const safari = readFixture('safari-ax-basic.json');
+    expect(safari.sources).toEqual(chromium.sources);
+    expect(safari.spans).toEqual(chromium.spans);
+    expect(safari.version).toEqual({ major: 0, minor: 2 });
+  });
+
+  test('is rejected with a value type the schema does not define, at that attribute', () => {
+    const snapshot = readFixture('safari-ax-basic.json') as unknown as Snapshot;
+    if (snapshot.payload.engine !== 'safari-ax') {
+      throw new Error('a Safari AX payload');
+    }
+    const node = snapshot.payload.nodes?.[1];
+    if (node === undefined) {
+      throw new Error('the fixture has a node 1');
+    }
+    (node.attributes as Record<string, unknown>).AXTitle = { type: 'colour' };
+    expect(errorPaths(snapshot)).toContain('/payload/nodes/1/attributes/AXTitle');
+  });
+
+  test('is rejected with an error code that is not a 32-bit integer', () => {
+    const snapshot = readFixture('safari-ax-basic.json') as unknown as Snapshot;
+    if (snapshot.payload.engine !== 'safari-ax') {
+      throw new Error('a Safari AX payload');
+    }
+    const node = snapshot.payload.nodes?.[0];
+    if (node === undefined) {
+      throw new Error('the fixture has a node 0');
+    }
+    node.attributes.AXLinkedUIElements = { type: 'error', code: 2 ** 31 };
+    expect(errorPaths(snapshot)).toContain('/payload/nodes/0/attributes/AXLinkedUIElements/code');
+  });
+});
+
 describe('chromium-basic.json against its page source', () => {
   const snapshot = readFixture('chromium-basic.json') as unknown as Snapshot;
   const source = snapshot.sources[0];

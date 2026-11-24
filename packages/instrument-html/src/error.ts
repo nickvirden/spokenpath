@@ -6,6 +6,11 @@ export type InstrumentHtmlErrorCode =
   | 'unsupported-encoding'
   /** An element already carries the source attribute, which would shadow the spliced one. */
   | 'attribute-present'
+  /**
+   * With `classToken`, an element's class already holds a token starting with `sp-src-`, which
+   * would be read back as a source location.
+   */
+  | 'class-token-present'
   /** The instrumented text parses to a different tree than the input. */
   | 'dom-changed';
 

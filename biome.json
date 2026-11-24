@@ -18,7 +18,8 @@
       "!packages/snapshot-types/src/snapshot.generated.ts",
       "!fixtures/snapshots/chromium-from-typescript.json",
       "!fixtures/snapshots/chromium",
-      "!fixtures/snapshots/safari-webdriver"
+      "!fixtures/snapshots/safari-webdriver",
+      "!fixtures/snapshots/safari-ax"
     ]
   },
   "formatter": {

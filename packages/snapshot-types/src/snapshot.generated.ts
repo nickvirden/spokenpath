@@ -47,6 +47,70 @@ export type Origin = "source" | "implied" | "script" | "library" | "unknown";
  */
 export type ShadowMode = "open" | "closed" | "user-agent";
 /**
+ * One attribute value, encoded by its Core Foundation type, or the error reading it returned.
+ */
+export type SafariAxValue =
+  | {
+      type: "string";
+      value: string;
+    }
+  | {
+      type: "boolean";
+      value: boolean;
+    }
+  | {
+      type: "number";
+      value: number;
+    }
+  | {
+      type: "url";
+      value: string;
+    }
+  | {
+      items: SafariAxValue[];
+      type: "array";
+    }
+  | {
+      node?: number;
+      type: "element";
+    }
+  | {
+      type: "point";
+      x: number;
+      y: number;
+    }
+  | {
+      height: number;
+      type: "size";
+      width: number;
+    }
+  | {
+      height: number;
+      type: "rect";
+      width: number;
+      x: number;
+      y: number;
+    }
+  | {
+      length: number;
+      location: number;
+      type: "range";
+    }
+  | {
+      /**
+       * The `CFCopyTypeIDDescription` of the value's type.
+       */
+      cf_type: string;
+      type: "unsupported";
+    }
+  | {
+      /**
+       * The `AXError` the read returned.
+       */
+      code: number;
+      type: "error";
+    };
+/**
  * The fixed identifier `spokenpath-snapshot`.
  */
 export type SchemaId = "spokenpath-snapshot";
@@ -400,10 +464,60 @@ export interface WebdriverError {
   message: string;
 }
 /**
- * The Safari payload captured from the macOS accessibility tree. Its contents are added in later
- * minor versions.
+ * Safari's macOS accessibility tree for the page, from its `AXWebArea` down, recorded raw: every
+ * attribute name each node reports, with its value or the error reading it returned, and no
+ * interpretation. The platform provides no name provenance and no exclusion reasons, so the
+ * payload has no fields for them. Minor version 2 adds every field; a minor-0 or minor-1 payload
+ * has none and reads with no nodes and no versions.
  */
-export interface SafariAxPayload {}
+export interface SafariAxPayload {
+  /**
+   * The macOS build version, from `sw_vers`.
+   */
+  macos_build?: string;
+  /**
+   * The macOS product version, from `sw_vers`.
+   */
+  macos_version?: string;
+  /**
+   * The nodes in pre-order through `AXChildren`, in Safari's order; node 0 is the web area.
+   */
+  nodes?: SafariAxNode[];
+  /**
+   * Safari's `CFBundleVersion`.
+   */
+  safari_build?: string;
+}
+/**
+ * One accessibility element of Safari's tree.
+ */
+export interface SafariAxNode {
+  /**
+   * Every attribute `AXUIElementCopyAttributeNames` returned for the node, by name, with its
+   * value or the error reading it returned.
+   */
+  attributes: {
+    [k: string]: SafariAxValue;
+  };
+  /**
+   * The `id`s of the nodes this node's `AXChildren` lists, in that order. An element already
+   * recorded elsewhere in the tree is not listed again; its `AXChildren` attribute still
+   * references it.
+   */
+  children: number[];
+  /**
+   * The node's index in `nodes`.
+   */
+  id: number;
+  /**
+   * The `id` of the node whose `AXChildren` first listed this one; absent for node 0.
+   */
+  parent?: number;
+  /**
+   * The `id` of the span its `AXDOMClassList` source token names, when it names one.
+   */
+  span?: number;
+}
 /**
  * The program that wrote the snapshot.
  */

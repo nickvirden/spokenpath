@@ -46,6 +46,11 @@ export interface DriverScenario {
   /** The page's `document.visibilityState`; `visible` by default. */
   visibility?: string;
   /**
+   * The answers to successive visibility reads, the last repeated, instead of `visibility`, for a
+   * page that is hidden only after a given read.
+   */
+  visibilitySequence?: string[];
+  /**
    * What the page measures, apart from its origin, which is the current page's; the defaults are
    * a 1280 × 720 light viewport.
    */
@@ -54,8 +59,15 @@ export interface DriverScenario {
   navigation?: PageNavigation;
   /** Answer Get Current URL with this WebDriver error. */
   currentUrlError?: { error: string; message: string };
+  /** Answer Set Timeouts with this WebDriver error. */
+  timeoutsError?: { error: string; message: string };
   /** Answer the navigation with this WebDriver error instead of loading the page. */
   loadError?: { error: string; message: string };
+  /**
+   * Paths the page asks its own origin for on every navigation to a page whose HTML names them,
+   * as a browser loads the assets a page references.
+   */
+  fetchOnNavigate?: string[];
 }
 
 /**
@@ -86,6 +98,9 @@ export interface DriverEvent {
   csp?: string | null;
   signal?: string;
 }
+
+/** The window rect Get Window Rect answers. */
+export const TEST_WINDOW_RECT = { x: 0, y: 25, width: 1280, height: 800 } as const;
 
 const DEFAULT_MEASUREMENT: Omit<Measurement, 'origin'> = {
   innerWidth: 1280,
@@ -119,6 +134,8 @@ function main(args: string[]): void {
 
   const sessionId = 'test-session';
   let sources: string[] = [];
+  let title = '';
+  let visibilityReads = 0;
   let currentUrl = 'about:blank';
   let loaded = false;
   let elementsStale = false;
@@ -176,6 +193,18 @@ function main(args: string[]): void {
       send(response, 200, null);
       return;
     }
+    if (method === 'GET' && command === '/window/rect') {
+      send(response, 200, TEST_WINDOW_RECT);
+      return;
+    }
+    if (method === 'GET' && command === '/title') {
+      send(response, 200, title);
+      return;
+    }
+    if (command === '/timeouts' && scenario.timeoutsError !== undefined) {
+      send(response, 500, { ...scenario.timeoutsError, stacktrace: '' });
+      return;
+    }
     if (command === '/timeouts' || command === '/window/rect') {
       send(response, 200, null);
       return;
@@ -197,8 +226,13 @@ function main(args: string[]): void {
       currentUrl = String(parsed.url);
       loaded = true;
       const html = await page.text();
+      for (const path of (scenario.fetchOnNavigate ?? []).filter((path) => html.includes(path.slice(1)))) {
+        const asset = await fetch(new URL(path, String(parsed.url)));
+        await asset.body?.cancel();
+      }
       log({ event: 'navigated', status: page.status, csp: page.headers.get('content-security-policy') });
       sources = [...html.matchAll(/data-spokenpath-src="([^"]*)"/g)].map((match) => match[1] ?? '');
+      title = /<title[^>]*>([^<]*)<\/title>/i.exec(html)?.[1]?.trim() ?? '';
       sources.push(...(scenario.extraSources ?? []));
       send(response, 200, null);
       return;
@@ -215,7 +249,13 @@ function main(args: string[]): void {
       } else if (script === ORIGIN_SCRIPT) {
         send(response, 200, origin);
       } else if (script === VISIBILITY_SCRIPT) {
-        send(response, 200, scenario.visibility ?? 'visible');
+        const sequence = scenario.visibilitySequence;
+        const answer =
+          sequence === undefined
+            ? scenario.visibility
+            : sequence[Math.min(visibilityReads, sequence.length - 1)];
+        visibilityReads += 1;
+        send(response, 200, answer ?? 'visible');
       } else if (script === SETTLE_SCRIPT) {
         if (navigateAway('settling')) {
           send(response, 404, { error: 'no such window', message: '', stacktrace: '' });

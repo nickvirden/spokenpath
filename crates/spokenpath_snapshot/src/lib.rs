@@ -8,7 +8,7 @@
 //! `schema/snapshot.v0.json`.
 
 use std::borrow::Cow;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 use schemars::{JsonSchema, Schema, SchemaGenerator, json_schema};
@@ -27,7 +27,7 @@ pub const SUPPORTED_MAJOR: u32 = 0;
 /// writing minor 0.
 pub const CURRENT_VERSION: Version = Version {
     major: SUPPORTED_MAJOR,
-    minor: 1,
+    minor: 2,
 };
 
 /// One capture of one page in one engine: the envelope that every engine shares, plus the
@@ -367,10 +367,99 @@ pub struct WebdriverError {
     pub message: String,
 }
 
-/// The Safari payload captured from the macOS accessibility tree. Its contents are added in later
-/// minor versions.
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
-pub struct SafariAxPayload {}
+/// Safari's macOS accessibility tree for the page, from its `AXWebArea` down, recorded raw: every
+/// attribute name each node reports, with its value or the error reading it returned, and no
+/// interpretation. The platform provides no name provenance and no exclusion reasons, so the
+/// payload has no fields for them. Minor version 2 adds every field; a minor-0 or minor-1 payload
+/// has none and reads with no nodes and no versions.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
+pub struct SafariAxPayload {
+    /// The nodes in pre-order through `AXChildren`, in Safari's order; node 0 is the web area.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub nodes: Vec<SafariAxNode>,
+    /// Safari's `CFBundleVersion`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub safari_build: Option<String>,
+    /// The macOS product version, from `sw_vers`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub macos_version: Option<String>,
+    /// The macOS build version, from `sw_vers`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub macos_build: Option<String>,
+}
+
+/// One accessibility element of Safari's tree.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+pub struct SafariAxNode {
+    /// The node's index in `nodes`.
+    pub id: u32,
+    /// The `id` of the node whose `AXChildren` first listed this one; absent for node 0.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub parent: Option<u32>,
+    /// The `id`s of the nodes this node's `AXChildren` lists, in that order. An element already
+    /// recorded elsewhere in the tree is not listed again; its `AXChildren` attribute still
+    /// references it.
+    pub children: Vec<u32>,
+    /// The `id` of the span its `AXDOMClassList` source token names, when it names one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub span: Option<u32>,
+    /// Every attribute `AXUIElementCopyAttributeNames` returned for the node, by name, with its
+    /// value or the error reading it returned.
+    pub attributes: BTreeMap<String, SafariAxValue>,
+}
+
+/// One attribute value, encoded by its Core Foundation type, or the error reading it returned.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum SafariAxValue {
+    /// A `CFString`. Unpaired UTF-16 surrogates are replaced with U+FFFD.
+    String { value: String },
+    /// A `CFBoolean`.
+    Boolean { value: bool },
+    /// A `CFNumber`, integer or floating point as the helper reads it. A snapshot written by
+    /// capture holds a whole-valued float as an integer, because capture parses the helper's
+    /// output in JavaScript.
+    Number { value: serde_json::Number },
+    /// A `CFURL`, as its absolute string.
+    Url { value: String },
+    /// A `CFArray`, with its items in order.
+    Array { items: Vec<SafariAxValue> },
+    /// An `AXUIElement`. `node` is the `id` of the recorded node that is the same element, and is
+    /// absent when the element is outside the recorded tree, which records nothing else about it.
+    Element {
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        node: Option<u32>,
+    },
+    /// An `AXValue` holding a `CGPoint`.
+    Point { x: f64, y: f64 },
+    /// An `AXValue` holding a `CGSize`.
+    Size { width: f64, height: f64 },
+    /// An `AXValue` holding a `CGRect`.
+    Rect {
+        x: f64,
+        y: f64,
+        width: f64,
+        height: f64,
+    },
+    /// An `AXValue` holding a `CFRange`, as JSON integers. The helper writes them exactly, and the
+    /// Rust reader reads them exactly; a snapshot written by capture holds an integer beyond 2^53,
+    /// such as `NSNotFound` in `location`, rounded, because capture parses the helper's output in
+    /// JavaScript.
+    Range {
+        location: serde_json::Number,
+        length: serde_json::Number,
+    },
+    /// A value of any other type, such as an opaque text marker, recorded by its type alone.
+    Unsupported {
+        /// The `CFCopyTypeIDDescription` of the value's type.
+        cf_type: String,
+    },
+    /// Reading the attribute failed.
+    Error {
+        /// The `AXError` the read returned.
+        code: i32,
+    },
+}
 
 /// What Chromium exposes for the page, as the `DevTools` protocol delivers it.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
@@ -722,7 +811,8 @@ struct Envelope {
 ///
 /// Returns a [`ReadError`] when the text is not JSON, is not a spokenpath snapshot, has an
 /// unsupported major version, names two different engines, lists a source path that could leave
-/// the capture root, or has a missing or malformed field.
+/// the capture root, has a Safari entry or node that names a span or node that does not exist, or
+/// has a missing or malformed field.
 pub fn read(json: &str) -> Result<Snapshot, ReadError> {
     let value: Value = serde_json::from_str(json).map_err(ReadError::Json)?;
     if value.get("schema").and_then(Value::as_str) != Some(SCHEMA_ID) {
@@ -769,7 +859,11 @@ pub fn read(json: &str) -> Result<Snapshot, ReadError> {
             check_safari_elements(&payload, &envelope.spans)?;
             Payload::SafariWebdriver(payload)
         }
-        Engine::SafariAx => Payload::SafariAx(deserialize_at("payload", body)?),
+        Engine::SafariAx => {
+            let payload: SafariAxPayload = deserialize_at("payload", body)?;
+            check_safari_ax_nodes(&payload, &envelope.spans)?;
+            Payload::SafariAx(payload)
+        }
     };
     Ok(Snapshot {
         schema: envelope.schema,
@@ -813,6 +907,82 @@ fn check_safari_elements(
         }
     }
     Ok(())
+}
+
+/// Rejects a Safari AX node whose `id` is not its index, or whose `parent`, `children` entry,
+/// element reference or `span` names nothing.
+fn check_safari_ax_nodes(payload: &SafariAxPayload, spans: &[Span]) -> Result<(), ReadError> {
+    let span_ids: BTreeSet<u32> = spans.iter().map(|span| span.id).collect();
+    let count = payload.nodes.len();
+    let names_node = |id: u32| usize::try_from(id).is_ok_and(|id| id < count);
+    let no_node = |path: String, id: u32| ReadError::Field {
+        path,
+        message: format!("no node has the id {id}"),
+    };
+    for (index, node) in payload.nodes.iter().enumerate() {
+        let path = format!("payload.nodes[{index}]");
+        if usize::try_from(node.id).ok() != Some(index) {
+            return Err(ReadError::Field {
+                path: format!("{path}.id"),
+                message: format!("expected the node's index, {index}, but found {}", node.id),
+            });
+        }
+        if let Some(parent) = node.parent
+            && !names_node(parent)
+        {
+            return Err(no_node(format!("{path}.parent"), parent));
+        }
+        if let Some((position, &child)) = node
+            .children
+            .iter()
+            .enumerate()
+            .find(|&(_, &child)| !names_node(child))
+        {
+            return Err(no_node(format!("{path}.children[{position}]"), child));
+        }
+        if let Some(span) = node.span
+            && !span_ids.contains(&span)
+        {
+            return Err(ReadError::Field {
+                path: format!("{path}.span"),
+                message: format!("no span has the id {span}"),
+            });
+        }
+        for (name, value) in &node.attributes {
+            if let Some((value_path, id)) =
+                dangling_element(value, format!("{path}.attributes.{name}"), &names_node)
+            {
+                return Err(no_node(value_path, id));
+            }
+        }
+    }
+    Ok(())
+}
+
+/// The path and node id of the first element reference in `value` that names no node.
+fn dangling_element(
+    value: &SafariAxValue,
+    path: String,
+    names_node: &impl Fn(u32) -> bool,
+) -> Option<(String, u32)> {
+    // Arrays nest without a limit, so the walk keeps its own stack.
+    let mut pending = vec![(value, path)];
+    while let Some((value, path)) = pending.pop() {
+        match value {
+            SafariAxValue::Element { node: Some(node) } if !names_node(*node) => {
+                return Some((format!("{path}.node"), *node));
+            }
+            SafariAxValue::Array { items } => pending.extend(
+                items
+                    .iter()
+                    .enumerate()
+                    .rev()
+                    .map(|(index, item)| (item, format!("{path}.items[{index}]"))),
+            ),
+            _ => {}
+        }
+    }
+    None
 }
 
 /// Deserialises `value`, which sits at `prefix` in the snapshot, reporting a failure with its full
@@ -937,8 +1107,11 @@ mod tests {
 
     use serde_json::{Value, json};
 
+    use std::collections::BTreeSet;
+
     use super::{
-        CURRENT_VERSION, Engine, Payload, ReadError, SCHEMA_ID, WebdriverAnswer, json_schema, read,
+        CURRENT_VERSION, Engine, Payload, ReadError, SCHEMA_ID, SafariAxValue, WebdriverAnswer,
+        json_schema, read,
     };
 
     fn fixtures_directory() -> PathBuf {
@@ -1003,8 +1176,8 @@ mod tests {
     }
 
     #[test]
-    fn current_version_is_zero_one() {
-        assert_eq!((CURRENT_VERSION.major, CURRENT_VERSION.minor), (0, 1));
+    fn current_version_is_zero_two() {
+        assert_eq!((CURRENT_VERSION.major, CURRENT_VERSION.minor), (0, 2));
         assert_eq!(SCHEMA_ID, "spokenpath-snapshot");
     }
 
@@ -1380,6 +1553,169 @@ mod tests {
                 .to_string()
                 .contains("`payload.elements[0].role_error.error`"),
             "{error}"
+        );
+    }
+
+    fn safari_ax_basic() -> Value {
+        serde_json::from_str(&fixture("safari-ax-basic.json")).expect("the fixture is JSON")
+    }
+
+    #[test]
+    fn safari_ax_fixture_reads_every_value_type_and_both_kinds_of_reference() {
+        let snapshot = read(&fixture("safari-ax-basic.json")).expect("the fixture reads");
+        let Payload::SafariAx(payload) = &snapshot.payload else {
+            panic!("a Safari AX payload: {:?}", snapshot.payload);
+        };
+        let types: BTreeSet<&str> = payload
+            .nodes
+            .iter()
+            .flat_map(|node| node.attributes.values())
+            .flat_map(|value| match value {
+                SafariAxValue::Array { items } => {
+                    let mut all = vec![value];
+                    all.extend(items);
+                    all
+                }
+                _ => vec![value],
+            })
+            .map(|value| match value {
+                SafariAxValue::String { .. } => "string",
+                SafariAxValue::Boolean { .. } => "boolean",
+                SafariAxValue::Number { .. } => "number",
+                SafariAxValue::Url { .. } => "url",
+                SafariAxValue::Array { .. } => "array",
+                SafariAxValue::Element { node: Some(_) } => "element in the tree",
+                SafariAxValue::Element { node: None } => "element outside the tree",
+                SafariAxValue::Point { .. } => "point",
+                SafariAxValue::Size { .. } => "size",
+                SafariAxValue::Rect { .. } => "rect",
+                SafariAxValue::Range { .. } => "range",
+                SafariAxValue::Unsupported { .. } => "unsupported",
+                SafariAxValue::Error { .. } => "error",
+            })
+            .collect();
+        assert_eq!(types.len(), 13, "{types:?}");
+        assert!(payload.nodes.iter().any(|node| node.span.is_some()));
+        assert_eq!(payload.nodes[0].parent, None);
+    }
+
+    /// Every `.json` file under `directory`, recursively, as paths relative to it.
+    fn json_files_under(directory: &Path) -> Vec<PathBuf> {
+        let mut found = Vec::new();
+        let mut pending = vec![directory.to_path_buf()];
+        while let Some(current) = pending.pop() {
+            for entry in std::fs::read_dir(&current)
+                .unwrap_or_else(|error| panic!("{} is readable: {error}", current.display()))
+            {
+                let path = entry.expect("directory entry").path();
+                if path.is_dir() {
+                    pending.push(path);
+                } else if path
+                    .extension()
+                    .is_some_and(|extension| extension == "json")
+                {
+                    found.push(path);
+                }
+            }
+        }
+        found.sort();
+        found
+    }
+
+    #[test]
+    fn every_committed_safari_ax_golden_reads() {
+        let goldens = json_files_under(&fixtures_directory().join("safari-ax"));
+        let snapshots: Vec<&PathBuf> = goldens
+            .iter()
+            .filter(|path| {
+                path.file_name()
+                    .is_some_and(|name| name != "source-mapping.json")
+            })
+            .collect();
+        assert!(snapshots.len() > 1, "{goldens:?}");
+        for path in snapshots {
+            let text = std::fs::read_to_string(path)
+                .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
+            let snapshot =
+                read(&text).unwrap_or_else(|error| panic!("{} reads: {error}", path.display()));
+            let Payload::SafariAx(payload) = &snapshot.payload else {
+                panic!("{} is a Safari AX snapshot", path.display());
+            };
+            assert!(!payload.nodes.is_empty(), "{} has nodes", path.display());
+        }
+    }
+
+    #[test]
+    fn safari_ax_node_whose_id_is_not_its_index_is_rejected() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][3]["id"] = json!(4);
+        let error = read_value(&value).expect_err("a misnumbered node is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.nodes[3].id`: expected the node's index, 3, but found 4");
+    }
+
+    #[test]
+    fn safari_ax_parent_naming_no_node_is_rejected() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][2]["parent"] = json!(70);
+        let error = read_value(&value).expect_err("a dangling parent is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.nodes[2].parent`: no node has the id 70");
+    }
+
+    #[test]
+    fn safari_ax_child_naming_no_node_is_rejected() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][3]["children"] = json!([4, 7]);
+        let error = read_value(&value).expect_err("a dangling child is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.nodes[3].children[1]`: no node has the id 7");
+    }
+
+    #[test]
+    fn safari_ax_element_reference_naming_no_node_is_rejected() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][5]["attributes"]["AXTitleUIElement"]["node"] = json!(9);
+        let error = read_value(&value).expect_err("a dangling element is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.nodes[5].attributes.AXTitleUIElement.node`: no node has the id 9");
+    }
+
+    #[test]
+    fn safari_ax_element_reference_inside_an_array_names_its_item() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][0]["attributes"]["AXChildren"]["items"][2]["node"] = json!(12);
+        let error = read_value(&value).expect_err("a dangling element is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.nodes[0].attributes.AXChildren.items[2].node`: no node has the id 12");
+    }
+
+    #[test]
+    fn safari_ax_span_naming_no_span_is_rejected() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][1]["span"] = json!(8);
+        let error = read_value(&value).expect_err("a dangling span is rejected");
+        insta::assert_snapshot!(error, @"invalid snapshot at `payload.nodes[1].span`: no span has the id 8");
+    }
+
+    #[test]
+    fn safari_ax_value_of_an_unknown_type_names_its_path() {
+        let mut value = safari_ax_basic();
+        value["payload"]["nodes"][1]["attributes"]["AXTitle"] = json!({"type": "colour"});
+        let error = read_value(&value).expect_err("an unknown value type is rejected");
+        assert!(
+            error
+                .to_string()
+                .contains("`payload.nodes[1].attributes.AXTitle.type`"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn safari_ax_numbers_keep_their_integer_or_floating_point_form() {
+        let value = safari_ax_basic();
+        let snapshot = read_value(&value).expect("the fixture reads");
+        let written = serde_json::to_value(&snapshot).expect("serialises");
+        let attributes = &written["payload"]["nodes"][0]["attributes"];
+        assert_eq!(attributes["AXLayoutCount"]["value"].to_string(), "3");
+        assert_eq!(
+            attributes["_AXPrimaryScreenHeight"]["value"].to_string(),
+            "982.0"
         );
     }
 

@@ -146,3 +146,55 @@ function finish(closeIndex: number, end: number, insertAt: number): number {
   }
   return insertAt;
 }
+
+/** The length of the attribute name `class`, however it is cased in the source. */
+const CLASS_NAME_LENGTH = 'class'.length;
+
+/**
+ * The splice that adds `token` to the value of the `class` attribute starting at `classStart` in
+ * the start tag ending at `end`, so the parsed value becomes the original value, one ASCII space
+ * and the token, whatever form the attribute takes:
+ *
+ * - quoted (`class="a"`, `class='a'`): ` <token>` before the closing quote;
+ * - unquoted (`class=a`): `&#32;<token>` after the value, because a literal space would end it;
+ * - `=` with no value before the tag closes (`class=>`): `" <token>"` before the `>`;
+ * - no `=` at all (`class`): `=" <token>"` after the name.
+ *
+ * parse5's attribute location cannot place this, because it ends before an `=` that has no value
+ * after it, so the attribute is scanned here as the tokenizer reads it.
+ */
+export function classValueEdit(
+  text: string,
+  classStart: number,
+  end: number,
+  token: string,
+): { at: number; text: string } {
+  const nameEnd = classStart + CLASS_NAME_LENGTH;
+  let index = nameEnd;
+  const skipWhitespace = () => {
+    while (index < end && isWhitespace(text.charAt(index))) {
+      index += 1;
+    }
+  };
+  skipWhitespace();
+  if (text.charAt(index) !== '=') {
+    return { at: nameEnd, text: `=" ${token}"` };
+  }
+  index += 1;
+  skipWhitespace();
+  const first = text.charAt(index);
+  if (first === '"' || first === "'") {
+    const close = text.indexOf(first, index + 1);
+    if (close === -1 || close >= end) {
+      throw new Error(`the class attribute at offset ${classStart} has no closing quote`);
+    }
+    return { at: close, text: ` ${token}` };
+  }
+  if (first === '>') {
+    return { at: index, text: `" ${token}"` };
+  }
+  while (index < end - 1 && !isWhitespace(text.charAt(index))) {
+    index += 1;
+  }
+  return { at: index, text: `&#32;${token}` };
+}

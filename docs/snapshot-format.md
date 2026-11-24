@@ -21,7 +21,7 @@ carrying the JSON Pointer of the failing location.
 | Field | Contents |
 |---|---|
 | `schema` | Always `"spokenpath-snapshot"`. |
-| `version` | `{ major, minor }`. Each writer writes the lowest minor version that defines every field it writes: Chromium capture writes `{ "major": 0, "minor": 0 }`, Safari capture `{ "major": 0, "minor": 1 }`. |
+| `version` | `{ major, minor }`. Each writer writes the lowest minor version that defines every field it writes: Chromium capture writes `{ "major": 0, "minor": 0 }`, Safari WebDriver capture `{ "major": 0, "minor": 1 }` and Safari AX capture `{ "major": 0, "minor": 2 }`. |
 | `producer` | `{ name, version }` of the program that wrote the snapshot. |
 | `capture.engine` | `chromium`, `safari-webdriver` or `safari-ax`; equal to `payload.engine`. |
 | `capture.engine_version` | The browser version, as the browser reports it. |
@@ -107,7 +107,49 @@ Each entry has exactly one of `role` and `role_error`, and exactly one of `label
 span, naming the entry's path, such as `payload.elements[3]`. Safari's own version is
 `capture.engine_version`, the session's `browserVersion`.
 
-The `safari-ax` payload has no fields yet; its contents are added in a later minor version.
+## Safari AX payload
+
+Minor 2 adds the `safari-ax` payload fields: Safari's macOS accessibility tree for the page, from
+its `AXWebArea` down, recorded raw ([ADR-0015](decisions/ADR-0015-safari-ax-tree-capture.md)).
+Every field reads with a default, so a minor-0 or minor-1 `safari-ax` envelope with an empty
+payload still reads, with no nodes and no versions.
+
+| Field | Contents |
+|---|---|
+| `nodes[]` | One entry per accessibility element, in pre-order through `AXChildren`, in Safari's order. Node 0 is the page's web area; nested web areas (frame documents) are walked like any other node. |
+| `nodes[].id` | The node's index in `nodes`. |
+| `nodes[].parent` | The `id` of the node whose `AXChildren` first listed this one; absent for node 0. |
+| `nodes[].children` | The `id`s of the nodes this node's `AXChildren` lists, in that order. An element recorded earlier in the walk is not listed again here; its `AXChildren` value still references it. |
+| `nodes[].span` | Optional: the `id` of the span whose source class token is in the node's `AXDOMClassList`. |
+| `nodes[].attributes` | Every attribute name `AXUIElementCopyAttributeNames` returned for the node, as an object keyed by name, each with its value or the error reading it returned. Keys come out sorted; the API gives the names no meaningful order. |
+| `safari_build` | Optional: Safari's `CFBundleVersion`. |
+| `macos_version`, `macos_build` | Optional: the macOS product and build versions, from `sw_vers`. |
+
+Each value is tagged by `type`, after its Core Foundation type:
+
+| `type` | Fields | From |
+|---|---|---|
+| `string` | `value` | A `CFString`; unpaired UTF-16 surrogates become U+FFFD. |
+| `boolean` | `value` | A `CFBoolean`. |
+| `number` | `value` | A `CFNumber`, integer or floating point as the helper reads it. A snapshot written by capture holds a whole-valued float as an integer, because capture parses the helper's output in JavaScript. |
+| `url` | `value` | A `CFURL`, as its absolute string. |
+| `array` | `items` | A `CFArray`, each item encoded the same way. |
+| `element` | `node?` | An `AXUIElement`: the `id` of the recorded node that is the same element (`CFEqual`), or no field at all for an element outside the recorded tree, such as the window, whose data is never recorded. |
+| `point` | `x`, `y` | An `AXValue` holding a `CGPoint`. |
+| `size` | `width`, `height` | An `AXValue` holding a `CGSize`. |
+| `rect` | `x`, `y`, `width`, `height` | An `AXValue` holding a `CGRect`. |
+| `range` | `location`, `length` | An `AXValue` holding a `CFRange`, as integers. The helper writes them exactly and the Rust reader reads them exactly, but a snapshot written by capture holds an integer beyond 2^53, such as `NSNotFound` in `location`, rounded, because capture parses the helper's output in JavaScript. |
+| `unsupported` | `cf_type` | Any other type, by its `CFCopyTypeIDDescription`, such as `AXTextMarker`. |
+| `error` | `code` | Reading the attribute failed with this `AXError`, such as `-25212` (no value). |
+
+Parameterized attributes and actions are not read, and text-marker contents are not decoded. The
+values stay as the helper read them, source class tokens included, within the JavaScript limits on
+numbers above. The payload has no fields for
+name provenance or exclusion reasons, because the platform does not provide them.
+
+The Rust reader rejects a node whose `id` is not its index, and a `parent`, `children` entry or
+`element` reference that names no node or a `span` that names no span, naming its dotted path,
+such as `payload.nodes[3].children[0]` or `payload.nodes[5].attributes.AXTitleUIElement.node`.
 
 ## Version rule
 
@@ -296,6 +338,77 @@ returned.
 | `source-attribute-unreadable` | Safari answered Get Element Attribute with an error, so the element has no entry. |
 | `version-unreadable` | `defaults` or `sw_vers` failed, so a version field is absent. |
 
+## Safari AX capture
+
+`@spokenpath/capture-safari` also writes `safari-ax` snapshots on macOS. It exports
+`captureSafariAx(pagePath, { waitFor, timeoutMs })` and `normaliseSafariAxForGolden(snapshot)`.
+The tree is read by `spokenpath-ax-macos`, a Rust helper from `crates/spokenpath_ax_macos`, built
+with `cargo build -p spokenpath_ax_macos` and run from `target/debug/` (or `$CARGO_TARGET_DIR/debug/`)
+with an argument array and no shell. It needs the Accessibility permission
+([usage.md](usage.md#granting-the-accessibility-permission)). There is no command-line option for it
+yet.
+
+**Serving.** The page is instrumented with `classToken: true`: every tagged start tag also gets
+the class token `sp-src-<line>-<column>`, added to its first `class` or in a new one, so the
+source location reaches `AXDOMClassList`, which exposes the class list but no other attribute.
+Every tagged element's class therefore changes, so a style or script selector that matches a whole
+`class` value or an element without a class (`[class="gone"]`, `:not([class])`) sees a different
+page than the author wrote; [ADR-0009](decisions/ADR-0009-safari-capture-route-and-source-locations.md)
+accepts this for the class-token carrier. It is served as Safari WebDriver capture serves a page, at
+`http://127.0.0.1:<port>/<file name>?spokenpath-nonce=<nonce>`, where the nonce is 32 lowercase
+hex characters from 16 random bytes, new for each capture, so a window left over from an earlier
+run cannot match. `capture.url` is that exact URL.
+
+**The title.** The helper identifies the automation window by the page's title and the window's
+rect, so the page needs a non-empty `<title>`. Capture loads the page once first and reads its
+title with WebDriver Get Title, which collapses whitespace; when it is empty, capture fails with
+`safari-window-not-identified` before the helper runs, and the helper reads nothing. The title is
+compared with each window's `AXTitle` as WebDriver reports it. The order of these refusals is
+fixed: a helper file that is missing or not executable is refused before `safaridriver` starts,
+without running the helper; an untitled page is refused after one load, before the helper runs at
+all; and a helper that passes the file check but cannot be started fails at its first run, after
+that.
+
+**The check page.** Next, capture serves the helper's check page (`spokenpath-ax-macos
+canary-page`) on a second server with its own nonce, loads and settles it in the same session,
+and runs the helper on it with `--canary`. The check page has 3 elements, each with one check
+token, `sp-canary-1` to `sp-canary-3`. All 3 in the tree is a usable read; none, while the
+process is trusted and the screen unlocked, is `accessibility-permission-missing`, because macOS
+can answer an untrusted process with an empty tree rather than an error; 1 or 2 is
+`ax-canary-incomplete`.
+
+**The page.** Capture loads and settles the page again, measures it, reads its title and the window's
+rect over WebDriver, and runs the helper, which identifies the automation window by that title
+and rect and the web area by the exact URL ([ADR-0015](decisions/ADR-0015-safari-ax-tree-capture.md)).
+It reads the page's visibility again after the helper returns and fails with `page-hidden` when it
+is not `visible`. Then each node whose `AXDOMClassList` holds a source class token gets that token's
+span. The helper's output is capped at 32 MiB, the input limit of `spokenpath-core`; the helper is
+killed at `timeoutMs` plus 5 s; and on SIGINT or SIGTERM it is killed before the session is
+deleted.
+
+**Failures.** Besides every Safari WebDriver capture code:
+
+| Code | Meaning |
+|---|---|
+| `accessibility-permission-missing` | macOS reports the process untrusted, refuses a request with `kAXErrorAPIDisabled`, or the check page's tree is empty. The message names the signal that fired and how to grant the permission. |
+| `ax-canary-incomplete` | The check page's tree has some but not all of its check nodes. |
+| `safari-not-running` | No single Safari process runs in the user's session. |
+| `safari-window-not-identified` | The page has no title, or no single window has the page's title and the automation window's rect, or no single web area in it is at the exact URL. Nothing is output, and the message quotes nothing from any window. |
+| `ax-tree-too-large` | The tree has more than 50 000 nodes, or the helper printed more than 32 MiB. |
+| `ax-helper-not-found` | The helper is not built; the message names `cargo build -p spokenpath_ax_macos`. When the file is missing it is raised before `safaridriver` starts. |
+| `ax-helper-failed` | The helper failed with a code capture does not map, or printed something other than its documented JSON; the message quotes the start of its stderr, escaped. For a helper file that is not executable, or that cannot be started, the message names only the error code; a file that is not executable is refused before `safaridriver` starts. |
+| `page-hidden` | Also when the helper finds the Mac's screen locked, or the page is hidden after the read; the message says which. |
+
+The helper's `page-left-origin` (the web area's URL changed during the read), `timeout` and
+`unsupported-platform` are capture's codes of the same names. No snapshot is returned after a
+check-page, permission, window or lock failure.
+
+**Diagnostics.** Besides `asset-not-found` and `version-unreadable`:
+
+| Code | Meaning |
+|---|---|
+| `unknown-source-token` | A node's `AXDOMClassList` holds a source class token that names no span, so the node gets no span from it. The message names the node and the token. |
+
 ## Golden comparisons
 
 Golden comparisons compare a normalised copy of each snapshot
@@ -338,7 +451,38 @@ Safari goldens live in `fixtures/snapshots/safari-webdriver/`, one per page in t
 list at the same relative path. They are captured live on a Mac, so only `pnpm test:safari`
 compares them, outside `pnpm check` and CI; refresh them with `UPDATE_FIXTURES=1 pnpm test:safari`.
 A package test checks that no committed Safari snapshot holds `/Users/`, `/home/`, `file:`, or the
-capturing machine's user or host name.
+capturing machine's user or host name, and that every `capture.url` is on `127.0.0.1`.
+
+`normaliseSafariAxForGolden` applies every rule of `normaliseSafariForGolden`, then:
+
+| Field | Set to | Why it varies |
+|---|---|---|
+| The nonce in `capture.url` | `0`, as in `http://127.0.0.1:0/<file name>?spokenpath-nonce=0` | Each capture draws a new one. |
+| The served port and the nonce in every `string` and `url` value, including inside arrays | `0` | `AXURL` and link URLs hold the served origin and the nonce. |
+| `AXPosition`, `AXFrame` | `0` for each coordinate, keeping the type | They are screen coordinates, which move with the window. |
+| `AXSize` | `0` for each dimension, keeping the type | It follows the viewport the screen allows. |
+| `_AXPrimaryScreenHeight` | `0` | It is the height of the Mac's main screen. |
+| `AXVisibleCharacterRange` | `0` for `location` and `length` | It is the part of the text scrolled into view. |
+| `AXLayoutCount` | `0` | It counts layout passes, which vary from run to run. |
+
+A value of one of these attributes that is an `error` keeps its code. Two consecutive live
+captures of every page agree on every other attribute. Everything else is compared, so a Safari or
+macOS upgrade shows as a reviewed diff. The goldens live in `fixtures/snapshots/safari-ax/`, one
+per page in the Chromium golden list, and only `pnpm test:safari` compares them, with one more case
+that replaces the check page with a page without check tokens and expects
+`accessibility-permission-missing` and no snapshot.
+
+`fixtures/snapshots/safari-ax/source-mapping.json` measures how many source locations Safari's
+tree carries. For each page, and in total, `tagged` is every span; `mapped` is the spans at least
+one node carries; `mapped_to_several` lists the spans several nodes carry, with the nodes;
+`not_in_tree` lists the spans no node carries that Chromium's golden of the same page does not
+expose either (`no Chromium node`, or `ignored in Chromium: <reasons>`); `unmapped_in_tree` lists
+the spans no node carries although Chromium exposes them; `figure` is
+`mapped / (mapped + unmapped_in_tree)`; and `unmapped_nodes` lists every node without a span, with
+its role and subrole and why: `web-area`, `text` (`AXStaticText`), `unknown-source-token` or
+`no-source-token`. A package test in `pnpm test:node` recomputes it from the committed goldens,
+fails when it differs or when the total figure is below 95%, and rewrites it with
+`UPDATE_FIXTURES=1`.
 
 ## Changing the format
 
@@ -359,7 +503,9 @@ from the committed schema. A change to the contract also needs an ADR
 in `fixtures/snapshots/pages/basic.html`; a package test checks the source hash and slices every
 span by its byte range against that page. `safari-webdriver-basic.json` is a hand-written Safari
 snapshot of the same page, with the same `sources` and `spans`, whose answers exercise every
-cross-check outcome without Safari. `chromium-from-typescript.json` is the JSON of the typed
+cross-check outcome without Safari. `safari-ax-basic.json` is a hand-written Safari AX snapshot of
+the same page, with the same `sources` and `spans`, whose nodes exercise every value type, an
+element reference inside and outside the tree, and nodes with spans. `chromium-from-typescript.json` is the JSON of the typed
 sample in `@spokenpath/snapshot-types`. The Rust tests read and round-trip every `.json` file
 there, and the package tests validate every one. `fixtures/source-paths.json` lists the
 accepted and rejected source paths that both readers' tests use.

@@ -6,6 +6,7 @@ import {
   InstrumentHtmlError,
   instrumentHtml,
   SOURCE_ATTRIBUTE,
+  sourceClassToken,
 } from './index.ts';
 import { compareTrees } from './tree-equality.ts';
 import { elements } from './tree.ts';
@@ -135,6 +136,73 @@ describe.each(accepted)('%s', (name) => {
   });
 });
 
+describe.each(accepted)('%s with class tokens', (name) => {
+  const input = readFileSync(new URL(name, tortureUrl));
+  const originalText = decode(input);
+  const instrument = () => {
+    const { html, spans } = instrumentHtml(input, { source: 3, classToken: true });
+    return { html, spans, instrumentedText: decode(html) };
+  };
+  /** Each span's token, by the source attribute value that names the span. */
+  const tokensOf = (spans: { id: number; line: number; column: number }[]) =>
+    new Map(spans.map((span) => [String(span.id), sourceClassToken(span)]));
+
+  test.each([true, false])(
+    'parses to the same tree as the original, but for the tokens, with scripting %s',
+    (scriptingEnabled) => {
+      const { instrumentedText, spans } = instrument();
+      const comparison = compareTrees(
+        parse(originalText, { scriptingEnabled }),
+        parse(instrumentedText, { scriptingEnabled }),
+        { classTokens: tokensOf(spans) },
+      );
+      expect(comparison).toEqual({ equal: true });
+    },
+  );
+
+  test('gives the same spans as without class tokens', () => {
+    expect(instrument().spans).toEqual(instrumentHtml(input, { source: 3 }).spans);
+  });
+
+  test("puts each tagged element's token in its class, after the author's own tokens", () => {
+    const { instrumentedText, spans } = instrument();
+    const original = [...elements(parse(originalText), { templates: true })];
+    const instrumented = [...elements(parse(instrumentedText), { templates: true })];
+    expect(instrumented.length).toBe(original.length);
+    const seen = new Set<number>();
+    for (const [index, element] of instrumented.entries()) {
+      const id = element.attrs.find((attr) => attr.name === SOURCE_ATTRIBUTE)?.value;
+      const span = id === undefined ? undefined : spans[Number(id)];
+      if (span === undefined) {
+        continue;
+      }
+      seen.add(span.id);
+      const classOf = (attrs: { name: string; value: string }[]) =>
+        attrs.find((attr) => attr.name === 'class')?.value;
+      const before = classOf(original[index]?.attrs ?? []);
+      expect(classOf(element.attrs)).toBe(
+        before === undefined ? sourceClassToken(span) : `${before} ${sourceClassToken(span)}`,
+      );
+    }
+    expect(seen.size).toBe(spans.length);
+  });
+
+  test('is refused with dom-changed when a token reaches the wrong element', () => {
+    const { instrumentedText, spans } = instrument();
+    if (spans.length < 2) {
+      return;
+    }
+    const shifted = new Map(
+      spans.map((span, index) => [
+        String(span.id),
+        sourceClassToken(spans[(index + 1) % spans.length] ?? span),
+      ]),
+    );
+    const comparison = compareTrees(parse(originalText), parse(instrumentedText), { classTokens: shifted });
+    expect(comparison.equal).toBe(false);
+  });
+});
+
 /** The code a rejected fixture must raise: its file name up to the first dot. */
 function expectedCode(name: string): InstrumentHtmlErrorCode {
   const code = name.slice(0, name.indexOf('.'));
@@ -142,6 +210,7 @@ function expectedCode(name: string): InstrumentHtmlErrorCode {
     'invalid-utf-8',
     'unsupported-encoding',
     'attribute-present',
+    'class-token-present',
     'dom-changed',
   ];
   const known = codes.find((candidate) => candidate === code);
@@ -156,18 +225,30 @@ const messagePatterns: Record<InstrumentHtmlErrorCode, RegExp> = {
   'invalid-utf-8': /byte offset \d+/,
   'unsupported-encoding': /UTF-16LE|UTF-16BE|"[^"]*" at line \d+, column \d+/,
   'attribute-present': /at line \d+, column \d+/,
+  'class-token-present': /"sp-src-[^"]*" at line \d+, column \d+/,
   'dom-changed': /first at \S+/,
 };
 
+/** The codes only class-token mode raises; without it, such a page is instrumented as usual. */
+const TOKEN_MODE_CODES: ReadonlySet<InstrumentHtmlErrorCode> = new Set(['class-token-present']);
+
 describe.each(rejected)('rejected/%s', (name) => {
-  test('is refused with the code its name gives', () => {
-    const code = expectedCode(name);
-    const input = readFileSync(new URL(name, rejectedUrl));
-    let thrown: unknown;
+  const code = expectedCode(name);
+  const input = readFileSync(new URL(name, rejectedUrl));
+  const refusal = (classToken: boolean): unknown => {
     try {
-      instrumentHtml(input, { source: 0 });
+      instrumentHtml(input, { source: 0, classToken });
     } catch (error) {
-      thrown = error;
+      return error;
+    }
+    return undefined;
+  };
+
+  test.each([false, true])('is refused with the code its name gives, with class tokens %s', (classToken) => {
+    const thrown = refusal(classToken);
+    if (!classToken && TOKEN_MODE_CODES.has(code)) {
+      expect(thrown).toBeUndefined();
+      return;
     }
     expect(thrown).toBeInstanceOf(InstrumentHtmlError);
     expect((thrown as InstrumentHtmlError).code).toBe(code);

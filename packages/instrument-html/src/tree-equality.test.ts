@@ -156,3 +156,61 @@ test('a changed comment is reported', () => {
   const comparison = compareTrees(parse('<!--a--><p>'), parse('<!--b--><p>'));
   expect(comparison).toMatchObject({ equal: false, path: '#comment[0]' });
 });
+
+describe('class tokens', () => {
+  const tokens = new Map([
+    ['0', 'sp-src-1-1'],
+    ['1', 'sp-src-1-25'],
+  ]);
+  /** The page with an authored class, and its tagged form with `classes` as the first element's class. */
+  function compareClass(original: string, classes: string) {
+    return compareTrees(
+      parse(`<p class="${original}">a</p><p>b</p>`),
+      parse(
+        `<p class="${classes}" ${SOURCE_ATTRIBUTE}="0">a</p><p ${SOURCE_ATTRIBUTE}="1" class="sp-src-1-25">b</p>`,
+      ),
+      { classTokens: tokens },
+    );
+  }
+
+  test('ignores exactly the token added after the original value, or as a new class', () => {
+    expect(compareClass('note warning', 'note warning sp-src-1-1')).toEqual({ equal: true });
+  });
+
+  test.each([
+    ['the token prepended and an author token dropped', 'sp-src-1-1 note'],
+    ['an author-like token added besides the token', 'note warning extra sp-src-1-1'],
+    ["another element's token", 'note warning sp-src-1-25'],
+    ['the token with no separating space', 'note warningsp-src-1-1'],
+    ["the author's tokens in another order", 'warning note sp-src-1-1'],
+    ["an author's token altered", 'note warn sp-src-1-1'],
+  ])('reports %s on an element with a class', (_, classes) => {
+    expect(compareClass('note warning', classes)).toMatchObject({
+      equal: false,
+      path: 'html[0] > body[0] > p[0]',
+    });
+  });
+
+  test.each([
+    ['the token and another token', 'sp-src-1-25 extra'],
+    ["another element's token", 'sp-src-1-1'],
+    ['the token with a leading space', ' sp-src-1-25'],
+  ])('reports %s as the new class of an element without one', (_, classes) => {
+    const comparison = compareTrees(
+      parse('<p class="x">a</p><p>b</p>'),
+      parse(
+        `<p class="x sp-src-1-1" ${SOURCE_ATTRIBUTE}="0">a</p><p ${SOURCE_ATTRIBUTE}="1" class="${classes}">b</p>`,
+      ),
+      { classTokens: tokens },
+    );
+    expect(comparison).toMatchObject({ equal: false, path: 'html[0] > body[0] > p[1]' });
+  });
+
+  test('compares a class change as a difference without the token map', () => {
+    const comparison = compareTrees(
+      parse('<p>a</p>'),
+      parse(`<p ${SOURCE_ATTRIBUTE}="0" class="sp-src-1-1">a</p>`),
+    );
+    expect(comparison).toMatchObject({ equal: false });
+  });
+});

@@ -6,6 +6,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./binary": "./src/binary.ts",
     "./test-driver": "./src/test-driver.ts"
   },
   "scripts": {

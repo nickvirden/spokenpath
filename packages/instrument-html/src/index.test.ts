@@ -1,7 +1,14 @@
 import { parse } from 'parse5';
 import { describe, expect, test } from 'vitest';
 import { charsetFromContent } from './encoding.ts';
-import { InstrumentHtmlError, instrumentHtml, packageName, SOURCE_ATTRIBUTE } from './index.ts';
+import {
+  CLASS_TOKEN_PREFIX,
+  InstrumentHtmlError,
+  instrumentHtml,
+  packageName,
+  SOURCE_ATTRIBUTE,
+  sourceClassToken,
+} from './index.ts';
 import { elements } from './tree.ts';
 
 const encoder = new TextEncoder();
@@ -119,6 +126,66 @@ describe('splice points', () => {
     ],
   ])('%s', (tag, expected) => {
     expect(instrumentText(tag).text).toBe(expected);
+  });
+});
+
+describe('class tokens', () => {
+  function tokenText(html: string) {
+    const result = instrumentHtml(encoder.encode(html), { source: 0, classToken: true });
+    return { ...result, text: decoder.decode(result.html) };
+  }
+
+  test('encode the line and column of the span', () => {
+    expect(sourceClassToken({ line: 12, column: 3 })).toBe('sp-src-12-3');
+    expect(CLASS_TOKEN_PREFIX).toBe('sp-src-');
+  });
+
+  test.each([
+    ['<p>x</p>', '<p data-spokenpath-src="0" class="sp-src-1-1">x</p>'],
+    ['<p class="a b">x</p>', '<p class="a b sp-src-1-1" data-spokenpath-src="0">x</p>'],
+    ["<p class='a'>x</p>", `<p class='a sp-src-1-1' data-spokenpath-src="0">x</p>`],
+    ['<p class=a>x</p>', '<p class=a&#32;sp-src-1-1 data-spokenpath-src="0">x</p>'],
+    ['<p class=a id=b>x</p>', '<p class=a&#32;sp-src-1-1 id=b data-spokenpath-src="0">x</p>'],
+    ['<p class>x</p>', '<p class=" sp-src-1-1" data-spokenpath-src="0">x</p>'],
+    ['<p class="">x</p>', '<p class=" sp-src-1-1" data-spokenpath-src="0">x</p>'],
+    ['<p class=>x</p>', '<p data-spokenpath-src="0" class=" sp-src-1-1">x</p>'],
+    ['<p class = >x</p>', '<p data-spokenpath-src="0" class = " sp-src-1-1">x</p>'],
+    ['<p class id=b>x</p>', '<p class=" sp-src-1-1" id=b data-spokenpath-src="0">x</p>'],
+    ['<p class="a" class="b">x</p>', '<p class="a sp-src-1-1" class="b" data-spokenpath-src="0">x</p>'],
+    ['<input class=a/>', '<input class=a/&#32;sp-src-1-1 data-spokenpath-src="0">'],
+    ['<br/>', '<br data-spokenpath-src="0" class="sp-src-1-1"/>'],
+    ['<a href=>', '<a data-spokenpath-src="0" class="sp-src-1-1" href=>'],
+    [
+      '<svg class="i"><path/></svg>',
+      '<svg class="i sp-src-1-1" data-spokenpath-src="0"><path data-spokenpath-src="1" class="sp-src-1-16"/></svg>',
+    ],
+  ])('%s', (html, expected) => {
+    const { text, spans } = tokenText(html);
+    expect(text).toBe(expected);
+    expect(spans).toEqual(instrumentText(html).spans);
+  });
+
+  test('leave the output unchanged when the option is off', () => {
+    const input = encoder.encode('<p class="a">x</p><br>');
+    expect(instrumentHtml(input, { source: 0, classToken: false })).toEqual(
+      instrumentHtml(input, { source: 0 }),
+    );
+  });
+
+  test('refuse a class that already holds a source class token, only when on', () => {
+    const page = '<p>a</p>\n<p class="x\tsp-src-9-9">b</p>';
+    let thrown: unknown;
+    try {
+      instrumentHtml(encoder.encode(page), { source: 0, classToken: true });
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBeInstanceOf(InstrumentHtmlError);
+    expect((thrown as InstrumentHtmlError).code).toBe('class-token-present');
+    expect((thrown as InstrumentHtmlError).message).toBe(
+      `an element's class already holds the token "sp-src-9-9" at line 2, column 1; it would be read back as a source location`,
+    );
+    expect(instrumentText(page).spans).toHaveLength(2);
   });
 });
 

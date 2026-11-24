@@ -21,6 +21,7 @@ export type ValidationResult = { ok: true; snapshot: Snapshot } | { ok: false; e
  * fails at load until it is registered here.
  */
 const formats = {
+  int32: (value: number) => Number.isInteger(value) && value >= -(2 ** 31) && value < 2 ** 31,
   uint32: (value: number) => Number.isInteger(value) && value >= 0 && value <= 0xffff_ffff,
   // JSON numbers above 2^53 lose precision when parsed, so the check is the range, not exactness.
   uint64: (value: number) => Number.isInteger(value) && value >= 0 && value < 2 ** 64,

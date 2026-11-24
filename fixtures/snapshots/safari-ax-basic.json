@@ -1,0 +1,651 @@
+{
+  "schema": "spokenpath-snapshot",
+  "version": {
+    "major": 0,
+    "minor": 2
+  },
+  "producer": {
+    "name": "hand-written fixture",
+    "version": "0.0.0"
+  },
+  "capture": {
+    "engine": "safari-ax",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "device_pixel_ratio": 1.0
+    },
+    "color_scheme": "light",
+    "reduced_motion": "no-preference",
+    "url": "http://127.0.0.1:0/basic.html?spokenpath-nonce=0",
+    "settle": "load-fonts-frames"
+  },
+  "volatile": {
+    "captured_at": "2026-11-19T12:00:00Z"
+  },
+  "sources": [
+    {
+      "id": 0,
+      "path": "pages/basic.html",
+      "sha256": "0f75ea5885e94f12118431e4cf9154e62ad237fd0f7edc7eaf54d6bfc7a0dcf5",
+      "encoding": "utf-8"
+    }
+  ],
+  "spans": [
+    {
+      "id": 0,
+      "source": 0,
+      "start_tag": {
+        "start": 16,
+        "end": 32
+      },
+      "line": 2,
+      "column": 1
+    },
+    {
+      "id": 1,
+      "source": 0,
+      "start_tag": {
+        "start": 33,
+        "end": 37
+      },
+      "element": {
+        "start": 33,
+        "end": 55
+      },
+      "line": 3,
+      "column": 1
+    },
+    {
+      "id": 2,
+      "source": 0,
+      "start_tag": {
+        "start": 56,
+        "end": 75
+      },
+      "element": {
+        "start": 56,
+        "end": 88
+      },
+      "line": 4,
+      "column": 1
+    },
+    {
+      "id": 3,
+      "source": 0,
+      "start_tag": {
+        "start": 89,
+        "end": 120
+      },
+      "line": 5,
+      "column": 1
+    },
+    {
+      "id": 4,
+      "source": 0,
+      "start_tag": {
+        "start": 125,
+        "end": 133
+      },
+      "element": {
+        "start": 125,
+        "end": 146
+      },
+      "line": 5,
+      "column": 35
+    },
+    {
+      "id": 5,
+      "source": 0,
+      "start_tag": {
+        "start": 147,
+        "end": 169
+      },
+      "element": {
+        "start": 147,
+        "end": 179
+      },
+      "line": 6,
+      "column": 1
+    },
+    {
+      "id": 6,
+      "source": 0,
+      "start_tag": {
+        "start": 180,
+        "end": 188
+      },
+      "element": {
+        "start": 180,
+        "end": 197
+      },
+      "line": 7,
+      "column": 1
+    },
+    {
+      "id": 7,
+      "source": 0,
+      "start_tag": {
+        "start": 198,
+        "end": 206
+      },
+      "element": {
+        "start": 198,
+        "end": 375
+      },
+      "line": 8,
+      "column": 1
+    }
+  ],
+  "diagnostics": [],
+  "payload": {
+    "engine": "safari-ax",
+    "nodes": [
+      {
+        "id": 0,
+        "children": [1, 3, 5, 6],
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": [
+              {
+                "type": "element",
+                "node": 1
+              },
+              {
+                "type": "element",
+                "node": 3
+              },
+              {
+                "type": "element",
+                "node": 5
+              },
+              {
+                "type": "element",
+                "node": 6
+              }
+            ]
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 0.0,
+            "y": 87.0,
+            "width": 1280.0,
+            "height": 720.0
+          },
+          "AXLayoutCount": {
+            "type": "number",
+            "value": 3
+          },
+          "AXLinkedUIElements": {
+            "type": "error",
+            "code": -25212
+          },
+          "AXParent": {
+            "type": "element"
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 0.0,
+            "y": 87.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXWebArea"
+          },
+          "AXRoleDescription": {
+            "type": "string",
+            "value": "HTML content"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 1280.0,
+            "height": 720.0
+          },
+          "AXStartTextMarker": {
+            "type": "unsupported",
+            "cf_type": "AXTextMarker"
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXURL": {
+            "type": "url",
+            "value": "http://127.0.0.1:0/basic.html?spokenpath-nonce=0"
+          },
+          "AXVisibleCharacterRange": {
+            "type": "range",
+            "location": 0,
+            "length": 29
+          },
+          "AXWindow": {
+            "type": "element"
+          },
+          "_AXPrimaryScreenHeight": {
+            "type": "number",
+            "value": 982.0
+          }
+        }
+      },
+      {
+        "id": 1,
+        "parent": 0,
+        "children": [2],
+        "span": 1,
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": [
+              {
+                "type": "element",
+                "node": 2
+              }
+            ]
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "value": "sp-src-3-1"
+              }
+            ]
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 8.0,
+            "y": 108.0,
+            "width": 1264.0,
+            "height": 37.0
+          },
+          "AXParent": {
+            "type": "element",
+            "node": 0
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 8.0,
+            "y": 108.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXHeading"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 1264.0,
+            "height": 37.0
+          },
+          "AXSubrole": {
+            "type": "error",
+            "code": -25212
+          },
+          "AXTitle": {
+            "type": "string",
+            "value": "Café sign-up"
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXValue": {
+            "type": "number",
+            "value": 1
+          },
+          "AXWindow": {
+            "type": "element"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "parent": 1,
+        "children": [],
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 8.0,
+            "y": 108.0,
+            "width": 196.0,
+            "height": 37.0
+          },
+          "AXParent": {
+            "type": "element",
+            "node": 1
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 8.0,
+            "y": 108.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXStaticText"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 196.0,
+            "height": 37.0
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXValue": {
+            "type": "string",
+            "value": "Café sign-up"
+          },
+          "AXWindow": {
+            "type": "element"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "parent": 0,
+        "children": [4],
+        "span": 2,
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": [
+              {
+                "type": "element",
+                "node": 4
+              }
+            ]
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "value": "sp-src-4-1"
+              }
+            ]
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 8.0,
+            "y": 166.0,
+            "width": 37.0,
+            "height": 18.0
+          },
+          "AXParent": {
+            "type": "element",
+            "node": 0
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 8.0,
+            "y": 166.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXGroup"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 37.0,
+            "height": 18.0
+          },
+          "AXSubrole": {
+            "type": "error",
+            "code": -25212
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXWindow": {
+            "type": "element"
+          }
+        }
+      },
+      {
+        "id": 4,
+        "parent": 3,
+        "children": [],
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 8.0,
+            "y": 166.0,
+            "width": 37.0,
+            "height": 18.0
+          },
+          "AXParent": {
+            "type": "element",
+            "node": 3
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 8.0,
+            "y": 166.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXStaticText"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 37.0,
+            "height": 18.0
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXValue": {
+            "type": "string",
+            "value": "Email"
+          },
+          "AXWindow": {
+            "type": "element"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "parent": 0,
+        "children": [],
+        "span": 3,
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "value": "sp-src-5-1"
+              }
+            ]
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": "email"
+          },
+          "AXEnabled": {
+            "type": "boolean",
+            "value": true
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 49.0,
+            "y": 164.0,
+            "width": 150.0,
+            "height": 21.0
+          },
+          "AXParent": {
+            "type": "element",
+            "node": 0
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 49.0,
+            "y": 164.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXTextField"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 150.0,
+            "height": 21.0
+          },
+          "AXTitleUIElement": {
+            "type": "element",
+            "node": 3
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXValue": {
+            "type": "string",
+            "value": ""
+          },
+          "AXWindow": {
+            "type": "element"
+          }
+        }
+      },
+      {
+        "id": 6,
+        "parent": 0,
+        "children": [],
+        "span": 4,
+        "attributes": {
+          "AXChildren": {
+            "type": "array",
+            "items": []
+          },
+          "AXDOMClassList": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "value": "sp-src-5-35"
+              }
+            ]
+          },
+          "AXDOMIdentifier": {
+            "type": "string",
+            "value": ""
+          },
+          "AXEnabled": {
+            "type": "boolean",
+            "value": true
+          },
+          "AXFocused": {
+            "type": "boolean",
+            "value": false
+          },
+          "AXFrame": {
+            "type": "rect",
+            "x": 219.0,
+            "y": 164.0,
+            "width": 40.0,
+            "height": 21.0
+          },
+          "AXParent": {
+            "type": "element",
+            "node": 0
+          },
+          "AXPosition": {
+            "type": "point",
+            "x": 219.0,
+            "y": 164.0
+          },
+          "AXRole": {
+            "type": "string",
+            "value": "AXButton"
+          },
+          "AXSize": {
+            "type": "size",
+            "width": 40.0,
+            "height": 21.0
+          },
+          "AXTitle": {
+            "type": "string",
+            "value": "Join"
+          },
+          "AXTopLevelUIElement": {
+            "type": "element"
+          },
+          "AXWindow": {
+            "type": "element"
+          }
+        }
+      }
+    ],
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  }
+}
