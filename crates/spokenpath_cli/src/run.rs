@@ -1,5 +1,5 @@
-//! One run of the binary: read the snapshot and the source, adapt, announce, cross-check when
-//! asked, write.
+//! One run of the binary: read the snapshot and the source, adapt with the adapter the snapshot's
+//! engine needs, announce, cross-check or align when asked, write.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsString;
@@ -8,13 +8,13 @@ use std::io::{self, BufWriter, Read, Write};
 use std::path::Path;
 
 use sha2::{Digest, Sha256};
-use spokenpath_announce::{Options, announce, cross_check, escape_for_terminal};
-use spokenpath_model::chromium::adapt;
+use spokenpath_announce::{Options, align, announce, cross_check, escape_for_terminal};
 use spokenpath_model::safari_webdriver::{SafariAnswers, answers};
-use spokenpath_snapshot::{Diagnostic, ReadError, Snapshot, read};
+use spokenpath_model::{AdaptError, Model, chromium, safari_ax};
+use spokenpath_snapshot::{Diagnostic, Engine, ReadError, Snapshot, read};
 
 use crate::args::{self, Command, Format, Input, TranscriptArgs, USAGE};
-use crate::text::{self, SourceText, TextContext};
+use crate::text::{self, AlignedContext, SourceText, TextContext};
 
 /// The largest snapshot or source file the binary reads, in bytes. Adapting a snapshot costs more
 /// than reading it, and not linearly in every shape, so the size is checked before parsing.
@@ -118,11 +118,29 @@ fn transcript(
         .iter()
         .flat_map(|source| source.ids.iter().map(|&id| (id, source.length)))
         .collect();
-    let model = adapt(&snapshot, &lengths).map_err(|error| Failure::Input(error.to_string()))?;
+    let engine = snapshot.payload.engine();
+    if engine != Engine::Chromium {
+        for (flag, given) in [
+            ("--cross-check", args.cross_check.is_some()),
+            ("--align-with", args.align_with.is_some()),
+        ] {
+            if given {
+                return Err(Failure::Input(format!(
+                    "`{flag}` needs a `chromium` snapshot, but the snapshot is `{engine}`"
+                )));
+            }
+        }
+    }
+    let model = adapt(&snapshot, &lengths)?;
     let safari = args
         .cross_check
         .as_ref()
         .map(|input| read_cross_check(input, stdin, &snapshot))
+        .transpose()?;
+    let aligned = args
+        .align_with
+        .as_ref()
+        .map(|input| read_aligned(input, stdin, &snapshot, &lengths))
         .transpose()?;
 
     let mut diagnostics = String::new();
@@ -138,17 +156,26 @@ fn transcript(
     if let Some((safari_snapshot, _)) = &safari {
         write_engine_diagnostics(&mut diagnostics, safari_snapshot);
     }
+    if let Some((aligned_snapshot, _)) = &aligned {
+        write_engine_diagnostics(&mut diagnostics, aligned_snapshot);
+    }
     // Diagnostics are advice: a stderr that cannot take them does not fail the transcript.
     let _ = stderr.write_all(diagnostics.as_bytes());
 
-    let mut transcript = announce(
-        &model,
-        Options {
-            layer_b: !args.no_speech,
-        },
-    );
+    let options = Options {
+        layer_b: !args.no_speech,
+    };
+    let mut transcript = announce(&model, options);
     if let Some((_, answers)) = &safari {
         cross_check(&mut transcript, &model, answers);
+    }
+    if let Some((_, aligned_model)) = &aligned {
+        align(
+            &mut transcript,
+            &model,
+            announce(aligned_model, options),
+            aligned_model,
+        );
     }
     let mut out = BufWriter::new(stdout);
     match args.format {
@@ -169,6 +196,13 @@ fn transcript(
                 ),
                 layer_b: !args.no_speech,
                 source: source.as_ref().map(|source| &source.text),
+                aligned: aligned.as_ref().map(|(aligned, _)| AlignedContext {
+                    snapshot_version: (aligned.version.major, aligned.version.minor),
+                    viewport: (
+                        aligned.capture.viewport.width,
+                        aligned.capture.viewport.height,
+                    ),
+                }),
             };
             text::write_text(&mut out, &transcript, &context)
                 .map_err(|error| output_failure(&error))?;
@@ -255,7 +289,53 @@ fn read_cross_check(
     Ok((safari, answers))
 }
 
-/// Writes the diagnostics of a cross-check snapshot, each line naming its engine.
+/// The model of `snapshot`, from the adapter its payload's engine needs. A Safari `WebDriver`
+/// snapshot holds answers for a cross-check, not a tree, so no adapter reads it.
+fn adapt(snapshot: &Snapshot, lengths: &BTreeMap<u32, u64>) -> Result<Model, Failure> {
+    let adapted: Result<Model, AdaptError> = match snapshot.payload.engine() {
+        Engine::Chromium => chromium::adapt(snapshot, lengths),
+        Engine::SafariAx => safari_ax::adapt(snapshot, lengths),
+        Engine::SafariWebdriver => {
+            return Err(Failure::Input(
+                "the snapshot is `safari-webdriver`, which holds Safari's answers for a \
+                 cross-check rather than a tree to print; pass it with `--cross-check`"
+                    .to_owned(),
+            ));
+        }
+    };
+    adapted.map_err(|error| Failure::Input(error.to_string()))
+}
+
+/// Reads Safari's accessibility-tree snapshot to align with, and its model, after checking that
+/// it came from the same page as `snapshot`: the same sources and spans, so a span id names the
+/// same start tag in both. The `--source` lengths apply, since the sources are the same.
+fn read_aligned(
+    input: &Input,
+    stdin: &mut dyn Read,
+    snapshot: &Snapshot,
+    lengths: &BTreeMap<u32, u64>,
+) -> Result<(Snapshot, Model), Failure> {
+    let what = "the aligned snapshot";
+    let aligned = read_snapshot(input, stdin, what)?;
+    let engine = aligned.payload.engine();
+    if engine != Engine::SafariAx {
+        return Err(Failure::Input(format!(
+            "{what} is `{engine}`, but `--align-with` needs a `safari-ax` snapshot"
+        )));
+    }
+    if aligned.sources != snapshot.sources || aligned.spans != snapshot.spans {
+        return Err(Failure::Input(
+            "the aligned snapshot was captured from a different page: its sources or spans \
+             differ from the snapshot's"
+                .to_owned(),
+        ));
+    }
+    let model = safari_ax::adapt(&aligned, lengths)
+        .map_err(|error| Failure::Input(format!("{what}: {error}")))?;
+    Ok((aligned, model))
+}
+
+/// Writes the diagnostics of a cross-check or aligned snapshot, each line naming its engine.
 fn write_engine_diagnostics(out: &mut String, snapshot: &Snapshot) {
     let engine = snapshot.payload.engine();
     for Diagnostic { code, message, .. } in &snapshot.diagnostics {

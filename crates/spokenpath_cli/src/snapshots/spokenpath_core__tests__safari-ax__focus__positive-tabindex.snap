@@ -1,0 +1,68 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Positive tabindex"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Positive tabindex"
+2    A AXGroup (platform role) (no accessible name)
+       positive-tabindex.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A button "Natural first"
+         positive-tabindex.html:8:4  <button id="natural-first" type="button">
+         name sources not available from this engine
+       ~ "Natural first, button"
+4    A AXGroup (platform role) (no accessible name)
+       positive-tabindex.html:9:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A button "Tabindex two"
+         positive-tabindex.html:9:4  <button id="tabindex-two" type="button" tabindex="2">
+         name sources not available from this engine
+       ~ "Tabindex two, button"
+6    A AXGroup (platform role) (no accessible name)
+       positive-tabindex.html:10:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+7      A button "Tabindex one"
+         positive-tabindex.html:10:4  <button id="tabindex-one" type="button" tabindex="1">
+         name sources not available from this engine
+       ~ "Tabindex one, button"
+8    A AXGroup (platform role) (no accessible name)
+       positive-tabindex.html:11:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+9      A button "Natural last"
+         positive-tabindex.html:11:4  <button id="natural-last" type="button">
+         name sources not available from this engine
+       ~ "Natural last, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [3] button "Natural first"
+  [5] button "Tabindex two"
+  [7] button "Tabindex one"
+  [9] button "Natural last"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

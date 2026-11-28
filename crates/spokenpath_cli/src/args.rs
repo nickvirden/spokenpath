@@ -4,7 +4,7 @@ use std::ffi::OsString;
 use std::path::PathBuf;
 
 /// The usage line printed after every usage error.
-pub(crate) const USAGE: &str = "usage: spokenpath-core transcript <snapshot | -> [--source <file>] [--cross-check <snapshot | ->] [--format text|json] [--no-speech] | spokenpath-core --version";
+pub(crate) const USAGE: &str = "usage: spokenpath-core transcript <snapshot | -> [--source <file>] [--cross-check <snapshot | ->] [--align-with <snapshot | ->] [--format text|json] [--no-speech] | spokenpath-core --version";
 
 /// What the command line asks for.
 #[derive(Debug, PartialEq, Eq)]
@@ -25,6 +25,9 @@ pub(crate) struct TranscriptArgs {
     /// Where the Safari snapshot of the same page comes from, when the roles and names are
     /// cross-checked against it.
     pub(crate) cross_check: Option<Input>,
+    /// Where Safari's accessibility-tree snapshot of the same page comes from, when the transcript
+    /// is printed beside Safari's, aligned by source location.
+    pub(crate) align_with: Option<Input>,
     /// How the transcript is written.
     pub(crate) format: Format,
     /// Whether Layer B is left out.
@@ -73,6 +76,7 @@ fn transcript(mut args: impl Iterator<Item = OsString>) -> Result<TranscriptArgs
     let mut snapshot: Option<Input> = None;
     let mut source: Option<PathBuf> = None;
     let mut cross_check: Option<Input> = None;
+    let mut align_with: Option<Input> = None;
     let mut format: Option<Format> = None;
     let mut no_speech = false;
     while let Some(arg) = args.next() {
@@ -83,15 +87,20 @@ fn transcript(mut args: impl Iterator<Item = OsString>) -> Result<TranscriptArgs
                     return Err(repeated("--source"));
                 }
             }
-            Some("--cross-check") => {
-                let value = value_of("--cross-check", args.next())?;
+            Some(flag @ ("--cross-check" | "--align-with")) => {
+                let value = value_of(flag, args.next())?;
                 let input = if value == "-" {
                     Input::Stdin
                 } else {
                     Input::Path(PathBuf::from(value))
                 };
-                if cross_check.replace(input).is_some() {
-                    return Err(repeated("--cross-check"));
+                let slot = if flag == "--cross-check" {
+                    &mut cross_check
+                } else {
+                    &mut align_with
+                };
+                if slot.replace(input).is_some() {
+                    return Err(repeated(flag));
                 }
             }
             Some("--format") => {
@@ -126,16 +135,27 @@ fn transcript(mut args: impl Iterator<Item = OsString>) -> Result<TranscriptArgs
     let Some(snapshot) = snapshot else {
         return Err("no snapshot given; name a file, or `-` to read it from stdin".to_owned());
     };
-    if snapshot == Input::Stdin && cross_check == Some(Input::Stdin) {
+    if cross_check.is_some() && align_with.is_some() {
         return Err(
-            "the snapshot and `--cross-check` cannot both be `-`: stdin holds one snapshot"
+            "`--cross-check` and `--align-with` cannot be used together; give one of them"
                 .to_owned(),
         );
+    }
+    for (flag, input) in [
+        ("--cross-check", &cross_check),
+        ("--align-with", &align_with),
+    ] {
+        if snapshot == Input::Stdin && *input == Some(Input::Stdin) {
+            return Err(format!(
+                "the snapshot and `{flag}` cannot both be `-`: stdin holds one snapshot"
+            ));
+        }
     }
     Ok(TranscriptArgs {
         snapshot,
         source,
         cross_check,
+        align_with,
         format: format.unwrap_or(Format::Text),
         no_speech,
     })

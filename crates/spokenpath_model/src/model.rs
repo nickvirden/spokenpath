@@ -11,14 +11,22 @@ pub struct Model {
     pub engine_version: String,
     /// The version of the tool that drove the browser.
     pub tool_version: String,
+    /// The browser's build number, when the capture recorded one, such as Safari's
+    /// `CFBundleVersion`.
+    pub engine_build: Option<String>,
+    /// The operating system's product version, when the capture recorded it.
+    pub os_version: Option<String>,
+    /// The operating system's build version, when the capture recorded it.
+    pub os_build: Option<String>,
     /// The root of the exposed tree.
     pub root: NodeIndex,
     /// The exposed tree as an arena, in exposed-tree (pre-)order; [`NodeIndex`] values index it.
     pub nodes: Vec<ExposedNode>,
-    /// The DOM elements the engine leaves out of the exposed tree, in DOM order.
-    pub excluded: Vec<ExcludedNode>,
-    /// The walk of focus by repeated Tab presses, as captured.
-    pub focus: FocusWalk,
+    /// The DOM elements the engine leaves out of the exposed tree, in DOM order, when the engine
+    /// supplies them.
+    pub excluded: Availability<Vec<ExcludedNode>>,
+    /// The walk of focus by repeated Tab presses, as captured, when the engine supplies it.
+    pub focus: Availability<FocusWalk>,
     /// The problems the capture recorded.
     pub diagnostics: Vec<Diagnostic>,
 }
@@ -49,6 +57,38 @@ impl NodeIndex {
     #[must_use]
     pub fn get(self) -> usize {
         self.0
+    }
+}
+
+/// Whether the engine supplies a part of the model at all. A part the engine does not supply is
+/// [`Availability::NotAvailable`], which differs from an available part that is empty: an engine
+/// that reports no excluded nodes has `Available(vec![])`, while one that has no way to report
+/// them has `NotAvailable`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Availability<T> {
+    /// The engine supplies the part.
+    Available(T),
+    /// The engine does not supply the part, and the tool does not compute it.
+    NotAvailable,
+}
+
+impl<T> Availability<T> {
+    /// The part, when the engine supplies it.
+    #[must_use]
+    pub fn available(&self) -> Option<&T> {
+        match self {
+            Availability::Available(value) => Some(value),
+            Availability::NotAvailable => None,
+        }
+    }
+
+    /// The part, mutably, when the engine supplies it.
+    #[must_use]
+    pub fn available_mut(&mut self) -> Option<&mut T> {
+        match self {
+            Availability::Available(value) => Some(value),
+            Availability::NotAvailable => None,
+        }
     }
 }
 
@@ -167,13 +207,23 @@ pub struct AccessibleNode {
     pub set_position: Option<Supplied<SetPosition>>,
 }
 
-/// A role: an ARIA role token, or a role internal to the engine kept as its text.
+/// A role: an ARIA role token, a role internal to the engine kept as its text, or a role of the
+/// platform accessibility API kept as its text.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Role {
     /// An ARIA role token, such as `button`.
     Aria(String),
     /// A role the engine uses internally, such as Chromium's `RootWebArea` or `LabelText`.
     Internal(String),
+    /// A role of the platform accessibility API that stands for no single ARIA role, such as
+    /// macOS's `AXGroup`, with its subrole when the platform gives one, such as
+    /// `AXApplicationGroup`.
+    Platform {
+        /// The platform role's text.
+        role: String,
+        /// The platform subrole's text, when there is one.
+        subrole: Option<String>,
+    },
 }
 
 impl Role {
@@ -182,15 +232,15 @@ impl Role {
     pub fn aria(&self) -> Option<&str> {
         match self {
             Role::Aria(role) => Some(role),
-            Role::Internal(_) => None,
+            Role::Internal(_) | Role::Platform { .. } => None,
         }
     }
 
-    /// The role's text, ARIA or internal.
+    /// The role's text, ARIA, internal or platform; a platform role's subrole is not part of it.
     #[must_use]
     pub fn as_str(&self) -> &str {
         match self {
-            Role::Aria(role) | Role::Internal(role) => role,
+            Role::Aria(role) | Role::Internal(role) | Role::Platform { role, .. } => role,
         }
     }
 }
@@ -317,8 +367,8 @@ pub enum TextPartKind {
 pub struct Name {
     /// The name's text, possibly empty.
     pub text: String,
-    /// Every source the engine tried, in the order it tried them.
-    pub sources: Vec<NameSource>,
+    /// Every source the engine tried, in the order it tried them, when the engine reports them.
+    pub sources: Availability<Vec<NameSource>>,
     /// The index in `sources` of the source that produced the name: the first with a value that is
     /// not superseded. Absent when no source produced one.
     pub winner: Option<usize>,
@@ -332,7 +382,8 @@ impl Name {
     /// The source that produced the name.
     #[must_use]
     pub fn winning_source(&self) -> Option<&NameSource> {
-        self.winner.and_then(|index| self.sources.get(index))
+        let sources = self.sources.available()?;
+        self.winner.and_then(|index| sources.get(index))
     }
 }
 

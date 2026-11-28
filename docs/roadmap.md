@@ -33,17 +33,19 @@ spokenpath is pre-alpha. This page lists the planned work. The decisions behind 
 10. **Safari tree capture.** A native macOS helper that reads Safari's macOS accessibility tree for
     the automation window only, recorded raw as a `safari-ax` snapshot with every node traced to
     its source tag ([ADR-0015](decisions/ADR-0015-safari-ax-tree-capture.md)).
+11. **Safari adapter and per-engine transcripts.** A `safari-ax` adapter in the Rust model, a
+    transcript of Safari's macOS accessibility tree (`--engine safari`), and both engines side by
+    side, aligned by source location (`--engine both`)
+    ([ADR-0016](decisions/ADR-0016-safari-adapter-and-per-engine-transcripts.md)).
 
 ## Next, in order
 
 Each item builds on the ones before it.
 
-1. **Safari adapter and per-engine transcripts.** A `safari-ax` adapter in the Rust model, and a
-   transcript per engine.
-2. **VoiceOver corpus and speech profile.** VoiceOver speech captured locally on macOS and
+1. **VoiceOver corpus and speech profile.** VoiceOver speech captured locally on macOS and
    committed with its versions, and a "VoiceOver + Safari on macOS" profile that shows that
    phrasing only for captured patterns.
-3. **Documentation.** An output reference, README examples produced by fixture tests, and the
+2. **Documentation.** An output reference, README examples produced by fixture tests, and the
    drift-report process ([ADR-0007](decisions/ADR-0007-golden-test-strategy-and-drift-reports.md)).
 
 ## Later, unordered

@@ -1,0 +1,65 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Focus held on one control"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Focus held on one control"
+2    A AXGroup (platform role) (no accessible name)
+       self-trap.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A button "Before"
+         self-trap.html:8:4  <button id="before" type="button">
+         name sources not available from this engine
+       ~ "Before, button"
+4    A AXGroup (platform role) (no accessible name)
+       self-trap.html:9:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A AXStaticText (platform role) (no accessible name)  value "Trapped"
+         self-trap.html:10:1  <label for="trapped">
+         no accessible name; name sources not available from this engine
+       ~ "Trapped"
+6        A text "Trapped"
+         ~ "Trapped"
+7      A textbox "Trapped"
+         self-trap.html:11:1  <input id="trapped" type="text">
+         name sources not available from this engine
+       ~ "Trapped, textbox"
+8    A AXGroup (platform role) (no accessible name)
+       self-trap.html:13:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+9      A button "After"
+         self-trap.html:13:4  <button id="after" type="button">
+         name sources not available from this engine
+       ~ "After, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [3] button "Before"
+  [7] textbox "Trapped"
+  [9] button "After"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

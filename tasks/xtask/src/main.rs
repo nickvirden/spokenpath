@@ -233,8 +233,14 @@ mod tests {
             .expect("the transcript schema is listed");
         let value = (transcript.generate)();
         let required = value["required"].as_array().expect("required fields");
-        for field in ["header", "nodes", "indexes", "excluded", "tab_order"] {
+        for field in ["header", "nodes", "indexes"] {
             assert!(required.iter().any(|name| name == field), "{field}");
+        }
+        // An engine that does not supply its excluded nodes or focus walk leaves the field out.
+        let properties = value["properties"].as_object().expect("properties");
+        for field in ["excluded", "tab_order", "not_available", "aligned"] {
+            assert!(properties.contains_key(field), "{field}");
+            assert!(!required.iter().any(|name| name == field), "{field}");
         }
     }
 

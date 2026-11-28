@@ -1,0 +1,43 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1        no source location: the document itself (document)
+          A Chromium  RootWebArea (internal role) "List without markers"  focusable, focused
+     S1   no source location: the document itself (document)
+          A Safari    AXWebArea (platform role) "List without markers"
+C2   S2   list-style-none.html:9:1  <h1>
+          A Chromium  heading "Prices"  level 1
+          A Safari    heading "Prices"  level 1
+C3        no source location: a text node (text)
+          A Chromium  text "Prices"
+     S3   no source location: a text node (text)
+          A Safari    text "Prices"
+C4   S4   list-style-none.html:10:1  <ul id="prices">
+          A Chromium  list (no accessible name)
+          A Safari    AXGroup/AXApplicationGroup (platform role) (no accessible name)
+C5   S5   list-style-none.html:11:1  <li id="small">
+          A Chromium  listitem (no accessible name)  level 1  1 of 3 (computed by tool)
+          A Safari    AXGroup (platform role) (no accessible name)  value "Small"
+C6        no source location: a text node (text)
+          A Chromium  text "Small"
+     S6   no source location: a text node (text)
+          A Safari    text "Small"
+C7   S7   list-style-none.html:12:1  <li id="medium">
+          A Chromium  listitem (no accessible name)  level 1  2 of 3 (computed by tool)
+          A Safari    AXGroup (platform role) (no accessible name)  value "Medium"
+C8        no source location: a text node (text)
+          A Chromium  text "Medium"
+     S8   no source location: a text node (text)
+          A Safari    text "Medium"
+C9   S9   list-style-none.html:13:1  <li id="large">
+          A Chromium  listitem (no accessible name)  level 1  3 of 3 (computed by tool)
+          A Safari    AXGroup (platform role) (no accessible name)  value "Large"
+C10       no source location: a text node (text)
+          A Chromium  text "Large"
+     S10  no source location: a text node (text)
+          A Safari    text "Large"

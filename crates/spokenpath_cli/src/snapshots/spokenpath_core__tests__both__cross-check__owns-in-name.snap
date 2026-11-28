@@ -1,0 +1,22 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1      no source location: the document itself (document)
+        A Chromium  RootWebArea (internal role) "An owned element in a name from content"  focusable, focused
+    S1  no source location: the document itself (document)
+        A Safari    AXWebArea (platform role) "An owned element in a name from content"
+C2  S2  owns-in-name.html:8:1  <div id="menu" role="menuitem" aria-owns="badge">
+        A Chromium  menuitem "Inbox 3 new"
+        A Safari    AXMenuItem (platform role) "Inbox 3 new"
+C3      no source location: a text node (text)
+        A Chromium  text "Inbox"
+C4      owns-in-name.html:9:1  <span id="badge">
+        A Chromium  generic (no accessible name)
+          only in Chromium: no Safari item has this source location
+C5      no source location: a text node (text)
+        A Chromium  text "3 new"

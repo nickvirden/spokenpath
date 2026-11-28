@@ -1,0 +1,49 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Listbox with a selected option"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Listbox with a selected option"
+2    A AXList (platform role) "Fruit"
+       listbox.html:8:1  <div id="fruit" role="listbox" aria-label="Fruit" tabindex="0">
+       name sources not available from this engine
+     ~ "Fruit"
+3      A AXStaticText (platform role) "Apple"
+         listbox.html:9:1  <div id="apple" role="option" aria-selected="false">
+         name sources not available from this engine
+       ~ "Apple"
+4      A AXStaticText (platform role) "Pear"  selected
+         listbox.html:10:1  <div id="pear" role="option" aria-selected="true">
+         name sources not available from this engine
+       ~ "Pear, selected"
+5      A AXStaticText (platform role) "Plum"
+         listbox.html:11:1  <div id="plum" role="option" aria-selected="false">
+         name sources not available from this engine
+       ~ "Plum"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  (none)
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

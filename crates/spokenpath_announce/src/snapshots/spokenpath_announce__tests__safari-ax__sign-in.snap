@@ -1,0 +1,1149 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "safari-ax",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  },
+  "not_available": [
+    "name-sources",
+    "excluded",
+    "tab-order"
+  ],
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXWebArea",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Sign in"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXCaretBrowsingEnabled",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLoaded",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "AXLoadingProgress",
+            "value": {
+              "type": "integer",
+              "value": 1
+            }
+          },
+          {
+            "name": "AXPreventKeyboardDOMEventDispatch",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXWebArea"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "HTML content"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Sign in"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 101,
+            "end": 105
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Sign in"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false,
+          "level": 1
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXHeading"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "heading"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Sign in, heading, level 1"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Sign in",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Sign in"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 118,
+            "end": 121
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 5,
+      "depth": 2,
+      "parent": 4,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXStaticText",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 10,
+          "column": 1,
+          "start_tag": {
+            "start": 122,
+            "end": 141
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "value": "Email",
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXStaticText"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "text"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": "Email"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Email",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Email"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 2,
+      "parent": 4,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 155,
+            "end": 207
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Email"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "email"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInsertionPointLineNumber",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXNumberOfCharacters",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXPlaceholderValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXTextField"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "email field"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValueAutofillAvailable",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Email, textbox"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 13,
+          "column": 1,
+          "start_tag": {
+            "start": 213,
+            "end": 216
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 9,
+      "depth": 2,
+      "parent": 8,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 217,
+            "end": 251
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "submit"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "button"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 339,
+            "end": 342
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 11,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "link",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "sign-in.html",
+          "line": 16,
+          "column": 4,
+          "start_tag": {
+            "start": 342,
+            "end": 372
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Trouble signing in?"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "help"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXLinkRelationshipType",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXLink"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "link"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Trouble signing in?, link"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 3,
+      "parent": 11,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Trouble signing in?",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Trouble signing in?"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 2,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Sign in",
+        "level": 1
+      }
+    ],
+    "landmarks": [],
+    "links": [
+      {
+        "item": 11,
+        "role": "link",
+        "name_status": "named",
+        "name": "Trouble signing in?"
+      }
+    ],
+    "form_controls": [
+      {
+        "item": 7,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Email"
+      },
+      {
+        "item": 9,
+        "role": "button",
+        "name_status": "no accessible name"
+      }
+    ]
+  }
+}

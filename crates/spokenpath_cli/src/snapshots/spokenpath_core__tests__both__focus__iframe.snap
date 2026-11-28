@@ -1,0 +1,42 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1       no source location: the document itself (document)
+         A Chromium  RootWebArea (internal role) "Frame"  focusable, focused
+    S1   no source location: the document itself (document)
+         A Safari    AXWebArea (platform role) "Frame"
+C2  S2   iframe.html:8:1  <p>
+         A Chromium  paragraph (no accessible name)
+         A Safari    AXGroup (platform role) (no accessible name)
+C3  S3   iframe.html:8:4  <button id="before" type="button">
+         A Chromium  button "Before"  focusable
+         A Safari    button "Before"
+C4       no source location: a text node (text)
+         A Chromium  text "Before"
+C5  S4   iframe.html:9:1  <p>
+         A Chromium  paragraph (no accessible name)
+         A Safari    AXGroup (platform role) (no accessible name)
+C6       iframe.html:9:4  <iframe id="frame" title="Inner frame" srcdoc="<button id=inner-first>Inner firs…
+         A Chromium  Iframe (internal role) "Inner frame"
+           only in Chromium: no Safari item has this source location
+    S5   no source location: its origin could not be established (unknown)
+         A Safari    AXScrollArea (platform role) (no accessible name)
+    S6   no source location: the document itself (document)
+         A Safari    AXWebArea (platform role) "Inner frame"
+    S7   no source location: its origin could not be established (unknown)
+         A Safari    button "Inner first"
+    S8   no source location: its origin could not be established (unknown)
+         A Safari    button "Inner second"
+C7  S9   iframe.html:10:1  <p>
+         A Chromium  paragraph (no accessible name)
+         A Safari    AXGroup (platform role) (no accessible name)
+C8  S10  iframe.html:10:4  <button id="after" type="button">
+         A Chromium  button "After"  focusable
+         A Safari    button "After"
+C9       no source location: a text node (text)
+         A Chromium  text "After"

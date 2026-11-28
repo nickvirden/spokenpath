@@ -1,0 +1,200 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1        no source location: the document itself (document)
+          A Chromium  RootWebArea (internal role) "Landmarks and headings"  focusable, focused
+     S1   no source location: the document itself (document)
+          A Safari    AXWebArea (platform role) "Landmarks and headings"
+C2   S2   landmarks.html:8:1  <header id="banner">
+          A Chromium  banner (no accessible name)
+          A Safari    banner (no accessible name)
+C3   S3   landmarks.html:8:21  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C4        no source location: a text node (text)
+          A Chromium  text "Site name"
+     S4   no source location: a text node (text)
+          A Safari    text "Site name"
+C5   S5   landmarks.html:9:1  <nav id="site-nav" aria-label="Site">
+          A Chromium  navigation "Site"
+          A Safari    navigation "Site"
+C6   S6   landmarks.html:10:1  <a id="link-home" href="index.html">
+          A Chromium  link "Home"  focusable
+          A Safari    link "Home"
+C7        no source location: a text node (text)
+          A Chromium  text "Home"
+C8        no source location: a text node (text)
+          A Chromium  text " "
+     S7   no source location: a text node (text)
+          A Safari    text "Home"
+C9   S8   landmarks.html:11:1  <a id="link-about" href="about.html">
+          A Chromium  link "About"  focusable
+          A Safari    link "About"
+C10       no source location: a text node (text)
+          A Chromium  text "About"
+     S9   no source location: a text node (text)
+          A Safari    text "About"
+C11  S10  landmarks.html:13:1  <main id="main">
+          A Chromium  main (no accessible name)
+          A Safari    main (no accessible name)
+C12  S11  landmarks.html:14:1  <h1 id="heading-1">
+          A Chromium  heading "Page title"  level 1
+          A Safari    heading "Page title"  level 1
+C13       no source location: a text node (text)
+          A Chromium  text "Page title"
+     S12  no source location: a text node (text)
+          A Safari    text "Page title"
+C14  S13  landmarks.html:15:1  <h2 id="heading-2">
+          A Chromium  heading "Section heading"  level 2
+          A Safari    heading "Section heading"  level 2
+C15       no source location: a text node (text)
+          A Chromium  text "Section heading"
+     S14  no source location: a text node (text)
+          A Safari    text "Section heading"
+C16  S15  landmarks.html:16:1  <h3 id="heading-3">
+          A Chromium  heading "Subsection heading"  level 3
+          A Safari    heading "Subsection heading"  level 3
+C17       no source location: a text node (text)
+          A Chromium  text "Subsection heading"
+     S16  no source location: a text node (text)
+          A Safari    text "Subsection heading"
+C18  S17  landmarks.html:17:1  <section id="region" aria-label="Featured">
+          A Chromium  region "Featured"
+          A Safari    region "Featured"
+C19  S18  landmarks.html:18:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C20       no source location: a text node (text)
+          A Chromium  text "Featured content"
+     S19  no source location: a text node (text)
+          A Safari    text "Featured content"
+C21  S20  landmarks.html:20:1  <form id="contact" aria-label="Contact">
+          A Chromium  form "Contact"
+          A Safari    form "Contact"
+C22  S21  landmarks.html:21:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C23  S22  landmarks.html:21:4  <label for="full-name">
+          A Chromium  LabelText (internal role) (no accessible name)
+          A Safari    AXStaticText (platform role) (no accessible name)  value "Full name"
+C24       no source location: a text node (text)
+          A Chromium  text "Full name"
+     S23  no source location: a text node (text)
+          A Safari    text "Full name"
+C25  S24  landmarks.html:21:45  <input id="full-name" type="text">
+          A Chromium  textbox "Full name"  focusable
+          A Safari    textbox "Full name"
+C26       no source location: its origin could not be established (unknown)
+          A Chromium  generic (no accessible name)
+C27  S25  landmarks.html:22:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+     S26  landmarks.html:22:4  <label>
+          A Safari    AXGroup (platform role) (no accessible name)
+            only in Safari: no Chromium item has this source location
+C28  S27  landmarks.html:22:11  <input id="subscribe" type="checkbox">
+          A Chromium  checkbox "Subscribe"  not checked, focusable
+          A Safari    checkbox "Subscribe"  not checked
+     S28  no source location: a text node (text)
+          A Safari    text " Subscribe"
+C29  S29  landmarks.html:23:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+     S30  landmarks.html:23:4  <label>
+          A Safari    AXGroup (platform role) (no accessible name)
+            only in Safari: no Chromium item has this source location
+C30  S31  landmarks.html:23:11  <input id="plan-basic" type="radio" name="plan" value="basic">
+          A Chromium  radio "Basic"  not checked, focusable  1 of 2 (computed by tool)
+          A Safari    radio "Basic"  not checked
+     S32  no source location: a text node (text)
+          A Safari    text " Basic"
+C31  S33  landmarks.html:24:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+     S34  landmarks.html:24:4  <label>
+          A Safari    AXGroup (platform role) (no accessible name)
+            only in Safari: no Chromium item has this source location
+C32  S35  landmarks.html:24:11  <input id="plan-pro" type="radio" name="plan" value="pro">
+          A Chromium  radio "Pro"  not checked, focusable  2 of 2 (computed by tool)
+          A Safari    radio "Pro"  not checked
+     S36  no source location: a text node (text)
+          A Safari    text " Pro"
+C33  S37  landmarks.html:25:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C34  S38  landmarks.html:25:4  <label for="country">
+          A Chromium  LabelText (internal role) (no accessible name)
+          A Safari    AXStaticText (platform role) (no accessible name)  value "Country"
+C35       no source location: a text node (text)
+          A Chromium  text "Country"
+     S39  no source location: a text node (text)
+          A Safari    text "Country"
+C36  S40  landmarks.html:25:41  <select id="country">
+          A Chromium  combobox "Country"  value "Canada"  collapsed, focusable
+          A Safari    AXPopUpButton (platform role) "Country"  value "Canada"  collapsed
+C37       no source location: its origin could not be established (unknown)
+          A Chromium  MenuListPopup (internal role) (no accessible name)
+C38       landmarks.html:25:62  <option>
+          A Chromium  option "Canada"  selected, focusable
+            only in Chromium: no Safari item has this source location
+C39       landmarks.html:25:85  <option>
+          A Chromium  option "Mexico"  focusable
+            only in Chromium: no Safari item has this source location
+C40  S41  landmarks.html:26:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C41  S42  landmarks.html:26:4  <label for="message">
+          A Chromium  LabelText (internal role) (no accessible name)
+          A Safari    AXStaticText (platform role) (no accessible name)  value "Message"
+C42       no source location: a text node (text)
+          A Chromium  text "Message"
+     S43  no source location: a text node (text)
+          A Safari    text "Message"
+C43  S44  landmarks.html:26:41  <textarea id="message">
+          A Chromium  textbox "Message"  focusable
+          A Safari    textbox "Message"
+C44       no source location: its origin could not be established (unknown)
+          A Chromium  generic (no accessible name)
+C45  S45  landmarks.html:27:1  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C46  S46  landmarks.html:27:4  <button id="send" type="submit">
+          A Chromium  button "Send"  focusable
+          A Safari    button "Send"
+C47       no source location: a text node (text)
+          A Chromium  text "Send"
+C48  S47  landmarks.html:29:1  <search id="site-search">
+          A Chromium  search (no accessible name)
+          A Safari    search (no accessible name)
+C49  S48  landmarks.html:29:26  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C50       no source location: a text node (text)
+          A Chromium  text "Search tools"
+     S49  no source location: a text node (text)
+          A Safari    text "Search tools"
+C51  S50  landmarks.html:31:1  <aside id="aside">
+          A Chromium  complementary (no accessible name)
+          A Safari    complementary (no accessible name)
+C52  S51  landmarks.html:31:19  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C53       no source location: a text node (text)
+          A Chromium  text "Related reading"
+     S52  no source location: a text node (text)
+          A Safari    text "Related reading"
+C54  S53  landmarks.html:32:1  <footer id="footer">
+          A Chromium  contentinfo (no accessible name)
+          A Safari    contentinfo (no accessible name)
+C55  S54  landmarks.html:32:21  <p>
+          A Chromium  paragraph (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C56       no source location: a text node (text)
+          A Chromium  text "Footer text"
+     S55  no source location: a text node (text)
+          A Safari    text "Footer text"

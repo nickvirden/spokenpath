@@ -14,8 +14,9 @@ use spokenpath_snapshot::{
 };
 
 use crate::error::excerpt;
+use crate::spans;
 use crate::{
-    AccessibleNode, AdaptError, ByteRange, Description, DescriptionSource, Diagnostic, DomRef,
+    AccessibleNode, AdaptError, Availability, Description, DescriptionSource, Diagnostic, DomRef,
     ExcludedNode, ExclusionKind, ExclusionReason, ExposedNode, FocusStop, FocusWalk, Model, Name,
     NameSource, NameSourceKind, NativeSource, NodeIndex, Property, PropertyValue, RelatedNode,
     Role, RoleOrigin, SetPosition, SourceClass, SpanRef, States, Supplied, SuppliedBy, TextPart,
@@ -151,10 +152,13 @@ impl<'a> Adapter<'a> {
             engine: Engine::Chromium,
             engine_version: self.snapshot.capture.engine_version.clone(),
             tool_version: self.snapshot.capture.tool_version.clone(),
+            engine_build: None,
+            os_version: None,
+            os_build: None,
             root: NodeIndex(0),
             nodes: tree.nodes,
-            excluded,
-            focus,
+            excluded: Availability::Available(excluded),
+            focus: Availability::Available(focus),
             diagnostics,
         })
     }
@@ -194,9 +198,10 @@ impl<'a> Adapter<'a> {
             DomNodeKind::Text => SourceClass::Text,
             DomNodeKind::Element => match node.origin {
                 // An element of origin `source` without a span has no location to report.
-                Some(Origin::Source) => node.span.map_or(SourceClass::Unknown, |span| {
-                    SourceClass::Span(self.span_ref(span))
-                }),
+                Some(Origin::Source) => node
+                    .span
+                    .and_then(|span| self.span_ref(span))
+                    .map_or(SourceClass::Unknown, SourceClass::Span),
                 Some(Origin::Implied) => SourceClass::Implied,
                 Some(Origin::Script) => SourceClass::Script,
                 Some(Origin::Library) => SourceClass::Library,
@@ -206,20 +211,14 @@ impl<'a> Adapter<'a> {
         }
     }
 
-    fn span_ref(&self, span_id: u32) -> SpanRef {
-        let span = &self.snapshot.spans[self.index.span_by_id[&span_id]];
-        let source = &self.snapshot.sources[self.index.source_by_id[&span.source]];
-        SpanRef {
-            span: span.id,
-            source: source.id,
-            path: source.path.clone(),
-            line: span.line,
-            column: span.column,
-            start_tag: ByteRange {
-                start: span.start_tag.start,
-                end: span.start_tag.end,
-            },
-        }
+    /// The span's location; present for every span id the integrity check resolved.
+    fn span_ref(&self, span_id: u32) -> Option<SpanRef> {
+        spans::span_ref(
+            self.snapshot,
+            &self.index.span_by_id,
+            &self.index.source_by_id,
+            span_id,
+        )
     }
 
     fn related_node(&self, related: &AxRelatedNode) -> RelatedNode {
@@ -491,7 +490,7 @@ impl<'a> Adapter<'a> {
             });
         Ok(Name {
             text,
-            sources,
+            sources: Availability::Available(sources),
             winner,
             from_hidden_content,
         })

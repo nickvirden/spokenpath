@@ -23,7 +23,7 @@
     "test:node": "pnpm -r --filter '!@spokenpath/capture-chromium' --filter '!spokenpath' test",
     "test:capture": "pnpm --filter @spokenpath/capture-chromium test",
     "test:e2e": "cargo build --locked -p spokenpath_cli && pnpm --filter spokenpath test",
-    "spokenpath": "cargo build --quiet --locked -p spokenpath_cli && node packages/cli/src/cli.ts",
+    "spokenpath": "cargo build --quiet --locked -p spokenpath_cli -p spokenpath_ax_macos && node packages/cli/src/cli.ts",
     "test:versions": "node --test scripts/test/set-version.test.mjs",
     "check": "pnpm lint:commits && pnpm lint:json && pnpm lint:hooks && pnpm lint:workflows && pnpm zizmor && pnpm test:release && pnpm lint:rust && pnpm lint:biome && pnpm typecheck && pnpm deny && pnpm test:rust && pnpm test:node && pnpm test:capture && pnpm test:e2e && pnpm test:versions",
     "test:safari": "cargo build --quiet --locked -p spokenpath_ax_macos && pnpm --filter @spokenpath/capture-safari test:live"

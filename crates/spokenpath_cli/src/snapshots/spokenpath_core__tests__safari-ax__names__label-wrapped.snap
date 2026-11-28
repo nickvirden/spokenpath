@@ -1,0 +1,47 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Name from a wrapping label"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Name from a wrapping label"
+2    A AXGroup (platform role) (no accessible name)
+       label-wrapped.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A AXGroup (platform role) (no accessible name)
+         label-wrapped.html:9:1  <label id="label">
+         no accessible name; name sources not available from this engine
+       ~ ""
+4        A text "Wrapped label text "
+         ~ "Wrapped label text "
+5        A textbox "Wrapped label text"
+           label-wrapped.html:9:38  <input id="target" type="text">
+           name sources not available from this engine
+         ~ "Wrapped label text, textbox"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [5] textbox "Wrapped label text"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

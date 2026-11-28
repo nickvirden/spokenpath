@@ -1,0 +1,43 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Name from aria-labelledby over aria-label"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Name from aria-labelledby over aria-label"
+2    A AXGroup (platform role) (no accessible name)
+       labelledby-over-label.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A text "Labelledby text "
+       ~ "Labelledby text "
+4      A button "Labelledby text"
+         labelledby-over-label.html:10:1  <button id="target" type="button" aria-labelledby="label" aria-label="Aria label…
+         name sources not available from this engine
+       ~ "Labelledby text, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [4] button "Labelledby text"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

@@ -1,0 +1,54 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: text.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) (no accessible name)
+     no source location: the document itself (document)
+     no accessible name; name sources not available from this engine
+   ~ ""
+2    A heading "Café sign-up"  level 1
+       pages/basic.html:3:1  <h1>
+       name sources not available from this engine
+     ~ "Café sign-up, heading, level 1"
+3      A text "Café sign-up"
+       ~ "Café sign-up"
+4    A AXGroup (platform role) (no accessible name)
+       pages/basic.html:4:1  <label for="email">
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A text "Email"
+       ~ "Email"
+6    A textbox (no accessible name)
+       pages/basic.html:5:1  <input id="email" type="email">
+       no accessible name; name sources not available from this engine
+     ~ "textbox"
+7    A button "Join"
+       pages/basic.html:5:35  <button>
+       name sources not available from this engine
+     ~ "Join, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  [2] heading "Café sign-up"  level 1
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [6] textbox (no accessible name)
+  [7] button "Join"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

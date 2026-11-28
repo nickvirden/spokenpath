@@ -1,0 +1,99 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Layout and data tables"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Layout and data tables"
+ 2    A AXGroup (platform role) (no accessible name)
+        tables.html:9:5  <td id="left">
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 3      A text "Left"
+        ~ "Left"
+ 4    A AXGroup (platform role) (no accessible name)
+        tables.html:9:28  <td id="right">
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 5      A text "Right"
+        ~ "Right"
+ 6    A AXTable (platform role) "Opening hours"
+        tables.html:11:1  <table id="data">
+        name sources not available from this engine
+      ~ "Opening hours"
+ 7      A AXGroup (platform role) (no accessible name)
+          tables.html:12:1  <caption id="caption">
+          no accessible name; name sources not available from this engine
+        ~ ""
+ 8        A text "Opening hours"
+          ~ "Opening hours"
+ 9      A AXRow (platform role) (no accessible name)
+          tables.html:13:1  <tr>
+          no accessible name; name sources not available from this engine
+        ~ ""
+10        A AXCell (platform role) (no accessible name)
+            tables.html:13:5  <th id="day">
+            no accessible name; name sources not available from this engine
+          ~ ""
+11          A text "Day"
+            ~ "Day"
+12        A AXCell (platform role) (no accessible name)
+            tables.html:13:26  <th id="hours">
+            no accessible name; name sources not available from this engine
+          ~ ""
+13          A text "Hours"
+            ~ "Hours"
+14      A AXRow (platform role) (no accessible name)
+          tables.html:14:1  <tr>
+          no accessible name; name sources not available from this engine
+        ~ ""
+15        A AXCell (platform role) (no accessible name)
+            tables.html:14:5  <td id="monday">
+            no accessible name; name sources not available from this engine
+          ~ ""
+16          A text "Monday"
+            ~ "Monday"
+17        A AXCell (platform role) (no accessible name)
+            tables.html:14:32  <td id="nine">
+            no accessible name; name sources not available from this engine
+          ~ ""
+18          A text "9 to 5"
+            ~ "9 to 5"
+19      A AXColumn (platform role) (no accessible name)
+          no source location: its origin could not be established (unknown)
+          no accessible name; name sources not available from this engine
+        ~ ""
+20      A AXColumn (platform role) (no accessible name)
+          no source location: its origin could not be established (unknown)
+          no accessible name; name sources not available from this engine
+        ~ ""
+21      A AXGroup (platform role) (no accessible name)
+          no source location: its origin could not be established (unknown)
+          no accessible name; name sources not available from this engine
+        ~ ""
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  (none)
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

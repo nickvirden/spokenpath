@@ -1,0 +1,41 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Name from a hidden aria-labelledby target"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Name from a hidden aria-labelledby target"
+2    A AXGroup (platform role) (no accessible name)
+       labelledby-hidden.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A button "Hidden label text"
+         labelledby-hidden.html:10:1  <button id="target" type="button" aria-labelledby="label">
+         name sources not available from this engine
+       ~ "Hidden label text, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [3] button "Hidden label text"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

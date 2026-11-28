@@ -87,6 +87,59 @@
       ],
       "type": "object"
     },
+    "Aligned": {
+      "description": "A second engine's transcript of the same page and how its items align with the first's.",
+      "properties": {
+        "rows": {
+          "description": "Every item of both transcripts, each in exactly one row, in row order.",
+          "items": {
+            "$ref": "#/$defs/AlignedRow"
+          },
+          "type": "array"
+        },
+        "safari": {
+          "allOf": [
+            {
+              "$ref": "#"
+            }
+          ],
+          "description": "Safari's transcript of the same page."
+        }
+      },
+      "required": [
+        "safari",
+        "rows"
+      ],
+      "type": "object"
+    },
+    "AlignedRow": {
+      "description": "One row of an alignment: the items of each engine it holds, by number. A row that holds items\nof both engines is aligned: every item in it is an accessible item located by the same span.",
+      "properties": {
+        "chromium": {
+          "description": "The Chromium items, by number, in reading order.",
+          "items": {
+            "format": "uint",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "safari": {
+          "description": "The Safari items, by number, in reading order.",
+          "items": {
+            "format": "uint",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "chromium",
+        "safari"
+      ],
+      "type": "object"
+    },
     "Approx": {
       "description": "The illustrative phrase of one item, approximate, with the template that rendered it.",
       "properties": {
@@ -502,6 +555,18 @@
         },
         "engine_version": {
           "description": "The browser version, as the browser reports it.",
+          "type": "string"
+        },
+        "macos_build": {
+          "description": "The macOS build version, when the snapshot recorded it.",
+          "type": "string"
+        },
+        "macos_version": {
+          "description": "The macOS product version, when the snapshot recorded it.",
+          "type": "string"
+        },
+        "safari_build": {
+          "description": "Safari's build number, when the snapshot recorded it.",
           "type": "string"
         },
         "tool_version": {
@@ -927,7 +992,7 @@
           "description": "Whether the winning source drew on content the engine hides."
         },
         "sources": {
-          "description": "Every source the engine tried, in its order; empty when it reported none.",
+          "description": "Every source the engine tried, in its order; empty when it reported none, and absent when\nthe engine does not report name sources.",
           "items": {
             "$ref": "#/$defs/NameSourceRecord"
           },
@@ -947,8 +1012,7 @@
         }
       },
       "required": [
-        "status",
-        "sources"
+        "status"
       ],
       "type": "object"
     },
@@ -1066,6 +1130,26 @@
         "dom"
       ],
       "type": "object"
+    },
+    "NotAvailablePart": {
+      "description": "A part of a transcript that an engine does not supply.",
+      "oneOf": [
+        {
+          "const": "name-sources",
+          "description": "The sources tried for each name; every `NameRecord` leaves out `sources`.",
+          "type": "string"
+        },
+        {
+          "const": "excluded",
+          "description": "The excluded nodes; the transcript leaves out `excluded`.",
+          "type": "string"
+        },
+        {
+          "const": "tab-order",
+          "description": "The focus walk; the transcript leaves out `tab_order`.",
+          "type": "string"
+        }
+      ]
     },
     "NotChecked": {
       "anyOf": [
@@ -1281,7 +1365,7 @@
       "type": "object"
     },
     "RoleKind": {
-      "description": "Whether a role is an ARIA role or internal to the engine.",
+      "description": "Whether a role is an ARIA role, internal to the engine, or the platform's.",
       "oneOf": [
         {
           "const": "aria",
@@ -1291,6 +1375,11 @@
         {
           "const": "internal",
           "description": "A role the engine uses internally.",
+          "type": "string"
+        },
+        {
+          "const": "platform",
+          "description": "A role of the platform accessibility API that stands for no single ARIA role.",
           "type": "string"
         }
       ]
@@ -1311,7 +1400,7 @@
       ]
     },
     "RoleRecord": {
-      "description": "A role token and whether it is an ARIA role or one internal to the engine.",
+      "description": "A role token and whether it is an ARIA role, one internal to the engine, or one of the platform\naccessibility API.",
       "properties": {
         "kind": {
           "allOf": [
@@ -1319,7 +1408,11 @@
               "$ref": "#/$defs/RoleKind"
             }
           ],
-          "description": "Whether the token is an ARIA role or internal to the engine."
+          "description": "Whether the token is an ARIA role, internal to the engine, or the platform's."
+        },
+        "subrole": {
+          "description": "A platform role's subrole text, when the platform gives one.",
+          "type": "string"
         },
         "token": {
           "description": "The role's text, as exposed.",
@@ -1673,6 +1766,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "The ordered transcript of one model: what the browser exposes, item by item, with the\nnavigation indexes, the excluded nodes and the tab order.",
   "properties": {
+    "aligned": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Aligned"
+        }
+      ],
+      "description": "A second engine's transcript of the same page, with this transcript's items and its items\naligned by source location; absent when no alignment ran."
+    },
     "cross_check": {
       "allOf": [
         {
@@ -1682,7 +1783,7 @@
       "description": "The engine the roles and names were cross-checked against, and what it found; absent when\nno cross-check ran."
     },
     "excluded": {
-      "description": "The DOM elements the engine leaves out of the exposed tree, in DOM order.",
+      "description": "The DOM elements the engine leaves out of the exposed tree, in DOM order; absent when the\nengine does not supply them.",
       "items": {
         "$ref": "#/$defs/Excluded"
       },
@@ -1711,21 +1812,26 @@
       },
       "type": "array"
     },
+    "not_available": {
+      "description": "The parts of the transcript the engine does not supply; each one's field is left out.",
+      "items": {
+        "$ref": "#/$defs/NotAvailablePart"
+      },
+      "type": "array"
+    },
     "tab_order": {
       "allOf": [
         {
           "$ref": "#/$defs/TabOrder"
         }
       ],
-      "description": "The focus walk by repeated Tab presses and how it ended."
+      "description": "The focus walk by repeated Tab presses and how it ended; absent when the engine does not\nsupply it."
     }
   },
   "required": [
     "header",
     "nodes",
-    "indexes",
-    "excluded",
-    "tab_order"
+    "indexes"
   ],
   "title": "Transcript",
   "type": "object"

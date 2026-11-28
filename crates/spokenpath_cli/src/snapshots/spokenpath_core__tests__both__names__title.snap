@@ -1,0 +1,20 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1      no source location: the document itself (document)
+        A Chromium  RootWebArea (internal role) "Name from title"  focusable, focused
+    S1  no source location: the document itself (document)
+        A Safari    AXWebArea (platform role) "Name from title"
+C2  S2  title.html:8:1  <p>
+        A Chromium  paragraph (no accessible name)
+        A Safari    AXGroup (platform role) (no accessible name)
+C3  S3  title.html:9:1  <input id="target" type="text" title="Title text">
+        A Chromium  textbox "Title text"  focusable
+        A Safari    textbox "Title text"
+C4      no source location: its origin could not be established (unknown)
+        A Chromium  generic (no accessible name)

@@ -1,0 +1,2183 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "safari-ax",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  },
+  "not_available": [
+    "name-sources",
+    "excluded",
+    "tab-order"
+  ],
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXWebArea",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "CSS reading-flow"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXCaretBrowsingEnabled",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLoaded",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "AXLoadingProgress",
+            "value": {
+              "type": "integer",
+              "value": 1
+            }
+          },
+          {
+            "name": "AXPreventKeyboardDOMEventDispatch",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXWebArea"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "HTML content"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "CSS reading-flow"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "main",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 301,
+            "end": 307
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "main"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkMain"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "main"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 15,
+          "column": 1,
+          "start_tag": {
+            "start": 308,
+            "end": 312
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "reading-flow"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false,
+          "level": 1
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXHeading"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "heading"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "reading-flow, heading, level 1"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "reading-flow",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "reading-flow"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform",
+          "subrole": "AXApplicationGroup"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 330,
+            "end": 432
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Flex with reading-flow"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-reading-flow"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Flex with reading-flow"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInlineText",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXApplicationGroup"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Flex with reading-flow"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 17,
+          "column": 1,
+          "start_tag": {
+            "start": 433,
+            "end": 488
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, order 3"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-flow-1"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, order 3, button"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 18,
+          "column": 1,
+          "start_tag": {
+            "start": 512,
+            "end": 567
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, order 1"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-flow-2"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, order 1, button"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 3,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 19,
+          "column": 1,
+          "start_tag": {
+            "start": 591,
+            "end": 646
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, order 2"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-flow-3"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, order 2, button"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform",
+          "subrole": "AXApplicationGroup"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 21,
+          "column": 1,
+          "start_tag": {
+            "start": 677,
+            "end": 763
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Flex with order only"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-order-only"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Flex with order only"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInlineText",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXApplicationGroup"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Flex with order only"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 3,
+      "parent": 9,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 22,
+          "column": 1,
+          "start_tag": {
+            "start": 764,
+            "end": 820
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, order 3"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-order-1"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, order 3, button"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 3,
+      "parent": 9,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 23,
+          "column": 1,
+          "start_tag": {
+            "start": 844,
+            "end": 900
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, order 1"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-order-2"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, order 1, button"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 3,
+      "parent": 9,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 24,
+          "column": 1,
+          "start_tag": {
+            "start": 924,
+            "end": 980
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, order 2"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "flex-order-3"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, order 2, button"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform",
+          "subrole": "AXApplicationGroup"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 26,
+          "column": 1,
+          "start_tag": {
+            "start": 1011,
+            "end": 1111
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Grid with reading-flow"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-reading-flow"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Grid with reading-flow"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInlineText",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXApplicationGroup"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Grid with reading-flow"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 3,
+      "parent": 13,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 27,
+          "column": 1,
+          "start_tag": {
+            "start": 1112,
+            "end": 1185
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, column 3"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-flow-1"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, column 3, button"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 3,
+      "parent": 13,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 28,
+          "column": 1,
+          "start_tag": {
+            "start": 1210,
+            "end": 1283
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, column 1"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-flow-2"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, column 1, button"
+      }
+    },
+    {
+      "number": 16,
+      "depth": 3,
+      "parent": 13,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 29,
+          "column": 1,
+          "start_tag": {
+            "start": 1308,
+            "end": 1381
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, column 2"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-flow-3"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, column 2, button"
+      }
+    },
+    {
+      "number": 17,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform",
+          "subrole": "AXApplicationGroup"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 31,
+          "column": 1,
+          "start_tag": {
+            "start": 1413,
+            "end": 1507
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Grid with placement only"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-placement-only"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Grid with placement only"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInlineText",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXApplicationGroup"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Grid with placement only"
+      }
+    },
+    {
+      "number": 18,
+      "depth": 3,
+      "parent": 17,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 32,
+          "column": 1,
+          "start_tag": {
+            "start": 1508,
+            "end": 1582
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 1, column 3"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-place-1"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 1, column 3, button"
+      }
+    },
+    {
+      "number": 19,
+      "depth": 3,
+      "parent": 17,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 33,
+          "column": 1,
+          "start_tag": {
+            "start": 1607,
+            "end": 1681
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 2, column 1"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-place-2"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 2, column 1, button"
+      }
+    },
+    {
+      "number": 20,
+      "depth": 3,
+      "parent": 17,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "reading-flow.html",
+          "line": 34,
+          "column": 1,
+          "start_tag": {
+            "start": 1706,
+            "end": 1780
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "DOM 3, column 2"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "grid-place-3"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "DOM 3, column 2, button"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 3,
+        "role": "heading",
+        "name_status": "named",
+        "name": "reading-flow",
+        "level": 1
+      }
+    ],
+    "landmarks": [
+      {
+        "item": 2,
+        "role": "main",
+        "name_status": "no accessible name"
+      }
+    ],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 6,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, order 3"
+      },
+      {
+        "item": 7,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, order 1"
+      },
+      {
+        "item": 8,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, order 2"
+      },
+      {
+        "item": 10,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, order 3"
+      },
+      {
+        "item": 11,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, order 1"
+      },
+      {
+        "item": 12,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, order 2"
+      },
+      {
+        "item": 14,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, column 3"
+      },
+      {
+        "item": 15,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, column 1"
+      },
+      {
+        "item": 16,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, column 2"
+      },
+      {
+        "item": 18,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 1, column 3"
+      },
+      {
+        "item": 19,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 2, column 1"
+      },
+      {
+        "item": 20,
+        "role": "button",
+        "name_status": "named",
+        "name": "DOM 3, column 2"
+      }
+    ]
+  }
+}

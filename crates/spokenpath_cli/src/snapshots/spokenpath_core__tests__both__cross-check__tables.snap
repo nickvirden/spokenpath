@@ -1,0 +1,82 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1        no source location: the document itself (document)
+          A Chromium  RootWebArea (internal role) "Layout and data tables"  focusable, focused
+C2        tables.html:8:1  <table id="layout">
+          A Chromium  LayoutTable (internal role) (no accessible name)
+            only in Chromium: no Safari item has this source location
+C3        tables.html:9:1  <tr>
+          A Chromium  LayoutTableRow (internal role) (no accessible name)
+            only in Chromium: no Safari item has this source location
+     S1   no source location: the document itself (document)
+          A Safari    AXWebArea (platform role) "Layout and data tables"
+C4   S2   tables.html:9:5  <td id="left">
+          A Chromium  LayoutTableCell (internal role) "Left"
+          A Safari    AXGroup (platform role) (no accessible name)
+C5        no source location: a text node (text)
+          A Chromium  text "Left"
+     S3   no source location: a text node (text)
+          A Safari    text "Left"
+C6   S4   tables.html:9:28  <td id="right">
+          A Chromium  LayoutTableCell (internal role) "Right"
+          A Safari    AXGroup (platform role) (no accessible name)
+C7        no source location: a text node (text)
+          A Chromium  text "Right"
+     S5   no source location: a text node (text)
+          A Safari    text "Right"
+C8   S6   tables.html:11:1  <table id="data">
+          A Chromium  table "Opening hours"
+          A Safari    AXTable (platform role) "Opening hours"
+C9   S7   tables.html:12:1  <caption id="caption">
+          A Chromium  caption (no accessible name)
+          A Safari    AXGroup (platform role) (no accessible name)
+C10       no source location: a text node (text)
+          A Chromium  text "Opening hours"
+     S8   no source location: a text node (text)
+          A Safari    text "Opening hours"
+C11  S9   tables.html:13:1  <tr>
+          A Chromium  row (no accessible name)
+          A Safari    AXRow (platform role) (no accessible name)
+C12  S10  tables.html:13:5  <th id="day">
+          A Chromium  columnheader "Day"
+          A Safari    AXCell (platform role) (no accessible name)
+C13       no source location: a text node (text)
+          A Chromium  text "Day"
+     S11  no source location: a text node (text)
+          A Safari    text "Day"
+C14  S12  tables.html:13:26  <th id="hours">
+          A Chromium  columnheader "Hours"
+          A Safari    AXCell (platform role) (no accessible name)
+C15       no source location: a text node (text)
+          A Chromium  text "Hours"
+     S13  no source location: a text node (text)
+          A Safari    text "Hours"
+C16  S14  tables.html:14:1  <tr>
+          A Chromium  row (no accessible name)
+          A Safari    AXRow (platform role) (no accessible name)
+C17  S15  tables.html:14:5  <td id="monday">
+          A Chromium  cell "Monday"
+          A Safari    AXCell (platform role) (no accessible name)
+C18       no source location: a text node (text)
+          A Chromium  text "Monday"
+     S16  no source location: a text node (text)
+          A Safari    text "Monday"
+C19  S17  tables.html:14:32  <td id="nine">
+          A Chromium  cell "9 to 5"
+          A Safari    AXCell (platform role) (no accessible name)
+C20       no source location: a text node (text)
+          A Chromium  text "9 to 5"
+     S18  no source location: a text node (text)
+          A Safari    text "9 to 5"
+     S19  no source location: its origin could not be established (unknown)
+          A Safari    AXColumn (platform role) (no accessible name)
+     S20  no source location: its origin could not be established (unknown)
+          A Safari    AXColumn (platform role) (no accessible name)
+     S21  no source location: its origin could not be established (unknown)
+          A Safari    AXGroup (platform role) (no accessible name)

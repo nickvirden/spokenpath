@@ -1,0 +1,47 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Implied and script-created elements"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Implied and script-created elements"
+2    A AXGroup (platform role) (no accessible name)
+       origins.html:9:5  <td>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A text "Cell text"
+       ~ "Cell text"
+4    A AXGroup (platform role) (no accessible name)
+       origins.html:11:1  <p id="slot">
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A button "Added by script"
+         no source location: its origin could not be established (unknown)
+         name sources not available from this engine
+       ~ "Added by script, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [5] button "Added by script"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

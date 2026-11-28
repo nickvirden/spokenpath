@@ -6,9 +6,18 @@
 //! structures, so every engine's adapter fills the same types
 //! (`docs/decisions/ADR-0002-browser-ground-truth-and-rust-core.md`). The adapters read what the
 //! engine exposes and never compute a name or a description text; the core does all
-//! interpretation. [`chromium::adapt`] is the adapter for Chromium snapshots, and
+//! interpretation. [`chromium::adapt`] is the adapter for Chromium snapshots,
+//! [`safari_ax::adapt`] the adapter for snapshots of Safari's macOS accessibility tree, and
 //! [`safari_webdriver::answers`] reads Safari's per-span role and label answers from a Safari
-//! `WebDriver` snapshot for a cross-check. Neither does file or network I/O.
+//! `WebDriver` snapshot for a cross-check. None does file, network or environment I/O.
+//!
+//! # Parts an engine does not supply
+//!
+//! The excluded nodes ([`Model::excluded`]), the focus walk ([`Model::focus`]) and each name's
+//! sources ([`Name::sources`]) are each an [`Availability`]: `Available` with what the engine
+//! supplied, possibly empty, or `NotAvailable` when the engine has no way to supply the part.
+//! The Chromium adapter fills all three; the Safari adapter fills none, because the platform
+//! exposes no exclusion reasons, no name provenance and no focus walk.
 //!
 //! # Values computed by the tool
 //!
@@ -75,11 +84,63 @@
 //! - **Integrity.** The adapter checks every reference between the snapshot's sections before it
 //!   interprets anything, and reports a dangling or inconsistent one as an [`AdaptError`] naming
 //!   the field. Every walk is iterative, so a deep tree cannot overflow the stack.
+//!
+//! # How the Safari adapter reads a snapshot
+//!
+//! The rules follow `docs/decisions/ADR-0016-safari-adapter-and-per-engine-transcripts.md`. The
+//! adapter reads only the `safari-ax` snapshot; nothing is taken from a Chromium snapshot.
+//!
+//! - **Integrity.** The span checks the Chromium adapter runs apply to `spans` and `sources`
+//!   first. Then the adapter rejects, as an [`AdaptError`] naming the dotted path: a payload with
+//!   no nodes (`payload.nodes`); node 0 with a `parent`; any other node without one; a node listed
+//!   in a `children` list other than its `parent`'s, or listed more than once; node 0 listed as a
+//!   child; and nodes their parents do not reach. Every walk is iterative.
+//! - **Tree.** The tree is node 0 and its descendants through `children`, each list in its
+//!   captured order, which is Safari's `AXChildren` order. Children are never reordered and
+//!   `AXChildrenInNavigationOrder` is never read.
+//! - **Text runs.** A node whose `AXRole` is the string `AXStaticText`, with no children, no
+//!   `span` and a string `AXValue`, is a [`TextRun`] of one text part with no DOM node and source
+//!   `text`, whose text is that value. Adjacent runs are not merged. Every other node is an
+//!   accessible node.
+//! - **Source.** A node with a `span` is located by it, as in the Chromium adapter. Without one,
+//!   an `AXWebArea` is `document`, an `AXStaticText` is `text`, and any other node is `unknown`.
+//! - **Role.** A non-string `AXRole` leaves the role absent. The subrole is the `AXSubrole`
+//!   string; an absent `AXSubrole`, or the no-value error `-25212`, means none; any other value
+//!   makes the pair unmappable. Exactly these pairs are ARIA tokens: `AXHeading` `heading`,
+//!   `AXLink` `link`, `AXButton` `button`, `AXCheckBox` `checkbox`, `AXRadioButton` `radio`,
+//!   `AXRadioGroup` `radiogroup`, `AXTextField` and `AXTextArea` `textbox`, `AXImage` `image`
+//!   (each with no subrole), `AXList`/`AXContentList` `list`, and `AXGroup` with
+//!   `AXLandmarkBanner`, `AXLandmarkComplementary`, `AXLandmarkContentInfo`, `AXLandmarkForm`,
+//!   `AXLandmarkMain`, `AXLandmarkNavigation`, `AXLandmarkRegion` or `AXLandmarkSearch` as the
+//!   landmark role. Every other role is [`Role::Platform`] with the role and subrole text, since
+//!   each stands for more than one ARIA role in `WebKit`. Role origin and DOM node are absent.
+//! - **Name.** A non-empty string `AXTitle`, otherwise a non-empty string `AXDescription`;
+//!   otherwise no name. Its sources are not available, and its winner and hidden-content flag are
+//!   absent.
+//! - **Description.** A non-empty string `AXHelp`, with no provenance.
+//! - **Value.** A non-empty string `AXValue`, except on a text run and when the value fills a
+//!   state.
+//! - **States.** A boolean `AXEnabled` fills `disabled` as its negation; `AXFocused`,
+//!   `AXSelected`, `AXExpanded` and `AXRequired` fill `focused`, `selected`, `expanded` and
+//!   `required`; a string `AXInvalid` fills `invalid`. On `AXHeading`, an `AXValue` of 1 to 9 fills
+//!   `level`; on `AXCheckBox`, 0, 1 or 2 fills `checked` as false, true or mixed; on
+//!   `AXRadioButton`, 0 or 1 fills `checked` as false or true; an integer and a whole-valued
+//!   float count alike. Any other value fills nothing. `focusable`, `readonly` and `pressed` stay
+//!   absent.
+//! - **Properties.** Every `string`, `boolean` or `number` attribute no typed field took is a
+//!   [`Property`] in attribute-name order: text, boolean, an integer when the number is an `i64`,
+//!   or a number. `AXRole` and `AXSubrole` are always kept. The display-dependent attributes
+//!   (`AXPosition`, `AXFrame`, `AXSize`, `_AXPrimaryScreenHeight`, `AXVisibleCharacterRange`,
+//!   `AXLayoutCount`) and values of every other type are not in the model.
+//! - **Not computed.** Set positions are absent; the excluded nodes and the focus walk are not
+//!   available; the diagnostics are the snapshot's.
 
 mod error;
 mod model;
+mod spans;
 
 pub mod chromium;
+pub mod safari_ax;
 pub mod safari_webdriver;
 
 pub use error::AdaptError;

@@ -1,0 +1,41 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Description from aria-description"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Description from aria-description"
+2    A AXGroup (platform role) (no accessible name)
+       description-aria-description.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A button "Save"
+         description-aria-description.html:9:1  <button id="target" type="button" aria-description="Saves the draft">
+         name sources not available from this engine
+       ~ "Save, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  [3] button "Save"
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine

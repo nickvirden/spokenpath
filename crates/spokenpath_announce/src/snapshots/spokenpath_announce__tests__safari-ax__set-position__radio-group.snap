@@ -1,0 +1,1348 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "safari-ax",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  },
+  "not_available": [
+    "name-sources",
+    "excluded",
+    "tab-order"
+  ],
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXWebArea",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Native and ARIA radio groups"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXCaretBrowsingEnabled",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLoaded",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "AXLoadingProgress",
+            "value": {
+              "type": "integer",
+              "value": 1
+            }
+          },
+          {
+            "name": "AXPreventKeyboardDOMEventDispatch",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXWebArea"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "HTML content"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Native and ARIA radio groups"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform",
+          "subrole": "AXFieldset"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 122,
+            "end": 132
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Size"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXFieldset"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Size"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Size",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Size"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 10,
+          "column": 1,
+          "start_tag": {
+            "start": 155,
+            "end": 162
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 5,
+      "depth": 3,
+      "parent": 4,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 10,
+          "column": 8,
+          "start_tag": {
+            "start": 162,
+            "end": 219
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Small"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "small"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Small, radio, not checked"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 3,
+      "parent": 4,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " Small",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " Small"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 234,
+            "end": 241
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 8,
+      "depth": 3,
+      "parent": 7,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 11,
+          "column": 8,
+          "start_tag": {
+            "start": 241,
+            "end": 300
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Medium"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "medium"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Medium, radio, not checked"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 3,
+      "parent": 7,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " Medium",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " Medium"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 12,
+          "column": 1,
+          "start_tag": {
+            "start": 316,
+            "end": 323
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 11,
+      "depth": 3,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 12,
+          "column": 8,
+          "start_tag": {
+            "start": 323,
+            "end": 380
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Large"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "large"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Large, radio, not checked"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 3,
+      "parent": 10,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " Large",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " Large"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radiogroup",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 407,
+            "end": 462
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Colour"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "colour"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Colour"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXOrientation",
+            "value": {
+              "type": "text",
+              "value": "AXUnknownOrientation"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio group"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Colour, radiogroup"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 2,
+      "parent": 13,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 15,
+          "column": 1,
+          "start_tag": {
+            "start": 463,
+            "end": 523
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Red"
+        },
+        "states": {
+          "checked": "true",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "red"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Red, radio, checked"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 2,
+      "parent": 13,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "radio-group.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 533,
+            "end": 596
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Blue"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "blue"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Blue, radio, not checked"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 5,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Small"
+      },
+      {
+        "item": 8,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Medium"
+      },
+      {
+        "item": 11,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Large"
+      },
+      {
+        "item": 14,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Red"
+      },
+      {
+        "item": 15,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Blue"
+      }
+    ]
+  }
+}

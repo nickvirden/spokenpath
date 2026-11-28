@@ -55,3 +55,4 @@ add the new ADR to the index. Fixing a typo or a broken link in an accepted ADR 
 | [ADR-0013](ADR-0013-command-line-tool-and-transcript-output.md) | The command-line tool and the transcript output | Accepted |
 | [ADR-0014](ADR-0014-safari-webdriver-cross-check.md) | Cross-checking role and name against real Safari over WebDriver | Accepted |
 | [ADR-0015](ADR-0015-safari-ax-tree-capture.md) | Capturing Safari's macOS accessibility tree | Accepted |
+| [ADR-0016](ADR-0016-safari-adapter-and-per-engine-transcripts.md) | The Safari adapter and per-engine transcripts | Accepted |

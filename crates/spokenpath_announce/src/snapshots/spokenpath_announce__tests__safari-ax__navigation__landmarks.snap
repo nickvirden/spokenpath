@@ -1,0 +1,4885 @@
+---
+source: crates/spokenpath_announce/src/tests.rs
+expression: json
+---
+{
+  "header": {
+    "engine": "safari-ax",
+    "engine_version": "27.0.1",
+    "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+    "safari_build": "22625.1.29.11.28",
+    "macos_version": "27.0.1",
+    "macos_build": "26A434"
+  },
+  "not_available": [
+    "name-sources",
+    "excluded",
+    "tab-order"
+  ],
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXWebArea",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "named",
+          "text": "Landmarks and headings"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXCaretBrowsingEnabled",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLoaded",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "AXLoadingProgress",
+            "value": {
+              "type": "integer",
+              "value": 1
+            }
+          },
+          {
+            "name": "AXPreventKeyboardDOMEventDispatch",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXWebArea"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "HTML content"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Landmarks and headings"
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "banner",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 8,
+          "column": 1,
+          "start_tag": {
+            "start": 116,
+            "end": 136
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "banner"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "banner"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkBanner"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "banner"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 8,
+          "column": 21,
+          "start_tag": {
+            "start": 136,
+            "end": 139
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 4,
+      "depth": 3,
+      "parent": 3,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Site name",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Site name"
+      }
+    },
+    {
+      "number": 5,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "navigation",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 9,
+          "column": 1,
+          "start_tag": {
+            "start": 162,
+            "end": 199
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Site"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "site-nav"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Site"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "navigation"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkNavigation"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Site, navigation"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "link",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 10,
+          "column": 1,
+          "start_tag": {
+            "start": 200,
+            "end": 236
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Home"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "link-home"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXLinkRelationshipType",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXLink"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "link"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Home, link"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 3,
+      "parent": 6,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Home",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Home"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 2,
+      "parent": 5,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "link",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 11,
+          "column": 1,
+          "start_tag": {
+            "start": 245,
+            "end": 282
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "About"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "link-about"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXLinkRelationshipType",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXLink"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "link"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "About, link"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 3,
+      "parent": 8,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "About",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "About"
+      }
+    },
+    {
+      "number": 10,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "main",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 13,
+          "column": 1,
+          "start_tag": {
+            "start": 299,
+            "end": 315
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "main"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "main"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkMain"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "main"
+      }
+    },
+    {
+      "number": 11,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 14,
+          "column": 1,
+          "start_tag": {
+            "start": 316,
+            "end": 335
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Page title"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false,
+          "level": 1
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "heading-1"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXHeading"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "heading"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Page title, heading, level 1"
+      }
+    },
+    {
+      "number": 12,
+      "depth": 3,
+      "parent": 11,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Page title",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Page title"
+      }
+    },
+    {
+      "number": 13,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 15,
+          "column": 1,
+          "start_tag": {
+            "start": 351,
+            "end": 370
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Section heading"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false,
+          "level": 2
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "heading-2"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXHeading"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "heading"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Section heading, heading, level 2"
+      }
+    },
+    {
+      "number": 14,
+      "depth": 3,
+      "parent": 13,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Section heading",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Section heading"
+      }
+    },
+    {
+      "number": 15,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 16,
+          "column": 1,
+          "start_tag": {
+            "start": 391,
+            "end": 410
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Subsection heading"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false,
+          "level": 3
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "heading-3"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXHeading"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "heading"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Subsection heading, heading, level 3"
+      }
+    },
+    {
+      "number": 16,
+      "depth": 3,
+      "parent": 15,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Subsection heading",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Subsection heading"
+      }
+    },
+    {
+      "number": 17,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "region",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 17,
+          "column": 1,
+          "start_tag": {
+            "start": 434,
+            "end": 477
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Featured"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "region"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Featured"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "region"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkRegion"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Featured, region"
+      }
+    },
+    {
+      "number": 18,
+      "depth": 3,
+      "parent": 17,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 18,
+          "column": 1,
+          "start_tag": {
+            "start": 478,
+            "end": 481
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 19,
+      "depth": 4,
+      "parent": 18,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Featured content",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Featured content"
+      }
+    },
+    {
+      "number": 20,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "form",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 20,
+          "column": 1,
+          "start_tag": {
+            "start": 513,
+            "end": 553
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Contact"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "contact"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": "Contact"
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "form"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkForm"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Contact, form"
+      }
+    },
+    {
+      "number": 21,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 21,
+          "column": 1,
+          "start_tag": {
+            "start": 554,
+            "end": 557
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 22,
+      "depth": 4,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXStaticText",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 21,
+          "column": 4,
+          "start_tag": {
+            "start": 557,
+            "end": 580
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "value": "Full name",
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXStaticText"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "text"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": "Full name"
+      }
+    },
+    {
+      "number": 23,
+      "depth": 5,
+      "parent": 22,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Full name",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Full name"
+      }
+    },
+    {
+      "number": 24,
+      "depth": 4,
+      "parent": 21,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 21,
+          "column": 45,
+          "start_tag": {
+            "start": 598,
+            "end": 632
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Full name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "full-name"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInsertionPointLineNumber",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXNumberOfCharacters",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXPlaceholderValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXTextField"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "text field"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValueAutofillAvailable",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Full name, textbox"
+      }
+    },
+    {
+      "number": 25,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 22,
+          "column": 1,
+          "start_tag": {
+            "start": 637,
+            "end": 640
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 26,
+      "depth": 4,
+      "parent": 25,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 22,
+          "column": 4,
+          "start_tag": {
+            "start": 640,
+            "end": 647
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 27,
+      "depth": 5,
+      "parent": 26,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "checkbox",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 22,
+          "column": 11,
+          "start_tag": {
+            "start": 647,
+            "end": 685
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Subscribe"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "subscribe"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXCheckBox"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "checkbox"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Subscribe, checkbox, not checked"
+      }
+    },
+    {
+      "number": 28,
+      "depth": 5,
+      "parent": 26,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " Subscribe",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " Subscribe"
+      }
+    },
+    {
+      "number": 29,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 23,
+          "column": 1,
+          "start_tag": {
+            "start": 708,
+            "end": 711
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 30,
+      "depth": 4,
+      "parent": 29,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 23,
+          "column": 4,
+          "start_tag": {
+            "start": 711,
+            "end": 718
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 31,
+      "depth": 5,
+      "parent": 30,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 23,
+          "column": 11,
+          "start_tag": {
+            "start": 718,
+            "end": 780
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Basic"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "plan-basic"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Basic, radio, not checked"
+      }
+    },
+    {
+      "number": 32,
+      "depth": 5,
+      "parent": 30,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " Basic",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " Basic"
+      }
+    },
+    {
+      "number": 33,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 24,
+          "column": 1,
+          "start_tag": {
+            "start": 799,
+            "end": 802
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 34,
+      "depth": 4,
+      "parent": 33,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 24,
+          "column": 4,
+          "start_tag": {
+            "start": 802,
+            "end": 809
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 35,
+      "depth": 5,
+      "parent": 34,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "radio",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 24,
+          "column": 11,
+          "start_tag": {
+            "start": 809,
+            "end": 867
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Pro"
+        },
+        "states": {
+          "checked": "false",
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "plan-pro"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXRadioButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "radio button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Pro, radio, not checked"
+      }
+    },
+    {
+      "number": 36,
+      "depth": 5,
+      "parent": 34,
+      "layer_a": {
+        "kind": "text-run",
+        "text": " Pro",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": " Pro"
+      }
+    },
+    {
+      "number": 37,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 1,
+          "start_tag": {
+            "start": 884,
+            "end": 887
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 38,
+      "depth": 4,
+      "parent": 37,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXStaticText",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 4,
+          "start_tag": {
+            "start": 887,
+            "end": 908
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "value": "Country",
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXStaticText"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "text"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": "Country"
+      }
+    },
+    {
+      "number": 39,
+      "depth": 5,
+      "parent": 38,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Country",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Country"
+      }
+    },
+    {
+      "number": 40,
+      "depth": 4,
+      "parent": 37,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXPopUpButton",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 25,
+          "column": 41,
+          "start_tag": {
+            "start": 924,
+            "end": 945
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Country"
+        },
+        "value": "Canada",
+        "states": {
+          "expanded": false,
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "country"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXPopUpButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "pop up button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named-unspoken-role",
+        "phrase": "Country, Canada, collapsed"
+      }
+    },
+    {
+      "number": 41,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 26,
+          "column": 1,
+          "start_tag": {
+            "start": 1005,
+            "end": 1008
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 42,
+      "depth": 4,
+      "parent": 41,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXStaticText",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 26,
+          "column": 4,
+          "start_tag": {
+            "start": 1008,
+            "end": 1029
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "value": "Message",
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXStaticText"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "text"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": "Message"
+      }
+    },
+    {
+      "number": 43,
+      "depth": 5,
+      "parent": 42,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Message",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Message"
+      }
+    },
+    {
+      "number": 44,
+      "depth": 4,
+      "parent": 41,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 26,
+          "column": 41,
+          "start_tag": {
+            "start": 1045,
+            "end": 1068
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Message"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "message"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXInsertionPointLineNumber",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXNumberOfCharacters",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXPlaceholderValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXTextArea"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "text entry area"
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValueAutofillAvailable",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Message, textbox"
+      }
+    },
+    {
+      "number": 45,
+      "depth": 3,
+      "parent": 20,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 27,
+          "column": 1,
+          "start_tag": {
+            "start": 1084,
+            "end": 1087
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 46,
+      "depth": 4,
+      "parent": 45,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 27,
+          "column": 4,
+          "start_tag": {
+            "start": 1087,
+            "end": 1119
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Send"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "send"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXButton"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "button"
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Send, button"
+      }
+    },
+    {
+      "number": 47,
+      "depth": 2,
+      "parent": 10,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "search",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 29,
+          "column": 1,
+          "start_tag": {
+            "start": 1145,
+            "end": 1170
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "required": false,
+          "invalid": "false",
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "site-search"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "search"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkSearch"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "search"
+      }
+    },
+    {
+      "number": 48,
+      "depth": 3,
+      "parent": 47,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 29,
+          "column": 26,
+          "start_tag": {
+            "start": 1170,
+            "end": 1173
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 49,
+      "depth": 4,
+      "parent": 48,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Search tools",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Search tools"
+      }
+    },
+    {
+      "number": 50,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "complementary",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 31,
+          "column": 1,
+          "start_tag": {
+            "start": 1207,
+            "end": 1225
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "aside"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "complementary"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkComplementary"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "complementary"
+      }
+    },
+    {
+      "number": 51,
+      "depth": 2,
+      "parent": 50,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 31,
+          "column": 19,
+          "start_tag": {
+            "start": 1225,
+            "end": 1228
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 52,
+      "depth": 3,
+      "parent": 51,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Related reading",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Related reading"
+      }
+    },
+    {
+      "number": 53,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "contentinfo",
+          "kind": "aria"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 32,
+          "column": 1,
+          "start_tag": {
+            "start": 1256,
+            "end": 1276
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": "footer"
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "content information"
+            }
+          },
+          {
+            "name": "AXSubrole",
+            "value": {
+              "type": "text",
+              "value": "AXLandmarkContentInfo"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed",
+        "phrase": "contentinfo"
+      }
+    },
+    {
+      "number": 54,
+      "depth": 2,
+      "parent": 53,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "AXGroup",
+          "kind": "platform"
+        },
+        "source": {
+          "class": "span",
+          "path": "landmarks.html",
+          "line": 32,
+          "column": 21,
+          "start_tag": {
+            "start": 1276,
+            "end": 1279
+          }
+        },
+        "name": {
+          "status": "no accessible name"
+        },
+        "states": {
+          "selected": false,
+          "disabled": false,
+          "focused": false
+        },
+        "properties": [
+          {
+            "name": "AXBlockQuoteLevel",
+            "value": {
+              "type": "integer",
+              "value": 0
+            }
+          },
+          {
+            "name": "AXDOMIdentifier",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXDescription",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXElementBusy",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "AXHelp",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXLanguage",
+            "value": {
+              "type": "text",
+              "value": "en"
+            }
+          },
+          {
+            "name": "AXRole",
+            "value": {
+              "type": "text",
+              "value": "AXGroup"
+            }
+          },
+          {
+            "name": "AXRoleDescription",
+            "value": {
+              "type": "text",
+              "value": "group"
+            }
+          },
+          {
+            "name": "AXTitle",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXValue",
+            "value": {
+              "type": "text",
+              "value": ""
+            }
+          },
+          {
+            "name": "AXVisited",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 55,
+      "depth": 3,
+      "parent": 54,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Footer text",
+        "parts": [
+          {
+            "kind": "text",
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Footer text"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 11,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Page title",
+        "level": 1
+      },
+      {
+        "item": 13,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Section heading",
+        "level": 2
+      },
+      {
+        "item": 15,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Subsection heading",
+        "level": 3
+      }
+    ],
+    "landmarks": [
+      {
+        "item": 2,
+        "role": "banner",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 5,
+        "role": "navigation",
+        "name_status": "named",
+        "name": "Site"
+      },
+      {
+        "item": 10,
+        "role": "main",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 17,
+        "role": "region",
+        "name_status": "named",
+        "name": "Featured"
+      },
+      {
+        "item": 20,
+        "role": "form",
+        "name_status": "named",
+        "name": "Contact"
+      },
+      {
+        "item": 47,
+        "role": "search",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 50,
+        "role": "complementary",
+        "name_status": "no accessible name"
+      },
+      {
+        "item": 53,
+        "role": "contentinfo",
+        "name_status": "no accessible name"
+      }
+    ],
+    "links": [
+      {
+        "item": 6,
+        "role": "link",
+        "name_status": "named",
+        "name": "Home"
+      },
+      {
+        "item": 8,
+        "role": "link",
+        "name_status": "named",
+        "name": "About"
+      }
+    ],
+    "form_controls": [
+      {
+        "item": 24,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Full name"
+      },
+      {
+        "item": 27,
+        "role": "checkbox",
+        "name_status": "named",
+        "name": "Subscribe"
+      },
+      {
+        "item": 31,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Basic"
+      },
+      {
+        "item": 35,
+        "role": "radio",
+        "name_status": "named",
+        "name": "Pro"
+      },
+      {
+        "item": 44,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Message"
+      },
+      {
+        "item": 46,
+        "role": "button",
+        "name_status": "named",
+        "name": "Send"
+      }
+    ]
+  }
+}

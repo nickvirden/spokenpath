@@ -1,0 +1,45 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Nothing focusable"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Nothing focusable"
+2    A heading "Nothing focusable"  level 1
+       no-focusable.html:8:1  <h1>
+       name sources not available from this engine
+     ~ "Nothing focusable, heading, level 1"
+3      A text "Nothing focusable"
+       ~ "Nothing focusable"
+4    A AXGroup (platform role) (no accessible name)
+       no-focusable.html:9:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A text "This page has no tab stops."
+       ~ "This page has no tab stops."
+
+Excluded
+  not available from this engine
+
+Headings
+  [2] heading "Nothing focusable"  level 1
+  items with a platform role are not listed
+
+Landmarks
+  (none)
+  items with a platform role are not listed
+
+Links
+  (none)
+  items with a platform role are not listed
+
+Form controls
+  (none)
+  items with a platform role are not listed
+
+Tab order
+  not available from this engine
