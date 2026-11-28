@@ -495,6 +495,12 @@ test.each([['--help'], ['-h']])('%s prints the usage and every option to stdout'
   ]) {
     expect(stdout).toContain(`  ${option === '--help' ? '-h, --help' : option}`);
   }
+  // What safari and both need, as the docs and the capture failures name it.
+  expect(stdout.replace(/\s+/g, ' ')).toContain(
+    'safari and both need macOS, Safari remote automation and the Accessibility permission',
+  );
+  const optionLines = stdout.split('\n').filter((line) => line.startsWith('  '));
+  expect(optionLines.filter((line) => line.length > 100)).toEqual([]);
 });
 
 test('--version prints the workspace version', async () => {

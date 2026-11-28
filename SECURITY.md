@@ -41,12 +41,15 @@ socket. Safari capture (`--cross-check safari`, `--engine safari` and `--engine 
 intercept requests, so it serves the page over HTTP on a loopback port (`127.0.0.1`) for the length
 of the capture. It refuses requests that name another host, sends
 `Cross-Origin-Resource-Policy: same-origin` so a page on another origin cannot embed what it
-serves, and sends a Content-Security-Policy that limits the page's sub-resource loads and form submissions to that
+serves, and sends a Content-Security-Policy that limits the page's sub-resource loads and form
+submissions to that
 origin. The policy does not stop top-level navigation (a script setting `location`, a meta
-refresh), resource hints or WebRTC. The cross-check detects a page that navigates away before it
-finds the page's tagged elements (before WebDriver Find Elements), including one whose own script
-navigates as it loads, and fails with `page-left-origin`. It does not detect a navigation after
-that, while the elements are read: those elements show as not checked and the command exits 0. In
+refresh), resource hints or WebRTC. The cross-check (`--cross-check safari`) detects a page that
+navigates away before it finds the page's tagged elements (before WebDriver Find Elements), and
+`--engine safari` and `--engine both` one that navigates away before Safari's tree is read, each
+including one whose own script navigates as it loads, and fail with `page-left-origin`. The
+cross-check does not detect a navigation after that, while the elements are read: those elements
+show as not checked and the command exits 0. In
 neither case does it prevent the request the page made. This, too, is a design intent and not a
 sandbox: other programs on the same machine can reach the loopback port while the capture runs, and
 the page's scripts run in the Mac's real Safari.

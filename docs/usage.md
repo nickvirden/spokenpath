@@ -121,7 +121,7 @@ a larger input exits 2 without being parsed.
 |---|---|---|
 | 0 | The transcript was printed, or `--verify-instrumentation` found the same DOM. | The transcript was written. |
 | 1 | Capture failed (a timeout, the browser, an invalid snapshot), the binary is missing, `--verify-instrumentation` found a different DOM, or the binary was ended by a signal. With `--engine safari`, `--engine both` or `--cross-check safari`: no `safaridriver` (`safaridriver-not-found`), a refused session (`safari-session-refused`), a hidden page on a locked or sleeping Mac (`page-hidden`), a missing Accessibility permission (`accessibility-permission-missing`), a missing helper (`ax-helper-not-found`), or any other Safari capture failure; no transcript is printed. | Writing stdout failed, for example to a closed pipe. |
-| 2 | A usage error, a page that cannot be read (`page-unreadable`), a page the instrumenter refuses (its code, such as `attribute-present`), or `--engine safari`, `--engine both` or `--cross-check safari` off macOS (`unsupported-platform`). Also the binary's 2. | A usage error, or bad input: an unreadable file, an input over 32 MiB, text that is not JSON or not a snapshot, an engine mismatch, a field or reference error (naming its dotted path, such as `` `spans[2].source` ``), a `--source` that matches no source, or a `safari-webdriver` snapshot to print. For `--cross-check` and `--align-with`, a snapshot that is not `chromium`, and the same errors for the second snapshot, named as such, with one whose payload is not `safari-webdriver` (for `--cross-check`) or `safari-ax` (for `--align-with`), naming its engine, or that was captured from a different page. |
+| 2 | A usage error, a page that cannot be read (`page-unreadable`), a page the instrumenter refuses (its code, such as `attribute-present`), or `--engine safari`, `--engine both` or `--cross-check safari` off macOS (`unsupported-platform`). Also the binary's 2. | A usage error, or bad input: an unreadable file, an input over 32 MiB, text that is not JSON or not a snapshot, an engine mismatch, a field or reference error (naming its dotted path, such as `` `spans[2].source` ``), a `--source` that matches no source, or a `safari-webdriver` snapshot to print. The second snapshot fails the same ways, named as such. With `--cross-check` or `--align-with`, also: the snapshot is not `chromium`; the second snapshot is not the engine the option needs (`safari-webdriver` for `--cross-check`, `safari-ax` for `--align-with`), naming its engine; or the second snapshot was captured from a different page. |
 | 3 | The binary's 3. | The major version of the snapshot or the second snapshot is not one the reader reads; the message names both majors. |
 | 130, 143 | SIGINT (Ctrl-C) or SIGTERM stopped Safari capture; the Safari session was deleted and `safaridriver` stopped first. | |
 
@@ -216,6 +216,8 @@ After the items:
   known, the ancestor that hides it, with that ancestor's location and marking.
 - **Headings, Landmarks, Links, Form controls.** Each index entry cites `[number]`, the role and the
   name or `(no accessible name)`; a heading also shows its level. An empty index prints `(none)`.
+  A Safari transcript adds the line `items with a platform role are not listed` under each index
+  ([Safari transcripts](#safari-transcripts)).
 - **Tab order.** One line per Tab press: `[number]` with the role and name for an exposed element,
   `left the page`, an element that is not an item with its location, or an element the snapshot's
   DOM does not hold, by the engine's node id. The step a repeat returns to is shown as
@@ -276,7 +278,9 @@ spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · v
   `complementary`, `contentinfo`, `form`, `main`, `navigation`, `region` or `search`. Every other
   role prints as Safari's text, marked `(platform role)`, as `AXGroup (platform role)` or
   `AXGroup/AXApplicationGroup (platform role)`, because each stands for more than one ARIA role in
-  WebKit. A platform role is not spoken in the `~` line and lists an item in no index.
+  WebKit. A platform role is not spoken in the `~` line and puts an item in no index. A Safari
+  transcript ends each index with the line `items with a platform role are not listed`, so an
+  empty index or a short one is not read as the engine exposing no such item.
 - **Name.** `AXTitle`, or `AXDescription` when the title is empty. Safari does not say where a name
   came from, so the provenance line is `name sources not available from this engine`, or
   `no accessible name; name sources not available from this engine`.

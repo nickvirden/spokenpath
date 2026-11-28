@@ -20,7 +20,8 @@ Prints what the browser exposes for an HTML page, item by item, traced to the ta
                              the engine to capture in: chromium (the default); safari, for
                              Safari's macOS accessibility tree; or both, for Chromium's and
                              Safari's side by side, aligned by source location (safari and
-                             both need macOS and the Accessibility permission)
+                             both need macOS, Safari remote automation and the Accessibility
+                             permission)
   --cross-check safari       also ask real Safari for each element's role and name, and note
                              where they differ from Chromium's (macOS only; --engine chromium)
   --format text|json         the text transcript (the default), or JSON for tools

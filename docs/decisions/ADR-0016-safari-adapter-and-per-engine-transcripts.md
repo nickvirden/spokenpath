@@ -82,7 +82,10 @@ carry no token.
 7. **Platform roles in output.** A platform role prints as `AXGroup (platform role)` or
    `AXGroup/AXFieldset (platform role)`, with JSON `kind: "platform"` and a separate `subrole`. It
    is unspoken in Layer B, like an engine-internal role, and qualifies for no index; no template,
-   phrase or state word changes. The Safari header is
+   phrase or state word changes. When a transcript holds an item with a platform role, as every
+   Safari transcript does from its web area on, the text ends each index with
+   `items with a platform role are not listed`, so an index is not read as all the engine exposes;
+   the JSON and index membership are unchanged. The Safari header is
    `Safari <version> on macOS <version> (<build>)` in the existing engine slot.
 8. **The aligned layout.** `spokenpath-core transcript <chromium> --align-with <safari-ax>` sets
    Safari's transcript beside Chromium's. Two items align when both are accessible items located by
@@ -135,6 +138,9 @@ carry no token.
   of untagged nodes: the transcript would show one engine's data under the other's name.
 - **A synthesised Safari tab order:** Safari's tree has no focus walk, and computing one would be a
   guess presented as what the browser exposes.
+- **A bare `(none)` or a short list under a Safari index:** it reads as Safari exposing no such
+  item, the misreading rejected for `excluded` and `sources`. A single legend line is rejected too:
+  it is read before any item, away from the index where the misreading happens.
 - **Empty lists for the parts Safari does not supply:** an empty list reads as "the engine reported
   none", which is not what Safari says.
 - **Aligning text runs or untagged nodes by position or parent:** a guess that silently pairs the
