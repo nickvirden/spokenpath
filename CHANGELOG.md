@@ -1,3 +1,9 @@
+## [0.9.0](https://github.com/nickvirden/spokenpath/compare/v0.8.0...v0.9.0) (2026-11-28)
+
+### Features
+
+* **model:** add the Safari adapter and per-engine transcripts ([#82](https://github.com/nickvirden/spokenpath/issues/82)) ([f8b6f62](https://github.com/nickvirden/spokenpath/commit/f8b6f62c376dcd30beddfad9df21170cc6fc6118)), closes [#74](https://github.com/nickvirden/spokenpath/issues/74) [#75](https://github.com/nickvirden/spokenpath/issues/75) [#72](https://github.com/nickvirden/spokenpath/issues/72) [#81](https://github.com/nickvirden/spokenpath/issues/81)
+
 ## [0.8.0](https://github.com/nickvirden/spokenpath/compare/v0.7.0...v0.8.0) (2026-11-24)
 
 ### Features
