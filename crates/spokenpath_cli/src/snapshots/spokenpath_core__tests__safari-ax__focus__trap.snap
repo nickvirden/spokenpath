@@ -1,0 +1,55 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Focus trap"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Focus trap"
+2    A AXGroup (platform role) (no accessible name)
+       trap.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A button "First"
+         trap.html:8:4  <button id="first" type="button">
+         name sources not available from this engine
+       ~ "First, button"
+4    A AXGroup (platform role) (no accessible name)
+       trap.html:9:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A button "Middle"
+         trap.html:9:4  <button id="middle" type="button">
+         name sources not available from this engine
+       ~ "Middle, button"
+6    A AXGroup (platform role) (no accessible name)
+       trap.html:10:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+7      A button "Last"
+         trap.html:10:4  <button id="last" type="button">
+         name sources not available from this engine
+       ~ "Last, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "First"
+  [5] button "Middle"
+  [7] button "Last"
+
+Tab order
+  not available from this engine

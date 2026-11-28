@@ -1,0 +1,68 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Frame"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Frame"
+ 2    A AXGroup (platform role) (no accessible name)
+        iframe.html:8:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 3      A button "Before"
+          iframe.html:8:4  <button id="before" type="button">
+          name sources not available from this engine
+        ~ "Before, button"
+ 4    A AXGroup (platform role) (no accessible name)
+        iframe.html:9:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 5      A AXScrollArea (platform role) (no accessible name)
+          no source location: its origin could not be established (unknown)
+          no accessible name; name sources not available from this engine
+        ~ ""
+ 6        A AXWebArea (platform role) "Inner frame"
+            no source location: the document itself (document)
+            name sources not available from this engine
+          ~ "Inner frame"
+ 7          A button "Inner first"
+              no source location: its origin could not be established (unknown)
+              name sources not available from this engine
+            ~ "Inner first, button"
+ 8          A button "Inner second"
+              no source location: its origin could not be established (unknown)
+              name sources not available from this engine
+            ~ "Inner second, button"
+ 9    A AXGroup (platform role) (no accessible name)
+        iframe.html:10:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+10      A button "After"
+          iframe.html:10:4  <button id="after" type="button">
+          name sources not available from this engine
+        ~ "After, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Before"
+  [7] button "Inner first"
+  [8] button "Inner second"
+  [10] button "After"
+
+Tab order
+  not available from this engine

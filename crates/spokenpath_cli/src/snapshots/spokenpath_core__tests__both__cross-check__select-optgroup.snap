@@ -1,0 +1,36 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1      no source location: the document itself (document)
+        A Chromium  RootWebArea (internal role) "A closed select with an option group"  focusable, focused
+C2      select-optgroup.html:7:1  <body>
+        A Chromium  generic (no accessible name)
+          only in Chromium: no Safari item has this source location
+    S1  no source location: the document itself (document)
+        A Safari    AXWebArea (platform role) "A closed select with an option group"
+C3  S2  select-optgroup.html:8:1  <label for="flavour">
+        A Chromium  LabelText (internal role) (no accessible name)
+        A Safari    AXStaticText (platform role) (no accessible name)  value "Flavour"
+C4      no source location: a text node (text)
+        A Chromium  text "Flavour"
+    S3  no source location: a text node (text)
+        A Safari    text "Flavour"
+C5  S4  select-optgroup.html:9:1  <select id="flavour">
+        A Chromium  combobox "Flavour"  value "Apple"  collapsed, focusable
+        A Safari    AXPopUpButton (platform role) "Flavour"  value "Apple"  collapsed
+C6      no source location: its origin could not be established (unknown)
+        A Chromium  MenuListPopup (internal role) (no accessible name)
+C7      select-optgroup.html:10:1  <optgroup id="fruit" label="Fruit">
+        A Chromium  group "Fruit"
+          only in Chromium: no Safari item has this source location
+C8      select-optgroup.html:11:1  <option id="apple">
+        A Chromium  option "Apple"  selected, focusable
+          only in Chromium: no Safari item has this source location
+C9      select-optgroup.html:12:1  <option id="pear">
+        A Chromium  option "Pear"  focusable
+          only in Chromium: no Safari item has this source location

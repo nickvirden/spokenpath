@@ -318,6 +318,7 @@ fn usage_errors_exit_2_with_the_usage_line() {
             lines[1].starts_with("usage: spokenpath-core"),
             "{case}: {run:?}"
         );
+        assert!(lines[1].contains("[--align-with <snapshot | ->]"), "{case}");
     }
 }
 
@@ -1561,5 +1562,590 @@ fn every_cross_check_string_in_the_text_is_escaped_and_json_keeps_it_raw() {
                 "{field}: JSON keeps it raw"
             );
         }
+    }
+}
+
+fn safari_ax_directory() -> PathBuf {
+    fixtures().join("snapshots/safari-ax")
+}
+
+/// Every capture under `fixtures/snapshots/safari-ax/`, relative to it, found by listing the
+/// directories, so a new capture without its text and aligned goldens fails; `source-mapping.json`
+/// is a report, not a snapshot.
+fn safari_ax_names() -> Vec<PathBuf> {
+    let root = safari_ax_directory();
+    let mut names = Vec::new();
+    let mut directories = vec![root.clone()];
+    while let Some(directory) = directories.pop() {
+        let entries = std::fs::read_dir(&directory)
+            .unwrap_or_else(|error| panic!("{} is listable: {error}", directory.display()));
+        for entry in entries {
+            let path = entry.expect("directory entry").path();
+            if path.is_dir() {
+                directories.push(path);
+            } else if path
+                .extension()
+                .is_some_and(|extension| extension == "json")
+                && path
+                    .file_name()
+                    .is_some_and(|name| name != "source-mapping.json")
+            {
+                let relative = path.strip_prefix(&root).expect("listed under the root");
+                names.push(relative.to_path_buf());
+            }
+        }
+    }
+    names.sort();
+    names
+}
+
+#[test]
+fn every_safari_ax_capture_matches_its_text_golden() {
+    let names = safari_ax_names();
+    assert!(names.len() >= 46, "{names:?}");
+    for name in &names {
+        let run = run_paths(&[
+            &"transcript",
+            &safari_ax_directory().join(name),
+            &"--source",
+            &page_of(name),
+        ]);
+        assert_eq!(run.code, 0, "{}: {run:?}", name.display());
+        insta::assert_snapshot!(format!("safari-ax__{}", snapshot_name(name)), run.stdout);
+    }
+}
+
+#[test]
+fn every_committed_pair_matches_its_aligned_text_golden() {
+    let names = safari_ax_names();
+    for name in &names {
+        let run = run_paths(&[
+            &"transcript",
+            &goldens_directory().join(name),
+            &"--source",
+            &page_of(name),
+            &"--align-with",
+            &safari_ax_directory().join(name),
+        ]);
+        assert_eq!(run.code, 0, "{}: {run:?}", name.display());
+        insta::assert_snapshot!(format!("both__{}", snapshot_name(name)), run.stdout);
+    }
+}
+
+fn safari_ax_basic() -> PathBuf {
+    fixtures().join("snapshots/safari-ax-basic.json")
+}
+
+#[test]
+fn the_hand_written_safari_ax_snapshot_matches_its_goldens() {
+    let (chromium, _, page) = basic_pair();
+    let safari = safari_ax_basic();
+    let text = run_paths(&[&"transcript", &safari, &"--source", &page]);
+    assert_eq!(text.code, 0, "{text:?}");
+    insta::assert_snapshot!("safari-ax__basic", text.stdout);
+
+    let both = run_paths(&[
+        &"transcript",
+        &chromium,
+        &"--source",
+        &page,
+        &"--align-with",
+        &safari,
+    ]);
+    assert_eq!(both.code, 0, "{both:?}");
+    insta::assert_snapshot!("both__basic", both.stdout);
+
+    let json = run_paths(&[
+        &"transcript",
+        &chromium,
+        &"--source",
+        &page,
+        &"--align-with",
+        &safari,
+        &"--format",
+        &"json",
+    ]);
+    assert_eq!(json.code, 0, "{json:?}");
+    insta::assert_snapshot!("both__basic__json", json.stdout);
+}
+
+#[test]
+fn the_aligned_text_is_the_same_without_speech_and_json_drops_approx_from_both() {
+    let (chromium, _, page) = basic_pair();
+    let safari = safari_ax_basic();
+    let args = |extra: &[&'static str]| {
+        let mut args: Vec<OsString> = vec![
+            "transcript".into(),
+            chromium.clone().into_os_string(),
+            "--source".into(),
+            page.clone().into_os_string(),
+            "--align-with".into(),
+            safari.clone().into_os_string(),
+        ];
+        args.extend(extra.iter().map(OsString::from));
+        args
+    };
+    let run = |extra: &[&'static str]| {
+        let args = args(extra);
+        run_with(&args.iter().collect::<Vec<_>>(), &mut io::empty())
+    };
+    let speech = run(&[]);
+    let no_speech = run(&["--no-speech"]);
+    assert_eq!(speech.code, 0, "{speech:?}");
+    assert_eq!(speech.stdout, no_speech.stdout);
+    assert!(!speech.stdout.contains('~'), "{}", speech.stdout);
+    for line in ["name from", "Excluded", "Headings", "Tab order"] {
+        assert!(!speech.stdout.contains(line), "{line}: {}", speech.stdout);
+    }
+    let json = run(&["--format", "json", "--no-speech"]);
+    assert_eq!(json.code, 0, "{json:?}");
+    assert!(!json.stdout.contains("\"approx\""), "{}", json.stdout);
+    let with_speech = run(&["--format", "json"]);
+    let value: Value = serde_json::from_str(&with_speech.stdout).expect("JSON");
+    assert!(value["nodes"][0].get("approx").is_some());
+    assert!(
+        value["aligned"]["safari"]["nodes"][0]
+            .get("approx")
+            .is_some()
+    );
+    assert_eq!(
+        value["aligned"]["rows"][0],
+        json!({ "chromium": [1], "safari": [] })
+    );
+}
+
+#[test]
+fn the_aligned_snapshot_can_come_from_stdin() {
+    let (chromium, _, _) = basic_pair();
+    let safari = safari_ax_basic();
+    let from_file = run_paths(&[&"transcript", &chromium, &"--align-with", &safari]);
+    let bytes = std::fs::read(&safari).expect("readable");
+    let args: Vec<OsString> = ["transcript", "--align-with", "-"]
+        .iter()
+        .map(OsString::from)
+        .chain([chromium.into_os_string()])
+        .collect();
+    let from_stdin = run_with(&args.iter().collect::<Vec<_>>(), &mut &bytes[..]);
+    assert_eq!(from_stdin.code, 0, "{from_stdin:?}");
+    assert_eq!(from_stdin.stdout, from_file.stdout);
+}
+
+#[test]
+fn engine_mismatches_exit_2_with_one_line() {
+    let (chromium, webdriver, _) = basic_pair();
+    let safari = safari_ax_basic();
+    let sign_in = golden_path("sign-in.json");
+    let safari_sign_in = safari_ax_directory().join("sign-in.json");
+    for (case, args, says) in [
+        (
+            "a safari-webdriver snapshot to print",
+            vec![&webdriver as &dyn AsRef<std::ffi::OsStr>],
+            "the snapshot is `safari-webdriver`",
+        ),
+        (
+            "--cross-check with a safari-ax snapshot",
+            vec![&safari, &"--cross-check", &webdriver],
+            "`--cross-check` needs a `chromium` snapshot, but the snapshot is `safari-ax`",
+        ),
+        (
+            "--align-with with a safari-ax snapshot",
+            vec![&safari, &"--align-with", &safari],
+            "`--align-with` needs a `chromium` snapshot, but the snapshot is `safari-ax`",
+        ),
+        (
+            "an aligned snapshot that is not safari-ax",
+            vec![&chromium, &"--align-with", &webdriver],
+            "the aligned snapshot is `safari-webdriver`, but `--align-with` needs a `safari-ax` snapshot",
+        ),
+        (
+            "an aligned Chromium snapshot",
+            vec![&chromium, &"--align-with", &chromium],
+            "the aligned snapshot is `chromium`",
+        ),
+        (
+            "an aligned snapshot of another page",
+            vec![&sign_in, &"--align-with", &safari],
+            "the aligned snapshot was captured from a different page: its sources or spans differ from the snapshot's",
+        ),
+        (
+            "the hand-written Safari snapshot beside sign-in",
+            vec![&chromium, &"--align-with", &safari_sign_in],
+            "captured from a different page",
+        ),
+    ] {
+        let mut all: Vec<&dyn AsRef<std::ffi::OsStr>> = vec![&"transcript"];
+        all.extend(args);
+        let run = run_paths(&all);
+        assert_one_failure_line(&run, 2);
+        assert_eq!(run.stderr.lines().count(), 1, "{case}: {run:?}");
+        assert!(run.stderr.contains(says), "{case}: {run:?}");
+    }
+}
+
+#[test]
+fn align_with_usage_errors_exit_2_with_the_usage_line() {
+    let (chromium, webdriver, _) = basic_pair();
+    let (chromium, webdriver, safari) = (
+        chromium.to_str().expect("UTF-8").to_owned(),
+        webdriver.to_str().expect("UTF-8").to_owned(),
+        safari_ax_basic().to_str().expect("UTF-8").to_owned(),
+    );
+    for (case, args, says) in [
+        (
+            "two snapshots on stdin",
+            vec!["transcript", "-", "--align-with", "-"],
+            "the snapshot and `--align-with` cannot both be `-`",
+        ),
+        (
+            "a repeated --align-with",
+            vec![
+                "transcript",
+                &chromium,
+                "--align-with",
+                &safari,
+                "--align-with",
+                &safari,
+            ],
+            "`--align-with` is given more than once",
+        ),
+        (
+            "a missing value",
+            vec!["transcript", &chromium, "--align-with"],
+            "`--align-with` needs a value",
+        ),
+        (
+            "--cross-check and --align-with together",
+            vec![
+                "transcript",
+                &chromium,
+                "--cross-check",
+                &webdriver,
+                "--align-with",
+                &safari,
+            ],
+            "`--cross-check` and `--align-with` cannot be used together",
+        ),
+    ] {
+        let run = run_args(&args);
+        assert_one_failure_line(&run, 2);
+        assert!(run.stderr.contains(says), "{case}: {run:?}");
+        let lines: Vec<&str> = run.stderr.lines().collect();
+        assert_eq!(lines.len(), 2, "{case}: {run:?}");
+        assert!(
+            lines[1].contains("[--align-with <snapshot | ->]"),
+            "{case}: {run:?}"
+        );
+    }
+}
+
+#[test]
+fn aligned_diagnostics_go_to_stderr_naming_their_engine() {
+    let directory = TemporaryDirectory::new("aligned-diagnostics");
+    let path = directory.join("safari.json");
+    let (chromium, _, _) = basic_pair();
+    let mut value = fixture_value(&safari_ax_basic());
+    value["diagnostics"] = json!([{ "code": "asset-not-found", "message": "a 404" }]);
+    std::fs::write(&path, value.to_string()).expect("written");
+    let run = run_paths(&[&"transcript", &chromium, &"--align-with", &path]);
+    assert_eq!(run.code, 0, "{run:?}");
+    assert!(
+        run.stderr
+            .lines()
+            .any(|line| line == "spokenpath-core: diagnostic safari-ax asset-not-found: a 404"),
+        "{run:?}"
+    );
+}
+
+/// The Safari node with id `id` in a `safari-ax` snapshot value.
+fn safari_node(safari: &mut Value, id: usize) -> &mut Value {
+    &mut safari["payload"]["nodes"][id]["attributes"]
+}
+
+fn set_text(attributes: &mut Value, name: &str, text: &str) {
+    attributes[name] = json!({ "type": "string", "value": text });
+}
+
+/// How a poisoned case runs: the Safari snapshot alone, beside Chromium's, or both.
+#[derive(Clone, Copy, PartialEq)]
+enum Mode {
+    Safari,
+    Both,
+    Aligned,
+}
+
+type Poison = fn(&mut Value, &mut Value);
+
+/// Each string the Safari and aligned text print, poisoned on its own with the line it must print
+/// as, so a field that loses its escaping fails its own case. Node 1 of the hand-written Safari
+/// snapshot is the heading, 2 its text, 3 the label's group, 5 the email field and 6 the button.
+fn safari_poisons() -> Vec<(&'static str, Mode, Poison, String)> {
+    let e = MARK_ESCAPED;
+    let nodes: [(&'static str, Mode, Poison, String); 8] = [
+        (
+            "a platform role beside its subrole",
+            Mode::Both,
+            |_, safari| {
+                let group = safari_node(safari, 3);
+                set_text(group, "AXRole", &format!("AXGroup{MARK}"));
+                set_text(group, "AXSubrole", "AXFieldset");
+            },
+            format!("AXGroup{e}/AXFieldset (platform role)"),
+        ),
+        (
+            "a platform role",
+            Mode::Both,
+            |_, safari| {
+                set_text(safari_node(safari, 3), "AXRole", &format!("AXGroup{MARK}"));
+            },
+            format!("AXGroup{e} (platform role)"),
+        ),
+        (
+            "a subrole",
+            Mode::Both,
+            |_, safari| {
+                set_text(
+                    safari_node(safari, 3),
+                    "AXSubrole",
+                    &format!("AXFieldset{MARK}"),
+                );
+            },
+            format!("AXGroup/AXFieldset{e} (platform role)"),
+        ),
+        (
+            "a name from AXTitle",
+            Mode::Both,
+            |_, safari| {
+                set_text(safari_node(safari, 6), "AXTitle", &format!("Join{MARK}"));
+            },
+            format!("button \"Join{e}\""),
+        ),
+        (
+            "a name from AXDescription",
+            Mode::Both,
+            |_, safari| {
+                set_text(
+                    safari_node(safari, 5),
+                    "AXDescription",
+                    &format!("Mail{MARK}"),
+                );
+            },
+            format!("textbox \"Mail{e}\""),
+        ),
+        (
+            "a value",
+            Mode::Both,
+            |_, safari| {
+                set_text(safari_node(safari, 5), "AXValue", &format!("typed{MARK}"));
+            },
+            format!("value \"typed{e}\""),
+        ),
+        (
+            "a description",
+            Mode::Safari,
+            |_, safari| {
+                set_text(safari_node(safari, 1), "AXHelp", &format!("help{MARK}"));
+            },
+            format!("description \"help{e}\""),
+        ),
+        (
+            "a text run",
+            Mode::Both,
+            |_, safari| {
+                set_text(safari_node(safari, 2), "AXValue", &format!("Café{MARK}"));
+            },
+            format!("text \"Café{e}\""),
+        ),
+    ];
+    nodes.into_iter().chain(envelope_poisons()).collect()
+}
+
+/// The poisoned versions, path, Chromium name and diagnostic of [`safari_poisons`].
+fn envelope_poisons() -> Vec<(&'static str, Mode, Poison, String)> {
+    let e = MARK_ESCAPED;
+    let poisons: [(&'static str, Mode, Poison, String); 6] = [
+        (
+            "Safari's version",
+            Mode::Both,
+            |_, safari| {
+                append(&mut safari["capture"]["engine_version"]);
+            },
+            format!("Safari 27.0.1{e} on macOS"),
+        ),
+        (
+            "the macOS version",
+            Mode::Both,
+            |_, safari| {
+                append(&mut safari["payload"]["macos_version"]);
+            },
+            format!("on macOS 27.0.1{e} ("),
+        ),
+        (
+            "the macOS build",
+            Mode::Both,
+            |_, safari| {
+                append(&mut safari["payload"]["macos_build"]);
+            },
+            format!("(26A434{e})"),
+        ),
+        (
+            "the source path",
+            Mode::Both,
+            |chromium, safari| {
+                append(&mut chromium["sources"][0]["path"]);
+                append(&mut safari["sources"][0]["path"]);
+            },
+            format!("basic.html{e}:3:1"),
+        ),
+        (
+            "Chromium's name beside Safari's",
+            Mode::Aligned,
+            |chromium, _| {
+                append(&mut chromium_ax(chromium, "heading")["name"]["value"]);
+            },
+            format!("A Chromium  heading \"Café sign-up{e}\""),
+        ),
+        (
+            "a Safari diagnostic",
+            Mode::Both,
+            |_, safari| {
+                safari["diagnostics"] = json!([{ "code": format!("code{MARK}"), "message": "m" }]);
+            },
+            format!("code{e}: m"),
+        ),
+    ];
+    poisons.into()
+}
+
+#[test]
+fn every_safari_and_aligned_string_in_the_text_is_escaped_and_json_keeps_it_raw() {
+    let directory = TemporaryDirectory::new("hostile-safari");
+    let chromium_path = directory.join("chromium.json");
+    let safari_path = directory.join("safari.json");
+    let (chromium_basic, _, _) = basic_pair();
+    for (field, mode, poison, expected) in safari_poisons() {
+        let mut chromium = fixture_value(&chromium_basic);
+        let mut safari = fixture_value(&safari_ax_basic());
+        poison(&mut chromium, &mut safari);
+        std::fs::write(&chromium_path, chromium.to_string()).expect("written");
+        std::fs::write(&safari_path, safari.to_string()).expect("written");
+        let mut runs: Vec<Vec<&dyn AsRef<std::ffi::OsStr>>> = Vec::new();
+        if mode != Mode::Aligned {
+            runs.push(vec![&"transcript", &safari_path]);
+        }
+        if mode != Mode::Safari {
+            runs.push(vec![
+                &"transcript",
+                &chromium_path,
+                &"--align-with",
+                &safari_path,
+            ]);
+        }
+        for args in runs {
+            let text = run_paths(&args);
+            assert_eq!(text.code, 0, "{field}: {text:?}");
+            let printed = format!("{}{}", text.stdout, text.stderr);
+            for raw in MARK_RAW {
+                assert!(
+                    !printed.contains(raw),
+                    "{field} reaches the output with {raw:?} raw:\n{printed}"
+                );
+            }
+            assert!(
+                printed.contains(&expected),
+                "{field} is not printed escaped as {expected}:\n{printed}"
+            );
+            let mut json_args = args.clone();
+            json_args.extend([&"--format" as &dyn AsRef<std::ffi::OsStr>, &"json"]);
+            let json = run_paths(&json_args);
+            assert_eq!(json.code, 0, "{field}: {json:?}");
+            for raw in MARK_RAW {
+                assert!(!json.stderr.contains(raw), "{field} reaches stderr raw");
+            }
+            if !field.contains("diagnostic") {
+                assert!(
+                    json.stdout.contains("\\u001b[31m"),
+                    "{field}: JSON keeps it raw"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn an_excerpt_in_the_safari_and_aligned_text_is_escaped() {
+    let directory = TemporaryDirectory::new("hostile-safari-excerpt");
+    let (chromium_basic, _, page) = basic_pair();
+    let mut page_bytes = std::fs::read(&page).expect("the page is readable");
+    let start = page_bytes.len();
+    page_bytes.extend(format!("<b title=\"excerpt {MARK}\">").bytes());
+    let range = json!({ "start": start, "end": page_bytes.len() });
+    let hostile_page = directory.join("basic.html");
+    std::fs::write(&hostile_page, &page_bytes).expect("written");
+    let mut paths = Vec::new();
+    for (name, source) in [
+        ("chromium.json", chromium_basic.clone()),
+        ("safari.json", safari_ax_basic()),
+    ] {
+        let mut value = fixture_value(&source);
+        value["sources"][0]["sha256"] = json!(sha256_hex(&page_bytes));
+        value["spans"][1]["start_tag"] = range.clone();
+        value["spans"][1]["element"] = range.clone();
+        let path = directory.join(name);
+        std::fs::write(&path, value.to_string()).expect("written");
+        paths.push(path);
+    }
+    let expected = format!("<b title=\"excerpt {MARK_ESCAPED}\">");
+    for args in [
+        vec![&"transcript" as &dyn AsRef<std::ffi::OsStr>, &paths[1]],
+        vec![&"transcript", &paths[0], &"--align-with", &paths[1]],
+    ] {
+        let mut args = args;
+        args.extend([&"--source" as &dyn AsRef<std::ffi::OsStr>, &hostile_page]);
+        let run = run_paths(&args);
+        assert_eq!(run.code, 0, "{run:?}");
+        for raw in MARK_RAW {
+            assert!(!run.stdout.contains(raw), "{raw:?} raw:\n{}", run.stdout);
+        }
+        assert!(run.stdout.contains(&expected), "{}", run.stdout);
+    }
+}
+
+/// `safari-ax-basic.json` with its tree replaced by a chain of `depth` groups under the web area.
+fn safari_chain(depth: u32) -> Value {
+    let mut value = fixture_value(&safari_ax_basic());
+    value["spans"] = json!([]);
+    let role = |role: &str| json!({ "AXRole": { "type": "string", "value": role } });
+    let mut nodes = vec![json!({ "id": 0, "children": [1], "attributes": role("AXWebArea") })];
+    for id in 1..=depth {
+        nodes.push(json!({
+            "id": id, "parent": id - 1,
+            "children": if id == depth { json!([]) } else { json!([id + 1]) },
+            "attributes": role("AXGroup")
+        }));
+    }
+    value["payload"]["nodes"] = Value::Array(nodes);
+    value
+}
+
+#[test]
+fn a_deep_safari_chain_renders_with_its_depth_stated() {
+    let run = run_stdin(safari_chain(10_000).to_string().as_bytes(), &[]);
+    assert_eq!(run.code, 0, "{}", run.stderr);
+    let lines: Vec<&str> = run.stdout.lines().collect();
+    let deepest = lines
+        .iter()
+        .find(|line| line.trim_start().starts_with("10001  "))
+        .expect("the deepest item");
+    assert!(
+        deepest.contains("[depth 10000] A AXGroup (platform role) (no accessible name)"),
+        "{deepest}"
+    );
+    let widest = 5 + 2 + 2 * 32 + 2;
+    for line in &lines {
+        let content = line
+            .trim_start()
+            .trim_start_matches(|c: char| c.is_ascii_digit())
+            .trim_start();
+        assert!(line.len() - content.len() <= widest, "{line:?}");
     }
 }

@@ -1,0 +1,114 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "CSS reading-flow"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "CSS reading-flow"
+ 2    A main (no accessible name)
+        reading-flow.html:14:1  <main>
+        no accessible name; name sources not available from this engine
+      ~ "main"
+ 3      A heading "reading-flow"  level 1
+          reading-flow.html:15:1  <h1>
+          name sources not available from this engine
+        ~ "reading-flow, heading, level 1"
+ 4        A text "reading-flow"
+          ~ "reading-flow"
+ 5      A AXGroup/AXApplicationGroup (platform role) "Flex with reading-flow"
+          reading-flow.html:16:1  <div id="flex-reading-flow" class="flex flex-visual" role="group" aria-label="Fl…
+          name sources not available from this engine
+        ~ "Flex with reading-flow"
+ 6        A button "DOM 1, order 3"
+            reading-flow.html:17:1  <button id="flex-flow-1" type="button" style="order:3">
+            name sources not available from this engine
+          ~ "DOM 1, order 3, button"
+ 7        A button "DOM 2, order 1"
+            reading-flow.html:18:1  <button id="flex-flow-2" type="button" style="order:1">
+            name sources not available from this engine
+          ~ "DOM 2, order 1, button"
+ 8        A button "DOM 3, order 2"
+            reading-flow.html:19:1  <button id="flex-flow-3" type="button" style="order:2">
+            name sources not available from this engine
+          ~ "DOM 3, order 2, button"
+ 9      A AXGroup/AXApplicationGroup (platform role) "Flex with order only"
+          reading-flow.html:21:1  <div id="flex-order-only" class="flex" role="group" aria-label="Flex with order …
+          name sources not available from this engine
+        ~ "Flex with order only"
+10        A button "DOM 1, order 3"
+            reading-flow.html:22:1  <button id="flex-order-1" type="button" style="order:3">
+            name sources not available from this engine
+          ~ "DOM 1, order 3, button"
+11        A button "DOM 2, order 1"
+            reading-flow.html:23:1  <button id="flex-order-2" type="button" style="order:1">
+            name sources not available from this engine
+          ~ "DOM 2, order 1, button"
+12        A button "DOM 3, order 2"
+            reading-flow.html:24:1  <button id="flex-order-3" type="button" style="order:2">
+            name sources not available from this engine
+          ~ "DOM 3, order 2, button"
+13      A AXGroup/AXApplicationGroup (platform role) "Grid with reading-flow"
+          reading-flow.html:26:1  <div id="grid-reading-flow" class="grid grid-rows" role="group" aria-label="Grid…
+          name sources not available from this engine
+        ~ "Grid with reading-flow"
+14        A button "DOM 1, column 3"
+            reading-flow.html:27:1  <button id="grid-flow-1" type="button" style="grid-column:3; grid-row:1">
+            name sources not available from this engine
+          ~ "DOM 1, column 3, button"
+15        A button "DOM 2, column 1"
+            reading-flow.html:28:1  <button id="grid-flow-2" type="button" style="grid-column:1; grid-row:1">
+            name sources not available from this engine
+          ~ "DOM 2, column 1, button"
+16        A button "DOM 3, column 2"
+            reading-flow.html:29:1  <button id="grid-flow-3" type="button" style="grid-column:2; grid-row:1">
+            name sources not available from this engine
+          ~ "DOM 3, column 2, button"
+17      A AXGroup/AXApplicationGroup (platform role) "Grid with placement only"
+          reading-flow.html:31:1  <div id="grid-placement-only" class="grid" role="group" aria-label="Grid with pl…
+          name sources not available from this engine
+        ~ "Grid with placement only"
+18        A button "DOM 1, column 3"
+            reading-flow.html:32:1  <button id="grid-place-1" type="button" style="grid-column:3; grid-row:1">
+            name sources not available from this engine
+          ~ "DOM 1, column 3, button"
+19        A button "DOM 2, column 1"
+            reading-flow.html:33:1  <button id="grid-place-2" type="button" style="grid-column:1; grid-row:1">
+            name sources not available from this engine
+          ~ "DOM 2, column 1, button"
+20        A button "DOM 3, column 2"
+            reading-flow.html:34:1  <button id="grid-place-3" type="button" style="grid-column:2; grid-row:1">
+            name sources not available from this engine
+          ~ "DOM 3, column 2, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  [3] heading "reading-flow"  level 1
+
+Landmarks
+  [2] main (no accessible name)
+
+Links
+  (none)
+
+Form controls
+  [6] button "DOM 1, order 3"
+  [7] button "DOM 2, order 1"
+  [8] button "DOM 3, order 2"
+  [10] button "DOM 1, order 3"
+  [11] button "DOM 2, order 1"
+  [12] button "DOM 3, order 2"
+  [14] button "DOM 1, column 3"
+  [15] button "DOM 2, column 1"
+  [16] button "DOM 3, column 2"
+  [18] button "DOM 1, column 3"
+  [19] button "DOM 2, column 1"
+  [20] button "DOM 3, column 2"
+
+Tab order
+  not available from this engine

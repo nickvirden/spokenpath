@@ -1,0 +1,1158 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: json.stdout
+---
+{
+  "header": {
+    "engine": "chromium",
+    "engine_version": "159.0.8154.6",
+    "tool_version": "playwright 1.65.1"
+  },
+  "nodes": [
+    {
+      "number": 1,
+      "depth": 0,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "RootWebArea",
+          "kind": "internal"
+        },
+        "dom": {
+          "dom_id": 1
+        },
+        "source": {
+          "class": "document"
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "title",
+              "related_nodes": [],
+              "outcome": "empty"
+            }
+          ]
+        },
+        "states": {
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "url",
+            "value": {
+              "type": "text",
+              "value": "http://spokenpath.test/basic.html"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 2,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "heading",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 6,
+          "tag": "h1"
+        },
+        "source": {
+          "class": "span",
+          "path": "pages/basic.html",
+          "line": 3,
+          "column": 1,
+          "start_tag": {
+            "start": 33,
+            "end": 37
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Café sign-up",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Café sign-up",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "level": 1
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Café sign-up, heading, level 1"
+      }
+    },
+    {
+      "number": 3,
+      "depth": 2,
+      "parent": 2,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Café sign-up",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 7
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Café sign-up"
+      }
+    },
+    {
+      "number": 4,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "LabelText",
+          "kind": "internal"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 8,
+          "tag": "label"
+        },
+        "source": {
+          "class": "span",
+          "path": "pages/basic.html",
+          "line": 4,
+          "column": 1,
+          "start_tag": {
+            "start": 56,
+            "end": 75
+          }
+        },
+        "name": {
+          "status": "no accessible name",
+          "text": "",
+          "sources": []
+        },
+        "states": {},
+        "properties": []
+      },
+      "approx": {
+        "template": "unnamed-unspoken-role",
+        "phrase": ""
+      }
+    },
+    {
+      "number": 5,
+      "depth": 2,
+      "parent": 4,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Email",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 9
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Email"
+      }
+    },
+    {
+      "number": 6,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "textbox",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 10,
+          "tag": "input",
+          "id": "email"
+        },
+        "source": {
+          "class": "span",
+          "path": "pages/basic.html",
+          "line": 5,
+          "column": 1,
+          "start_tag": {
+            "start": 89,
+            "end": 120
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Email",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "related-element",
+              "native_source": "label",
+              "value": "Email",
+              "related_nodes": [
+                {
+                  "dom": {
+                    "dom_id": 8,
+                    "tag": "label"
+                  },
+                  "text": "Email",
+                  "source": {
+                    "class": "span",
+                    "path": "pages/basic.html",
+                    "line": 4,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 56,
+                      "end": 75
+                    }
+                  }
+                }
+              ],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            },
+            {
+              "kind": "placeholder",
+              "attribute": "placeholder",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ],
+          "from_hidden_content": {
+            "value": false,
+            "by": "computed by tool"
+          }
+        },
+        "value": "",
+        "states": {
+          "required": false,
+          "invalid": "false",
+          "readonly": false,
+          "focusable": true
+        },
+        "properties": [
+          {
+            "name": "editable",
+            "value": {
+              "type": "token",
+              "value": "plaintext"
+            }
+          },
+          {
+            "name": "settable",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          },
+          {
+            "name": "multiline",
+            "value": {
+              "type": "boolean",
+              "value": false
+            }
+          },
+          {
+            "name": "labelledby",
+            "value": {
+              "type": "nodes",
+              "value": [
+                {
+                  "dom": {
+                    "dom_id": 8,
+                    "tag": "label"
+                  },
+                  "text": "Email",
+                  "source": {
+                    "class": "span",
+                    "path": "pages/basic.html",
+                    "line": 4,
+                    "column": 1,
+                    "start_tag": {
+                      "start": 56,
+                      "end": 75
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Email, textbox"
+      }
+    },
+    {
+      "number": 7,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "accessible",
+        "role": {
+          "token": "button",
+          "kind": "aria"
+        },
+        "role_origin": {
+          "value": "native",
+          "by": "computed by tool"
+        },
+        "dom": {
+          "dom_id": 11,
+          "tag": "button"
+        },
+        "source": {
+          "class": "span",
+          "path": "pages/basic.html",
+          "line": 5,
+          "column": 35,
+          "start_tag": {
+            "start": 125,
+            "end": 133
+          }
+        },
+        "name": {
+          "status": "named",
+          "text": "Join",
+          "sources": [
+            {
+              "kind": "related-element",
+              "attribute": "aria-labelledby",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "aria-label",
+              "related_nodes": [],
+              "outcome": "empty"
+            },
+            {
+              "kind": "contents",
+              "value": "Join",
+              "related_nodes": [],
+              "outcome": "used"
+            },
+            {
+              "kind": "attribute",
+              "attribute": "title",
+              "related_nodes": [],
+              "outcome": "superseded"
+            }
+          ]
+        },
+        "states": {
+          "invalid": "false",
+          "focusable": true
+        },
+        "properties": []
+      },
+      "approx": {
+        "template": "named",
+        "phrase": "Join, button"
+      }
+    },
+    {
+      "number": 8,
+      "depth": 2,
+      "parent": 7,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Join",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 12
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Join"
+      }
+    },
+    {
+      "number": 9,
+      "depth": 1,
+      "parent": 1,
+      "layer_a": {
+        "kind": "text-run",
+        "text": "Hi",
+        "parts": [
+          {
+            "kind": "text",
+            "dom": {
+              "dom_id": 18
+            },
+            "source": {
+              "class": "text"
+            }
+          }
+        ]
+      },
+      "approx": {
+        "template": "text-run",
+        "phrase": "Hi"
+      }
+    }
+  ],
+  "indexes": {
+    "headings": [
+      {
+        "item": 2,
+        "role": "heading",
+        "name_status": "named",
+        "name": "Café sign-up",
+        "level": 1
+      }
+    ],
+    "landmarks": [],
+    "links": [],
+    "form_controls": [
+      {
+        "item": 6,
+        "role": "textbox",
+        "name_status": "named",
+        "name": "Email"
+      },
+      {
+        "item": 7,
+        "role": "button",
+        "name_status": "named",
+        "name": "Join"
+      }
+    ]
+  },
+  "excluded": [
+    {
+      "dom": {
+        "dom_id": 3,
+        "tag": "html"
+      },
+      "source": {
+        "class": "span",
+        "path": "pages/basic.html",
+        "line": 2,
+        "column": 1,
+        "start_tag": {
+          "start": 16,
+          "end": 32
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 4,
+        "tag": "head"
+      },
+      "source": {
+        "class": "implied"
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 5,
+        "tag": "body"
+      },
+      "source": {
+        "class": "implied"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 13,
+        "tag": "p"
+      },
+      "source": {
+        "class": "span",
+        "path": "pages/basic.html",
+        "line": 6,
+        "column": 1,
+        "start_tag": {
+          "start": 147,
+          "end": 169
+        }
+      },
+      "reasons": [
+        {
+          "kind": "aria-hidden",
+          "engine_reason": "ariaHiddenElement"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 15,
+        "tag": "x-card"
+      },
+      "source": {
+        "class": "span",
+        "path": "pages/basic.html",
+        "line": 7,
+        "column": 1,
+        "start_tag": {
+          "start": 180,
+          "end": 188
+        }
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 17,
+        "tag": "span"
+      },
+      "source": {
+        "class": "script"
+      },
+      "reasons": [
+        {
+          "kind": "uninteresting",
+          "engine_reason": "uninteresting"
+        }
+      ]
+    },
+    {
+      "dom": {
+        "dom_id": 19,
+        "tag": "script"
+      },
+      "source": {
+        "class": "span",
+        "path": "pages/basic.html",
+        "line": 8,
+        "column": 1,
+        "start_tag": {
+          "start": 198,
+          "end": 206
+        }
+      },
+      "reasons": [
+        {
+          "kind": "not-rendered",
+          "engine_reason": "notRendered"
+        }
+      ]
+    }
+  ],
+  "tab_order": {
+    "steps": [
+      {
+        "step": 1,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 10,
+            "tag": "input",
+            "id": "email"
+          },
+          "source": {
+            "class": "span",
+            "path": "pages/basic.html",
+            "line": 5,
+            "column": 1,
+            "start_tag": {
+              "start": 89,
+              "end": 120
+            }
+          },
+          "item": 6
+        }
+      },
+      {
+        "step": 2,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 11,
+            "tag": "button"
+          },
+          "source": {
+            "class": "span",
+            "path": "pages/basic.html",
+            "line": 5,
+            "column": 35,
+            "start_tag": {
+              "start": 125,
+              "end": 133
+            }
+          },
+          "item": 7
+        }
+      },
+      {
+        "step": 3,
+        "stop": {
+          "kind": "left-page"
+        }
+      },
+      {
+        "step": 4,
+        "stop": {
+          "kind": "element",
+          "dom": {
+            "dom_id": 10,
+            "tag": "input",
+            "id": "email"
+          },
+          "source": {
+            "class": "span",
+            "path": "pages/basic.html",
+            "line": 5,
+            "column": 1,
+            "start_tag": {
+              "start": 89,
+              "end": 120
+            }
+          },
+          "item": 6
+        },
+        "repeats": 1
+      }
+    ],
+    "ending": {
+      "value": {
+        "kind": "wrap",
+        "wording": "Focus left the page and Tab returned to step 1, the normal end of a walk."
+      },
+      "by": "computed by tool"
+    }
+  },
+  "aligned": {
+    "safari": {
+      "header": {
+        "engine": "safari-ax",
+        "engine_version": "27.0.1",
+        "tool_version": "safaridriver Included with Safari 27.0.1 (22625.1.29.11.28)",
+        "safari_build": "22625.1.29.11.28",
+        "macos_version": "27.0.1",
+        "macos_build": "26A434"
+      },
+      "not_available": [
+        "name-sources",
+        "excluded",
+        "tab-order"
+      ],
+      "nodes": [
+        {
+          "number": 1,
+          "depth": 0,
+          "layer_a": {
+            "kind": "accessible",
+            "role": {
+              "token": "AXWebArea",
+              "kind": "platform"
+            },
+            "source": {
+              "class": "document"
+            },
+            "name": {
+              "status": "no accessible name"
+            },
+            "states": {
+              "focused": false
+            },
+            "properties": [
+              {
+                "name": "AXDOMIdentifier",
+                "value": {
+                  "type": "text",
+                  "value": ""
+                }
+              },
+              {
+                "name": "AXRole",
+                "value": {
+                  "type": "text",
+                  "value": "AXWebArea"
+                }
+              },
+              {
+                "name": "AXRoleDescription",
+                "value": {
+                  "type": "text",
+                  "value": "HTML content"
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "unnamed-unspoken-role",
+            "phrase": ""
+          }
+        },
+        {
+          "number": 2,
+          "depth": 1,
+          "parent": 1,
+          "layer_a": {
+            "kind": "accessible",
+            "role": {
+              "token": "heading",
+              "kind": "aria"
+            },
+            "source": {
+              "class": "span",
+              "path": "pages/basic.html",
+              "line": 3,
+              "column": 1,
+              "start_tag": {
+                "start": 33,
+                "end": 37
+              }
+            },
+            "name": {
+              "status": "named",
+              "text": "Café sign-up"
+            },
+            "states": {
+              "focused": false,
+              "level": 1
+            },
+            "properties": [
+              {
+                "name": "AXDOMIdentifier",
+                "value": {
+                  "type": "text",
+                  "value": ""
+                }
+              },
+              {
+                "name": "AXRole",
+                "value": {
+                  "type": "text",
+                  "value": "AXHeading"
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "named",
+            "phrase": "Café sign-up, heading, level 1"
+          }
+        },
+        {
+          "number": 3,
+          "depth": 2,
+          "parent": 2,
+          "layer_a": {
+            "kind": "text-run",
+            "text": "Café sign-up",
+            "parts": [
+              {
+                "kind": "text",
+                "source": {
+                  "class": "text"
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "text-run",
+            "phrase": "Café sign-up"
+          }
+        },
+        {
+          "number": 4,
+          "depth": 1,
+          "parent": 1,
+          "layer_a": {
+            "kind": "accessible",
+            "role": {
+              "token": "AXGroup",
+              "kind": "platform"
+            },
+            "source": {
+              "class": "span",
+              "path": "pages/basic.html",
+              "line": 4,
+              "column": 1,
+              "start_tag": {
+                "start": 56,
+                "end": 75
+              }
+            },
+            "name": {
+              "status": "no accessible name"
+            },
+            "states": {
+              "focused": false
+            },
+            "properties": [
+              {
+                "name": "AXDOMIdentifier",
+                "value": {
+                  "type": "text",
+                  "value": ""
+                }
+              },
+              {
+                "name": "AXRole",
+                "value": {
+                  "type": "text",
+                  "value": "AXGroup"
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "unnamed-unspoken-role",
+            "phrase": ""
+          }
+        },
+        {
+          "number": 5,
+          "depth": 2,
+          "parent": 4,
+          "layer_a": {
+            "kind": "text-run",
+            "text": "Email",
+            "parts": [
+              {
+                "kind": "text",
+                "source": {
+                  "class": "text"
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "text-run",
+            "phrase": "Email"
+          }
+        },
+        {
+          "number": 6,
+          "depth": 1,
+          "parent": 1,
+          "layer_a": {
+            "kind": "accessible",
+            "role": {
+              "token": "textbox",
+              "kind": "aria"
+            },
+            "source": {
+              "class": "span",
+              "path": "pages/basic.html",
+              "line": 5,
+              "column": 1,
+              "start_tag": {
+                "start": 89,
+                "end": 120
+              }
+            },
+            "name": {
+              "status": "no accessible name"
+            },
+            "states": {
+              "disabled": false,
+              "focused": false
+            },
+            "properties": [
+              {
+                "name": "AXDOMIdentifier",
+                "value": {
+                  "type": "text",
+                  "value": "email"
+                }
+              },
+              {
+                "name": "AXRole",
+                "value": {
+                  "type": "text",
+                  "value": "AXTextField"
+                }
+              },
+              {
+                "name": "AXValue",
+                "value": {
+                  "type": "text",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "unnamed",
+            "phrase": "textbox"
+          }
+        },
+        {
+          "number": 7,
+          "depth": 1,
+          "parent": 1,
+          "layer_a": {
+            "kind": "accessible",
+            "role": {
+              "token": "button",
+              "kind": "aria"
+            },
+            "source": {
+              "class": "span",
+              "path": "pages/basic.html",
+              "line": 5,
+              "column": 35,
+              "start_tag": {
+                "start": 125,
+                "end": 133
+              }
+            },
+            "name": {
+              "status": "named",
+              "text": "Join"
+            },
+            "states": {
+              "disabled": false,
+              "focused": false
+            },
+            "properties": [
+              {
+                "name": "AXDOMIdentifier",
+                "value": {
+                  "type": "text",
+                  "value": ""
+                }
+              },
+              {
+                "name": "AXRole",
+                "value": {
+                  "type": "text",
+                  "value": "AXButton"
+                }
+              }
+            ]
+          },
+          "approx": {
+            "template": "named",
+            "phrase": "Join, button"
+          }
+        }
+      ],
+      "indexes": {
+        "headings": [
+          {
+            "item": 2,
+            "role": "heading",
+            "name_status": "named",
+            "name": "Café sign-up",
+            "level": 1
+          }
+        ],
+        "landmarks": [],
+        "links": [],
+        "form_controls": [
+          {
+            "item": 6,
+            "role": "textbox",
+            "name_status": "no accessible name"
+          },
+          {
+            "item": 7,
+            "role": "button",
+            "name_status": "named",
+            "name": "Join"
+          }
+        ]
+      }
+    },
+    "rows": [
+      {
+        "chromium": [
+          1
+        ],
+        "safari": []
+      },
+      {
+        "chromium": [],
+        "safari": [
+          1
+        ]
+      },
+      {
+        "chromium": [
+          2
+        ],
+        "safari": [
+          2
+        ]
+      },
+      {
+        "chromium": [
+          3
+        ],
+        "safari": []
+      },
+      {
+        "chromium": [],
+        "safari": [
+          3
+        ]
+      },
+      {
+        "chromium": [
+          4
+        ],
+        "safari": [
+          4
+        ]
+      },
+      {
+        "chromium": [
+          5
+        ],
+        "safari": []
+      },
+      {
+        "chromium": [],
+        "safari": [
+          5
+        ]
+      },
+      {
+        "chromium": [
+          6
+        ],
+        "safari": [
+          6
+        ]
+      },
+      {
+        "chromium": [
+          7
+        ],
+        "safari": [
+          7
+        ]
+      },
+      {
+        "chromium": [
+          8
+        ],
+        "safari": []
+      },
+      {
+        "chromium": [
+          9
+        ],
+        "safari": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1        no source location: the document itself (document)
+          A Chromium  RootWebArea (internal role) "CSS reading-flow"  focusable, focused
+     S1   no source location: the document itself (document)
+          A Safari    AXWebArea (platform role) "CSS reading-flow"
+C2   S2   reading-flow.html:14:1  <main>
+          A Chromium  main (no accessible name)
+          A Safari    main (no accessible name)
+C3   S3   reading-flow.html:15:1  <h1>
+          A Chromium  heading "reading-flow"  level 1
+          A Safari    heading "reading-flow"  level 1
+C4        no source location: a text node (text)
+          A Chromium  text "reading-flow"
+     S4   no source location: a text node (text)
+          A Safari    text "reading-flow"
+C5   S5   reading-flow.html:16:1  <div id="flex-reading-flow" class="flex flex-visual" role="group" aria-label="Fl…
+          A Chromium  group "Flex with reading-flow"
+          A Safari    AXGroup/AXApplicationGroup (platform role) "Flex with reading-flow"
+C6   S7   reading-flow.html:18:1  <button id="flex-flow-2" type="button" style="order:1">
+          A Chromium  button "DOM 2, order 1"  focusable
+          A Safari    button "DOM 2, order 1"
+C7        no source location: a text node (text)
+          A Chromium  text "DOM 2, order 1"
+C8   S8   reading-flow.html:19:1  <button id="flex-flow-3" type="button" style="order:2">
+          A Chromium  button "DOM 3, order 2"  focusable
+          A Safari    button "DOM 3, order 2"
+C9        no source location: a text node (text)
+          A Chromium  text "DOM 3, order 2"
+C10  S6   reading-flow.html:17:1  <button id="flex-flow-1" type="button" style="order:3">
+          A Chromium  button "DOM 1, order 3"  focusable
+          A Safari    button "DOM 1, order 3"
+C11       no source location: a text node (text)
+          A Chromium  text "DOM 1, order 3"
+C12  S9   reading-flow.html:21:1  <div id="flex-order-only" class="flex" role="group" aria-label="Flex with order …
+          A Chromium  group "Flex with order only"
+          A Safari    AXGroup/AXApplicationGroup (platform role) "Flex with order only"
+C13  S10  reading-flow.html:22:1  <button id="flex-order-1" type="button" style="order:3">
+          A Chromium  button "DOM 1, order 3"  focusable
+          A Safari    button "DOM 1, order 3"
+C14       no source location: a text node (text)
+          A Chromium  text "DOM 1, order 3"
+C15  S11  reading-flow.html:23:1  <button id="flex-order-2" type="button" style="order:1">
+          A Chromium  button "DOM 2, order 1"  focusable
+          A Safari    button "DOM 2, order 1"
+C16       no source location: a text node (text)
+          A Chromium  text "DOM 2, order 1"
+C17  S12  reading-flow.html:24:1  <button id="flex-order-3" type="button" style="order:2">
+          A Chromium  button "DOM 3, order 2"  focusable
+          A Safari    button "DOM 3, order 2"
+C18       no source location: a text node (text)
+          A Chromium  text "DOM 3, order 2"
+C19  S13  reading-flow.html:26:1  <div id="grid-reading-flow" class="grid grid-rows" role="group" aria-label="Grid…
+          A Chromium  group "Grid with reading-flow"
+          A Safari    AXGroup/AXApplicationGroup (platform role) "Grid with reading-flow"
+C20  S15  reading-flow.html:28:1  <button id="grid-flow-2" type="button" style="grid-column:1; grid-row:1">
+          A Chromium  button "DOM 2, column 1"  focusable
+          A Safari    button "DOM 2, column 1"
+C21       no source location: a text node (text)
+          A Chromium  text "DOM 2, column 1"
+C22  S16  reading-flow.html:29:1  <button id="grid-flow-3" type="button" style="grid-column:2; grid-row:1">
+          A Chromium  button "DOM 3, column 2"  focusable
+          A Safari    button "DOM 3, column 2"
+C23       no source location: a text node (text)
+          A Chromium  text "DOM 3, column 2"
+C24  S14  reading-flow.html:27:1  <button id="grid-flow-1" type="button" style="grid-column:3; grid-row:1">
+          A Chromium  button "DOM 1, column 3"  focusable
+          A Safari    button "DOM 1, column 3"
+C25       no source location: a text node (text)
+          A Chromium  text "DOM 1, column 3"
+C26  S17  reading-flow.html:31:1  <div id="grid-placement-only" class="grid" role="group" aria-label="Grid with pl…
+          A Chromium  group "Grid with placement only"
+          A Safari    AXGroup/AXApplicationGroup (platform role) "Grid with placement only"
+C27  S18  reading-flow.html:32:1  <button id="grid-place-1" type="button" style="grid-column:3; grid-row:1">
+          A Chromium  button "DOM 1, column 3"  focusable
+          A Safari    button "DOM 1, column 3"
+C28       no source location: a text node (text)
+          A Chromium  text "DOM 1, column 3"
+C29  S19  reading-flow.html:33:1  <button id="grid-place-2" type="button" style="grid-column:1; grid-row:1">
+          A Chromium  button "DOM 2, column 1"  focusable
+          A Safari    button "DOM 2, column 1"
+C30       no source location: a text node (text)
+          A Chromium  text "DOM 2, column 1"
+C31  S20  reading-flow.html:34:1  <button id="grid-place-3" type="button" style="grid-column:2; grid-row:1">
+          A Chromium  button "DOM 3, column 2"  focusable
+          A Safari    button "DOM 3, column 2"
+C32       no source location: a text node (text)
+          A Chromium  text "DOM 3, column 2"

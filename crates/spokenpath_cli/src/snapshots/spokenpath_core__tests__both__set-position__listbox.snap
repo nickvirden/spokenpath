@@ -1,0 +1,30 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1      no source location: the document itself (document)
+        A Chromium  RootWebArea (internal role) "Listbox with a selected option"  focusable, focused
+    S1  no source location: the document itself (document)
+        A Safari    AXWebArea (platform role) "Listbox with a selected option"
+C2  S2  listbox.html:8:1  <div id="fruit" role="listbox" aria-label="Fruit" tabindex="0">
+        A Chromium  listbox "Fruit"  focusable
+        A Safari    AXList (platform role) "Fruit"
+C3  S3  listbox.html:9:1  <div id="apple" role="option" aria-selected="false">
+        A Chromium  option "Apple"  1 of 3 (computed by tool)
+        A Safari    AXStaticText (platform role) "Apple"
+C4      no source location: a text node (text)
+        A Chromium  text "Apple"
+C5  S4  listbox.html:10:1  <div id="pear" role="option" aria-selected="true">
+        A Chromium  option "Pear"  selected  2 of 3 (computed by tool)
+        A Safari    AXStaticText (platform role) "Pear"  selected
+C6      no source location: a text node (text)
+        A Chromium  text "Pear"
+C7  S5  listbox.html:11:1  <div id="plum" role="option" aria-selected="false">
+        A Chromium  option "Plum"  3 of 3 (computed by tool)
+        A Safari    AXStaticText (platform role) "Plum"
+C8      no source location: a text node (text)
+        A Chromium  text "Plum"

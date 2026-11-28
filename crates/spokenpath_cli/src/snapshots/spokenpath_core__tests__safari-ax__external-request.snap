@@ -1,0 +1,43 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "External request"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "External request"
+2    A heading "External request"  level 1
+       external-request.html:8:1  <h1>
+       name sources not available from this engine
+     ~ "External request, heading, level 1"
+3      A text "External request"
+       ~ "External request"
+4    A AXGroup (platform role) (no accessible name)
+       external-request.html:9:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+5      A image "Remote pixel"
+         external-request.html:9:4  <img src="https://example.com/pixel.png?token=not-a-secret#frag" alt="Remote pix…
+         name sources not available from this engine
+       ~ "Remote pixel, image"
+
+Excluded
+  not available from this engine
+
+Headings
+  [2] heading "External request"  level 1
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  not available from this engine

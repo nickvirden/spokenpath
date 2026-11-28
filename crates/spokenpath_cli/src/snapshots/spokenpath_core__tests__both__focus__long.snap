@@ -1,0 +1,1017 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1          no source location: the document itself (document)
+            A Chromium  RootWebArea (internal role) "Long tab order"  focusable, focused
+      S1    no source location: the document itself (document)
+            A Safari    AXWebArea (platform role) "Long tab order"
+C2    S2    long.html:9:1  <button id="b001" type="button">
+            A Chromium  button "001"  focusable
+            A Safari    button "001"
+C3          no source location: a text node (text)
+            A Chromium  text "001"
+C4    S3    long.html:10:1  <button id="b002" type="button">
+            A Chromium  button "002"  focusable
+            A Safari    button "002"
+C5          no source location: a text node (text)
+            A Chromium  text "002"
+C6    S4    long.html:11:1  <button id="b003" type="button">
+            A Chromium  button "003"  focusable
+            A Safari    button "003"
+C7          no source location: a text node (text)
+            A Chromium  text "003"
+C8    S5    long.html:12:1  <button id="b004" type="button">
+            A Chromium  button "004"  focusable
+            A Safari    button "004"
+C9          no source location: a text node (text)
+            A Chromium  text "004"
+C10   S6    long.html:13:1  <button id="b005" type="button">
+            A Chromium  button "005"  focusable
+            A Safari    button "005"
+C11         no source location: a text node (text)
+            A Chromium  text "005"
+C12   S7    long.html:14:1  <button id="b006" type="button">
+            A Chromium  button "006"  focusable
+            A Safari    button "006"
+C13         no source location: a text node (text)
+            A Chromium  text "006"
+C14   S8    long.html:15:1  <button id="b007" type="button">
+            A Chromium  button "007"  focusable
+            A Safari    button "007"
+C15         no source location: a text node (text)
+            A Chromium  text "007"
+C16   S9    long.html:16:1  <button id="b008" type="button">
+            A Chromium  button "008"  focusable
+            A Safari    button "008"
+C17         no source location: a text node (text)
+            A Chromium  text "008"
+C18   S10   long.html:17:1  <button id="b009" type="button">
+            A Chromium  button "009"  focusable
+            A Safari    button "009"
+C19         no source location: a text node (text)
+            A Chromium  text "009"
+C20   S11   long.html:18:1  <button id="b010" type="button">
+            A Chromium  button "010"  focusable
+            A Safari    button "010"
+C21         no source location: a text node (text)
+            A Chromium  text "010"
+C22   S12   long.html:19:1  <button id="b011" type="button">
+            A Chromium  button "011"  focusable
+            A Safari    button "011"
+C23         no source location: a text node (text)
+            A Chromium  text "011"
+C24   S13   long.html:20:1  <button id="b012" type="button">
+            A Chromium  button "012"  focusable
+            A Safari    button "012"
+C25         no source location: a text node (text)
+            A Chromium  text "012"
+C26   S14   long.html:21:1  <button id="b013" type="button">
+            A Chromium  button "013"  focusable
+            A Safari    button "013"
+C27         no source location: a text node (text)
+            A Chromium  text "013"
+C28   S15   long.html:22:1  <button id="b014" type="button">
+            A Chromium  button "014"  focusable
+            A Safari    button "014"
+C29         no source location: a text node (text)
+            A Chromium  text "014"
+C30   S16   long.html:23:1  <button id="b015" type="button">
+            A Chromium  button "015"  focusable
+            A Safari    button "015"
+C31         no source location: a text node (text)
+            A Chromium  text "015"
+C32   S17   long.html:24:1  <button id="b016" type="button">
+            A Chromium  button "016"  focusable
+            A Safari    button "016"
+C33         no source location: a text node (text)
+            A Chromium  text "016"
+C34   S18   long.html:25:1  <button id="b017" type="button">
+            A Chromium  button "017"  focusable
+            A Safari    button "017"
+C35         no source location: a text node (text)
+            A Chromium  text "017"
+C36   S19   long.html:26:1  <button id="b018" type="button">
+            A Chromium  button "018"  focusable
+            A Safari    button "018"
+C37         no source location: a text node (text)
+            A Chromium  text "018"
+C38   S20   long.html:27:1  <button id="b019" type="button">
+            A Chromium  button "019"  focusable
+            A Safari    button "019"
+C39         no source location: a text node (text)
+            A Chromium  text "019"
+C40   S21   long.html:28:1  <button id="b020" type="button">
+            A Chromium  button "020"  focusable
+            A Safari    button "020"
+C41         no source location: a text node (text)
+            A Chromium  text "020"
+C42   S22   long.html:29:1  <button id="b021" type="button">
+            A Chromium  button "021"  focusable
+            A Safari    button "021"
+C43         no source location: a text node (text)
+            A Chromium  text "021"
+C44   S23   long.html:30:1  <button id="b022" type="button">
+            A Chromium  button "022"  focusable
+            A Safari    button "022"
+C45         no source location: a text node (text)
+            A Chromium  text "022"
+C46   S24   long.html:31:1  <button id="b023" type="button">
+            A Chromium  button "023"  focusable
+            A Safari    button "023"
+C47         no source location: a text node (text)
+            A Chromium  text "023"
+C48   S25   long.html:32:1  <button id="b024" type="button">
+            A Chromium  button "024"  focusable
+            A Safari    button "024"
+C49         no source location: a text node (text)
+            A Chromium  text "024"
+C50   S26   long.html:33:1  <button id="b025" type="button">
+            A Chromium  button "025"  focusable
+            A Safari    button "025"
+C51         no source location: a text node (text)
+            A Chromium  text "025"
+C52   S27   long.html:34:1  <button id="b026" type="button">
+            A Chromium  button "026"  focusable
+            A Safari    button "026"
+C53         no source location: a text node (text)
+            A Chromium  text "026"
+C54   S28   long.html:35:1  <button id="b027" type="button">
+            A Chromium  button "027"  focusable
+            A Safari    button "027"
+C55         no source location: a text node (text)
+            A Chromium  text "027"
+C56   S29   long.html:36:1  <button id="b028" type="button">
+            A Chromium  button "028"  focusable
+            A Safari    button "028"
+C57         no source location: a text node (text)
+            A Chromium  text "028"
+C58   S30   long.html:37:1  <button id="b029" type="button">
+            A Chromium  button "029"  focusable
+            A Safari    button "029"
+C59         no source location: a text node (text)
+            A Chromium  text "029"
+C60   S31   long.html:38:1  <button id="b030" type="button">
+            A Chromium  button "030"  focusable
+            A Safari    button "030"
+C61         no source location: a text node (text)
+            A Chromium  text "030"
+C62   S32   long.html:39:1  <button id="b031" type="button">
+            A Chromium  button "031"  focusable
+            A Safari    button "031"
+C63         no source location: a text node (text)
+            A Chromium  text "031"
+C64   S33   long.html:40:1  <button id="b032" type="button">
+            A Chromium  button "032"  focusable
+            A Safari    button "032"
+C65         no source location: a text node (text)
+            A Chromium  text "032"
+C66   S34   long.html:41:1  <button id="b033" type="button">
+            A Chromium  button "033"  focusable
+            A Safari    button "033"
+C67         no source location: a text node (text)
+            A Chromium  text "033"
+C68   S35   long.html:42:1  <button id="b034" type="button">
+            A Chromium  button "034"  focusable
+            A Safari    button "034"
+C69         no source location: a text node (text)
+            A Chromium  text "034"
+C70   S36   long.html:43:1  <button id="b035" type="button">
+            A Chromium  button "035"  focusable
+            A Safari    button "035"
+C71         no source location: a text node (text)
+            A Chromium  text "035"
+C72   S37   long.html:44:1  <button id="b036" type="button">
+            A Chromium  button "036"  focusable
+            A Safari    button "036"
+C73         no source location: a text node (text)
+            A Chromium  text "036"
+C74   S38   long.html:45:1  <button id="b037" type="button">
+            A Chromium  button "037"  focusable
+            A Safari    button "037"
+C75         no source location: a text node (text)
+            A Chromium  text "037"
+C76   S39   long.html:46:1  <button id="b038" type="button">
+            A Chromium  button "038"  focusable
+            A Safari    button "038"
+C77         no source location: a text node (text)
+            A Chromium  text "038"
+C78   S40   long.html:47:1  <button id="b039" type="button">
+            A Chromium  button "039"  focusable
+            A Safari    button "039"
+C79         no source location: a text node (text)
+            A Chromium  text "039"
+C80   S41   long.html:48:1  <button id="b040" type="button">
+            A Chromium  button "040"  focusable
+            A Safari    button "040"
+C81         no source location: a text node (text)
+            A Chromium  text "040"
+C82   S42   long.html:49:1  <button id="b041" type="button">
+            A Chromium  button "041"  focusable
+            A Safari    button "041"
+C83         no source location: a text node (text)
+            A Chromium  text "041"
+C84   S43   long.html:50:1  <button id="b042" type="button">
+            A Chromium  button "042"  focusable
+            A Safari    button "042"
+C85         no source location: a text node (text)
+            A Chromium  text "042"
+C86   S44   long.html:51:1  <button id="b043" type="button">
+            A Chromium  button "043"  focusable
+            A Safari    button "043"
+C87         no source location: a text node (text)
+            A Chromium  text "043"
+C88   S45   long.html:52:1  <button id="b044" type="button">
+            A Chromium  button "044"  focusable
+            A Safari    button "044"
+C89         no source location: a text node (text)
+            A Chromium  text "044"
+C90   S46   long.html:53:1  <button id="b045" type="button">
+            A Chromium  button "045"  focusable
+            A Safari    button "045"
+C91         no source location: a text node (text)
+            A Chromium  text "045"
+C92   S47   long.html:54:1  <button id="b046" type="button">
+            A Chromium  button "046"  focusable
+            A Safari    button "046"
+C93         no source location: a text node (text)
+            A Chromium  text "046"
+C94   S48   long.html:55:1  <button id="b047" type="button">
+            A Chromium  button "047"  focusable
+            A Safari    button "047"
+C95         no source location: a text node (text)
+            A Chromium  text "047"
+C96   S49   long.html:56:1  <button id="b048" type="button">
+            A Chromium  button "048"  focusable
+            A Safari    button "048"
+C97         no source location: a text node (text)
+            A Chromium  text "048"
+C98   S50   long.html:57:1  <button id="b049" type="button">
+            A Chromium  button "049"  focusable
+            A Safari    button "049"
+C99         no source location: a text node (text)
+            A Chromium  text "049"
+C100  S51   long.html:58:1  <button id="b050" type="button">
+            A Chromium  button "050"  focusable
+            A Safari    button "050"
+C101        no source location: a text node (text)
+            A Chromium  text "050"
+C102  S52   long.html:59:1  <button id="b051" type="button">
+            A Chromium  button "051"  focusable
+            A Safari    button "051"
+C103        no source location: a text node (text)
+            A Chromium  text "051"
+C104  S53   long.html:60:1  <button id="b052" type="button">
+            A Chromium  button "052"  focusable
+            A Safari    button "052"
+C105        no source location: a text node (text)
+            A Chromium  text "052"
+C106  S54   long.html:61:1  <button id="b053" type="button">
+            A Chromium  button "053"  focusable
+            A Safari    button "053"
+C107        no source location: a text node (text)
+            A Chromium  text "053"
+C108  S55   long.html:62:1  <button id="b054" type="button">
+            A Chromium  button "054"  focusable
+            A Safari    button "054"
+C109        no source location: a text node (text)
+            A Chromium  text "054"
+C110  S56   long.html:63:1  <button id="b055" type="button">
+            A Chromium  button "055"  focusable
+            A Safari    button "055"
+C111        no source location: a text node (text)
+            A Chromium  text "055"
+C112  S57   long.html:64:1  <button id="b056" type="button">
+            A Chromium  button "056"  focusable
+            A Safari    button "056"
+C113        no source location: a text node (text)
+            A Chromium  text "056"
+C114  S58   long.html:65:1  <button id="b057" type="button">
+            A Chromium  button "057"  focusable
+            A Safari    button "057"
+C115        no source location: a text node (text)
+            A Chromium  text "057"
+C116  S59   long.html:66:1  <button id="b058" type="button">
+            A Chromium  button "058"  focusable
+            A Safari    button "058"
+C117        no source location: a text node (text)
+            A Chromium  text "058"
+C118  S60   long.html:67:1  <button id="b059" type="button">
+            A Chromium  button "059"  focusable
+            A Safari    button "059"
+C119        no source location: a text node (text)
+            A Chromium  text "059"
+C120  S61   long.html:68:1  <button id="b060" type="button">
+            A Chromium  button "060"  focusable
+            A Safari    button "060"
+C121        no source location: a text node (text)
+            A Chromium  text "060"
+C122  S62   long.html:69:1  <button id="b061" type="button">
+            A Chromium  button "061"  focusable
+            A Safari    button "061"
+C123        no source location: a text node (text)
+            A Chromium  text "061"
+C124  S63   long.html:70:1  <button id="b062" type="button">
+            A Chromium  button "062"  focusable
+            A Safari    button "062"
+C125        no source location: a text node (text)
+            A Chromium  text "062"
+C126  S64   long.html:71:1  <button id="b063" type="button">
+            A Chromium  button "063"  focusable
+            A Safari    button "063"
+C127        no source location: a text node (text)
+            A Chromium  text "063"
+C128  S65   long.html:72:1  <button id="b064" type="button">
+            A Chromium  button "064"  focusable
+            A Safari    button "064"
+C129        no source location: a text node (text)
+            A Chromium  text "064"
+C130  S66   long.html:73:1  <button id="b065" type="button">
+            A Chromium  button "065"  focusable
+            A Safari    button "065"
+C131        no source location: a text node (text)
+            A Chromium  text "065"
+C132  S67   long.html:74:1  <button id="b066" type="button">
+            A Chromium  button "066"  focusable
+            A Safari    button "066"
+C133        no source location: a text node (text)
+            A Chromium  text "066"
+C134  S68   long.html:75:1  <button id="b067" type="button">
+            A Chromium  button "067"  focusable
+            A Safari    button "067"
+C135        no source location: a text node (text)
+            A Chromium  text "067"
+C136  S69   long.html:76:1  <button id="b068" type="button">
+            A Chromium  button "068"  focusable
+            A Safari    button "068"
+C137        no source location: a text node (text)
+            A Chromium  text "068"
+C138  S70   long.html:77:1  <button id="b069" type="button">
+            A Chromium  button "069"  focusable
+            A Safari    button "069"
+C139        no source location: a text node (text)
+            A Chromium  text "069"
+C140  S71   long.html:78:1  <button id="b070" type="button">
+            A Chromium  button "070"  focusable
+            A Safari    button "070"
+C141        no source location: a text node (text)
+            A Chromium  text "070"
+C142  S72   long.html:79:1  <button id="b071" type="button">
+            A Chromium  button "071"  focusable
+            A Safari    button "071"
+C143        no source location: a text node (text)
+            A Chromium  text "071"
+C144  S73   long.html:80:1  <button id="b072" type="button">
+            A Chromium  button "072"  focusable
+            A Safari    button "072"
+C145        no source location: a text node (text)
+            A Chromium  text "072"
+C146  S74   long.html:81:1  <button id="b073" type="button">
+            A Chromium  button "073"  focusable
+            A Safari    button "073"
+C147        no source location: a text node (text)
+            A Chromium  text "073"
+C148  S75   long.html:82:1  <button id="b074" type="button">
+            A Chromium  button "074"  focusable
+            A Safari    button "074"
+C149        no source location: a text node (text)
+            A Chromium  text "074"
+C150  S76   long.html:83:1  <button id="b075" type="button">
+            A Chromium  button "075"  focusable
+            A Safari    button "075"
+C151        no source location: a text node (text)
+            A Chromium  text "075"
+C152  S77   long.html:84:1  <button id="b076" type="button">
+            A Chromium  button "076"  focusable
+            A Safari    button "076"
+C153        no source location: a text node (text)
+            A Chromium  text "076"
+C154  S78   long.html:85:1  <button id="b077" type="button">
+            A Chromium  button "077"  focusable
+            A Safari    button "077"
+C155        no source location: a text node (text)
+            A Chromium  text "077"
+C156  S79   long.html:86:1  <button id="b078" type="button">
+            A Chromium  button "078"  focusable
+            A Safari    button "078"
+C157        no source location: a text node (text)
+            A Chromium  text "078"
+C158  S80   long.html:87:1  <button id="b079" type="button">
+            A Chromium  button "079"  focusable
+            A Safari    button "079"
+C159        no source location: a text node (text)
+            A Chromium  text "079"
+C160  S81   long.html:88:1  <button id="b080" type="button">
+            A Chromium  button "080"  focusable
+            A Safari    button "080"
+C161        no source location: a text node (text)
+            A Chromium  text "080"
+C162  S82   long.html:89:1  <button id="b081" type="button">
+            A Chromium  button "081"  focusable
+            A Safari    button "081"
+C163        no source location: a text node (text)
+            A Chromium  text "081"
+C164  S83   long.html:90:1  <button id="b082" type="button">
+            A Chromium  button "082"  focusable
+            A Safari    button "082"
+C165        no source location: a text node (text)
+            A Chromium  text "082"
+C166  S84   long.html:91:1  <button id="b083" type="button">
+            A Chromium  button "083"  focusable
+            A Safari    button "083"
+C167        no source location: a text node (text)
+            A Chromium  text "083"
+C168  S85   long.html:92:1  <button id="b084" type="button">
+            A Chromium  button "084"  focusable
+            A Safari    button "084"
+C169        no source location: a text node (text)
+            A Chromium  text "084"
+C170  S86   long.html:93:1  <button id="b085" type="button">
+            A Chromium  button "085"  focusable
+            A Safari    button "085"
+C171        no source location: a text node (text)
+            A Chromium  text "085"
+C172  S87   long.html:94:1  <button id="b086" type="button">
+            A Chromium  button "086"  focusable
+            A Safari    button "086"
+C173        no source location: a text node (text)
+            A Chromium  text "086"
+C174  S88   long.html:95:1  <button id="b087" type="button">
+            A Chromium  button "087"  focusable
+            A Safari    button "087"
+C175        no source location: a text node (text)
+            A Chromium  text "087"
+C176  S89   long.html:96:1  <button id="b088" type="button">
+            A Chromium  button "088"  focusable
+            A Safari    button "088"
+C177        no source location: a text node (text)
+            A Chromium  text "088"
+C178  S90   long.html:97:1  <button id="b089" type="button">
+            A Chromium  button "089"  focusable
+            A Safari    button "089"
+C179        no source location: a text node (text)
+            A Chromium  text "089"
+C180  S91   long.html:98:1  <button id="b090" type="button">
+            A Chromium  button "090"  focusable
+            A Safari    button "090"
+C181        no source location: a text node (text)
+            A Chromium  text "090"
+C182  S92   long.html:99:1  <button id="b091" type="button">
+            A Chromium  button "091"  focusable
+            A Safari    button "091"
+C183        no source location: a text node (text)
+            A Chromium  text "091"
+C184  S93   long.html:100:1  <button id="b092" type="button">
+            A Chromium  button "092"  focusable
+            A Safari    button "092"
+C185        no source location: a text node (text)
+            A Chromium  text "092"
+C186  S94   long.html:101:1  <button id="b093" type="button">
+            A Chromium  button "093"  focusable
+            A Safari    button "093"
+C187        no source location: a text node (text)
+            A Chromium  text "093"
+C188  S95   long.html:102:1  <button id="b094" type="button">
+            A Chromium  button "094"  focusable
+            A Safari    button "094"
+C189        no source location: a text node (text)
+            A Chromium  text "094"
+C190  S96   long.html:103:1  <button id="b095" type="button">
+            A Chromium  button "095"  focusable
+            A Safari    button "095"
+C191        no source location: a text node (text)
+            A Chromium  text "095"
+C192  S97   long.html:104:1  <button id="b096" type="button">
+            A Chromium  button "096"  focusable
+            A Safari    button "096"
+C193        no source location: a text node (text)
+            A Chromium  text "096"
+C194  S98   long.html:105:1  <button id="b097" type="button">
+            A Chromium  button "097"  focusable
+            A Safari    button "097"
+C195        no source location: a text node (text)
+            A Chromium  text "097"
+C196  S99   long.html:106:1  <button id="b098" type="button">
+            A Chromium  button "098"  focusable
+            A Safari    button "098"
+C197        no source location: a text node (text)
+            A Chromium  text "098"
+C198  S100  long.html:107:1  <button id="b099" type="button">
+            A Chromium  button "099"  focusable
+            A Safari    button "099"
+C199        no source location: a text node (text)
+            A Chromium  text "099"
+C200  S101  long.html:108:1  <button id="b100" type="button">
+            A Chromium  button "100"  focusable
+            A Safari    button "100"
+C201        no source location: a text node (text)
+            A Chromium  text "100"
+C202  S102  long.html:109:1  <button id="b101" type="button">
+            A Chromium  button "101"  focusable
+            A Safari    button "101"
+C203        no source location: a text node (text)
+            A Chromium  text "101"
+C204  S103  long.html:110:1  <button id="b102" type="button">
+            A Chromium  button "102"  focusable
+            A Safari    button "102"
+C205        no source location: a text node (text)
+            A Chromium  text "102"
+C206  S104  long.html:111:1  <button id="b103" type="button">
+            A Chromium  button "103"  focusable
+            A Safari    button "103"
+C207        no source location: a text node (text)
+            A Chromium  text "103"
+C208  S105  long.html:112:1  <button id="b104" type="button">
+            A Chromium  button "104"  focusable
+            A Safari    button "104"
+C209        no source location: a text node (text)
+            A Chromium  text "104"
+C210  S106  long.html:113:1  <button id="b105" type="button">
+            A Chromium  button "105"  focusable
+            A Safari    button "105"
+C211        no source location: a text node (text)
+            A Chromium  text "105"
+C212  S107  long.html:114:1  <button id="b106" type="button">
+            A Chromium  button "106"  focusable
+            A Safari    button "106"
+C213        no source location: a text node (text)
+            A Chromium  text "106"
+C214  S108  long.html:115:1  <button id="b107" type="button">
+            A Chromium  button "107"  focusable
+            A Safari    button "107"
+C215        no source location: a text node (text)
+            A Chromium  text "107"
+C216  S109  long.html:116:1  <button id="b108" type="button">
+            A Chromium  button "108"  focusable
+            A Safari    button "108"
+C217        no source location: a text node (text)
+            A Chromium  text "108"
+C218  S110  long.html:117:1  <button id="b109" type="button">
+            A Chromium  button "109"  focusable
+            A Safari    button "109"
+C219        no source location: a text node (text)
+            A Chromium  text "109"
+C220  S111  long.html:118:1  <button id="b110" type="button">
+            A Chromium  button "110"  focusable
+            A Safari    button "110"
+C221        no source location: a text node (text)
+            A Chromium  text "110"
+C222  S112  long.html:119:1  <button id="b111" type="button">
+            A Chromium  button "111"  focusable
+            A Safari    button "111"
+C223        no source location: a text node (text)
+            A Chromium  text "111"
+C224  S113  long.html:120:1  <button id="b112" type="button">
+            A Chromium  button "112"  focusable
+            A Safari    button "112"
+C225        no source location: a text node (text)
+            A Chromium  text "112"
+C226  S114  long.html:121:1  <button id="b113" type="button">
+            A Chromium  button "113"  focusable
+            A Safari    button "113"
+C227        no source location: a text node (text)
+            A Chromium  text "113"
+C228  S115  long.html:122:1  <button id="b114" type="button">
+            A Chromium  button "114"  focusable
+            A Safari    button "114"
+C229        no source location: a text node (text)
+            A Chromium  text "114"
+C230  S116  long.html:123:1  <button id="b115" type="button">
+            A Chromium  button "115"  focusable
+            A Safari    button "115"
+C231        no source location: a text node (text)
+            A Chromium  text "115"
+C232  S117  long.html:124:1  <button id="b116" type="button">
+            A Chromium  button "116"  focusable
+            A Safari    button "116"
+C233        no source location: a text node (text)
+            A Chromium  text "116"
+C234  S118  long.html:125:1  <button id="b117" type="button">
+            A Chromium  button "117"  focusable
+            A Safari    button "117"
+C235        no source location: a text node (text)
+            A Chromium  text "117"
+C236  S119  long.html:126:1  <button id="b118" type="button">
+            A Chromium  button "118"  focusable
+            A Safari    button "118"
+C237        no source location: a text node (text)
+            A Chromium  text "118"
+C238  S120  long.html:127:1  <button id="b119" type="button">
+            A Chromium  button "119"  focusable
+            A Safari    button "119"
+C239        no source location: a text node (text)
+            A Chromium  text "119"
+C240  S121  long.html:128:1  <button id="b120" type="button">
+            A Chromium  button "120"  focusable
+            A Safari    button "120"
+C241        no source location: a text node (text)
+            A Chromium  text "120"
+C242  S122  long.html:129:1  <button id="b121" type="button">
+            A Chromium  button "121"  focusable
+            A Safari    button "121"
+C243        no source location: a text node (text)
+            A Chromium  text "121"
+C244  S123  long.html:130:1  <button id="b122" type="button">
+            A Chromium  button "122"  focusable
+            A Safari    button "122"
+C245        no source location: a text node (text)
+            A Chromium  text "122"
+C246  S124  long.html:131:1  <button id="b123" type="button">
+            A Chromium  button "123"  focusable
+            A Safari    button "123"
+C247        no source location: a text node (text)
+            A Chromium  text "123"
+C248  S125  long.html:132:1  <button id="b124" type="button">
+            A Chromium  button "124"  focusable
+            A Safari    button "124"
+C249        no source location: a text node (text)
+            A Chromium  text "124"
+C250  S126  long.html:133:1  <button id="b125" type="button">
+            A Chromium  button "125"  focusable
+            A Safari    button "125"
+C251        no source location: a text node (text)
+            A Chromium  text "125"
+C252  S127  long.html:134:1  <button id="b126" type="button">
+            A Chromium  button "126"  focusable
+            A Safari    button "126"
+C253        no source location: a text node (text)
+            A Chromium  text "126"
+C254  S128  long.html:135:1  <button id="b127" type="button">
+            A Chromium  button "127"  focusable
+            A Safari    button "127"
+C255        no source location: a text node (text)
+            A Chromium  text "127"
+C256  S129  long.html:136:1  <button id="b128" type="button">
+            A Chromium  button "128"  focusable
+            A Safari    button "128"
+C257        no source location: a text node (text)
+            A Chromium  text "128"
+C258  S130  long.html:137:1  <button id="b129" type="button">
+            A Chromium  button "129"  focusable
+            A Safari    button "129"
+C259        no source location: a text node (text)
+            A Chromium  text "129"
+C260  S131  long.html:138:1  <button id="b130" type="button">
+            A Chromium  button "130"  focusable
+            A Safari    button "130"
+C261        no source location: a text node (text)
+            A Chromium  text "130"
+C262  S132  long.html:139:1  <button id="b131" type="button">
+            A Chromium  button "131"  focusable
+            A Safari    button "131"
+C263        no source location: a text node (text)
+            A Chromium  text "131"
+C264  S133  long.html:140:1  <button id="b132" type="button">
+            A Chromium  button "132"  focusable
+            A Safari    button "132"
+C265        no source location: a text node (text)
+            A Chromium  text "132"
+C266  S134  long.html:141:1  <button id="b133" type="button">
+            A Chromium  button "133"  focusable
+            A Safari    button "133"
+C267        no source location: a text node (text)
+            A Chromium  text "133"
+C268  S135  long.html:142:1  <button id="b134" type="button">
+            A Chromium  button "134"  focusable
+            A Safari    button "134"
+C269        no source location: a text node (text)
+            A Chromium  text "134"
+C270  S136  long.html:143:1  <button id="b135" type="button">
+            A Chromium  button "135"  focusable
+            A Safari    button "135"
+C271        no source location: a text node (text)
+            A Chromium  text "135"
+C272  S137  long.html:144:1  <button id="b136" type="button">
+            A Chromium  button "136"  focusable
+            A Safari    button "136"
+C273        no source location: a text node (text)
+            A Chromium  text "136"
+C274  S138  long.html:145:1  <button id="b137" type="button">
+            A Chromium  button "137"  focusable
+            A Safari    button "137"
+C275        no source location: a text node (text)
+            A Chromium  text "137"
+C276  S139  long.html:146:1  <button id="b138" type="button">
+            A Chromium  button "138"  focusable
+            A Safari    button "138"
+C277        no source location: a text node (text)
+            A Chromium  text "138"
+C278  S140  long.html:147:1  <button id="b139" type="button">
+            A Chromium  button "139"  focusable
+            A Safari    button "139"
+C279        no source location: a text node (text)
+            A Chromium  text "139"
+C280  S141  long.html:148:1  <button id="b140" type="button">
+            A Chromium  button "140"  focusable
+            A Safari    button "140"
+C281        no source location: a text node (text)
+            A Chromium  text "140"
+C282  S142  long.html:149:1  <button id="b141" type="button">
+            A Chromium  button "141"  focusable
+            A Safari    button "141"
+C283        no source location: a text node (text)
+            A Chromium  text "141"
+C284  S143  long.html:150:1  <button id="b142" type="button">
+            A Chromium  button "142"  focusable
+            A Safari    button "142"
+C285        no source location: a text node (text)
+            A Chromium  text "142"
+C286  S144  long.html:151:1  <button id="b143" type="button">
+            A Chromium  button "143"  focusable
+            A Safari    button "143"
+C287        no source location: a text node (text)
+            A Chromium  text "143"
+C288  S145  long.html:152:1  <button id="b144" type="button">
+            A Chromium  button "144"  focusable
+            A Safari    button "144"
+C289        no source location: a text node (text)
+            A Chromium  text "144"
+C290  S146  long.html:153:1  <button id="b145" type="button">
+            A Chromium  button "145"  focusable
+            A Safari    button "145"
+C291        no source location: a text node (text)
+            A Chromium  text "145"
+C292  S147  long.html:154:1  <button id="b146" type="button">
+            A Chromium  button "146"  focusable
+            A Safari    button "146"
+C293        no source location: a text node (text)
+            A Chromium  text "146"
+C294  S148  long.html:155:1  <button id="b147" type="button">
+            A Chromium  button "147"  focusable
+            A Safari    button "147"
+C295        no source location: a text node (text)
+            A Chromium  text "147"
+C296  S149  long.html:156:1  <button id="b148" type="button">
+            A Chromium  button "148"  focusable
+            A Safari    button "148"
+C297        no source location: a text node (text)
+            A Chromium  text "148"
+C298  S150  long.html:157:1  <button id="b149" type="button">
+            A Chromium  button "149"  focusable
+            A Safari    button "149"
+C299        no source location: a text node (text)
+            A Chromium  text "149"
+C300  S151  long.html:158:1  <button id="b150" type="button">
+            A Chromium  button "150"  focusable
+            A Safari    button "150"
+C301        no source location: a text node (text)
+            A Chromium  text "150"
+C302  S152  long.html:159:1  <button id="b151" type="button">
+            A Chromium  button "151"  focusable
+            A Safari    button "151"
+C303        no source location: a text node (text)
+            A Chromium  text "151"
+C304  S153  long.html:160:1  <button id="b152" type="button">
+            A Chromium  button "152"  focusable
+            A Safari    button "152"
+C305        no source location: a text node (text)
+            A Chromium  text "152"
+C306  S154  long.html:161:1  <button id="b153" type="button">
+            A Chromium  button "153"  focusable
+            A Safari    button "153"
+C307        no source location: a text node (text)
+            A Chromium  text "153"
+C308  S155  long.html:162:1  <button id="b154" type="button">
+            A Chromium  button "154"  focusable
+            A Safari    button "154"
+C309        no source location: a text node (text)
+            A Chromium  text "154"
+C310  S156  long.html:163:1  <button id="b155" type="button">
+            A Chromium  button "155"  focusable
+            A Safari    button "155"
+C311        no source location: a text node (text)
+            A Chromium  text "155"
+C312  S157  long.html:164:1  <button id="b156" type="button">
+            A Chromium  button "156"  focusable
+            A Safari    button "156"
+C313        no source location: a text node (text)
+            A Chromium  text "156"
+C314  S158  long.html:165:1  <button id="b157" type="button">
+            A Chromium  button "157"  focusable
+            A Safari    button "157"
+C315        no source location: a text node (text)
+            A Chromium  text "157"
+C316  S159  long.html:166:1  <button id="b158" type="button">
+            A Chromium  button "158"  focusable
+            A Safari    button "158"
+C317        no source location: a text node (text)
+            A Chromium  text "158"
+C318  S160  long.html:167:1  <button id="b159" type="button">
+            A Chromium  button "159"  focusable
+            A Safari    button "159"
+C319        no source location: a text node (text)
+            A Chromium  text "159"
+C320  S161  long.html:168:1  <button id="b160" type="button">
+            A Chromium  button "160"  focusable
+            A Safari    button "160"
+C321        no source location: a text node (text)
+            A Chromium  text "160"
+C322  S162  long.html:169:1  <button id="b161" type="button">
+            A Chromium  button "161"  focusable
+            A Safari    button "161"
+C323        no source location: a text node (text)
+            A Chromium  text "161"
+C324  S163  long.html:170:1  <button id="b162" type="button">
+            A Chromium  button "162"  focusable
+            A Safari    button "162"
+C325        no source location: a text node (text)
+            A Chromium  text "162"
+C326  S164  long.html:171:1  <button id="b163" type="button">
+            A Chromium  button "163"  focusable
+            A Safari    button "163"
+C327        no source location: a text node (text)
+            A Chromium  text "163"
+C328  S165  long.html:172:1  <button id="b164" type="button">
+            A Chromium  button "164"  focusable
+            A Safari    button "164"
+C329        no source location: a text node (text)
+            A Chromium  text "164"
+C330  S166  long.html:173:1  <button id="b165" type="button">
+            A Chromium  button "165"  focusable
+            A Safari    button "165"
+C331        no source location: a text node (text)
+            A Chromium  text "165"
+C332  S167  long.html:174:1  <button id="b166" type="button">
+            A Chromium  button "166"  focusable
+            A Safari    button "166"
+C333        no source location: a text node (text)
+            A Chromium  text "166"
+C334  S168  long.html:175:1  <button id="b167" type="button">
+            A Chromium  button "167"  focusable
+            A Safari    button "167"
+C335        no source location: a text node (text)
+            A Chromium  text "167"
+C336  S169  long.html:176:1  <button id="b168" type="button">
+            A Chromium  button "168"  focusable
+            A Safari    button "168"
+C337        no source location: a text node (text)
+            A Chromium  text "168"
+C338  S170  long.html:177:1  <button id="b169" type="button">
+            A Chromium  button "169"  focusable
+            A Safari    button "169"
+C339        no source location: a text node (text)
+            A Chromium  text "169"
+C340  S171  long.html:178:1  <button id="b170" type="button">
+            A Chromium  button "170"  focusable
+            A Safari    button "170"
+C341        no source location: a text node (text)
+            A Chromium  text "170"
+C342  S172  long.html:179:1  <button id="b171" type="button">
+            A Chromium  button "171"  focusable
+            A Safari    button "171"
+C343        no source location: a text node (text)
+            A Chromium  text "171"
+C344  S173  long.html:180:1  <button id="b172" type="button">
+            A Chromium  button "172"  focusable
+            A Safari    button "172"
+C345        no source location: a text node (text)
+            A Chromium  text "172"
+C346  S174  long.html:181:1  <button id="b173" type="button">
+            A Chromium  button "173"  focusable
+            A Safari    button "173"
+C347        no source location: a text node (text)
+            A Chromium  text "173"
+C348  S175  long.html:182:1  <button id="b174" type="button">
+            A Chromium  button "174"  focusable
+            A Safari    button "174"
+C349        no source location: a text node (text)
+            A Chromium  text "174"
+C350  S176  long.html:183:1  <button id="b175" type="button">
+            A Chromium  button "175"  focusable
+            A Safari    button "175"
+C351        no source location: a text node (text)
+            A Chromium  text "175"
+C352  S177  long.html:184:1  <button id="b176" type="button">
+            A Chromium  button "176"  focusable
+            A Safari    button "176"
+C353        no source location: a text node (text)
+            A Chromium  text "176"
+C354  S178  long.html:185:1  <button id="b177" type="button">
+            A Chromium  button "177"  focusable
+            A Safari    button "177"
+C355        no source location: a text node (text)
+            A Chromium  text "177"
+C356  S179  long.html:186:1  <button id="b178" type="button">
+            A Chromium  button "178"  focusable
+            A Safari    button "178"
+C357        no source location: a text node (text)
+            A Chromium  text "178"
+C358  S180  long.html:187:1  <button id="b179" type="button">
+            A Chromium  button "179"  focusable
+            A Safari    button "179"
+C359        no source location: a text node (text)
+            A Chromium  text "179"
+C360  S181  long.html:188:1  <button id="b180" type="button">
+            A Chromium  button "180"  focusable
+            A Safari    button "180"
+C361        no source location: a text node (text)
+            A Chromium  text "180"
+C362  S182  long.html:189:1  <button id="b181" type="button">
+            A Chromium  button "181"  focusable
+            A Safari    button "181"
+C363        no source location: a text node (text)
+            A Chromium  text "181"
+C364  S183  long.html:190:1  <button id="b182" type="button">
+            A Chromium  button "182"  focusable
+            A Safari    button "182"
+C365        no source location: a text node (text)
+            A Chromium  text "182"
+C366  S184  long.html:191:1  <button id="b183" type="button">
+            A Chromium  button "183"  focusable
+            A Safari    button "183"
+C367        no source location: a text node (text)
+            A Chromium  text "183"
+C368  S185  long.html:192:1  <button id="b184" type="button">
+            A Chromium  button "184"  focusable
+            A Safari    button "184"
+C369        no source location: a text node (text)
+            A Chromium  text "184"
+C370  S186  long.html:193:1  <button id="b185" type="button">
+            A Chromium  button "185"  focusable
+            A Safari    button "185"
+C371        no source location: a text node (text)
+            A Chromium  text "185"
+C372  S187  long.html:194:1  <button id="b186" type="button">
+            A Chromium  button "186"  focusable
+            A Safari    button "186"
+C373        no source location: a text node (text)
+            A Chromium  text "186"
+C374  S188  long.html:195:1  <button id="b187" type="button">
+            A Chromium  button "187"  focusable
+            A Safari    button "187"
+C375        no source location: a text node (text)
+            A Chromium  text "187"
+C376  S189  long.html:196:1  <button id="b188" type="button">
+            A Chromium  button "188"  focusable
+            A Safari    button "188"
+C377        no source location: a text node (text)
+            A Chromium  text "188"
+C378  S190  long.html:197:1  <button id="b189" type="button">
+            A Chromium  button "189"  focusable
+            A Safari    button "189"
+C379        no source location: a text node (text)
+            A Chromium  text "189"
+C380  S191  long.html:198:1  <button id="b190" type="button">
+            A Chromium  button "190"  focusable
+            A Safari    button "190"
+C381        no source location: a text node (text)
+            A Chromium  text "190"
+C382  S192  long.html:199:1  <button id="b191" type="button">
+            A Chromium  button "191"  focusable
+            A Safari    button "191"
+C383        no source location: a text node (text)
+            A Chromium  text "191"
+C384  S193  long.html:200:1  <button id="b192" type="button">
+            A Chromium  button "192"  focusable
+            A Safari    button "192"
+C385        no source location: a text node (text)
+            A Chromium  text "192"
+C386  S194  long.html:201:1  <button id="b193" type="button">
+            A Chromium  button "193"  focusable
+            A Safari    button "193"
+C387        no source location: a text node (text)
+            A Chromium  text "193"
+C388  S195  long.html:202:1  <button id="b194" type="button">
+            A Chromium  button "194"  focusable
+            A Safari    button "194"
+C389        no source location: a text node (text)
+            A Chromium  text "194"
+C390  S196  long.html:203:1  <button id="b195" type="button">
+            A Chromium  button "195"  focusable
+            A Safari    button "195"
+C391        no source location: a text node (text)
+            A Chromium  text "195"
+C392  S197  long.html:204:1  <button id="b196" type="button">
+            A Chromium  button "196"  focusable
+            A Safari    button "196"
+C393        no source location: a text node (text)
+            A Chromium  text "196"
+C394  S198  long.html:205:1  <button id="b197" type="button">
+            A Chromium  button "197"  focusable
+            A Safari    button "197"
+C395        no source location: a text node (text)
+            A Chromium  text "197"
+C396  S199  long.html:206:1  <button id="b198" type="button">
+            A Chromium  button "198"  focusable
+            A Safari    button "198"
+C397        no source location: a text node (text)
+            A Chromium  text "198"
+C398  S200  long.html:207:1  <button id="b199" type="button">
+            A Chromium  button "199"  focusable
+            A Safari    button "199"
+C399        no source location: a text node (text)
+            A Chromium  text "199"
+C400  S201  long.html:208:1  <button id="b200" type="button">
+            A Chromium  button "200"  focusable
+            A Safari    button "200"
+C401        no source location: a text node (text)
+            A Chromium  text "200"
+C402  S202  long.html:209:1  <button id="b201" type="button">
+            A Chromium  button "201"  focusable
+            A Safari    button "201"
+C403        no source location: a text node (text)
+            A Chromium  text "201"

@@ -1,0 +1,1033 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+  1  A AXWebArea (platform role) "Long tab order"
+       no source location: the document itself (document)
+       name sources not available from this engine
+     ~ "Long tab order"
+  2    A button "001"
+         long.html:9:1  <button id="b001" type="button">
+         name sources not available from this engine
+       ~ "001, button"
+  3    A button "002"
+         long.html:10:1  <button id="b002" type="button">
+         name sources not available from this engine
+       ~ "002, button"
+  4    A button "003"
+         long.html:11:1  <button id="b003" type="button">
+         name sources not available from this engine
+       ~ "003, button"
+  5    A button "004"
+         long.html:12:1  <button id="b004" type="button">
+         name sources not available from this engine
+       ~ "004, button"
+  6    A button "005"
+         long.html:13:1  <button id="b005" type="button">
+         name sources not available from this engine
+       ~ "005, button"
+  7    A button "006"
+         long.html:14:1  <button id="b006" type="button">
+         name sources not available from this engine
+       ~ "006, button"
+  8    A button "007"
+         long.html:15:1  <button id="b007" type="button">
+         name sources not available from this engine
+       ~ "007, button"
+  9    A button "008"
+         long.html:16:1  <button id="b008" type="button">
+         name sources not available from this engine
+       ~ "008, button"
+ 10    A button "009"
+         long.html:17:1  <button id="b009" type="button">
+         name sources not available from this engine
+       ~ "009, button"
+ 11    A button "010"
+         long.html:18:1  <button id="b010" type="button">
+         name sources not available from this engine
+       ~ "010, button"
+ 12    A button "011"
+         long.html:19:1  <button id="b011" type="button">
+         name sources not available from this engine
+       ~ "011, button"
+ 13    A button "012"
+         long.html:20:1  <button id="b012" type="button">
+         name sources not available from this engine
+       ~ "012, button"
+ 14    A button "013"
+         long.html:21:1  <button id="b013" type="button">
+         name sources not available from this engine
+       ~ "013, button"
+ 15    A button "014"
+         long.html:22:1  <button id="b014" type="button">
+         name sources not available from this engine
+       ~ "014, button"
+ 16    A button "015"
+         long.html:23:1  <button id="b015" type="button">
+         name sources not available from this engine
+       ~ "015, button"
+ 17    A button "016"
+         long.html:24:1  <button id="b016" type="button">
+         name sources not available from this engine
+       ~ "016, button"
+ 18    A button "017"
+         long.html:25:1  <button id="b017" type="button">
+         name sources not available from this engine
+       ~ "017, button"
+ 19    A button "018"
+         long.html:26:1  <button id="b018" type="button">
+         name sources not available from this engine
+       ~ "018, button"
+ 20    A button "019"
+         long.html:27:1  <button id="b019" type="button">
+         name sources not available from this engine
+       ~ "019, button"
+ 21    A button "020"
+         long.html:28:1  <button id="b020" type="button">
+         name sources not available from this engine
+       ~ "020, button"
+ 22    A button "021"
+         long.html:29:1  <button id="b021" type="button">
+         name sources not available from this engine
+       ~ "021, button"
+ 23    A button "022"
+         long.html:30:1  <button id="b022" type="button">
+         name sources not available from this engine
+       ~ "022, button"
+ 24    A button "023"
+         long.html:31:1  <button id="b023" type="button">
+         name sources not available from this engine
+       ~ "023, button"
+ 25    A button "024"
+         long.html:32:1  <button id="b024" type="button">
+         name sources not available from this engine
+       ~ "024, button"
+ 26    A button "025"
+         long.html:33:1  <button id="b025" type="button">
+         name sources not available from this engine
+       ~ "025, button"
+ 27    A button "026"
+         long.html:34:1  <button id="b026" type="button">
+         name sources not available from this engine
+       ~ "026, button"
+ 28    A button "027"
+         long.html:35:1  <button id="b027" type="button">
+         name sources not available from this engine
+       ~ "027, button"
+ 29    A button "028"
+         long.html:36:1  <button id="b028" type="button">
+         name sources not available from this engine
+       ~ "028, button"
+ 30    A button "029"
+         long.html:37:1  <button id="b029" type="button">
+         name sources not available from this engine
+       ~ "029, button"
+ 31    A button "030"
+         long.html:38:1  <button id="b030" type="button">
+         name sources not available from this engine
+       ~ "030, button"
+ 32    A button "031"
+         long.html:39:1  <button id="b031" type="button">
+         name sources not available from this engine
+       ~ "031, button"
+ 33    A button "032"
+         long.html:40:1  <button id="b032" type="button">
+         name sources not available from this engine
+       ~ "032, button"
+ 34    A button "033"
+         long.html:41:1  <button id="b033" type="button">
+         name sources not available from this engine
+       ~ "033, button"
+ 35    A button "034"
+         long.html:42:1  <button id="b034" type="button">
+         name sources not available from this engine
+       ~ "034, button"
+ 36    A button "035"
+         long.html:43:1  <button id="b035" type="button">
+         name sources not available from this engine
+       ~ "035, button"
+ 37    A button "036"
+         long.html:44:1  <button id="b036" type="button">
+         name sources not available from this engine
+       ~ "036, button"
+ 38    A button "037"
+         long.html:45:1  <button id="b037" type="button">
+         name sources not available from this engine
+       ~ "037, button"
+ 39    A button "038"
+         long.html:46:1  <button id="b038" type="button">
+         name sources not available from this engine
+       ~ "038, button"
+ 40    A button "039"
+         long.html:47:1  <button id="b039" type="button">
+         name sources not available from this engine
+       ~ "039, button"
+ 41    A button "040"
+         long.html:48:1  <button id="b040" type="button">
+         name sources not available from this engine
+       ~ "040, button"
+ 42    A button "041"
+         long.html:49:1  <button id="b041" type="button">
+         name sources not available from this engine
+       ~ "041, button"
+ 43    A button "042"
+         long.html:50:1  <button id="b042" type="button">
+         name sources not available from this engine
+       ~ "042, button"
+ 44    A button "043"
+         long.html:51:1  <button id="b043" type="button">
+         name sources not available from this engine
+       ~ "043, button"
+ 45    A button "044"
+         long.html:52:1  <button id="b044" type="button">
+         name sources not available from this engine
+       ~ "044, button"
+ 46    A button "045"
+         long.html:53:1  <button id="b045" type="button">
+         name sources not available from this engine
+       ~ "045, button"
+ 47    A button "046"
+         long.html:54:1  <button id="b046" type="button">
+         name sources not available from this engine
+       ~ "046, button"
+ 48    A button "047"
+         long.html:55:1  <button id="b047" type="button">
+         name sources not available from this engine
+       ~ "047, button"
+ 49    A button "048"
+         long.html:56:1  <button id="b048" type="button">
+         name sources not available from this engine
+       ~ "048, button"
+ 50    A button "049"
+         long.html:57:1  <button id="b049" type="button">
+         name sources not available from this engine
+       ~ "049, button"
+ 51    A button "050"
+         long.html:58:1  <button id="b050" type="button">
+         name sources not available from this engine
+       ~ "050, button"
+ 52    A button "051"
+         long.html:59:1  <button id="b051" type="button">
+         name sources not available from this engine
+       ~ "051, button"
+ 53    A button "052"
+         long.html:60:1  <button id="b052" type="button">
+         name sources not available from this engine
+       ~ "052, button"
+ 54    A button "053"
+         long.html:61:1  <button id="b053" type="button">
+         name sources not available from this engine
+       ~ "053, button"
+ 55    A button "054"
+         long.html:62:1  <button id="b054" type="button">
+         name sources not available from this engine
+       ~ "054, button"
+ 56    A button "055"
+         long.html:63:1  <button id="b055" type="button">
+         name sources not available from this engine
+       ~ "055, button"
+ 57    A button "056"
+         long.html:64:1  <button id="b056" type="button">
+         name sources not available from this engine
+       ~ "056, button"
+ 58    A button "057"
+         long.html:65:1  <button id="b057" type="button">
+         name sources not available from this engine
+       ~ "057, button"
+ 59    A button "058"
+         long.html:66:1  <button id="b058" type="button">
+         name sources not available from this engine
+       ~ "058, button"
+ 60    A button "059"
+         long.html:67:1  <button id="b059" type="button">
+         name sources not available from this engine
+       ~ "059, button"
+ 61    A button "060"
+         long.html:68:1  <button id="b060" type="button">
+         name sources not available from this engine
+       ~ "060, button"
+ 62    A button "061"
+         long.html:69:1  <button id="b061" type="button">
+         name sources not available from this engine
+       ~ "061, button"
+ 63    A button "062"
+         long.html:70:1  <button id="b062" type="button">
+         name sources not available from this engine
+       ~ "062, button"
+ 64    A button "063"
+         long.html:71:1  <button id="b063" type="button">
+         name sources not available from this engine
+       ~ "063, button"
+ 65    A button "064"
+         long.html:72:1  <button id="b064" type="button">
+         name sources not available from this engine
+       ~ "064, button"
+ 66    A button "065"
+         long.html:73:1  <button id="b065" type="button">
+         name sources not available from this engine
+       ~ "065, button"
+ 67    A button "066"
+         long.html:74:1  <button id="b066" type="button">
+         name sources not available from this engine
+       ~ "066, button"
+ 68    A button "067"
+         long.html:75:1  <button id="b067" type="button">
+         name sources not available from this engine
+       ~ "067, button"
+ 69    A button "068"
+         long.html:76:1  <button id="b068" type="button">
+         name sources not available from this engine
+       ~ "068, button"
+ 70    A button "069"
+         long.html:77:1  <button id="b069" type="button">
+         name sources not available from this engine
+       ~ "069, button"
+ 71    A button "070"
+         long.html:78:1  <button id="b070" type="button">
+         name sources not available from this engine
+       ~ "070, button"
+ 72    A button "071"
+         long.html:79:1  <button id="b071" type="button">
+         name sources not available from this engine
+       ~ "071, button"
+ 73    A button "072"
+         long.html:80:1  <button id="b072" type="button">
+         name sources not available from this engine
+       ~ "072, button"
+ 74    A button "073"
+         long.html:81:1  <button id="b073" type="button">
+         name sources not available from this engine
+       ~ "073, button"
+ 75    A button "074"
+         long.html:82:1  <button id="b074" type="button">
+         name sources not available from this engine
+       ~ "074, button"
+ 76    A button "075"
+         long.html:83:1  <button id="b075" type="button">
+         name sources not available from this engine
+       ~ "075, button"
+ 77    A button "076"
+         long.html:84:1  <button id="b076" type="button">
+         name sources not available from this engine
+       ~ "076, button"
+ 78    A button "077"
+         long.html:85:1  <button id="b077" type="button">
+         name sources not available from this engine
+       ~ "077, button"
+ 79    A button "078"
+         long.html:86:1  <button id="b078" type="button">
+         name sources not available from this engine
+       ~ "078, button"
+ 80    A button "079"
+         long.html:87:1  <button id="b079" type="button">
+         name sources not available from this engine
+       ~ "079, button"
+ 81    A button "080"
+         long.html:88:1  <button id="b080" type="button">
+         name sources not available from this engine
+       ~ "080, button"
+ 82    A button "081"
+         long.html:89:1  <button id="b081" type="button">
+         name sources not available from this engine
+       ~ "081, button"
+ 83    A button "082"
+         long.html:90:1  <button id="b082" type="button">
+         name sources not available from this engine
+       ~ "082, button"
+ 84    A button "083"
+         long.html:91:1  <button id="b083" type="button">
+         name sources not available from this engine
+       ~ "083, button"
+ 85    A button "084"
+         long.html:92:1  <button id="b084" type="button">
+         name sources not available from this engine
+       ~ "084, button"
+ 86    A button "085"
+         long.html:93:1  <button id="b085" type="button">
+         name sources not available from this engine
+       ~ "085, button"
+ 87    A button "086"
+         long.html:94:1  <button id="b086" type="button">
+         name sources not available from this engine
+       ~ "086, button"
+ 88    A button "087"
+         long.html:95:1  <button id="b087" type="button">
+         name sources not available from this engine
+       ~ "087, button"
+ 89    A button "088"
+         long.html:96:1  <button id="b088" type="button">
+         name sources not available from this engine
+       ~ "088, button"
+ 90    A button "089"
+         long.html:97:1  <button id="b089" type="button">
+         name sources not available from this engine
+       ~ "089, button"
+ 91    A button "090"
+         long.html:98:1  <button id="b090" type="button">
+         name sources not available from this engine
+       ~ "090, button"
+ 92    A button "091"
+         long.html:99:1  <button id="b091" type="button">
+         name sources not available from this engine
+       ~ "091, button"
+ 93    A button "092"
+         long.html:100:1  <button id="b092" type="button">
+         name sources not available from this engine
+       ~ "092, button"
+ 94    A button "093"
+         long.html:101:1  <button id="b093" type="button">
+         name sources not available from this engine
+       ~ "093, button"
+ 95    A button "094"
+         long.html:102:1  <button id="b094" type="button">
+         name sources not available from this engine
+       ~ "094, button"
+ 96    A button "095"
+         long.html:103:1  <button id="b095" type="button">
+         name sources not available from this engine
+       ~ "095, button"
+ 97    A button "096"
+         long.html:104:1  <button id="b096" type="button">
+         name sources not available from this engine
+       ~ "096, button"
+ 98    A button "097"
+         long.html:105:1  <button id="b097" type="button">
+         name sources not available from this engine
+       ~ "097, button"
+ 99    A button "098"
+         long.html:106:1  <button id="b098" type="button">
+         name sources not available from this engine
+       ~ "098, button"
+100    A button "099"
+         long.html:107:1  <button id="b099" type="button">
+         name sources not available from this engine
+       ~ "099, button"
+101    A button "100"
+         long.html:108:1  <button id="b100" type="button">
+         name sources not available from this engine
+       ~ "100, button"
+102    A button "101"
+         long.html:109:1  <button id="b101" type="button">
+         name sources not available from this engine
+       ~ "101, button"
+103    A button "102"
+         long.html:110:1  <button id="b102" type="button">
+         name sources not available from this engine
+       ~ "102, button"
+104    A button "103"
+         long.html:111:1  <button id="b103" type="button">
+         name sources not available from this engine
+       ~ "103, button"
+105    A button "104"
+         long.html:112:1  <button id="b104" type="button">
+         name sources not available from this engine
+       ~ "104, button"
+106    A button "105"
+         long.html:113:1  <button id="b105" type="button">
+         name sources not available from this engine
+       ~ "105, button"
+107    A button "106"
+         long.html:114:1  <button id="b106" type="button">
+         name sources not available from this engine
+       ~ "106, button"
+108    A button "107"
+         long.html:115:1  <button id="b107" type="button">
+         name sources not available from this engine
+       ~ "107, button"
+109    A button "108"
+         long.html:116:1  <button id="b108" type="button">
+         name sources not available from this engine
+       ~ "108, button"
+110    A button "109"
+         long.html:117:1  <button id="b109" type="button">
+         name sources not available from this engine
+       ~ "109, button"
+111    A button "110"
+         long.html:118:1  <button id="b110" type="button">
+         name sources not available from this engine
+       ~ "110, button"
+112    A button "111"
+         long.html:119:1  <button id="b111" type="button">
+         name sources not available from this engine
+       ~ "111, button"
+113    A button "112"
+         long.html:120:1  <button id="b112" type="button">
+         name sources not available from this engine
+       ~ "112, button"
+114    A button "113"
+         long.html:121:1  <button id="b113" type="button">
+         name sources not available from this engine
+       ~ "113, button"
+115    A button "114"
+         long.html:122:1  <button id="b114" type="button">
+         name sources not available from this engine
+       ~ "114, button"
+116    A button "115"
+         long.html:123:1  <button id="b115" type="button">
+         name sources not available from this engine
+       ~ "115, button"
+117    A button "116"
+         long.html:124:1  <button id="b116" type="button">
+         name sources not available from this engine
+       ~ "116, button"
+118    A button "117"
+         long.html:125:1  <button id="b117" type="button">
+         name sources not available from this engine
+       ~ "117, button"
+119    A button "118"
+         long.html:126:1  <button id="b118" type="button">
+         name sources not available from this engine
+       ~ "118, button"
+120    A button "119"
+         long.html:127:1  <button id="b119" type="button">
+         name sources not available from this engine
+       ~ "119, button"
+121    A button "120"
+         long.html:128:1  <button id="b120" type="button">
+         name sources not available from this engine
+       ~ "120, button"
+122    A button "121"
+         long.html:129:1  <button id="b121" type="button">
+         name sources not available from this engine
+       ~ "121, button"
+123    A button "122"
+         long.html:130:1  <button id="b122" type="button">
+         name sources not available from this engine
+       ~ "122, button"
+124    A button "123"
+         long.html:131:1  <button id="b123" type="button">
+         name sources not available from this engine
+       ~ "123, button"
+125    A button "124"
+         long.html:132:1  <button id="b124" type="button">
+         name sources not available from this engine
+       ~ "124, button"
+126    A button "125"
+         long.html:133:1  <button id="b125" type="button">
+         name sources not available from this engine
+       ~ "125, button"
+127    A button "126"
+         long.html:134:1  <button id="b126" type="button">
+         name sources not available from this engine
+       ~ "126, button"
+128    A button "127"
+         long.html:135:1  <button id="b127" type="button">
+         name sources not available from this engine
+       ~ "127, button"
+129    A button "128"
+         long.html:136:1  <button id="b128" type="button">
+         name sources not available from this engine
+       ~ "128, button"
+130    A button "129"
+         long.html:137:1  <button id="b129" type="button">
+         name sources not available from this engine
+       ~ "129, button"
+131    A button "130"
+         long.html:138:1  <button id="b130" type="button">
+         name sources not available from this engine
+       ~ "130, button"
+132    A button "131"
+         long.html:139:1  <button id="b131" type="button">
+         name sources not available from this engine
+       ~ "131, button"
+133    A button "132"
+         long.html:140:1  <button id="b132" type="button">
+         name sources not available from this engine
+       ~ "132, button"
+134    A button "133"
+         long.html:141:1  <button id="b133" type="button">
+         name sources not available from this engine
+       ~ "133, button"
+135    A button "134"
+         long.html:142:1  <button id="b134" type="button">
+         name sources not available from this engine
+       ~ "134, button"
+136    A button "135"
+         long.html:143:1  <button id="b135" type="button">
+         name sources not available from this engine
+       ~ "135, button"
+137    A button "136"
+         long.html:144:1  <button id="b136" type="button">
+         name sources not available from this engine
+       ~ "136, button"
+138    A button "137"
+         long.html:145:1  <button id="b137" type="button">
+         name sources not available from this engine
+       ~ "137, button"
+139    A button "138"
+         long.html:146:1  <button id="b138" type="button">
+         name sources not available from this engine
+       ~ "138, button"
+140    A button "139"
+         long.html:147:1  <button id="b139" type="button">
+         name sources not available from this engine
+       ~ "139, button"
+141    A button "140"
+         long.html:148:1  <button id="b140" type="button">
+         name sources not available from this engine
+       ~ "140, button"
+142    A button "141"
+         long.html:149:1  <button id="b141" type="button">
+         name sources not available from this engine
+       ~ "141, button"
+143    A button "142"
+         long.html:150:1  <button id="b142" type="button">
+         name sources not available from this engine
+       ~ "142, button"
+144    A button "143"
+         long.html:151:1  <button id="b143" type="button">
+         name sources not available from this engine
+       ~ "143, button"
+145    A button "144"
+         long.html:152:1  <button id="b144" type="button">
+         name sources not available from this engine
+       ~ "144, button"
+146    A button "145"
+         long.html:153:1  <button id="b145" type="button">
+         name sources not available from this engine
+       ~ "145, button"
+147    A button "146"
+         long.html:154:1  <button id="b146" type="button">
+         name sources not available from this engine
+       ~ "146, button"
+148    A button "147"
+         long.html:155:1  <button id="b147" type="button">
+         name sources not available from this engine
+       ~ "147, button"
+149    A button "148"
+         long.html:156:1  <button id="b148" type="button">
+         name sources not available from this engine
+       ~ "148, button"
+150    A button "149"
+         long.html:157:1  <button id="b149" type="button">
+         name sources not available from this engine
+       ~ "149, button"
+151    A button "150"
+         long.html:158:1  <button id="b150" type="button">
+         name sources not available from this engine
+       ~ "150, button"
+152    A button "151"
+         long.html:159:1  <button id="b151" type="button">
+         name sources not available from this engine
+       ~ "151, button"
+153    A button "152"
+         long.html:160:1  <button id="b152" type="button">
+         name sources not available from this engine
+       ~ "152, button"
+154    A button "153"
+         long.html:161:1  <button id="b153" type="button">
+         name sources not available from this engine
+       ~ "153, button"
+155    A button "154"
+         long.html:162:1  <button id="b154" type="button">
+         name sources not available from this engine
+       ~ "154, button"
+156    A button "155"
+         long.html:163:1  <button id="b155" type="button">
+         name sources not available from this engine
+       ~ "155, button"
+157    A button "156"
+         long.html:164:1  <button id="b156" type="button">
+         name sources not available from this engine
+       ~ "156, button"
+158    A button "157"
+         long.html:165:1  <button id="b157" type="button">
+         name sources not available from this engine
+       ~ "157, button"
+159    A button "158"
+         long.html:166:1  <button id="b158" type="button">
+         name sources not available from this engine
+       ~ "158, button"
+160    A button "159"
+         long.html:167:1  <button id="b159" type="button">
+         name sources not available from this engine
+       ~ "159, button"
+161    A button "160"
+         long.html:168:1  <button id="b160" type="button">
+         name sources not available from this engine
+       ~ "160, button"
+162    A button "161"
+         long.html:169:1  <button id="b161" type="button">
+         name sources not available from this engine
+       ~ "161, button"
+163    A button "162"
+         long.html:170:1  <button id="b162" type="button">
+         name sources not available from this engine
+       ~ "162, button"
+164    A button "163"
+         long.html:171:1  <button id="b163" type="button">
+         name sources not available from this engine
+       ~ "163, button"
+165    A button "164"
+         long.html:172:1  <button id="b164" type="button">
+         name sources not available from this engine
+       ~ "164, button"
+166    A button "165"
+         long.html:173:1  <button id="b165" type="button">
+         name sources not available from this engine
+       ~ "165, button"
+167    A button "166"
+         long.html:174:1  <button id="b166" type="button">
+         name sources not available from this engine
+       ~ "166, button"
+168    A button "167"
+         long.html:175:1  <button id="b167" type="button">
+         name sources not available from this engine
+       ~ "167, button"
+169    A button "168"
+         long.html:176:1  <button id="b168" type="button">
+         name sources not available from this engine
+       ~ "168, button"
+170    A button "169"
+         long.html:177:1  <button id="b169" type="button">
+         name sources not available from this engine
+       ~ "169, button"
+171    A button "170"
+         long.html:178:1  <button id="b170" type="button">
+         name sources not available from this engine
+       ~ "170, button"
+172    A button "171"
+         long.html:179:1  <button id="b171" type="button">
+         name sources not available from this engine
+       ~ "171, button"
+173    A button "172"
+         long.html:180:1  <button id="b172" type="button">
+         name sources not available from this engine
+       ~ "172, button"
+174    A button "173"
+         long.html:181:1  <button id="b173" type="button">
+         name sources not available from this engine
+       ~ "173, button"
+175    A button "174"
+         long.html:182:1  <button id="b174" type="button">
+         name sources not available from this engine
+       ~ "174, button"
+176    A button "175"
+         long.html:183:1  <button id="b175" type="button">
+         name sources not available from this engine
+       ~ "175, button"
+177    A button "176"
+         long.html:184:1  <button id="b176" type="button">
+         name sources not available from this engine
+       ~ "176, button"
+178    A button "177"
+         long.html:185:1  <button id="b177" type="button">
+         name sources not available from this engine
+       ~ "177, button"
+179    A button "178"
+         long.html:186:1  <button id="b178" type="button">
+         name sources not available from this engine
+       ~ "178, button"
+180    A button "179"
+         long.html:187:1  <button id="b179" type="button">
+         name sources not available from this engine
+       ~ "179, button"
+181    A button "180"
+         long.html:188:1  <button id="b180" type="button">
+         name sources not available from this engine
+       ~ "180, button"
+182    A button "181"
+         long.html:189:1  <button id="b181" type="button">
+         name sources not available from this engine
+       ~ "181, button"
+183    A button "182"
+         long.html:190:1  <button id="b182" type="button">
+         name sources not available from this engine
+       ~ "182, button"
+184    A button "183"
+         long.html:191:1  <button id="b183" type="button">
+         name sources not available from this engine
+       ~ "183, button"
+185    A button "184"
+         long.html:192:1  <button id="b184" type="button">
+         name sources not available from this engine
+       ~ "184, button"
+186    A button "185"
+         long.html:193:1  <button id="b185" type="button">
+         name sources not available from this engine
+       ~ "185, button"
+187    A button "186"
+         long.html:194:1  <button id="b186" type="button">
+         name sources not available from this engine
+       ~ "186, button"
+188    A button "187"
+         long.html:195:1  <button id="b187" type="button">
+         name sources not available from this engine
+       ~ "187, button"
+189    A button "188"
+         long.html:196:1  <button id="b188" type="button">
+         name sources not available from this engine
+       ~ "188, button"
+190    A button "189"
+         long.html:197:1  <button id="b189" type="button">
+         name sources not available from this engine
+       ~ "189, button"
+191    A button "190"
+         long.html:198:1  <button id="b190" type="button">
+         name sources not available from this engine
+       ~ "190, button"
+192    A button "191"
+         long.html:199:1  <button id="b191" type="button">
+         name sources not available from this engine
+       ~ "191, button"
+193    A button "192"
+         long.html:200:1  <button id="b192" type="button">
+         name sources not available from this engine
+       ~ "192, button"
+194    A button "193"
+         long.html:201:1  <button id="b193" type="button">
+         name sources not available from this engine
+       ~ "193, button"
+195    A button "194"
+         long.html:202:1  <button id="b194" type="button">
+         name sources not available from this engine
+       ~ "194, button"
+196    A button "195"
+         long.html:203:1  <button id="b195" type="button">
+         name sources not available from this engine
+       ~ "195, button"
+197    A button "196"
+         long.html:204:1  <button id="b196" type="button">
+         name sources not available from this engine
+       ~ "196, button"
+198    A button "197"
+         long.html:205:1  <button id="b197" type="button">
+         name sources not available from this engine
+       ~ "197, button"
+199    A button "198"
+         long.html:206:1  <button id="b198" type="button">
+         name sources not available from this engine
+       ~ "198, button"
+200    A button "199"
+         long.html:207:1  <button id="b199" type="button">
+         name sources not available from this engine
+       ~ "199, button"
+201    A button "200"
+         long.html:208:1  <button id="b200" type="button">
+         name sources not available from this engine
+       ~ "200, button"
+202    A button "201"
+         long.html:209:1  <button id="b201" type="button">
+         name sources not available from this engine
+       ~ "201, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [2] button "001"
+  [3] button "002"
+  [4] button "003"
+  [5] button "004"
+  [6] button "005"
+  [7] button "006"
+  [8] button "007"
+  [9] button "008"
+  [10] button "009"
+  [11] button "010"
+  [12] button "011"
+  [13] button "012"
+  [14] button "013"
+  [15] button "014"
+  [16] button "015"
+  [17] button "016"
+  [18] button "017"
+  [19] button "018"
+  [20] button "019"
+  [21] button "020"
+  [22] button "021"
+  [23] button "022"
+  [24] button "023"
+  [25] button "024"
+  [26] button "025"
+  [27] button "026"
+  [28] button "027"
+  [29] button "028"
+  [30] button "029"
+  [31] button "030"
+  [32] button "031"
+  [33] button "032"
+  [34] button "033"
+  [35] button "034"
+  [36] button "035"
+  [37] button "036"
+  [38] button "037"
+  [39] button "038"
+  [40] button "039"
+  [41] button "040"
+  [42] button "041"
+  [43] button "042"
+  [44] button "043"
+  [45] button "044"
+  [46] button "045"
+  [47] button "046"
+  [48] button "047"
+  [49] button "048"
+  [50] button "049"
+  [51] button "050"
+  [52] button "051"
+  [53] button "052"
+  [54] button "053"
+  [55] button "054"
+  [56] button "055"
+  [57] button "056"
+  [58] button "057"
+  [59] button "058"
+  [60] button "059"
+  [61] button "060"
+  [62] button "061"
+  [63] button "062"
+  [64] button "063"
+  [65] button "064"
+  [66] button "065"
+  [67] button "066"
+  [68] button "067"
+  [69] button "068"
+  [70] button "069"
+  [71] button "070"
+  [72] button "071"
+  [73] button "072"
+  [74] button "073"
+  [75] button "074"
+  [76] button "075"
+  [77] button "076"
+  [78] button "077"
+  [79] button "078"
+  [80] button "079"
+  [81] button "080"
+  [82] button "081"
+  [83] button "082"
+  [84] button "083"
+  [85] button "084"
+  [86] button "085"
+  [87] button "086"
+  [88] button "087"
+  [89] button "088"
+  [90] button "089"
+  [91] button "090"
+  [92] button "091"
+  [93] button "092"
+  [94] button "093"
+  [95] button "094"
+  [96] button "095"
+  [97] button "096"
+  [98] button "097"
+  [99] button "098"
+  [100] button "099"
+  [101] button "100"
+  [102] button "101"
+  [103] button "102"
+  [104] button "103"
+  [105] button "104"
+  [106] button "105"
+  [107] button "106"
+  [108] button "107"
+  [109] button "108"
+  [110] button "109"
+  [111] button "110"
+  [112] button "111"
+  [113] button "112"
+  [114] button "113"
+  [115] button "114"
+  [116] button "115"
+  [117] button "116"
+  [118] button "117"
+  [119] button "118"
+  [120] button "119"
+  [121] button "120"
+  [122] button "121"
+  [123] button "122"
+  [124] button "123"
+  [125] button "124"
+  [126] button "125"
+  [127] button "126"
+  [128] button "127"
+  [129] button "128"
+  [130] button "129"
+  [131] button "130"
+  [132] button "131"
+  [133] button "132"
+  [134] button "133"
+  [135] button "134"
+  [136] button "135"
+  [137] button "136"
+  [138] button "137"
+  [139] button "138"
+  [140] button "139"
+  [141] button "140"
+  [142] button "141"
+  [143] button "142"
+  [144] button "143"
+  [145] button "144"
+  [146] button "145"
+  [147] button "146"
+  [148] button "147"
+  [149] button "148"
+  [150] button "149"
+  [151] button "150"
+  [152] button "151"
+  [153] button "152"
+  [154] button "153"
+  [155] button "154"
+  [156] button "155"
+  [157] button "156"
+  [158] button "157"
+  [159] button "158"
+  [160] button "159"
+  [161] button "160"
+  [162] button "161"
+  [163] button "162"
+  [164] button "163"
+  [165] button "164"
+  [166] button "165"
+  [167] button "166"
+  [168] button "167"
+  [169] button "168"
+  [170] button "169"
+  [171] button "170"
+  [172] button "171"
+  [173] button "172"
+  [174] button "173"
+  [175] button "174"
+  [176] button "175"
+  [177] button "176"
+  [178] button "177"
+  [179] button "178"
+  [180] button "179"
+  [181] button "180"
+  [182] button "181"
+  [183] button "182"
+  [184] button "183"
+  [185] button "184"
+  [186] button "185"
+  [187] button "186"
+  [188] button "187"
+  [189] button "188"
+  [190] button "189"
+  [191] button "190"
+  [192] button "191"
+  [193] button "192"
+  [194] button "193"
+  [195] button "194"
+  [196] button "195"
+  [197] button "196"
+  [198] button "197"
+  [199] button "198"
+  [200] button "199"
+  [201] button "200"
+  [202] button "201"
+
+Tab order
+  not available from this engine

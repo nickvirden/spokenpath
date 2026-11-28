@@ -1,0 +1,41 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Name from placeholder"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Name from placeholder"
+2    A AXGroup (platform role) (no accessible name)
+       placeholder.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A textbox (no accessible name)
+         placeholder.html:9:1  <input id="target" type="text" placeholder="Placeholder text">
+         no accessible name; name sources not available from this engine
+       ~ "textbox"
+4        A AXGroup/AXEmptyGroup (platform role) (no accessible name)
+           no source location: its origin could not be established (unknown)
+           no accessible name; name sources not available from this engine
+         ~ ""
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] textbox (no accessible name)
+
+Tab order
+  not available from this engine

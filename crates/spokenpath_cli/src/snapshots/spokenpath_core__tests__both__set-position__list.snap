@@ -1,0 +1,42 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1       no source location: the document itself (document)
+         A Chromium  RootWebArea (internal role) "List with a hidden item"  focusable, focused
+     S1  no source location: the document itself (document)
+         A Safari    AXWebArea (platform role) "List with a hidden item"
+C2   S2  list.html:8:1  <ul id="list">
+         A Chromium  list (no accessible name)
+         A Safari    list (no accessible name)
+C3   S3  list.html:9:1  <li id="first">
+         A Chromium  listitem (no accessible name)  level 1  1 of 3 (computed by tool)
+         A Safari    AXGroup (platform role) (no accessible name)  value "First"
+C4       no source location: the snapshot's DOM does not hold this node (not-in-dom)
+         A Chromium  ListMarker (internal role) "• "
+C5       no source location: a text node (text)
+         A Chromium  text "First"
+     S4  no source location: a text node (text)
+         A Safari    text "• First"
+C6   S5  list.html:11:1  <li id="second">
+         A Chromium  listitem (no accessible name)  level 1  2 of 3 (computed by tool)
+         A Safari    AXGroup (platform role) (no accessible name)  value "Second"
+C7       no source location: the snapshot's DOM does not hold this node (not-in-dom)
+         A Chromium  ListMarker (internal role) "• "
+C8       no source location: a text node (text)
+         A Chromium  text "Second"
+     S6  no source location: a text node (text)
+         A Safari    text "• Second"
+C9   S7  list.html:12:1  <li id="third">
+         A Chromium  listitem (no accessible name)  level 1  3 of 3 (computed by tool)
+         A Safari    AXGroup (platform role) (no accessible name)  value "Third"
+C10      no source location: the snapshot's DOM does not hold this node (not-in-dom)
+         A Chromium  ListMarker (internal role) "• "
+C11      no source location: a text node (text)
+         A Chromium  text "Third"
+     S8  no source location: a text node (text)
+         A Safari    text "• Third"

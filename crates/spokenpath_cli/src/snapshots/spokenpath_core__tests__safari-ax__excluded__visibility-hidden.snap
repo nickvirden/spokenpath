@@ -1,0 +1,37 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "Subtree hidden by visibility hidden"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "Subtree hidden by visibility hidden"
+2    A AXGroup (platform role) (no accessible name)
+       visibility-hidden.html:8:1  <p>
+       no accessible name; name sources not available from this engine
+     ~ ""
+3      A button "Before"
+         visibility-hidden.html:8:4  <button id="before" type="button">
+         name sources not available from this engine
+       ~ "Before, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Before"
+
+Tab order
+  not available from this engine

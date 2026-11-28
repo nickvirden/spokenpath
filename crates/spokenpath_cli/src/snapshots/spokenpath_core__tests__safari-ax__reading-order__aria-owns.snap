@@ -1,0 +1,67 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "aria-owns re-parenting"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "aria-owns re-parenting"
+ 2    A main (no accessible name)
+        aria-owns.html:8:1  <main>
+        no accessible name; name sources not available from this engine
+      ~ "main"
+ 3      A heading "aria-owns"  level 1
+          aria-owns.html:9:1  <h1>
+          name sources not available from this engine
+        ~ "aria-owns, heading, level 1"
+ 4        A text "aria-owns"
+          ~ "aria-owns"
+ 5      A list "Owner list"
+          aria-owns.html:10:1  <ul id="owner" aria-label="Owner list" aria-owns="owned">
+          name sources not available from this engine
+        ~ "Owner list, list"
+ 6        A AXGroup (platform role) (no accessible name)  value "DOM item one"
+            aria-owns.html:11:1  <li id="dom-first">
+            no accessible name; name sources not available from this engine
+          ~ "DOM item one"
+ 7          A text "• DOM item one"
+            ~ "• DOM item one"
+ 8        A AXGroup (platform role) (no accessible name)  value "DOM item two"
+            aria-owns.html:12:1  <li id="dom-second">
+            no accessible name; name sources not available from this engine
+          ~ "DOM item two"
+ 9          A text "• DOM item two"
+            ~ "• DOM item two"
+10        A AXGroup (platform role) (no accessible name)
+            aria-owns.html:15:1  <div id="owned" role="listitem">
+            no accessible name; name sources not available from this engine
+          ~ ""
+11          A text "Owned item, outside the list in the DOM"
+            ~ "Owned item, outside the list in the DOM"
+12      A AXGroup (platform role) (no accessible name)
+          aria-owns.html:16:1  <p id="left-behind">
+          no accessible name; name sources not available from this engine
+        ~ ""
+13        A text "Sibling left behind"
+          ~ "Sibling left behind"
+
+Excluded
+  not available from this engine
+
+Headings
+  [3] heading "aria-owns"  level 1
+
+Landmarks
+  [2] main (no accessible name)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  not available from this engine

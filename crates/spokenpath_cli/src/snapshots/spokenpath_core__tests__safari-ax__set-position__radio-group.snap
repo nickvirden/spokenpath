@@ -1,0 +1,81 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Native and ARIA radio groups"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Native and ARIA radio groups"
+ 2    A AXGroup/AXFieldset (platform role) "Size"
+        radio-group.html:8:1  <fieldset>
+        name sources not available from this engine
+      ~ "Size"
+ 3      A text "Size"
+        ~ "Size"
+ 4      A AXGroup (platform role) (no accessible name)
+          radio-group.html:10:1  <label>
+          no accessible name; name sources not available from this engine
+        ~ ""
+ 5        A radio "Small"  not checked
+            radio-group.html:10:8  <input id="small" type="radio" name="size" value="small">
+            name sources not available from this engine
+          ~ "Small, radio, not checked"
+ 6        A text " Small"
+          ~ " Small"
+ 7      A AXGroup (platform role) (no accessible name)
+          radio-group.html:11:1  <label>
+          no accessible name; name sources not available from this engine
+        ~ ""
+ 8        A radio "Medium"  not checked
+            radio-group.html:11:8  <input id="medium" type="radio" name="size" value="medium">
+            name sources not available from this engine
+          ~ "Medium, radio, not checked"
+ 9        A text " Medium"
+          ~ " Medium"
+10      A AXGroup (platform role) (no accessible name)
+          radio-group.html:12:1  <label>
+          no accessible name; name sources not available from this engine
+        ~ ""
+11        A radio "Large"  not checked
+            radio-group.html:12:8  <input id="large" type="radio" name="size" value="large">
+            name sources not available from this engine
+          ~ "Large, radio, not checked"
+12        A text " Large"
+          ~ " Large"
+13    A radiogroup "Colour"
+        radio-group.html:14:1  <div id="colour" role="radiogroup" aria-label="Colour">
+        name sources not available from this engine
+      ~ "Colour, radiogroup"
+14      A radio "Red"  checked
+          radio-group.html:15:1  <div id="red" role="radio" aria-checked="true" tabindex="0">
+          name sources not available from this engine
+        ~ "Red, radio, checked"
+15      A radio "Blue"  not checked
+          radio-group.html:16:1  <div id="blue" role="radio" aria-checked="false" tabindex="-1">
+          name sources not available from this engine
+        ~ "Blue, radio, not checked"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [5] radio "Small"
+  [8] radio "Medium"
+  [11] radio "Large"
+  [14] radio "Red"
+  [15] radio "Blue"
+
+Tab order
+  not available from this engine

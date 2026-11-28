@@ -1,0 +1,49 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "display: contents"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "display: contents"
+2    A list (no accessible name)
+       display-contents.html:9:1  <ul id="list" class="contents">
+       no accessible name; name sources not available from this engine
+     ~ "list"
+3      A AXGroup (platform role) (no accessible name)  value "One"
+         display-contents.html:10:1  <li id="one">
+         no accessible name; name sources not available from this engine
+       ~ "One"
+4        A text "• One"
+         ~ "• One"
+5      A AXGroup (platform role) (no accessible name)  value "Two"
+         display-contents.html:11:1  <li id="two">
+         no accessible name; name sources not available from this engine
+       ~ "Two"
+6        A text "• Two"
+         ~ "• Two"
+7    A button "Send"
+       display-contents.html:13:1  <button id="send" class="contents" type="button">
+       name sources not available from this engine
+     ~ "Send, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [7] button "Send"
+
+Tab order
+  not available from this engine

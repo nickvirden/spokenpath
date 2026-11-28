@@ -1,0 +1,36 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: both.stdout
+---
+spokenpath 0.0.0 · snapshot v0.0 · Chromium 159.0.8154.6 · viewport 1280x720
+aligned with · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location
+
+C1      no source location: the document itself (document)
+        A Chromium  RootWebArea (internal role) (no accessible name)  focusable
+    S1  no source location: the document itself (document)
+        A Safari    AXWebArea (platform role) (no accessible name)
+C2  S2  pages/basic.html:3:1  <h1>
+        A Chromium  heading "Café sign-up"  level 1
+        A Safari    heading "Café sign-up"  level 1
+C3      no source location: a text node (text)
+        A Chromium  text "Café sign-up"
+    S3  no source location: a text node (text)
+        A Safari    text "Café sign-up"
+C4  S4  pages/basic.html:4:1  <label for="email">
+        A Chromium  LabelText (internal role) (no accessible name)
+        A Safari    AXGroup (platform role) (no accessible name)
+C5      no source location: a text node (text)
+        A Chromium  text "Email"
+    S5  no source location: a text node (text)
+        A Safari    text "Email"
+C6  S6  pages/basic.html:5:1  <input id="email" type="email">
+        A Chromium  textbox "Email"  value ""  focusable
+        A Safari    textbox (no accessible name)
+C7  S7  pages/basic.html:5:35  <button>
+        A Chromium  button "Join"  focusable
+        A Safari    button "Join"
+C8      no source location: a text node (text)
+        A Chromium  text "Join"
+C9      no source location: a text node (text)
+        A Chromium  text "Hi"

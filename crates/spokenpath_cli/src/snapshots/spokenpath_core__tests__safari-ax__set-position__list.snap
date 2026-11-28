@@ -1,0 +1,51 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "List with a hidden item"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "List with a hidden item"
+2    A list (no accessible name)
+       list.html:8:1  <ul id="list">
+       no accessible name; name sources not available from this engine
+     ~ "list"
+3      A AXGroup (platform role) (no accessible name)  value "First"
+         list.html:9:1  <li id="first">
+         no accessible name; name sources not available from this engine
+       ~ "First"
+4        A text "• First"
+         ~ "• First"
+5      A AXGroup (platform role) (no accessible name)  value "Second"
+         list.html:11:1  <li id="second">
+         no accessible name; name sources not available from this engine
+       ~ "Second"
+6        A text "• Second"
+         ~ "• Second"
+7      A AXGroup (platform role) (no accessible name)  value "Third"
+         list.html:12:1  <li id="third">
+         no accessible name; name sources not available from this engine
+       ~ "Third"
+8        A text "• Third"
+         ~ "• Third"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  not available from this engine

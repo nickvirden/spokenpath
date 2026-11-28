@@ -1,0 +1,228 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Landmarks and headings"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Landmarks and headings"
+ 2    A banner (no accessible name)
+        landmarks.html:8:1  <header id="banner">
+        no accessible name; name sources not available from this engine
+      ~ "banner"
+ 3      A AXGroup (platform role) (no accessible name)
+          landmarks.html:8:21  <p>
+          no accessible name; name sources not available from this engine
+        ~ ""
+ 4        A text "Site name"
+          ~ "Site name"
+ 5    A navigation "Site"
+        landmarks.html:9:1  <nav id="site-nav" aria-label="Site">
+        name sources not available from this engine
+      ~ "Site, navigation"
+ 6      A link "Home"
+          landmarks.html:10:1  <a id="link-home" href="index.html">
+          name sources not available from this engine
+        ~ "Home, link"
+ 7        A text "Home"
+          ~ "Home"
+ 8      A link "About"
+          landmarks.html:11:1  <a id="link-about" href="about.html">
+          name sources not available from this engine
+        ~ "About, link"
+ 9        A text "About"
+          ~ "About"
+10    A main (no accessible name)
+        landmarks.html:13:1  <main id="main">
+        no accessible name; name sources not available from this engine
+      ~ "main"
+11      A heading "Page title"  level 1
+          landmarks.html:14:1  <h1 id="heading-1">
+          name sources not available from this engine
+        ~ "Page title, heading, level 1"
+12        A text "Page title"
+          ~ "Page title"
+13      A heading "Section heading"  level 2
+          landmarks.html:15:1  <h2 id="heading-2">
+          name sources not available from this engine
+        ~ "Section heading, heading, level 2"
+14        A text "Section heading"
+          ~ "Section heading"
+15      A heading "Subsection heading"  level 3
+          landmarks.html:16:1  <h3 id="heading-3">
+          name sources not available from this engine
+        ~ "Subsection heading, heading, level 3"
+16        A text "Subsection heading"
+          ~ "Subsection heading"
+17      A region "Featured"
+          landmarks.html:17:1  <section id="region" aria-label="Featured">
+          name sources not available from this engine
+        ~ "Featured, region"
+18        A AXGroup (platform role) (no accessible name)
+            landmarks.html:18:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+19          A text "Featured content"
+            ~ "Featured content"
+20      A form "Contact"
+          landmarks.html:20:1  <form id="contact" aria-label="Contact">
+          name sources not available from this engine
+        ~ "Contact, form"
+21        A AXGroup (platform role) (no accessible name)
+            landmarks.html:21:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+22          A AXStaticText (platform role) (no accessible name)  value "Full name"
+              landmarks.html:21:4  <label for="full-name">
+              no accessible name; name sources not available from this engine
+            ~ "Full name"
+23            A text "Full name"
+              ~ "Full name"
+24          A textbox "Full name"
+              landmarks.html:21:45  <input id="full-name" type="text">
+              name sources not available from this engine
+            ~ "Full name, textbox"
+25        A AXGroup (platform role) (no accessible name)
+            landmarks.html:22:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+26          A AXGroup (platform role) (no accessible name)
+              landmarks.html:22:4  <label>
+              no accessible name; name sources not available from this engine
+            ~ ""
+27            A checkbox "Subscribe"  not checked
+                landmarks.html:22:11  <input id="subscribe" type="checkbox">
+                name sources not available from this engine
+              ~ "Subscribe, checkbox, not checked"
+28            A text " Subscribe"
+              ~ " Subscribe"
+29        A AXGroup (platform role) (no accessible name)
+            landmarks.html:23:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+30          A AXGroup (platform role) (no accessible name)
+              landmarks.html:23:4  <label>
+              no accessible name; name sources not available from this engine
+            ~ ""
+31            A radio "Basic"  not checked
+                landmarks.html:23:11  <input id="plan-basic" type="radio" name="plan" value="basic">
+                name sources not available from this engine
+              ~ "Basic, radio, not checked"
+32            A text " Basic"
+              ~ " Basic"
+33        A AXGroup (platform role) (no accessible name)
+            landmarks.html:24:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+34          A AXGroup (platform role) (no accessible name)
+              landmarks.html:24:4  <label>
+              no accessible name; name sources not available from this engine
+            ~ ""
+35            A radio "Pro"  not checked
+                landmarks.html:24:11  <input id="plan-pro" type="radio" name="plan" value="pro">
+                name sources not available from this engine
+              ~ "Pro, radio, not checked"
+36            A text " Pro"
+              ~ " Pro"
+37        A AXGroup (platform role) (no accessible name)
+            landmarks.html:25:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+38          A AXStaticText (platform role) (no accessible name)  value "Country"
+              landmarks.html:25:4  <label for="country">
+              no accessible name; name sources not available from this engine
+            ~ "Country"
+39            A text "Country"
+              ~ "Country"
+40          A AXPopUpButton (platform role) "Country"  value "Canada"  collapsed
+              landmarks.html:25:41  <select id="country">
+              name sources not available from this engine
+            ~ "Country, Canada, collapsed"
+41        A AXGroup (platform role) (no accessible name)
+            landmarks.html:26:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+42          A AXStaticText (platform role) (no accessible name)  value "Message"
+              landmarks.html:26:4  <label for="message">
+              no accessible name; name sources not available from this engine
+            ~ "Message"
+43            A text "Message"
+              ~ "Message"
+44          A textbox "Message"
+              landmarks.html:26:41  <textarea id="message">
+              name sources not available from this engine
+            ~ "Message, textbox"
+45        A AXGroup (platform role) (no accessible name)
+            landmarks.html:27:1  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+46          A button "Send"
+              landmarks.html:27:4  <button id="send" type="submit">
+              name sources not available from this engine
+            ~ "Send, button"
+47      A search (no accessible name)
+          landmarks.html:29:1  <search id="site-search">
+          no accessible name; name sources not available from this engine
+        ~ "search"
+48        A AXGroup (platform role) (no accessible name)
+            landmarks.html:29:26  <p>
+            no accessible name; name sources not available from this engine
+          ~ ""
+49          A text "Search tools"
+            ~ "Search tools"
+50    A complementary (no accessible name)
+        landmarks.html:31:1  <aside id="aside">
+        no accessible name; name sources not available from this engine
+      ~ "complementary"
+51      A AXGroup (platform role) (no accessible name)
+          landmarks.html:31:19  <p>
+          no accessible name; name sources not available from this engine
+        ~ ""
+52        A text "Related reading"
+          ~ "Related reading"
+53    A contentinfo (no accessible name)
+        landmarks.html:32:1  <footer id="footer">
+        no accessible name; name sources not available from this engine
+      ~ "contentinfo"
+54      A AXGroup (platform role) (no accessible name)
+          landmarks.html:32:21  <p>
+          no accessible name; name sources not available from this engine
+        ~ ""
+55        A text "Footer text"
+          ~ "Footer text"
+
+Excluded
+  not available from this engine
+
+Headings
+  [11] heading "Page title"  level 1
+  [13] heading "Section heading"  level 2
+  [15] heading "Subsection heading"  level 3
+
+Landmarks
+  [2] banner (no accessible name)
+  [5] navigation "Site"
+  [10] main (no accessible name)
+  [17] region "Featured"
+  [20] form "Contact"
+  [47] search (no accessible name)
+  [50] complementary (no accessible name)
+  [53] contentinfo (no accessible name)
+
+Links
+  [6] link "Home"
+  [8] link "About"
+
+Form controls
+  [24] textbox "Full name"
+  [27] checkbox "Subscribe"
+  [31] radio "Basic"
+  [35] radio "Pro"
+  [44] textbox "Message"
+  [46] button "Send"
+
+Tab order
+  not available from this engine

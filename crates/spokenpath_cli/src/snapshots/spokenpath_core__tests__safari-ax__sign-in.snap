@@ -1,0 +1,68 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Sign in"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Sign in"
+ 2    A heading "Sign in"  level 1
+        sign-in.html:8:1  <h1>
+        name sources not available from this engine
+      ~ "Sign in, heading, level 1"
+ 3      A text "Sign in"
+        ~ "Sign in"
+ 4    A AXGroup (platform role) (no accessible name)
+        sign-in.html:9:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 5      A AXStaticText (platform role) (no accessible name)  value "Email"
+          sign-in.html:10:1  <label for="email">
+          no accessible name; name sources not available from this engine
+        ~ "Email"
+ 6        A text "Email"
+          ~ "Email"
+ 7      A textbox "Email"
+          sign-in.html:11:1  <input id="email" type="email" autocomplete="email">
+          name sources not available from this engine
+        ~ "Email, textbox"
+ 8    A AXGroup (platform role) (no accessible name)
+        sign-in.html:13:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 9      A button (no accessible name)
+          sign-in.html:14:1  <button id="submit" type="button">
+          no accessible name; name sources not available from this engine
+        ~ "button"
+10    A AXGroup (platform role) (no accessible name)
+        sign-in.html:16:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+11      A link "Trouble signing in?"
+          sign-in.html:16:4  <a id="help" href="help.html">
+          name sources not available from this engine
+        ~ "Trouble signing in?, link"
+12        A text "Trouble signing in?"
+          ~ "Trouble signing in?"
+
+Excluded
+  not available from this engine
+
+Headings
+  [2] heading "Sign in"  level 1
+
+Landmarks
+  (none)
+
+Links
+  [11] link "Trouble signing in?"
+
+Form controls
+  [7] textbox "Email"
+  [9] button (no accessible name)
+
+Tab order
+  not available from this engine

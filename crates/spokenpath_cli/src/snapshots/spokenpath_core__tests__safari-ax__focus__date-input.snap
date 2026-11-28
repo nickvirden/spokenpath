@@ -1,0 +1,84 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Date input"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Date input"
+ 2    A AXGroup (platform role) (no accessible name)
+        date-input.html:8:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 3      A button "Before"
+          date-input.html:8:4  <button id="before" type="button">
+          name sources not available from this engine
+        ~ "Before, button"
+ 4    A AXGroup (platform role) (no accessible name)
+        date-input.html:9:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+ 5      A AXStaticText (platform role) (no accessible name)  value "When"
+          date-input.html:10:1  <label for="when">
+          no accessible name; name sources not available from this engine
+        ~ "When"
+ 6        A text "When"
+          ~ "When"
+ 7      A AXDateTimeArea (platform role) "When"
+          date-input.html:11:1  <input id="when" type="date">
+          name sources not available from this engine
+        ~ "When"
+ 8        A AXGroup (platform role) (no accessible name)
+            no source location: its origin could not be established (unknown)
+            no accessible name; name sources not available from this engine
+          ~ ""
+ 9          A AXGroup (platform role) (no accessible name)
+              no source location: its origin could not be established (unknown)
+              no accessible name; name sources not available from this engine
+            ~ ""
+10            A AXIncrementor (platform role) "month"
+                no source location: its origin could not be established (unknown)
+                name sources not available from this engine
+              ~ "month"
+11            A text "/"
+              ~ "/"
+12            A AXIncrementor (platform role) "day"
+                no source location: its origin could not be established (unknown)
+                name sources not available from this engine
+              ~ "day"
+13            A text "/"
+              ~ "/"
+14            A AXIncrementor (platform role) "year"
+                no source location: its origin could not be established (unknown)
+                name sources not available from this engine
+              ~ "year"
+15    A AXGroup (platform role) (no accessible name)
+        date-input.html:13:1  <p>
+        no accessible name; name sources not available from this engine
+      ~ ""
+16      A button "After"
+          date-input.html:13:4  <button id="after" type="button">
+          name sources not available from this engine
+        ~ "After, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  [3] button "Before"
+  [16] button "After"
+
+Tab order
+  not available from this engine

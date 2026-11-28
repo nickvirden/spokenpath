@@ -1,0 +1,70 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+ 1  A AXWebArea (platform role) "Shadow root slotting"
+      no source location: the document itself (document)
+      name sources not available from this engine
+    ~ "Shadow root slotting"
+ 2    A main (no accessible name)
+        shadow-slots.html:8:1  <main>
+        no accessible name; name sources not available from this engine
+      ~ "main"
+ 3      A heading "Shadow slots"  level 1
+          shadow-slots.html:9:1  <h1>
+          name sources not available from this engine
+        ~ "Shadow slots, heading, level 1"
+ 4        A text "Shadow slots"
+          ~ "Shadow slots"
+ 5      A AXGroup/AXApplicationGroup (platform role) "Shadow host"
+          shadow-slots.html:10:1  <div id="host" role="group" aria-label="Shadow host">
+          name sources not available from this engine
+        ~ "Shadow host"
+ 6        A heading "Shadow heading"  level 2
+            shadow-slots.html:12:1  <h2 id="shadow-heading">
+            name sources not available from this engine
+          ~ "Shadow heading, heading, level 2"
+ 7          A text "Shadow heading"
+            ~ "Shadow heading"
+ 8        A button "Light titled"
+            shadow-slots.html:18:1  <button id="light-titled" type="button" slot="title">
+            name sources not available from this engine
+          ~ "Light titled, button"
+ 9        A AXGroup (platform role) (no accessible name)
+            shadow-slots.html:14:1  <p id="shadow-paragraph">
+            no accessible name; name sources not available from this engine
+          ~ ""
+10          A text "Shadow paragraph between slots"
+            ~ "Shadow paragraph between slots"
+11        A button "Light default A"
+            shadow-slots.html:17:1  <button id="light-default-a" type="button">
+            name sources not available from this engine
+          ~ "Light default A, button"
+12        A button "Light default B"
+            shadow-slots.html:19:1  <button id="light-default-b" type="button">
+            name sources not available from this engine
+          ~ "Light default B, button"
+
+Excluded
+  not available from this engine
+
+Headings
+  [3] heading "Shadow slots"  level 1
+  [6] heading "Shadow heading"  level 2
+
+Landmarks
+  [2] main (no accessible name)
+
+Links
+  (none)
+
+Form controls
+  [8] button "Light titled"
+  [11] button "Light default A"
+  [12] button "Light default B"
+
+Tab order
+  not available from this engine

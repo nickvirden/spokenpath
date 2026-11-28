@@ -1,0 +1,33 @@
+---
+source: crates/spokenpath_cli/src/tests.rs
+expression: run.stdout
+---
+spokenpath 0.0.0 · snapshot v0.2 · Safari 27.0.1 on macOS 27.0.1 (26A434) · viewport 1280x720
+A = what the browser exposes   ~ = illustrative speech, approximate, not any specific screen reader
+
+1  A AXWebArea (platform role) "An owned element in a name from content"
+     no source location: the document itself (document)
+     name sources not available from this engine
+   ~ "An owned element in a name from content"
+2    A AXMenuItem (platform role) "Inbox 3 new"
+       owns-in-name.html:8:1  <div id="menu" role="menuitem" aria-owns="badge">
+       name sources not available from this engine
+     ~ "Inbox 3 new"
+
+Excluded
+  not available from this engine
+
+Headings
+  (none)
+
+Landmarks
+  (none)
+
+Links
+  (none)
+
+Form controls
+  (none)
+
+Tab order
+  not available from this engine
