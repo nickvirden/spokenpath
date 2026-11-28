@@ -89,12 +89,15 @@ Excluded
 
 Headings
   [3] heading "reading-flow"  level 1
+  items with a platform role are not listed
 
 Landmarks
   [2] main (no accessible name)
+  items with a platform role are not listed
 
 Links
   (none)
+  items with a platform role are not listed
 
 Form controls
   [6] button "DOM 1, order 3"
@@ -109,6 +112,7 @@ Form controls
   [18] button "DOM 1, column 3"
   [19] button "DOM 2, column 1"
   [20] button "DOM 3, column 2"
+  items with a platform role are not listed
 
 Tab order
   not available from this engine

@@ -53,15 +53,19 @@ Excluded
 
 Headings
   [3] heading "aria-owns"  level 1
+  items with a platform role are not listed
 
 Landmarks
   [2] main (no accessible name)
+  items with a platform role are not listed
 
 Links
   (none)
+  items with a platform role are not listed
 
 Form controls
   (none)
+  items with a platform role are not listed
 
 Tab order
   not available from this engine

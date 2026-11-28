@@ -35,16 +35,20 @@ Excluded
 
 Headings
   [2] heading "Café sign-up"  level 1
+  items with a platform role are not listed
 
 Landmarks
   (none)
+  items with a platform role are not listed
 
 Links
   (none)
+  items with a platform role are not listed
 
 Form controls
   [6] textbox (no accessible name)
   [7] button "Join"
+  items with a platform role are not listed
 
 Tab order
   not available from this engine

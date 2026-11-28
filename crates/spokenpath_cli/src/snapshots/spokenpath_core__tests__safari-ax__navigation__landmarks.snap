@@ -201,6 +201,7 @@ Headings
   [11] heading "Page title"  level 1
   [13] heading "Section heading"  level 2
   [15] heading "Subsection heading"  level 3
+  items with a platform role are not listed
 
 Landmarks
   [2] banner (no accessible name)
@@ -211,10 +212,12 @@ Landmarks
   [47] search (no accessible name)
   [50] complementary (no accessible name)
   [53] contentinfo (no accessible name)
+  items with a platform role are not listed
 
 Links
   [6] link "Home"
   [8] link "About"
+  items with a platform role are not listed
 
 Form controls
   [24] textbox "Full name"
@@ -223,6 +226,7 @@ Form controls
   [35] radio "Pro"
   [44] textbox "Message"
   [46] button "Send"
+  items with a platform role are not listed
 
 Tab order
   not available from this engine

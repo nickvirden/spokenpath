@@ -2149,3 +2149,109 @@ fn a_deep_safari_chain_renders_with_its_depth_stated() {
         assert!(line.len() - content.len() <= widest, "{line:?}");
     }
 }
+
+const PLATFORM_ROLES_LINE: &str = "  items with a platform role are not listed";
+
+fn safari_text(name: &str) -> String {
+    let name = Path::new(name);
+    let run = run_paths(&[
+        &"transcript",
+        &safari_ax_directory().join(name),
+        &"--source",
+        &page_of(name),
+    ]);
+    assert_eq!(run.code, 0, "{run:?}");
+    run.stdout
+}
+
+#[test]
+fn every_index_of_a_safari_transcript_says_platform_roles_are_not_listed() {
+    let text = safari_text("cross-check/select-optgroup.json");
+    for title in ["Headings", "Landmarks", "Links", "Form controls"] {
+        let section = format!("\n{title}\n  (none)\n{PLATFORM_ROLES_LINE}\n");
+        assert!(text.contains(&section), "{title}:\n{text}");
+    }
+    // A short list ends with the line too.
+    let date = safari_text("focus/date-input.json");
+    assert!(
+        date.contains(&format!(
+            "\nForm controls\n  [3] button \"Before\"\n  [16] button \"After\"\n{PLATFORM_ROLES_LINE}\n"
+        )),
+        "{date}"
+    );
+    for name in safari_ax_names() {
+        let text = safari_text(name.to_str().expect("UTF-8"));
+        let lines = text
+            .lines()
+            .filter(|line| *line == PLATFORM_ROLES_LINE)
+            .count();
+        assert_eq!(lines, 4, "{}", name.display());
+    }
+}
+
+#[test]
+fn a_transcript_without_platform_roles_prints_no_closing_line() {
+    use spokenpath_announce::{LayerA, RoleKind};
+    let snapshot = read(
+        &std::fs::read_to_string(safari_ax_directory().join("sign-in.json")).expect("readable"),
+    )
+    .expect("reads");
+    let model = spokenpath_model::safari_ax::adapt(&snapshot, &BTreeMap::new()).expect("adapts");
+    let mut transcript = announce(&model, Options::default());
+    let context = crate::text::TextContext {
+        tool_version: "0.0.0",
+        snapshot_version: (0, 2),
+        viewport: (1280, 720),
+        layer_b: true,
+        source: None,
+        aligned: None,
+    };
+    let render = |transcript: &spokenpath_announce::Transcript| {
+        let mut out = Vec::new();
+        crate::text::write_text(&mut out, transcript, &context).expect("writes to a vector");
+        String::from_utf8(out).expect("UTF-8")
+    };
+    assert!(render(&transcript).contains(PLATFORM_ROLES_LINE));
+    for item in &mut transcript.nodes {
+        if let LayerA::Accessible(record) = &mut item.layer_a
+            && let Some(role) = &mut record.role
+            && role.kind == RoleKind::Platform
+        {
+            role.kind = RoleKind::Internal;
+            role.subrole = None;
+        }
+    }
+    let text = render(&transcript);
+    assert!(!text.contains(PLATFORM_ROLES_LINE), "{text}");
+    assert!(text.contains("\nForm controls\n"), "{text}");
+}
+
+#[test]
+fn chromium_and_aligned_text_print_no_closing_line() {
+    let name = Path::new("cross-check/select-optgroup.json");
+    let chromium = run_paths(&[
+        &"transcript",
+        &goldens_directory().join(name),
+        &"--source",
+        &page_of(name),
+    ]);
+    assert_eq!(chromium.code, 0, "{chromium:?}");
+    assert!(chromium.stdout.contains("combobox"), "{}", chromium.stdout);
+    assert!(!chromium.stdout.contains(PLATFORM_ROLES_LINE.trim()));
+    for name in safari_ax_names() {
+        let run = run_paths(&[
+            &"transcript",
+            &goldens_directory().join(&name),
+            &"--source",
+            &page_of(&name),
+            &"--align-with",
+            &safari_ax_directory().join(&name),
+        ]);
+        assert_eq!(run.code, 0, "{}: {run:?}", name.display());
+        assert!(
+            !run.stdout.contains(PLATFORM_ROLES_LINE.trim()),
+            "{}",
+            name.display()
+        );
+    }
+}

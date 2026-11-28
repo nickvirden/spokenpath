@@ -63,12 +63,15 @@ Excluded
 
 Headings
   (none)
+  items with a platform role are not listed
 
 Landmarks
   (none)
+  items with a platform role are not listed
 
 Links
   (none)
+  items with a platform role are not listed
 
 Form controls
   [5] radio "Small"
@@ -76,6 +79,7 @@ Form controls
   [11] radio "Large"
   [14] radio "Red"
   [15] radio "Blue"
+  items with a platform role are not listed
 
 Tab order
   not available from this engine

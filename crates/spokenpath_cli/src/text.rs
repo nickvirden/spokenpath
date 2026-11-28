@@ -1,7 +1,7 @@
 //! The text transcript: a header, with a cross-check line when the transcript was cross-checked, a
 //! legend, every item in reading order with its cross-check notes, the excluded elements, the
 //! navigation indexes and the tab order. A part the engine does not supply says so in place of its
-//! lines. An aligned transcript prints instead the two headers, a legend and one block per row,
+//! lines, and when items have a platform role, which no index lists, each index ends by saying so. An aligned transcript prints instead the two headers, a legend and one block per row,
 //! each with the row's labels, its source location and each item's `A` line.
 //!
 //! Every page-controlled string passes through [`escape_for_terminal`] before it is written.
@@ -62,6 +62,10 @@ pub(crate) struct AlignedContext {
     /// The aligned capture's viewport width and height.
     pub(crate) viewport: (u32, u32),
 }
+
+/// The line that closes each index of a transcript holding items with a platform role, which no
+/// index lists.
+const PLATFORM_ROLES_NOT_LISTED: &str = "items with a platform role are not listed";
 
 /// What a printer writes in place of a part the engine does not supply.
 const NOT_AVAILABLE: &str = "not available from this engine";
@@ -320,6 +324,18 @@ impl Printer<'_> {
 
     fn indexes(&self, out: &mut dyn Write) -> io::Result<()> {
         let indexes = &self.transcript.indexes;
+        // Index membership is by ARIA token, so an item with a platform role is in no index; with
+        // such items present, an index's entries, or its `(none)`, are not all the engine exposes.
+        let has_platform_roles = self.transcript.nodes.iter().any(|item| {
+            matches!(&item.layer_a, LayerA::Accessible(record)
+                if record.role.as_ref().is_some_and(|role| role.kind == RoleKind::Platform))
+        });
+        let close = |out: &mut dyn Write| {
+            if has_platform_roles {
+                writeln!(out, "  {PLATFORM_ROLES_NOT_LISTED}")?;
+            }
+            Ok::<(), io::Error>(())
+        };
         writeln!(out, "\nHeadings")?;
         if indexes.headings.is_empty() {
             writeln!(out, "  (none)")?;
@@ -330,6 +346,7 @@ impl Printer<'_> {
                 .map_or_else(String::new, |level| format!("  level {level}"));
             writeln!(out, "  {}{level}", index_entry(&heading.entry))?;
         }
+        close(out)?;
         for (title, entries) in [
             ("Landmarks", &indexes.landmarks),
             ("Links", &indexes.links),
@@ -342,6 +359,7 @@ impl Printer<'_> {
             for entry in entries {
                 writeln!(out, "  {}", index_entry(entry))?;
             }
+            close(out)?;
         }
         Ok(())
     }

@@ -54,17 +54,21 @@ Excluded
 Headings
   [3] heading "Shadow slots"  level 1
   [6] heading "Shadow heading"  level 2
+  items with a platform role are not listed
 
 Landmarks
   [2] main (no accessible name)
+  items with a platform role are not listed
 
 Links
   (none)
+  items with a platform role are not listed
 
 Form controls
   [8] button "Light titled"
   [11] button "Light default A"
   [12] button "Light default B"
+  items with a platform role are not listed
 
 Tab order
   not available from this engine

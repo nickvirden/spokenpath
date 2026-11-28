@@ -53,16 +53,20 @@ Excluded
 
 Headings
   [2] heading "Sign in"  level 1
+  items with a platform role are not listed
 
 Landmarks
   (none)
+  items with a platform role are not listed
 
 Links
   [11] link "Trouble signing in?"
+  items with a platform role are not listed
 
 Form controls
   [7] textbox "Email"
   [9] button (no accessible name)
+  items with a platform role are not listed
 
 Tab order
   not available from this engine
