@@ -7,7 +7,17 @@
 //! path the model names, and never fails: a [`NodeIndex`] that does not resolve in the model leaves
 //! that reference absent. The rules follow `docs/decisions/ADR-0001-two-layer-output.md`.
 //! [`cross_check`] then optionally compares the transcript's roles and names with Safari's answers
-//! for the same page (`docs/decisions/ADR-0014-safari-webdriver-cross-check.md`).
+//! for the same page (`docs/decisions/ADR-0014-safari-webdriver-cross-check.md`), and [`align`]
+//! optionally sets Safari's transcript of the same page beside a Chromium one, aligned by source
+//! location (`docs/decisions/ADR-0016-safari-adapter-and-per-engine-transcripts.md`).
+//!
+//! # Parts an engine does not supply
+//!
+//! When the model says an engine does not supply its excluded nodes, its focus walk or its names'
+//! sources, the transcript leaves out `excluded`, `tab_order`, or `sources` on every name, and
+//! lists the part in [`Transcript::not_available`] as `excluded`, `tab-order` or `name-sources`.
+//! An empty list there is omitted, so a Chromium transcript serialises as it always has. Nothing
+//! is filled in from another engine.
 //!
 //! # Reading order
 //!
@@ -22,7 +32,8 @@
 //! # Layer A
 //!
 //! `layer_a` records what the model holds for the item and nothing more. For an accessible node:
-//! the role token and whether it is `aria` or `internal`, the role origin, the DOM identity, the
+//! the role token and whether it is `aria`, `internal` or `platform` (with a platform role's
+//! subrole when there is one), the role origin, the DOM identity, the
 //! source location (its class from `SourceClass::as_str`, and for a `span` the path, line, column
 //! and start-tag byte range, carried as data only), the name, the description with its
 //! provenance, the value, every typed state the engine exposes (absent ones omitted), every other
@@ -51,7 +62,7 @@
 //!
 //! Each index lists items in reading order by number, with the item's role token and its name or
 //! the `no accessible name` status. Membership is by the exposed ARIA role token alone; an
-//! engine-internal role or a DOM tag never qualifies an item.
+//! engine-internal role, a platform role or a DOM tag never qualifies an item.
 //!
 //! - `headings`: `heading`, with the exposed level when there is one.
 //! - `landmarks`: [`LANDMARK_ROLES`]: `banner`, `complementary`, `contentinfo`, `form`, `main`,
@@ -88,7 +99,8 @@
 //! identifier from [`TEMPLATES`] and one `phrase`, rendered from the item's Layer A record alone.
 //! With it unset, no item has an `approx` and the transcript is otherwise identical. Layer B is
 //! illustrative speech, approximate: it imitates no specific screen reader. `{role}` is the ARIA
-//! role token as exposed; an engine-internal role, `generic`, or no role is unspoken. `{parts}`
+//! role token as exposed; an engine-internal role, a platform role (such as Safari's `AXGroup`),
+//! `generic`, or no role is unspoken. `{parts}`
 //! is the comma-and-space-joined list of the present parts, in order: `level N`, the value, the
 //! state words (`checked`, `not checked`, `mixed`; `pressed`, `not pressed`, `mixed`; `expanded`,
 //! `collapsed`; `selected`, `disabled`, `required`, `read-only` when true; `invalid` when the
@@ -130,6 +142,7 @@
 //! [`json_schema`] is the JSON Schema of a serialised [`Transcript`], which `cargo xtask schema`
 //! writes to `schema/transcript.v0.json`.
 
+mod align;
 mod approx;
 mod cross_check;
 mod tab_order;
@@ -138,6 +151,7 @@ mod transcript;
 #[cfg(test)]
 mod tests;
 
+pub use align::align;
 pub use approx::{
     Approx, NAMED, NAMED_UNSPOKEN_ROLE, TEMPLATES, TEXT_RUN, Template, UNNAMED,
     UNNAMED_UNSPOKEN_ROLE, escape_for_terminal,
@@ -223,24 +237,43 @@ pub fn announce(model: &Model, options: Options) -> Transcript {
         );
     }
 
-    let tab_order = tab_order::tab_order(&model.focus, &sources, |node| {
-        numbers.get(node.get()).copied().flatten()
+    let tab_order = model.focus.available().map(|focus| {
+        tab_order::tab_order(focus, &sources, |node| {
+            numbers.get(node.get()).copied().flatten()
+        })
     });
+    let excluded = model.excluded.available().map(|excluded| {
+        excluded
+            .iter()
+            .map(|node| sources.excluded(node))
+            .collect::<Vec<_>>()
+    });
+    let mut not_available = Vec::new();
+    if !transcript::name_sources_supplied(model.engine) {
+        not_available.push(NotAvailablePart::NameSources);
+    }
+    if excluded.is_none() {
+        not_available.push(NotAvailablePart::Excluded);
+    }
+    if tab_order.is_none() {
+        not_available.push(NotAvailablePart::TabOrder);
+    }
 
     Transcript {
         header: Header {
             engine: model.engine.as_str(),
             engine_version: model.engine_version.clone(),
             tool_version: model.tool_version.clone(),
+            safari_build: model.engine_build.clone(),
+            macos_version: model.os_version.clone(),
+            macos_build: model.os_build.clone(),
         },
+        not_available,
         cross_check: None,
         nodes,
         indexes,
-        excluded: model
-            .excluded
-            .iter()
-            .map(|node| sources.excluded(node))
-            .collect(),
+        excluded,
         tab_order,
+        aligned: None,
     }
 }

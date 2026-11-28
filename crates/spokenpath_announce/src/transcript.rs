@@ -5,10 +5,10 @@ use std::collections::BTreeMap;
 use schemars::JsonSchema;
 use serde::Serialize;
 use spokenpath_model::{
-    AccessibleNode, Description, DescriptionSource, DomRef, ExcludedNode, ExclusionReason, Model,
-    Name, NameSource, NameSourceKind, NativeSource, Property, PropertyValue, RelatedNode, Role,
-    RoleOrigin, SetPosition, SourceClass, States, Supplied, SuppliedBy, TextPart, TextPartKind,
-    TextRun, Tristate,
+    AccessibleNode, Description, DescriptionSource, DomRef, Engine, ExcludedNode, ExclusionReason,
+    Model, Name, NameSource, NameSourceKind, NativeSource, Property, PropertyValue, RelatedNode,
+    Role, RoleOrigin, SetPosition, SourceClass, States, Supplied, SuppliedBy, TextPart,
+    TextPartKind, TextRun, Tristate,
 };
 
 use crate::approx::Approx;
@@ -21,6 +21,9 @@ use crate::tab_order::TabOrder;
 pub struct Transcript {
     /// The engine and versions every Layer A record came from.
     pub header: Header,
+    /// The parts of the transcript the engine does not supply; each one's field is left out.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub not_available: Vec<NotAvailablePart>,
     /// The engine the roles and names were cross-checked against, and what it found; absent when
     /// no cross-check ran.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -29,10 +32,49 @@ pub struct Transcript {
     pub nodes: Vec<Item>,
     /// The navigation indexes, each in reading order.
     pub indexes: Indexes,
-    /// The DOM elements the engine leaves out of the exposed tree, in DOM order.
-    pub excluded: Vec<Excluded>,
-    /// The focus walk by repeated Tab presses and how it ended.
-    pub tab_order: TabOrder,
+    /// The DOM elements the engine leaves out of the exposed tree, in DOM order; absent when the
+    /// engine does not supply them.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub excluded: Option<Vec<Excluded>>,
+    /// The focus walk by repeated Tab presses and how it ended; absent when the engine does not
+    /// supply it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tab_order: Option<TabOrder>,
+    /// A second engine's transcript of the same page, with this transcript's items and its items
+    /// aligned by source location; absent when no alignment ran.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub aligned: Option<Aligned>,
+}
+
+/// A part of a transcript that an engine does not supply.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, JsonSchema)]
+#[serde(rename_all = "kebab-case")]
+pub enum NotAvailablePart {
+    /// The sources tried for each name; every `NameRecord` leaves out `sources`.
+    NameSources,
+    /// The excluded nodes; the transcript leaves out `excluded`.
+    Excluded,
+    /// The focus walk; the transcript leaves out `tab_order`.
+    TabOrder,
+}
+
+/// A second engine's transcript of the same page and how its items align with the first's.
+#[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
+pub struct Aligned {
+    /// Safari's transcript of the same page.
+    pub safari: Box<Transcript>,
+    /// Every item of both transcripts, each in exactly one row, in row order.
+    pub rows: Vec<AlignedRow>,
+}
+
+/// One row of an alignment: the items of each engine it holds, by number. A row that holds items
+/// of both engines is aligned: every item in it is an accessible item located by the same span.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
+pub struct AlignedRow {
+    /// The Chromium items, by number, in reading order.
+    pub chromium: Vec<usize>,
+    /// The Safari items, by number, in reading order.
+    pub safari: Vec<usize>,
 }
 
 /// The engine and versions a transcript came from.
@@ -44,6 +86,15 @@ pub struct Header {
     pub engine_version: String,
     /// The version of the tool that drove the browser.
     pub tool_version: String,
+    /// Safari's build number, when the snapshot recorded it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub safari_build: Option<String>,
+    /// The macOS product version, when the snapshot recorded it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub macos_version: Option<String>,
+    /// The macOS build version, when the snapshot recorded it.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub macos_build: Option<String>,
 }
 
 /// One exposed node in reading order.
@@ -148,13 +199,17 @@ pub struct AccessibleRecord {
     pub set_position: Option<Marked<SetPositionRecord>>,
 }
 
-/// A role token and whether it is an ARIA role or one internal to the engine.
+/// A role token and whether it is an ARIA role, one internal to the engine, or one of the platform
+/// accessibility API.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct RoleRecord {
     /// The role's text, as exposed.
     pub token: String,
-    /// Whether the token is an ARIA role or internal to the engine.
+    /// Whether the token is an ARIA role, internal to the engine, or the platform's.
     pub kind: RoleKind,
+    /// A platform role's subrole text, when the platform gives one.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub subrole: Option<String>,
 }
 
 impl RoleRecord {
@@ -163,12 +218,12 @@ impl RoleRecord {
     pub fn aria(&self) -> Option<&str> {
         match self.kind {
             RoleKind::Aria => Some(&self.token),
-            RoleKind::Internal => None,
+            RoleKind::Internal | RoleKind::Platform => None,
         }
     }
 }
 
-/// Whether a role is an ARIA role or internal to the engine.
+/// Whether a role is an ARIA role, internal to the engine, or the platform's.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "kebab-case")]
 pub enum RoleKind {
@@ -176,6 +231,8 @@ pub enum RoleKind {
     Aria,
     /// A role the engine uses internally.
     Internal,
+    /// A role of the platform accessibility API that stands for no single ARIA role.
+    Platform,
 }
 
 /// Where an exposed role came from.
@@ -251,8 +308,10 @@ pub struct NameRecord {
     /// The name's text, raw, when the engine exposes a name (possibly empty or blank).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
-    /// Every source the engine tried, in its order; empty when it reported none.
-    pub sources: Vec<NameSourceRecord>,
+    /// Every source the engine tried, in its order; empty when it reported none, and absent when
+    /// the engine does not report name sources.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub sources: Option<Vec<NameSourceRecord>>,
     /// Whether the winning source drew on content the engine hides.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub from_hidden_content: Option<Marked<bool>>,
@@ -606,6 +665,9 @@ impl Indexes {
 /// by DOM id; the first holder of an id wins.
 pub(crate) struct DomSources<'m> {
     by_dom_id: BTreeMap<u32, &'m SourceClass>,
+    /// Whether the engine reports name sources, so an absent name lists an empty set of them
+    /// rather than none at all.
+    name_sources_supplied: bool,
 }
 
 impl<'m> DomSources<'m> {
@@ -624,10 +686,13 @@ impl<'m> DomSources<'m> {
                 }
             }
         }
-        for node in &model.excluded {
+        for node in model.excluded.available().into_iter().flatten() {
             by_dom_id.entry(node.dom.dom_id).or_insert(&node.source);
         }
-        DomSources { by_dom_id }
+        DomSources {
+            by_dom_id,
+            name_sources_supplied: name_sources_supplied(model.engine),
+        }
     }
 
     pub(crate) fn source(&self, dom: &DomRef) -> Option<SourceRecord> {
@@ -691,7 +756,7 @@ impl<'m> DomSources<'m> {
             return NameRecord {
                 status: NameStatus::NoAccessibleName,
                 text: None,
-                sources: Vec::new(),
+                sources: self.name_sources_supplied.then(Vec::new),
                 from_hidden_content: None,
             };
         };
@@ -703,12 +768,13 @@ impl<'m> DomSources<'m> {
         NameRecord {
             status,
             text: Some(name.text.clone()),
-            sources: name
-                .sources
-                .iter()
-                .enumerate()
-                .map(|(index, source)| self.name_source(source, outcome(name, index, source)))
-                .collect(),
+            sources: name.sources.available().map(|sources| {
+                sources
+                    .iter()
+                    .enumerate()
+                    .map(|(index, source)| self.name_source(source, outcome(name, index, source)))
+                    .collect()
+            }),
             from_hidden_content: name
                 .from_hidden_content
                 .as_ref()
@@ -814,13 +880,25 @@ fn outcome(name: &Name, index: usize, source: &NameSource) -> NameSourceOutcome 
     }
 }
 
+/// Whether an engine reports the sources it tried for a name. Chromium does; Safari's macOS
+/// accessibility tree has no name provenance.
+pub(crate) fn name_sources_supplied(engine: Engine) -> bool {
+    match engine {
+        Engine::Chromium => true,
+        Engine::SafariAx | Engine::SafariWebdriver => false,
+    }
+}
+
 fn role_record(role: &Role) -> RoleRecord {
+    let (kind, subrole) = match role {
+        Role::Aria(_) => (RoleKind::Aria, None),
+        Role::Internal(_) => (RoleKind::Internal, None),
+        Role::Platform { subrole, .. } => (RoleKind::Platform, subrole.clone()),
+    };
     RoleRecord {
         token: role.as_str().to_owned(),
-        kind: match role {
-            Role::Aria(_) => RoleKind::Aria,
-            Role::Internal(_) => RoleKind::Internal,
-        },
+        kind,
+        subrole,
     }
 }
 

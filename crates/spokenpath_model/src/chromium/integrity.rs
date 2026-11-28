@@ -2,15 +2,13 @@
 //! reader checks only each field's shape, so every reference between sections is resolved here,
 //! and a dangling or inconsistent one is an error naming the field.
 
-use std::collections::hash_map::Entry;
 use std::collections::{BTreeMap, HashMap};
-use std::fmt::Display;
-use std::hash::Hash;
 
-use spokenpath_snapshot::{ByteRange, ChromiumPayload, Snapshot};
+use spokenpath_snapshot::{ChromiumPayload, Snapshot};
 
 use crate::AdaptError;
 use crate::error::excerpt;
+use crate::spans::{self, SpanIndex, unique};
 
 /// The lookups that every later step uses, built while checking. Positions are indexes into the
 /// snapshot's arrays; ids are the values the snapshot's fields hold.
@@ -32,13 +30,10 @@ pub(super) fn check<'a>(
     payload: &'a ChromiumPayload,
     source_lengths: &BTreeMap<u32, u64>,
 ) -> Result<Index<'a>, AdaptError> {
-    let source_by_id = unique(snapshot.sources.iter().map(|source| source.id), |index| {
-        format!("sources[{index}].id")
-    })?;
-    let span_by_id = unique(snapshot.spans.iter().map(|span| span.id), |index| {
-        format!("spans[{index}].id")
-    })?;
-    check_spans(snapshot, &source_by_id, source_lengths)?;
+    let SpanIndex {
+        source_by_id,
+        span_by_id,
+    } = spans::check(snapshot, source_lengths)?;
     let dom_by_id = unique(payload.dom.iter().map(|node| node.id), |index| {
         format!("payload.dom[{index}].id")
     })?;
@@ -62,92 +57,6 @@ pub(super) fn check<'a>(
         ax_by_id,
         ax_root,
     })
-}
-
-/// Maps each key to its position, failing at the first key that repeats.
-fn unique<K: Hash + Eq + Display>(
-    keys: impl Iterator<Item = K>,
-    path: impl Fn(usize) -> String,
-) -> Result<HashMap<K, usize>, AdaptError> {
-    let mut positions = HashMap::new();
-    for (position, key) in keys.enumerate() {
-        match positions.entry(key) {
-            Entry::Occupied(first) => {
-                return Err(AdaptError::field(
-                    path(position),
-                    format!(
-                        "repeats {}, which index {} already holds",
-                        excerpt(first.key()),
-                        first.get()
-                    ),
-                ));
-            }
-            Entry::Vacant(slot) => {
-                slot.insert(position);
-            }
-        }
-    }
-    Ok(positions)
-}
-
-fn check_spans(
-    snapshot: &Snapshot,
-    source_by_id: &HashMap<u32, usize>,
-    source_lengths: &BTreeMap<u32, u64>,
-) -> Result<(), AdaptError> {
-    for (position, span) in snapshot.spans.iter().enumerate() {
-        if !source_by_id.contains_key(&span.source) {
-            return Err(AdaptError::field(
-                format!("spans[{position}].source"),
-                format!("names source {}, which is not in `sources`", span.source),
-            ));
-        }
-        let length = source_lengths.get(&span.source).copied();
-        check_range(
-            &span.start_tag,
-            length,
-            span.source,
-            &format!("spans[{position}].start_tag"),
-        )?;
-        if let Some(element) = &span.element {
-            check_range(
-                element,
-                length,
-                span.source,
-                &format!("spans[{position}].element"),
-            )?;
-        }
-    }
-    Ok(())
-}
-
-fn check_range(
-    range: &ByteRange,
-    length: Option<u64>,
-    source: u32,
-    path: &str,
-) -> Result<(), AdaptError> {
-    if range.start > range.end {
-        return Err(AdaptError::field(
-            path,
-            format!(
-                "starts at byte {}, after its end {}",
-                range.start, range.end
-            ),
-        ));
-    }
-    if let Some(length) = length
-        && range.end > length
-    {
-        return Err(AdaptError::field(
-            path,
-            format!(
-                "ends at byte {}, past the end of source {source}, which is {length} bytes long",
-                range.end
-            ),
-        ));
-    }
-    Ok(())
 }
 
 /// Checks that the DOM forms one tree whose `parent` and `children` agree, and returns each

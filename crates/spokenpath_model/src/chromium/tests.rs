@@ -7,9 +7,9 @@ use spokenpath_snapshot::{Origin, Payload, Snapshot, read};
 
 use super::adapt;
 use crate::{
-    AccessibleNode, AdaptError, DescriptionSource, ExcludedNode, ExclusionKind, ExposedNode,
-    FocusStop, Model, NameSourceKind, NativeSource, PropertyValue, Role, RoleOrigin, SetPosition,
-    SourceClass, Supplied, SuppliedBy, TextPartKind, Tristate,
+    AccessibleNode, AdaptError, Availability, DescriptionSource, ExcludedNode, ExclusionKind,
+    ExposedNode, FocusStop, Model, NameSourceKind, NativeSource, PropertyValue, Role, RoleOrigin,
+    SetPosition, SourceClass, Supplied, SuppliedBy, TextPartKind, Tristate,
 };
 
 fn fixtures() -> PathBuf {
@@ -113,6 +113,12 @@ fn assert_names_field(error: &AdaptError, path: &str) {
     );
 }
 
+/// A part the Chromium adapter always supplies.
+fn available<T>(part: &Availability<T>) -> &T {
+    part.available()
+        .expect("the Chromium adapter supplies every part")
+}
+
 fn accessible_nodes(model: &Model) -> impl Iterator<Item = &AccessibleNode> {
     model.nodes.iter().filter_map(ExposedNode::as_accessible)
 }
@@ -132,6 +138,8 @@ fn exposed<'m>(model: &'m Model, id: &str) -> &'m AccessibleNode {
 fn excluded<'m>(model: &'m Model, id: &str) -> &'m ExcludedNode {
     model
         .excluded
+        .available()
+        .expect("the Chromium adapter supplies excluded nodes")
         .iter()
         .find(|node| node.dom.id.as_deref() == Some(id))
         .unwrap_or_else(|| panic!("an excluded node with id {id:?}"))
@@ -140,6 +148,8 @@ fn excluded<'m>(model: &'m Model, id: &str) -> &'m ExcludedNode {
 fn excluded_by_tag<'m>(model: &'m Model, tag: &str) -> Vec<&'m ExcludedNode> {
     model
         .excluded
+        .available()
+        .expect("the Chromium adapter supplies excluded nodes")
         .iter()
         .filter(|node| node.dom.tag.as_deref() == Some(tag))
         .collect()
@@ -234,7 +244,7 @@ fn every_golden_reads_and_adapts_with_sources_classified() {
                 );
             }
         }
-        for node in &model.excluded {
+        for node in available(&model.excluded) {
             assert_ne!(node.source.as_str(), "");
             assert_eq!(
                 (&node.role, &node.name),
@@ -272,6 +282,8 @@ fn implied_and_script_created_elements_are_classified_by_origin() {
         .chain(
             model
                 .excluded
+                .available()
+                .expect("the Chromium adapter supplies excluded nodes")
                 .iter()
                 .map(|node| (node.dom.tag.as_deref(), &node.source)),
         )
@@ -408,6 +420,8 @@ fn children_of_ignored_nodes_take_their_place_in_the_parent() {
     assert!(tags[1..].iter().all(|tag| *tag == Some("p")), "{tags:?}");
     let excluded_tags: Vec<&str> = model
         .excluded
+        .available()
+        .expect("the Chromium adapter supplies excluded nodes")
         .iter()
         .filter(|node| {
             node.reasons
@@ -468,7 +482,7 @@ fn labelledby_wins_over_aria_label_which_stays_superseded_in_the_chain() {
         (span.tag.as_deref(), span.id.as_deref()),
         (Some("span"), Some("label"))
     );
-    let aria_label = &name.sources[1];
+    let aria_label = &available(&name.sources)[1];
     assert_eq!(aria_label.kind, NameSourceKind::Attribute);
     assert_eq!(aria_label.attribute.as_deref(), Some("aria-label"));
     assert_eq!(
@@ -501,6 +515,8 @@ fn title_names_the_input() {
     assert_eq!(winner.attribute.as_deref(), Some("title"));
     let titles = name
         .sources
+        .available()
+        .expect("Chromium reports name sources")
         .iter()
         .filter(|source| source.attribute.as_deref() == Some("title"))
         .count();
@@ -570,7 +586,10 @@ fn icon_button_has_an_empty_name_with_no_winner_and_its_svg_excluded() {
     assert_eq!(name.text, "");
     assert_eq!(name.winner, None);
     assert_eq!(name.from_hidden_content, None);
-    let tried: Vec<&NameSourceKind> = name.sources.iter().map(|source| &source.kind).collect();
+    let tried: Vec<&NameSourceKind> = available(&name.sources)
+        .iter()
+        .map(|source| &source.kind)
+        .collect();
     assert_eq!(
         tried,
         [
@@ -581,7 +600,11 @@ fn icon_button_has_an_empty_name_with_no_winner_and_its_svg_excluded() {
             &NameSourceKind::Attribute,
         ]
     );
-    assert!(name.sources.iter().all(|source| source.value.is_none()));
+    assert!(
+        available(&name.sources)
+            .iter()
+            .all(|source| source.value.is_none())
+    );
     let icon = excluded(&model, "icon");
     assert_eq!(icon.reasons.len(), 1);
     assert_eq!(icon.reasons[0].kind, ExclusionKind::AriaHidden);
@@ -765,6 +788,8 @@ fn name_from_a_visible_wrapping_label_is_not_hidden_content() {
     assert_eq!(label.tag.as_deref(), Some("label"));
     let label = model
         .excluded
+        .available()
+        .expect("the Chromium adapter supplies excluded nodes")
         .iter()
         .find(|node| node.dom.dom_id == label.dom_id)
         .expect("the label is excluded");
@@ -1013,7 +1038,7 @@ fn element_with_no_accessibility_node_is_excluded_with_no_reasons() {
 #[test]
 fn focus_walk_keeps_unresolved_steps_and_links_exposed_elements() {
     let model = adapted("focus/added-on-tab.json");
-    let steps = &model.focus.steps;
+    let steps = &available(&model.focus).steps;
     assert_eq!(steps.len(), 4);
     let FocusStop::Element { dom, node } = &steps[0] else {
         panic!("an element: {:?}", steps[0]);
@@ -1028,8 +1053,8 @@ fn focus_walk_keeps_unresolved_steps_and_links_exposed_elements() {
     );
     assert!(matches!(steps[1], FocusStop::Unresolved { .. }));
     assert_eq!(steps[2], FocusStop::LeftPage);
-    assert_eq!(model.focus.cycle_start, Some(3));
-    assert!(!model.focus.truncated);
+    assert_eq!(available(&model.focus).cycle_start, Some(3));
+    assert!(!available(&model.focus).truncated);
     assert_eq!(model.diagnostics.len(), 1);
     assert_eq!(model.diagnostics[0].code, "focus-target-not-in-dom");
     assert_eq!(model.diagnostics[0].dom, None);
@@ -1038,8 +1063,8 @@ fn focus_walk_keeps_unresolved_steps_and_links_exposed_elements() {
 #[test]
 fn focus_on_an_excluded_element_has_no_exposed_node() {
     let model = adapted("excluded/aria-hidden.json");
-    let FocusStop::Element { dom, node } = &model.focus.steps[1] else {
-        panic!("an element: {:?}", model.focus.steps[1]);
+    let FocusStop::Element { dom, node } = &available(&model.focus).steps[1] else {
+        panic!("an element: {:?}", available(&model.focus).steps[1]);
     };
     assert_eq!(dom.id.as_deref(), Some("hidden"));
     assert_eq!(*node, None);
@@ -1354,7 +1379,7 @@ fn deep_ax_chain_adapts_without_overflowing_the_stack() {
     let snapshot = chain_snapshot(ax, Vec::new(), None);
     let model = adapt(&snapshot, &BTreeMap::new()).expect("the chain adapts");
     assert_eq!(model.nodes.len(), usize::try_from(DEPTH).expect("fits") + 1);
-    assert_eq!(model.excluded, []);
+    assert_eq!(available(&model.excluded), &[]);
     let deepest = model
         .nodes
         .last()
@@ -1386,15 +1411,21 @@ fn deep_dom_chain_adapts_without_overflowing_the_stack() {
     });
     let snapshot = chain_snapshot(vec![root_ax(&[])], forced, Some(dom_snapshot));
     let model = adapt(&snapshot, &BTreeMap::new()).expect("the chain adapts");
-    assert_eq!(model.excluded.len(), usize::try_from(DEPTH).expect("fits"));
-    let deepest = model.excluded.last().expect("an excluded node");
+    assert_eq!(
+        available(&model.excluded).len(),
+        usize::try_from(DEPTH).expect("fits")
+    );
+    let deepest = available(&model.excluded).last().expect("an excluded node");
     let ancestor = deepest.reasons[0]
         .hiding_ancestor
         .as_ref()
         .expect("a hiding ancestor");
     assert_eq!(ancestor.value.dom_id, 2);
     assert_eq!(deepest.source, SourceClass::Script);
-    assert_eq!(model.excluded[1].reasons[0].hiding_ancestor, None);
+    assert_eq!(
+        available(&model.excluded)[1].reasons[0].hiding_ancestor,
+        None
+    );
 }
 
 #[test]

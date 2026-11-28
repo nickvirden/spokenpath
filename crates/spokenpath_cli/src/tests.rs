@@ -823,7 +823,7 @@ fn mark_name(name: &mut spokenpath_announce::NameRecord) {
     if let Some(text) = &mut name.text {
         mark(text);
     }
-    for (index, source) in name.sources.iter_mut().enumerate() {
+    for (index, source) in name.sources.iter_mut().flatten().enumerate() {
         mark(&mut source.kind);
         for text in [
             &mut source.attribute,
@@ -907,7 +907,7 @@ fn poisoned_transcript() -> spokenpath_announce::Transcript {
             }
         }
     }
-    for excluded in &mut transcript.excluded {
+    for excluded in transcript.excluded.iter_mut().flatten() {
         mark_dom(&mut excluded.dom);
         mark_source(&mut excluded.source);
         for reason in &mut excluded.reasons {
@@ -935,7 +935,12 @@ fn poisoned_transcript() -> spokenpath_announce::Transcript {
             mark(name);
         }
     }
-    for (index, step) in transcript.tab_order.steps.iter_mut().enumerate() {
+    for (index, step) in transcript
+        .tab_order
+        .iter_mut()
+        .flat_map(|tab_order| tab_order.steps.iter_mut())
+        .enumerate()
+    {
         if let Stop::Element { dom, source, item } = &mut step.stop {
             mark_dom(dom);
             if let Some(source) = source {
@@ -965,6 +970,7 @@ fn every_page_controlled_string_in_the_text_is_escaped() {
         viewport: (1280, 720),
         layer_b: true,
         source: Some(&source),
+        aligned: None,
     };
     let mut out = Vec::new();
     crate::text::write_text(&mut out, &transcript, &context).expect("writes to a vector");

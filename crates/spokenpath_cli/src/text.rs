@@ -1,6 +1,8 @@
 //! The text transcript: a header, with a cross-check line when the transcript was cross-checked, a
 //! legend, every item in reading order with its cross-check notes, the excluded elements, the
-//! navigation indexes and the tab order.
+//! navigation indexes and the tab order. A part the engine does not supply says so in place of its
+//! lines. An aligned transcript prints instead the two headers, a legend and one block per row,
+//! each with the row's labels, its source location and each item's `A` line.
 //!
 //! Every page-controlled string passes through [`escape_for_terminal`] before it is written.
 //! Layer B phrases and the tab-order ending are written as the announce crate renders them, since
@@ -12,11 +14,11 @@ use std::fmt::Write as _;
 use std::io::{self, Write};
 
 use spokenpath_announce::{
-    AccessibleRecord, CrossCheck, DescriptionRecord, DescriptionSourceRecord, DomRecord, Excluded,
-    ExclusionRecord, FieldCheck, IndexEntry, Item, ItemCrossCheck, LayerA, Marking, NameRecord,
-    NameSourceOutcome, NameSourceRecord, NameStatus, NotChecked, NotCheckedReason, RelatedRecord,
-    RoleKind, RoleRecord, SourceRecord, StatesRecord, Stop, Transcript, TristateToken,
-    escape_for_terminal,
+    AccessibleRecord, Aligned, AlignedRow, CrossCheck, DescriptionRecord, DescriptionSourceRecord,
+    DomRecord, Excluded, ExclusionRecord, FieldCheck, Header, IndexEntry, Item, ItemCrossCheck,
+    LayerA, Marking, NameRecord, NameSourceOutcome, NameSourceRecord, NameStatus, NotChecked,
+    NotCheckedReason, RelatedRecord, RoleKind, RoleRecord, SourceRecord, StatesRecord, Stop,
+    Transcript, TristateToken, escape_for_terminal,
 };
 
 /// The most characters of a start tag an excerpt shows before `…` marks the cut.
@@ -48,7 +50,21 @@ pub(crate) struct TextContext<'a> {
     pub(crate) layer_b: bool,
     /// The source bytes for excerpts; without them no excerpt is printed.
     pub(crate) source: Option<&'a SourceText>,
+    /// The aligned snapshot's versions and viewport, when the transcript is aligned with one.
+    pub(crate) aligned: Option<AlignedContext>,
 }
+
+/// What the aligned header line needs from the aligned snapshot.
+#[derive(Debug)]
+pub(crate) struct AlignedContext {
+    /// The aligned snapshot's major and minor version.
+    pub(crate) snapshot_version: (u32, u32),
+    /// The aligned capture's viewport width and height.
+    pub(crate) viewport: (u32, u32),
+}
+
+/// What a printer writes in place of a part the engine does not supply.
+const NOT_AVAILABLE: &str = "not available from this engine";
 
 fn esc(text: &str) -> Cow<'_, str> {
     escape_for_terminal(text)
@@ -60,22 +76,24 @@ pub(crate) fn write_text(
     transcript: &Transcript,
     context: &TextContext<'_>,
 ) -> io::Result<()> {
-    let header = &transcript.header;
-    let engine: Cow<'_, str> = match header.engine {
-        "chromium" => Cow::Borrowed("Chromium"),
-        other => esc(other),
-    };
     writeln!(
         out,
-        "spokenpath {} · snapshot v{}.{} · {} {} · viewport {}x{}",
+        "spokenpath {} · snapshot v{}.{} · {} · viewport {}x{}",
         esc(context.tool_version),
         context.snapshot_version.0,
         context.snapshot_version.1,
-        engine,
-        esc(&header.engine_version),
+        engine_text(&transcript.header),
         context.viewport.0,
         context.viewport.1,
     )?;
+    let printer = Printer {
+        transcript,
+        source: context.source,
+        number_width: transcript.nodes.len().to_string().len(),
+    };
+    if let Some(aligned) = &transcript.aligned {
+        return printer.aligned(out, aligned, context.aligned.as_ref());
+    }
     if let Some(cross_check) = &transcript.cross_check {
         writeln!(out, "{}", cross_check_header(cross_check))?;
     }
@@ -88,11 +106,6 @@ pub(crate) fn write_text(
         writeln!(out, "A = what the browser exposes")?;
     }
 
-    let printer = Printer {
-        transcript,
-        source: context.source,
-        number_width: transcript.nodes.len().to_string().len(),
-    };
     writeln!(out)?;
     for item in &transcript.nodes {
         printer.item(out, item)?;
@@ -146,6 +159,103 @@ impl Printer<'_> {
         Ok(())
     }
 
+    /// The aligned layout after the first header line: the aligned snapshot's header, the legend,
+    /// and one block per row.
+    fn aligned(
+        &self,
+        out: &mut dyn Write,
+        aligned: &Aligned,
+        context: Option<&AlignedContext>,
+    ) -> io::Result<()> {
+        let safari = &aligned.safari;
+        let (version, viewport) = context.map_or(((0, 0), (0, 0)), |context| {
+            (context.snapshot_version, context.viewport)
+        });
+        writeln!(
+            out,
+            "aligned with · snapshot v{}.{} · {} · viewport {}x{}",
+            version.0,
+            version.1,
+            engine_text(&safari.header),
+            viewport.0,
+            viewport.1,
+        )?;
+        writeln!(
+            out,
+            "A = what the browser exposes   C<n> = Chromium item n, S<n> = Safari item n, aligned by source location"
+        )?;
+        writeln!(out)?;
+        // A label is its letter and the item number, so each column is as wide as its largest.
+        let label_width = |items: &[Item]| 1 + items.len().to_string().len();
+        let chromium_width = label_width(&self.transcript.nodes);
+        let safari_width = label_width(&safari.nodes);
+        let indent = " ".repeat(chromium_width + 2 + safari_width + 2);
+        for row in &aligned.rows {
+            self.aligned_row(out, row, safari, (chromium_width, safari_width), &indent)?;
+        }
+        Ok(())
+    }
+
+    fn aligned_row(
+        &self,
+        out: &mut dyn Write,
+        row: &AlignedRow,
+        safari: &Transcript,
+        (chromium_width, safari_width): (usize, usize),
+        indent: &str,
+    ) -> io::Result<()> {
+        let labels = |prefix: char, numbers: &[usize]| {
+            numbers
+                .iter()
+                .map(|number| format!("{prefix}{number}"))
+                .collect::<Vec<_>>()
+        };
+        let chromium_labels = labels('C', &row.chromium);
+        let safari_labels = labels('S', &row.safari);
+        let chromium_items = items_numbered(&self.transcript.nodes, &row.chromium);
+        let safari_items = items_numbered(&safari.nodes, &row.safari);
+        let first = chromium_items.first().or(safari_items.first());
+        let location = match first.map(|item| &item.layer_a) {
+            Some(LayerA::Accessible(record)) => self.location(&record.source),
+            Some(LayerA::TextRun(_)) => {
+                format!("no source location: {}", no_location_reason("text"))
+            }
+            None => String::new(),
+        };
+        // One label line per pair of labels; a row of one span carried twice lists every number.
+        let lines = chromium_labels.len().max(safari_labels.len()).max(1);
+        for line in 0..lines {
+            let chromium = chromium_labels.get(line).map_or("", String::as_str);
+            let safari = safari_labels.get(line).map_or("", String::as_str);
+            let start = format!("{chromium:<chromium_width$}  {safari:<safari_width$}  ");
+            if line == 0 {
+                writeln!(out, "{start}{location}")?;
+            } else {
+                writeln!(out, "{}", start.trim_end())?;
+            }
+        }
+        for (engine, items) in [("Chromium", &chromium_items), ("Safari  ", &safari_items)] {
+            for item in items {
+                writeln!(out, "{indent}A {engine}  {}", a_line(&item.layer_a))?;
+            }
+        }
+        let spanned = first.is_some_and(|item| {
+            matches!(&item.layer_a, LayerA::Accessible(record) if record.source.class == "span")
+        });
+        if spanned && safari_items.is_empty() {
+            writeln!(
+                out,
+                "{indent}  only in Chromium: no Safari item has this source location"
+            )?;
+        } else if spanned && chromium_items.is_empty() {
+            writeln!(
+                out,
+                "{indent}  only in Safari: no Chromium item has this source location"
+            )?;
+        }
+        Ok(())
+    }
+
     /// The source location of a node: `path:line:column` and the excerpt for a span, otherwise
     /// the statement that there is none and why.
     fn location(&self, source: &SourceRecord) -> String {
@@ -180,10 +290,13 @@ impl Printer<'_> {
 
     fn excluded(&self, out: &mut dyn Write) -> io::Result<()> {
         writeln!(out, "\nExcluded")?;
-        if self.transcript.excluded.is_empty() {
+        let Some(excluded) = &self.transcript.excluded else {
+            return writeln!(out, "  {NOT_AVAILABLE}");
+        };
+        if excluded.is_empty() {
             writeln!(out, "  (none)")?;
         }
-        for excluded in &self.transcript.excluded {
+        for excluded in excluded {
             self.excluded_entry(out, excluded)?;
         }
         Ok(())
@@ -234,8 +347,10 @@ impl Printer<'_> {
     }
 
     fn tab_order(&self, out: &mut dyn Write) -> io::Result<()> {
-        let tab_order = &self.transcript.tab_order;
         writeln!(out, "\nTab order")?;
+        let Some(tab_order) = &self.transcript.tab_order else {
+            return writeln!(out, "  {NOT_AVAILABLE}");
+        };
         if tab_order.steps.is_empty() {
             writeln!(out, "  (none)")?;
         }
@@ -298,6 +413,14 @@ impl Printer<'_> {
     }
 }
 
+/// The items with the given numbers, in that order; a number with no item is skipped.
+fn items_numbered<'a>(nodes: &'a [Item], numbers: &[usize]) -> Vec<&'a Item> {
+    numbers
+        .iter()
+        .filter_map(|&number| number.checked_sub(1).and_then(|index| nodes.get(index)))
+        .collect()
+}
+
 /// The `A` line after its marker: role, name, value, states and set position, or a text run's
 /// text.
 fn a_line(layer_a: &LayerA) -> String {
@@ -334,6 +457,12 @@ fn role(role: Option<&RoleRecord>) -> String {
         Some(role) => match role.kind {
             RoleKind::Aria => esc(&role.token).into_owned(),
             RoleKind::Internal => format!("{} (internal role)", esc(&role.token)),
+            RoleKind::Platform => match &role.subrole {
+                Some(subrole) => {
+                    format!("{}/{} (platform role)", esc(&role.token), esc(subrole))
+                }
+                None => format!("{} (platform role)", esc(&role.token)),
+            },
         },
     }
 }
@@ -502,26 +631,34 @@ fn source_list<'a>(sources: impl Iterator<Item = &'a NameSourceRecord>) -> Strin
 /// named item, or every source tried for an unnamed one.
 fn name_lines(name: &NameRecord) -> Vec<String> {
     let mut lines = Vec::new();
+    let Some(sources) = &name.sources else {
+        lines.push(match name.status {
+            NameStatus::Named => format!("name sources {NOT_AVAILABLE}"),
+            NameStatus::NoAccessibleName => {
+                format!("no accessible name; name sources {NOT_AVAILABLE}")
+            }
+        });
+        return lines;
+    };
     if name.status == NameStatus::NoAccessibleName {
-        if name.sources.is_empty() {
+        if sources.is_empty() {
             lines.push("no accessible name; the engine reported no name sources".to_owned());
         } else {
             lines.push(format!(
                 "no accessible name; tried: {}",
-                source_list(name.sources.iter())
+                source_list(sources.iter())
             ));
         }
         return lines;
     }
-    let winner = name
-        .sources
+    let winner = sources
         .iter()
         .position(|source| source.outcome == NameSourceOutcome::Used);
     let hidden = match &name.from_hidden_content {
         Some(marked) if marked.value => format!(", from hidden content ({})", marking(marked.by)),
         _ => String::new(),
     };
-    match winner.map(|index| &name.sources[index]) {
+    match winner.map(|index| &sources[index]) {
         Some(source) => {
             lines.push(format!("name from {}{hidden}", describe_source(source)));
             for node in &source.related_nodes {
@@ -532,8 +669,7 @@ fn name_lines(name: &NameRecord) -> Vec<String> {
             "name from a source the engine does not report{hidden}"
         )),
     }
-    let others: Vec<&NameSourceRecord> = name
-        .sources
+    let others: Vec<&NameSourceRecord> = sources
         .iter()
         .enumerate()
         .filter(|&(index, _)| Some(index) != winner)
@@ -598,17 +734,41 @@ fn index_entry(entry: &IndexEntry) -> String {
     format!("[{}] {} {name}", entry.item, esc(&entry.role))
 }
 
-/// The second header line of a cross-checked transcript: the Safari and macOS versions, and what
-/// the comparison found.
-fn cross_check_header(cross_check: &CrossCheck) -> String {
-    let mut platform = format!("Safari {}", esc(&cross_check.engine_version));
-    if let Some(macos) = &cross_check.macos_version {
+/// `Safari <version> on macOS <version> (<build>)`, without the macOS part, or its build, when
+/// the capture did not record it.
+fn safari_platform(version: &str, macos: Option<&str>, build: Option<&str>) -> String {
+    let mut platform = format!("Safari {}", esc(version));
+    if let Some(macos) = macos {
         // Writing to a String cannot fail.
         let _ = write!(platform, " on macOS {}", esc(macos));
-        if let Some(build) = &cross_check.macos_build {
+        if let Some(build) = build {
             let _ = write!(platform, " ({})", esc(build));
         }
     }
+    platform
+}
+
+/// The engine and its version as the header names them.
+fn engine_text(header: &Header) -> String {
+    match header.engine {
+        "chromium" => format!("Chromium {}", esc(&header.engine_version)),
+        "safari-ax" => safari_platform(
+            &header.engine_version,
+            header.macos_version.as_deref(),
+            header.macos_build.as_deref(),
+        ),
+        other => format!("{} {}", esc(other), esc(&header.engine_version)),
+    }
+}
+
+/// The second header line of a cross-checked transcript: the Safari and macOS versions, and what
+/// the comparison found.
+fn cross_check_header(cross_check: &CrossCheck) -> String {
+    let platform = safari_platform(
+        &cross_check.engine_version,
+        cross_check.macos_version.as_deref(),
+        cross_check.macos_build.as_deref(),
+    );
     let elements = if cross_check.compared == 1 {
         "element"
     } else {

@@ -37,13 +37,14 @@ pub const UNNAMED: Template = Template {
     pattern: "{role}[, {parts}]",
 };
 
-/// A named item whose role is engine-internal, `generic`, or absent.
+/// A named item whose role is engine-internal, a platform role, `generic`, or absent.
 pub const NAMED_UNSPOKEN_ROLE: Template = Template {
     id: "named-unspoken-role",
     pattern: "{name}[, {parts}]",
 };
 
-/// An unnamed item whose role is engine-internal, `generic`, or absent; possibly empty.
+/// An unnamed item whose role is engine-internal, a platform role, `generic`, or absent;
+/// possibly empty.
 pub const UNNAMED_UNSPOKEN_ROLE: Template = Template {
     id: "unnamed-unspoken-role",
     pattern: "{parts}",

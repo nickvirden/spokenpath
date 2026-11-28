@@ -5,14 +5,14 @@ use std::time::{Duration, Instant};
 
 use serde_json::{Value, json};
 use spokenpath_model::{
-    AccessibleNode, ExposedNode, FocusStop, FocusWalk, Model, Role, chromium::adapt,
+    AccessibleNode, Availability, ExposedNode, FocusStop, FocusWalk, Model, Role, chromium::adapt,
 };
 use spokenpath_snapshot::{Snapshot, read};
 
 use crate::{
     AccessibleRecord, Approx, ENDING_WORDING, Ending, EndingKind, IndexEntry, Indexes, Item,
-    LayerA, Marking, NO_ACCESSIBLE_NAME, NameSourceOutcome, NameStatus, Options, RoleKind, Stop,
-    TEMPLATES, Transcript, announce, escape_for_terminal,
+    LayerA, Marking, NO_ACCESSIBLE_NAME, NameSourceOutcome, NameStatus, NotAvailablePart, Options,
+    RoleKind, Stop, TEMPLATES, Transcript, announce, escape_for_terminal,
 };
 
 fn fixtures() -> PathBuf {
@@ -172,6 +172,21 @@ fn dom_id(transcript: &Transcript, id: &str) -> u32 {
         .and_then(|record| record.dom.as_ref())
         .map(|dom| dom.dom_id)
         .expect("a DOM node")
+}
+
+/// The excluded nodes of a transcript whose engine supplies them.
+fn excluded_of(transcript: &Transcript) -> &[crate::Excluded] {
+    transcript.excluded.as_deref().expect("excluded nodes")
+}
+
+/// The tab order of a transcript whose engine supplies it.
+fn tab_order_of(transcript: &Transcript) -> &crate::TabOrder {
+    transcript.tab_order.as_ref().expect("a tab order")
+}
+
+/// The focus walk of a model whose engine supplies it.
+fn focus_of(model: &Model) -> &FocusWalk {
+    model.focus.available().expect("a focus walk")
 }
 
 fn is_increasing(numbers: &[usize]) -> bool {
@@ -390,6 +405,7 @@ fn unnamed_icon_button_says_so_and_shows_every_source_tried() {
         .name
         .sources
         .iter()
+        .flatten()
         .map(|source| {
             (
                 source.kind.as_str(),
@@ -435,8 +451,7 @@ fn unnamed_icon_button_says_so_and_shows_every_source_tried() {
     let name = &json["nodes"][button.number - 1]["layer_a"]["name"];
     assert_eq!(name["status"], "no accessible name");
 
-    let excluded: Vec<(Option<&str>, Vec<&str>)> = transcript
-        .excluded
+    let excluded: Vec<(Option<&str>, Vec<&str>)> = excluded_of(&transcript)
         .iter()
         .filter(|node| matches!(node.dom.tag.as_deref(), Some("svg" | "path")))
         .map(|node| {
@@ -453,8 +468,7 @@ fn unnamed_icon_button_says_so_and_shows_every_source_tried() {
             (Some("path"), vec!["aria-hidden"])
         ]
     );
-    let path = transcript
-        .excluded
+    let path = excluded_of(&transcript)
         .iter()
         .find(|node| node.dom.tag.as_deref() == Some("path"))
         .expect("the path is excluded");
@@ -670,7 +684,7 @@ fn unnamed_phrases_hold_no_name_text_or_tried_values() {
                     .name
                     .text
                     .iter()
-                    .chain(record.name.sources.iter().flat_map(|source| {
+                    .chain(record.name.sources.iter().flatten().flat_map(|source| {
                         source.attribute_value.iter().chain(source.value.iter())
                     }))
                     .filter(|text| !text.trim().is_empty());
@@ -744,15 +758,14 @@ fn phrases_follow_the_template_table() {
 
 fn ending(name: &str) -> (Ending, Marking) {
     let transcript = with_layer_b(&adapted(name));
-    (
-        transcript.tab_order.ending.value,
-        transcript.tab_order.ending.by,
-    )
+    let tab_order = tab_order_of(&transcript);
+    (tab_order.ending.value.clone(), tab_order.ending.by)
 }
 
 fn repeats(name: &str) -> Vec<(usize, Option<usize>)> {
     with_layer_b(&adapted(name))
         .tab_order
+        .expect("a tab order")
         .steps
         .iter()
         .map(|step| (step.step, step.repeats))
@@ -807,8 +820,7 @@ fn tab_order_endings_match_the_focus_captures() {
 #[test]
 fn the_repeating_step_names_the_step_it_repeats() {
     let sign_in = with_layer_b(&adapted("sign-in.json"));
-    let kinds: Vec<&Stop> = sign_in
-        .tab_order
+    let kinds: Vec<&Stop> = tab_order_of(&sign_in)
         .steps
         .iter()
         .map(|step| &step.stop)
@@ -855,14 +867,18 @@ fn the_repeating_step_names_the_step_it_repeats() {
     assert!(
         no_focusable
             .tab_order
+            .as_ref()
+            .expect("a tab order")
             .steps
             .iter()
             .all(|step| step.stop == Stop::LeftPage && step.repeats.is_none())
     );
-    assert_eq!(no_focusable.tab_order.steps.len(), 2);
+    assert_eq!(tab_order_of(&no_focusable).steps.len(), 2);
     assert_eq!(
         with_layer_b(&adapted("focus/long.json"))
             .tab_order
+            .as_ref()
+            .expect("a tab order")
             .steps
             .len(),
         200
@@ -1146,11 +1162,11 @@ fn root_only(mut model: Model) -> Model {
     if let Some(ExposedNode::Accessible(root)) = model.nodes.first_mut() {
         root.children.clear();
     }
-    model.focus = FocusWalk {
+    model.focus = Availability::Available(FocusWalk {
         steps: Vec::new(),
         truncated: false,
         cycle_start: None,
-    };
+    });
     model
 }
 
@@ -1160,11 +1176,17 @@ fn a_root_alone_with_no_focus_steps_has_one_item_and_empty_indexes() {
     let transcript = with_layer_b(&model);
     assert_eq!(transcript.nodes.len(), 1);
     assert_eq!(transcript.indexes, Indexes::default());
-    assert_eq!(transcript.excluded.len(), model.excluded.len());
-    assert_eq!(transcript.tab_order.steps, []);
-    assert_eq!(transcript.tab_order.ending.value.kind, EndingKind::Ended);
     assert_eq!(
-        transcript.tab_order.ending.value.wording,
+        excluded_of(&transcript).len(),
+        model.excluded.available().map_or(0, Vec::len)
+    );
+    assert_eq!(tab_order_of(&transcript).steps, []);
+    assert_eq!(
+        tab_order_of(&transcript).ending.value.kind,
+        EndingKind::Ended
+    );
+    assert_eq!(
+        tab_order_of(&transcript).ending.value.wording,
         "The walk ended after 0 steps."
     );
     let json = to_value(&transcript);
@@ -1196,10 +1218,12 @@ fn node_indexes_from_another_model_are_left_absent() {
     let mut model = root_only(adapted("sign-in.json"));
     model.focus = long.focus.clone();
     let transcript = with_layer_b(&model);
-    assert_eq!(transcript.tab_order.steps.len(), 200);
+    assert_eq!(tab_order_of(&transcript).steps.len(), 200);
     assert!(
         transcript
             .tab_order
+            .as_ref()
+            .expect("a tab order")
             .steps
             .iter()
             .all(|step| match &step.stop {
@@ -1209,8 +1233,7 @@ fn node_indexes_from_another_model_are_left_absent() {
     );
 
     let mut model = root_only(adapted("sign-in.json"));
-    model.root = long
-        .focus
+    model.root = focus_of(&long)
         .steps
         .iter()
         .find_map(|stop| match stop {
@@ -1359,12 +1382,12 @@ struct WalkCase {
 /// marking, and each step's `repeats`.
 fn assert_walk(walk: WalkCase) {
     let mut model = adapted("sign-in.json");
-    model.focus = FocusWalk {
+    model.focus = Availability::Available(FocusWalk {
         steps: walk.steps,
         truncated: walk.truncated,
         cycle_start: walk.cycle_start,
-    };
-    let tab_order = with_layer_b(&model).tab_order;
+    });
+    let tab_order = with_layer_b(&model).tab_order.expect("a tab order");
     let repeats: Vec<Option<usize>> = tab_order.steps.iter().map(|step| step.repeats).collect();
     assert_eq!(
         (
@@ -1390,7 +1413,7 @@ const WRAP_TO_STEP_1: &str =
 #[test]
 fn repeating_stops_are_matched_by_identity_on_synthetic_walks() {
     use FocusStop::LeftPage;
-    let email = adapted("sign-in.json").focus.steps[0].clone();
+    let email = focus_of(&adapted("sign-in.json")).steps[0].clone();
     let cases = [
         WalkCase {
             case: "an unresolved stop repeats by backend id after leaving the page",
@@ -1504,5 +1527,322 @@ fn walks_without_a_usable_cycle_end_by_the_other_rules() {
     ];
     for case in cases {
         assert_walk(case);
+    }
+}
+
+fn safari_ax_directory() -> PathBuf {
+    fixtures().join("snapshots/safari-ax")
+}
+
+/// Every capture under `fixtures/snapshots/safari-ax/`, relative to it, found by listing the
+/// directories, so a new capture without a render golden fails; `source-mapping.json` is a report.
+fn safari_ax_names() -> Vec<PathBuf> {
+    let root = safari_ax_directory();
+    let mut names = Vec::new();
+    let mut directories = vec![root.clone()];
+    while let Some(directory) = directories.pop() {
+        let entries = std::fs::read_dir(&directory)
+            .unwrap_or_else(|error| panic!("{} is listable: {error}", directory.display()));
+        for entry in entries {
+            let path = entry.expect("directory entry").path();
+            if path.is_dir() {
+                directories.push(path);
+            } else if path
+                .extension()
+                .is_some_and(|extension| extension == "json")
+                && path
+                    .file_name()
+                    .is_some_and(|name| name != "source-mapping.json")
+            {
+                let relative = path.strip_prefix(&root).expect("listed under the root");
+                names.push(relative.to_path_buf());
+            }
+        }
+    }
+    names.sort();
+    names
+}
+
+fn value_at(path: &Path) -> Value {
+    let text = std::fs::read_to_string(path)
+        .unwrap_or_else(|error| panic!("{} is readable: {error}", path.display()));
+    serde_json::from_str(&text)
+        .unwrap_or_else(|error| panic!("{} is JSON: {error}", path.display()))
+}
+
+fn adapted_safari(name: &Path) -> Model {
+    let snapshot = read_value(name, &value_at(&safari_ax_directory().join(name)));
+    spokenpath_model::safari_ax::adapt(&snapshot, &source_lengths(name, &snapshot))
+        .unwrap_or_else(|error| panic!("{} adapts: {error}", name.display()))
+}
+
+#[test]
+fn every_safari_capture_matches_its_render_golden() {
+    let names = safari_ax_names();
+    assert!(names.len() >= 46, "{names:?}");
+    for name in &names {
+        let transcript = with_layer_b(&adapted_safari(name));
+        let json = serde_json::to_string_pretty(&transcript).expect("a transcript serialises");
+        insta::assert_snapshot!(format!("safari-ax__{}", snapshot_name(name)), json);
+    }
+}
+
+#[test]
+fn a_safari_transcript_says_which_parts_the_engine_does_not_supply() {
+    let transcript = with_layer_b(&adapted_safari(Path::new("sign-in.json")));
+    assert_eq!(
+        transcript.not_available,
+        [
+            NotAvailablePart::NameSources,
+            NotAvailablePart::Excluded,
+            NotAvailablePart::TabOrder
+        ]
+    );
+    let json = to_value(&transcript);
+    assert_eq!(
+        json["not_available"],
+        json!(["name-sources", "excluded", "tab-order"])
+    );
+    assert!(json.get("excluded").is_none() && json.get("tab_order").is_none());
+    for item in json["nodes"].as_array().expect("nodes") {
+        assert!(item["layer_a"]["name"].get("sources").is_none(), "{item}");
+    }
+    assert_eq!(
+        json["header"],
+        json!({
+            "engine": "safari-ax",
+            "engine_version": "27.0.1",
+            "tool_version": transcript.header.tool_version,
+            "safari_build": "22625.1.29.11.28",
+            "macos_version": "27.0.1",
+            "macos_build": "26A434",
+        })
+    );
+    // A Chromium transcript says nothing of the kind.
+    let chromium = to_value(&with_layer_b(&adapted("sign-in.json")));
+    assert!(chromium.get("not_available").is_none());
+}
+
+#[test]
+fn a_platform_role_is_unspoken_and_never_indexed() {
+    let transcript = with_layer_b(&adapted_safari(Path::new("sign-in.json")));
+    let mut platform = 0;
+    for item in &transcript.nodes {
+        let Some(record) = accessible(item) else {
+            continue;
+        };
+        let Some(role) = &record.role else {
+            continue;
+        };
+        if role.kind != RoleKind::Platform {
+            continue;
+        }
+        platform += 1;
+        let approx = item.approx.as_ref().expect("Layer B");
+        assert!(
+            ["named-unspoken-role", "unnamed-unspoken-role"].contains(&approx.template),
+            "item {}: {approx:?}",
+            item.number
+        );
+        assert!(!approx.phrase.contains(&role.token), "{approx:?}");
+    }
+    assert!(platform > 3);
+    let phrases: Vec<&str> = transcript
+        .nodes
+        .iter()
+        .filter_map(|item| item.approx.as_ref().map(|approx| approx.phrase.as_str()))
+        .collect();
+    // The web area, the heading, the label and the email field.
+    for phrase in [
+        "Sign in",
+        "Sign in, heading, level 1",
+        "Email",
+        "Email, textbox",
+    ] {
+        assert!(phrases.contains(&phrase), "{phrase}: {phrases:?}");
+    }
+    let indexes = &transcript.indexes;
+    assert_eq!(indexes.headings.len(), 1);
+    assert_eq!(indexes.links.len(), 1);
+    let controls: Vec<&str> = indexes
+        .form_controls
+        .iter()
+        .map(|entry| entry.role.as_str())
+        .collect();
+    assert_eq!(controls, ["textbox", "button"]);
+    assert_eq!(indexes.landmarks, []);
+}
+
+/// The committed Chromium and Safari captures of the same page, with the hand-written pair.
+fn aligned_pairs() -> Vec<(String, Model, Model)> {
+    let mut pairs: Vec<(String, Model, Model)> = safari_ax_names()
+        .into_iter()
+        .map(|name| {
+            (
+                name.display().to_string(),
+                adapted_path(&name),
+                adapted_safari(&name),
+            )
+        })
+        .collect();
+    let snapshots = fixtures().join("snapshots");
+    let read_at = |file: &str| read_value(Path::new(file), &value_at(&snapshots.join(file)));
+    pairs.push((
+        "basic".to_owned(),
+        adapt(&read_at("chromium-basic.json"), &BTreeMap::new()).expect("adapts"),
+        spokenpath_model::safari_ax::adapt(&read_at("safari-ax-basic.json"), &BTreeMap::new())
+            .expect("adapts"),
+    ));
+    pairs
+}
+
+/// The source of an item located by a span: its path and start tag, which name the span, since
+/// both snapshots of a pair hold the same spans.
+fn span_of(item: &Item) -> Option<(String, u64, u64)> {
+    let record = accessible(item)?;
+    let range = record.source.start_tag?;
+    if record.source.class != "span" {
+        return None;
+    }
+    Some((record.source.path.clone()?, range.start, range.end))
+}
+
+#[test]
+fn every_item_of_every_pair_is_in_exactly_one_row_and_aligned_rows_share_a_span() {
+    let mut pairs_with_aligned_rows = 0;
+    for (name, chromium_model, safari_model) in aligned_pairs() {
+        let mut chromium = with_layer_b(&chromium_model);
+        let safari = with_layer_b(&safari_model);
+        crate::align(&mut chromium, &chromium_model, safari, &safari_model);
+        let aligned = chromium.aligned.as_ref().expect("aligned");
+        let rows = &aligned.rows;
+        for (engine, items, count) in [
+            (
+                "chromium",
+                rows.iter()
+                    .flat_map(|row| row.chromium.iter())
+                    .copied()
+                    .collect::<Vec<_>>(),
+                chromium.nodes.len(),
+            ),
+            (
+                "safari",
+                rows.iter()
+                    .flat_map(|row| row.safari.iter())
+                    .copied()
+                    .collect::<Vec<_>>(),
+                aligned.safari.nodes.len(),
+            ),
+        ] {
+            let mut sorted = items.clone();
+            sorted.sort_unstable();
+            assert_eq!(sorted, (1..=count).collect::<Vec<_>>(), "{name}: {engine}");
+        }
+        let item_of = |engine: &str, number: usize| {
+            let nodes = if engine == "chromium" {
+                &chromium.nodes
+            } else {
+                &aligned.safari.nodes
+            };
+            &nodes[number - 1]
+        };
+        let mut aligned_rows = 0;
+        for row in rows {
+            let spans: HashSet<Option<(String, u64, u64)>> = row
+                .chromium
+                .iter()
+                .map(|&number| span_of(item_of("chromium", number)))
+                .chain(
+                    row.safari
+                        .iter()
+                        .map(|&number| span_of(item_of("safari", number))),
+                )
+                .collect();
+            if !row.chromium.is_empty() && !row.safari.is_empty() {
+                aligned_rows += 1;
+                assert_eq!(spans.len(), 1, "{name}: {row:?}");
+                assert!(spans.iter().all(Option::is_some), "{name}: {row:?}");
+            }
+            if row.chromium.len() + row.safari.len() > 1 {
+                assert_eq!(
+                    spans.len(),
+                    1,
+                    "{name}: a multi-item row shares one span: {row:?}"
+                );
+            }
+        }
+        if aligned_rows > 0 {
+            pairs_with_aligned_rows += 1;
+        }
+    }
+    // A page whose only tagged element Safari leaves out has none; most pages have some.
+    assert!(pairs_with_aligned_rows > 40, "{pairs_with_aligned_rows}");
+}
+
+#[test]
+fn rows_follow_chromium_order_and_safari_only_rows_follow_their_anchor() {
+    for (name, chromium_model, safari_model) in aligned_pairs() {
+        let mut chromium = with_layer_b(&chromium_model);
+        crate::align(
+            &mut chromium,
+            &chromium_model,
+            with_layer_b(&safari_model),
+            &safari_model,
+        );
+        let rows = &chromium.aligned.as_ref().expect("aligned").rows;
+        let firsts: Vec<usize> = rows
+            .iter()
+            .filter_map(|row| row.chromium.first().copied())
+            .collect();
+        assert!(is_increasing(&firsts), "{name}: {firsts:?}");
+        let is_aligned =
+            |row: &crate::AlignedRow| !row.chromium.is_empty() && !row.safari.is_empty();
+        let first_aligned = rows.iter().position(is_aligned);
+        // The row of each Safari item that is in an aligned row.
+        let mut aligned_row_of: BTreeMap<usize, usize> = BTreeMap::new();
+        for (position, row) in rows.iter().enumerate().filter(|(_, row)| is_aligned(row)) {
+            for &item in &row.safari {
+                aligned_row_of.insert(item, position);
+            }
+        }
+        let mut previous_safari_only = 0;
+        for (position, row) in rows
+            .iter()
+            .enumerate()
+            .filter(|(_, row)| row.chromium.is_empty())
+        {
+            let first = row.safari[0];
+            assert!(
+                first > previous_safari_only,
+                "{name}: Safari-only rows in Safari order"
+            );
+            previous_safari_only = first;
+            let anchor = aligned_row_of
+                .range(..first)
+                .next_back()
+                .map(|(_, &row)| row);
+            match anchor {
+                Some(anchor) => {
+                    assert!(anchor < position, "{name}: {row:?}");
+                    assert!(
+                        !rows[anchor + 1..position].iter().any(is_aligned),
+                        "{name}: {row:?} is placed after a later aligned row"
+                    );
+                }
+                None => {
+                    if let Some(first_aligned) = first_aligned {
+                        assert!(position < first_aligned, "{name}: {row:?}");
+                    }
+                }
+            }
+            // Nothing Chromium-only from the anchor's run is left after it.
+            if let Some(next) = rows.get(position + 1) {
+                assert!(
+                    !(next.safari.is_empty()
+                        && first_aligned.is_some_and(|first| position > first)),
+                    "{name}: a Chromium-only row follows {row:?}"
+                );
+            }
+        }
     }
 }
