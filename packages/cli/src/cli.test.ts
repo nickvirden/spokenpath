@@ -19,7 +19,7 @@ import { afterAll, describe, expect, test } from 'vitest';
 import { binaryPath, repositoryRoot } from './binary.ts';
 import { escapeForTerminal } from './escape.ts';
 import { describeFailure, failureText } from './failure.ts';
-import { CROSS_CHECK_FD_PATH, transcribe } from './transcribe.ts';
+import { SECOND_SNAPSHOT_FD_PATH, transcribe } from './transcribe.ts';
 
 const cliPath = fileURLToPath(new URL('cli.ts', import.meta.url));
 const goldenPath = join(repositoryRoot, 'fixtures/transcripts/sign-in.txt');
@@ -167,6 +167,70 @@ test('the binary JSON output of every committed capture validates against the tr
   }
 });
 
+/** Every committed capture of Safari's accessibility tree, relative to `fixtures/snapshots/safari-ax/`. */
+function committedSafariCaptures(): string[] {
+  const root = join(repositoryRoot, 'fixtures/snapshots/safari-ax');
+  return readdirSync(root, { recursive: true, encoding: 'utf8' })
+    .filter((path) => path.endsWith('.json') && basename(path) !== 'source-mapping.json')
+    .map((path) => path.split('\\').join('/'))
+    .sort();
+}
+
+/** The page of a capture's first source, under `fixtures/pages/` at the capture's directory. */
+function pageOf(snapshotPath: string, capture: string): string {
+  const snapshot = JSON.parse(readFileSync(snapshotPath, 'utf8')) as { sources: { path: string }[] };
+  return join(repositoryRoot, 'fixtures/pages', dirname(capture), snapshot.sources[0]?.path ?? '');
+}
+
+test('the binary JSON of every Safari capture and every aligned pair validates against the transcript schema', async () => {
+  const captures = committedSafariCaptures();
+  expect(captures.length).toBeGreaterThanOrEqual(46);
+  const snapshots = join(repositoryRoot, 'fixtures/snapshots');
+  const runs: [string, string[]][] = [
+    ['safari-ax-basic', ['transcript', join(snapshots, 'safari-ax-basic.json'), '--format', 'json']],
+    [
+      'the hand-written pair',
+      [
+        'transcript',
+        join(snapshots, 'chromium-basic.json'),
+        '--align-with',
+        join(snapshots, 'safari-ax-basic.json'),
+        '--format',
+        'json',
+      ],
+    ],
+  ];
+  for (const capture of captures) {
+    const safari = join(snapshots, 'safari-ax', capture);
+    const page = pageOf(safari, capture);
+    runs.push([capture, ['transcript', safari, '--source', page, '--format', 'json']]);
+    runs.push([
+      `${capture} aligned`,
+      [
+        'transcript',
+        join(snapshots, 'chromium', capture),
+        '--source',
+        page,
+        '--align-with',
+        safari,
+        '--format',
+        'json',
+      ],
+    ]);
+  }
+  for (const [name, args] of runs) {
+    const { code, stdout, stderr } = await runBinary(args);
+    expect(code, `${name}: ${stderr}`).toBe(0);
+    expect(schemaErrors(stdout), name).toEqual([]);
+    const transcript = JSON.parse(stdout) as { not_available?: string[]; aligned?: { rows: unknown[] } };
+    if (name.endsWith('aligned') || name === 'the hand-written pair') {
+      expect(transcript.aligned?.rows.length, name).toBeGreaterThan(0);
+    } else {
+      expect(transcript.not_available, name).toEqual(['name-sources', 'excluded', 'tab-order']);
+    }
+  }
+});
+
 test('the binary JSON output of a cross-check validates against the transcript schema', async () => {
   const snapshots = join(repositoryRoot, 'fixtures/snapshots');
   const { code, stdout, stderr } = await runBinary([
@@ -301,7 +365,20 @@ describe('usage errors exit 2', () => {
     ['a repeated --format', [signInPage, '--format', 'text', '--format', 'json']],
     ['a repeated --wait-for', [signInPage, '--wait-for', 'main', '--wait-for', 'h1']],
     ['a value for a flag that takes none', [signInPage, '--no-speech=yes']],
-    ['an unknown engine', [signInPage, '--engine', 'safari']],
+    ['an unknown engine', [signInPage, '--engine', 'firefox']],
+    [
+      '--cross-check safari with --engine safari',
+      [signInPage, '--engine', 'safari', '--cross-check', 'safari'],
+    ],
+    ['--cross-check safari with --engine both', [signInPage, '--engine', 'both', '--cross-check', 'safari']],
+    [
+      '--engine safari with --verify-instrumentation',
+      [signInPage, '--engine', 'safari', '--verify-instrumentation'],
+    ],
+    [
+      '--engine both with --verify-instrumentation',
+      [signInPage, '--engine', 'both', '--verify-instrumentation'],
+    ],
     ['an unknown cross-check', [signInPage, '--cross-check', 'firefox']],
     ['a repeated --engine', [signInPage, '--engine', 'chromium', '--engine', 'chromium']],
     ['a repeated --cross-check', [signInPage, '--cross-check', 'safari', '--cross-check', 'safari']],
@@ -347,8 +424,28 @@ describe('argument errors are worded by the command', () => {
     ['--version with a page', ['--version', signInPage], 'spokenpath: "--version" takes no other arguments'],
     [
       'an unknown engine',
-      [signInPage, '--engine', 'safari'],
-      'spokenpath: unknown engine "safari"; the only engine is chromium',
+      [signInPage, '--engine', 'firefox'],
+      'spokenpath: unknown engine "firefox"; the engines are chromium, safari and both',
+    ],
+    [
+      '--cross-check safari with --engine safari',
+      [signInPage, '--engine', 'safari', '--cross-check', 'safari'],
+      'spokenpath: --cross-check safari can be used only with --engine chromium',
+    ],
+    [
+      '--cross-check safari with --engine both',
+      [signInPage, '--cross-check', 'safari', '--engine', 'both'],
+      'spokenpath: --cross-check safari can be used only with --engine chromium',
+    ],
+    [
+      '--engine safari with --verify-instrumentation',
+      [signInPage, '--engine', 'safari', '--verify-instrumentation'],
+      'spokenpath: --engine safari cannot be used with --verify-instrumentation, which checks the page in Chromium',
+    ],
+    [
+      '--engine both with --verify-instrumentation',
+      [signInPage, '--verify-instrumentation', '--engine', 'both'],
+      'spokenpath: --engine both cannot be used with --verify-instrumentation, which checks the page in Chromium',
     ],
     [
       'an unknown cross-check',
@@ -378,11 +475,16 @@ test.each([['--help'], ['-h']])('%s prints the usage and every option to stdout'
   expect(stderr).toBe('');
   expect(code).toBe(0);
   expect(stdout).toMatch(/^usage: spokenpath <page\.html> /);
-  for (const part of ['[--engine chromium]', '[--cross-check safari]', '-h|--help', '--version']) {
+  for (const part of [
+    '[--engine chromium|safari|both]',
+    '[--cross-check safari]',
+    '-h|--help',
+    '--version',
+  ]) {
     expect(stdout.split('\n')[0]).toContain(part);
   }
   for (const option of [
-    '--engine chromium',
+    '--engine chromium|safari|both',
     '--cross-check safari',
     '--format',
     '--no-speech',
@@ -480,21 +582,39 @@ test('--engine chromium captures as it does without the option', async () => {
   expect(normaliseVersion(stdout)).toBe(readFileSync(goldenPath, 'utf8'));
 });
 
-test.runIf(process.platform !== 'darwin')(
-  '--cross-check safari exits 1 off macOS before any capture',
-  async () => {
+describe.runIf(process.platform !== 'darwin')('off macOS, a Safari option exits 2 before any capture', () => {
+  test('--cross-check safari', async () => {
     const { code, stdout, stderr } = await runCli([
       'fixtures/pages/no-such-page.html',
       '--cross-check',
       'safari',
     ]);
-    expect(code).toBe(1);
+    expect(code).toBe(2);
     expect(stdout).toBe('');
     expect(stderr).toBe(
       'spokenpath: unsupported-platform: --cross-check safari needs macOS with Safari and safaridriver\n',
     );
-  },
-);
+  });
+
+  test.each(['safari', 'both'])('--engine %s', async (engine) => {
+    // A missing page and a missing binary would each fail later; the platform check comes first.
+    const { code, stdout, stderr } = await runCli(['fixtures/pages/no-such-page.html', '--engine', engine], {
+      ...process.env,
+      CARGO_TARGET_DIR: temporaryDirectory(),
+    });
+    expect(code).toBe(2);
+    expect(stdout).toBe('');
+    expect(stderr).toBe(
+      `spokenpath: unsupported-platform: --engine ${engine} needs macOS with Safari, safaridriver and the Accessibility permission\n`,
+    );
+  });
+
+  test('the sign-in page with --engine safari', async () => {
+    const { code, stdout, stderr } = await runCli([signInPage, '--engine', 'safari']);
+    expect([code, stdout]).toEqual([2, '']);
+    expect(stderr.split('\n')).toHaveLength(2);
+  });
+});
 
 /** The body of an insta snapshot of the text printer, without its front matter. */
 function textGolden(name: string): string {
@@ -507,32 +627,34 @@ function textGolden(name: string): string {
   return text.slice(end + '\n---\n'.length);
 }
 
-/** Where the cross-check snapshot reaches the binary: a file path, or the extra pipe on fd 3. */
-type CrossCheckRoute = 'path' | 'fd 3';
+/** Where the second snapshot reaches the binary: a file path, or the extra pipe on fd 3. */
+type SecondSnapshotRoute = 'path' | 'fd 3';
 
 /**
- * Runs the binary with the Chromium snapshot on stdin and the Safari snapshot named by path, or, as
- * the command does, written to the extra pipe on fd 3. Its stdout and stderr are captured in files.
+ * Runs the binary with the Chromium snapshot on stdin and the Safari snapshot, after `flag`, named
+ * by path or, as the command does, written to the extra pipe on fd 3. Its stdout and stderr are
+ * captured in files.
  */
-async function crossCheck(
-  route: CrossCheckRoute,
+async function withSafari(
+  route: SecondSnapshotRoute,
   chromiumJson: string,
   safari: string,
   page: string,
+  flag: '--cross-check' | '--align-with' = '--cross-check',
 ): Promise<Run> {
   const directory = temporaryDirectory();
   const stdoutPath = join(directory, 'stdout.txt');
   const stderrPath = join(directory, 'stderr.txt');
   const stdout = openSync(stdoutPath, 'w');
   const stderr = openSync(stderrPath, 'w');
-  const args = ['transcript', '-', '--source', page, '--format', 'text', '--cross-check'];
+  const args = ['transcript', '-', '--source', page, '--format', 'text', flag];
   try {
     const code =
       route === 'path'
         ? await transcribe(binaryPath(), [...args, safari], chromiumJson, undefined, { stdout, stderr })
         : await transcribe(
             binaryPath(),
-            [...args, CROSS_CHECK_FD_PATH],
+            [...args, SECOND_SNAPSHOT_FD_PATH],
             chromiumJson,
             readFileSync(safari, 'utf8'),
             {
@@ -567,6 +689,24 @@ const crossCheckCases = [
   },
 ];
 
+/** A Chromium snapshot, Safari's accessibility-tree snapshot, the page, and their aligned golden. */
+const alignedCases = [
+  {
+    name: 'cross-check/list-style-none',
+    chromium: join(snapshotsDirectory, 'chromium/cross-check/list-style-none.json'),
+    safari: join(snapshotsDirectory, 'safari-ax/cross-check/list-style-none.json'),
+    page: join(repositoryRoot, 'fixtures/pages/cross-check/list-style-none.html'),
+    golden: 'both__cross-check__list-style-none',
+  },
+  {
+    name: 'the hand-written pair',
+    chromium: join(snapshotsDirectory, 'chromium-basic.json'),
+    safari: join(snapshotsDirectory, 'safari-ax-basic.json'),
+    page: join(snapshotsDirectory, 'pages/basic.html'),
+    golden: 'both__basic',
+  },
+];
+
 // The command passes the Safari snapshot on fd 3 only on macOS, where it runs; Linux cannot reopen
 // that socket by path, so every system checks the same output with the snapshot named by path.
 describe.each([
@@ -574,13 +714,38 @@ describe.each([
   ['fed on fd 3', 'fd 3', process.platform === 'darwin'],
 ] as const)('the binary with a Safari snapshot %s', (_, route, runs) => {
   test.runIf(runs).each(crossCheckCases)('prints the committed cross-check golden of $name', async (pair) => {
-    const run = await crossCheck(route, readFileSync(pair.chromium, 'utf8'), pair.safari, pair.page);
+    const run = await withSafari(route, readFileSync(pair.chromium, 'utf8'), pair.safari, pair.page);
     expect(run.code, run.stderr).toBe(0);
     expect(normaliseVersion(run.stdout).trimEnd()).toBe(textGolden(pair.golden).trimEnd());
   });
 
+  test.runIf(runs).each(alignedCases)('prints the committed aligned golden of $name', async (pair) => {
+    const run = await withSafari(
+      route,
+      readFileSync(pair.chromium, 'utf8'),
+      pair.safari,
+      pair.page,
+      '--align-with',
+    );
+    expect(run.code, run.stderr).toBe(0);
+    expect(normaliseVersion(run.stdout).trimEnd()).toBe(textGolden(pair.golden).trimEnd());
+  });
+
+  test.runIf(runs)('reports an aligned snapshot of another page with exit 2 and no transcript', async () => {
+    const run = await withSafari(
+      route,
+      readFileSync(join(snapshotsDirectory, 'chromium/sign-in.json'), 'utf8'),
+      join(snapshotsDirectory, 'safari-ax-basic.json'),
+      join(repositoryRoot, 'fixtures/pages/sign-in.html'),
+      '--align-with',
+    );
+    expect(run.code).toBe(2);
+    expect(run.stdout).toBe('');
+    expect(run.stderr).toMatch(/^spokenpath-core: the aligned snapshot was captured from a different page/);
+  });
+
   test.runIf(runs)('reports a Safari snapshot of another page with exit 2 and no transcript', async () => {
-    const run = await crossCheck(
+    const run = await withSafari(
       route,
       readFileSync(join(snapshotsDirectory, 'chromium/sign-in.json'), 'utf8'),
       join(snapshotsDirectory, 'safari-webdriver-basic.json'),
@@ -603,7 +768,7 @@ test('passes through the exit code and message of a binary that rejects its stdi
   try {
     const code = await transcribe(
       binaryPath(),
-      ['transcript', '-', '--format', 'text', '--cross-check', CROSS_CHECK_FD_PATH],
+      ['transcript', '-', '--format', 'text', '--cross-check', SECOND_SNAPSHOT_FD_PATH],
       'not a snapshot',
       unread,
       { stdout: stderr, stderr },
@@ -634,6 +799,21 @@ async function printedFailure(scenario: Record<string, unknown>): Promise<string
   expect(error).toBeInstanceOf(SafariCaptureError);
   return failureText(describeFailure(error));
 }
+
+test('a helper failure whose message holds terminal controls prints each only escaped', () => {
+  const error = new SafariCaptureError(
+    'ax-helper-failed',
+    'the helper said \u{1b}[31m, \u{9b}2J, \u{202e} and \u{e0041}',
+  );
+  const line = failureText(describeFailure(error));
+  expect(line).toMatch(/^spokenpath: ax-helper-failed: /);
+  for (const raw of ['\u{1b}', '\u{9b}', '\u{202e}', '\u{e0041}']) {
+    expect(line.includes(raw), `${JSON.stringify(line)} holds ${JSON.stringify(raw)}`).toBe(false);
+  }
+  for (const escaped of ['\\u{1b}[31m', '\\u{9b}2J', '\\u{202e}', '\\u{e0041}']) {
+    expect(line, escaped).toContain(escaped);
+  }
+});
 
 describe('driver-originated text is printed escaped', () => {
   test.each([

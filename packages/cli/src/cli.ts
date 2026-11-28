@@ -1,24 +1,28 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { CaptureError, captureChromium, verifyInstrumentation } from '@spokenpath/capture-chromium';
-import { CaptureError as SafariCaptureError, captureSafari } from '@spokenpath/capture-safari';
-import { InstrumentHtmlError } from '@spokenpath/instrument-html';
+import { captureChromium, verifyInstrumentation } from '@spokenpath/capture-chromium';
+import { captureSafari, captureSafariAx } from '@spokenpath/capture-safari';
 import { BUILD_COMMAND, binaryPath, repositoryRoot } from './binary.ts';
 import { escapeForTerminal } from './escape.ts';
+import { EXIT, exitCodeOf } from './exit.ts';
 import { describeFailure, failureText } from './failure.ts';
-import { CROSS_CHECK_FD_PATH, transcribe } from './transcribe.ts';
+import { SECOND_SNAPSHOT_FD_PATH, transcribe } from './transcribe.ts';
 
 const USAGE =
-  'usage: spokenpath <page.html> [--engine chromium] [--cross-check safari] [--format text|json] [--no-speech] [--wait-for <selector>] [--verify-instrumentation] | spokenpath -h|--help | spokenpath --version';
+  'usage: spokenpath <page.html> [--engine chromium|safari|both] [--cross-check safari] [--format text|json] [--no-speech] [--wait-for <selector>] [--verify-instrumentation] | spokenpath -h|--help | spokenpath --version';
 
 const HELP = `${USAGE}
 
 Prints what the browser exposes for an HTML page, item by item, traced to the tags in the file.
 
-  --engine chromium          the engine to capture in; chromium is the only one
+  --engine chromium|safari|both
+                             the engine to capture in: chromium (the default); safari, for
+                             Safari's macOS accessibility tree; or both, for Chromium's and
+                             Safari's side by side, aligned by source location (safari and
+                             both need macOS and the Accessibility permission)
   --cross-check safari       also ask real Safari for each element's role and name, and note
-                             where they differ from Chromium's (macOS only)
+                             where they differ from Chromium's (macOS only; --engine chromium)
   --format text|json         the text transcript (the default), or JSON for tools
   --no-speech                leave out the illustrative speech (~ lines, approx in JSON)
   --wait-for <selector>      after load, wait until a CSS selector matches before capturing
@@ -29,15 +33,12 @@ Prints what the browser exposes for an HTML page, item by item, traced to the ta
 Each option may be given once. See docs/usage.md for the output and the exit codes.
 `;
 
-/**
- * Exit codes: 0 on success, 1 when capture fails for a reason other than the page or the binary
- * is missing, 2 for a usage error or a page that cannot be read or instrumented, and 130 or 143
- * when SIGINT or SIGTERM stops a Safari capture. Otherwise the binary's own code passes through:
- * 2 for a snapshot it rejects, 3 for an unsupported version.
- */
-const EXIT = { ok: 0, failed: 1, badInput: 2, sigint: 130, sigterm: 143 } as const;
-
 type Format = 'text' | 'json';
+
+/** The engines a transcript can come from: one engine's tree, or both side by side. */
+type EngineChoice = 'chromium' | 'safari' | 'both';
+
+const ENGINES: readonly EngineChoice[] = ['chromium', 'safari', 'both'];
 
 type Invocation =
   | { kind: 'help' }
@@ -50,6 +51,7 @@ type Invocation =
       format: Format;
       noSpeech: boolean;
       crossCheck: boolean;
+      engine: EngineChoice;
     };
 
 const OPTIONS = {
@@ -122,15 +124,26 @@ function parseInvocation(args: string[]): Invocation | { error: string } {
     return { error: positionals.length === 0 ? 'no page given' : 'more than one page given' };
   }
   const [page] = positionals as [string];
-  if (values.engine !== undefined && values.engine !== 'chromium') {
-    return { error: `unknown engine ${JSON.stringify(values.engine)}; the only engine is chromium` };
+  const engine = ENGINES.find((name) => name === (values.engine ?? 'chromium'));
+  if (engine === undefined) {
+    return {
+      error: `unknown engine ${JSON.stringify(values.engine)}; the engines are chromium, safari and both`,
+    };
   }
   const crossCheck = values['cross-check'];
   if (crossCheck !== undefined && crossCheck !== 'safari') {
     return { error: `unknown cross-check ${JSON.stringify(crossCheck)}; the only cross-check is safari` };
   }
+  if (crossCheck !== undefined && engine !== 'chromium') {
+    return { error: '--cross-check safari can be used only with --engine chromium' };
+  }
   const waitFor = values['wait-for'] === undefined ? {} : { waitFor: values['wait-for'] };
   if (values['verify-instrumentation'] === true) {
+    if (engine !== 'chromium') {
+      return {
+        error: `--engine ${engine} cannot be used with --verify-instrumentation, which checks the page in Chromium`,
+      };
+    }
     if (crossCheck !== undefined) {
       return {
         error: '--cross-check cannot be used with --verify-instrumentation, which prints no transcript',
@@ -155,31 +168,12 @@ function parseInvocation(args: string[]): Invocation | { error: string } {
     format,
     noSpeech: values['no-speech'] === true,
     crossCheck: crossCheck !== undefined,
+    engine,
   };
 }
 
 function parse(args: string[]) {
   return parseArgs({ args, allowPositionals: true, strict: true, tokens: true, options: OPTIONS });
-}
-
-/**
- * A page that cannot be read or that the instrumenter refuses is bad input; a Safari capture
- * stopped by a signal exits as a process that signal ends would; any other failure is not.
- */
-function exitCodeOf(error: unknown): number {
-  if (error instanceof InstrumentHtmlError) {
-    return EXIT.badInput;
-  }
-  if (
-    (error instanceof CaptureError || error instanceof SafariCaptureError) &&
-    error.code === 'page-unreadable'
-  ) {
-    return EXIT.badInput;
-  }
-  if (error instanceof SafariCaptureError && error.signal !== undefined) {
-    return error.signal === 'SIGINT' ? EXIT.sigint : EXIT.sigterm;
-  }
-  return EXIT.failed;
 }
 
 /** Writes a failure to stderr, every line escaped. */
@@ -229,29 +223,46 @@ async function run(args: string[]): Promise<number> {
       return EXIT.failed;
     }
 
-    if (invocation.crossCheck && process.platform !== 'darwin') {
-      fail('unsupported-platform: --cross-check safari needs macOS with Safari and safaridriver');
-      return EXIT.failed;
+    // The platform is known from the command line, so it is checked before anything runs.
+    if (process.platform !== 'darwin') {
+      if (invocation.crossCheck) {
+        fail('unsupported-platform: --cross-check safari needs macOS with Safari and safaridriver');
+        return EXIT.badInput;
+      }
+      if (invocation.engine !== 'chromium') {
+        fail(
+          `unsupported-platform: --engine ${invocation.engine} needs macOS with Safari, safaridriver and the Accessibility permission`,
+        );
+        return EXIT.badInput;
+      }
     }
     const binary = binaryPath();
     if (!existsSync(binary)) {
       fail(`the spokenpath-core binary is not built at ${binary}; build it with \`${BUILD_COMMAND}\``);
       return EXIT.failed;
     }
-    const snapshot = await captureChromium(page, options);
-    const safari = invocation.crossCheck ? await captureSafari(page, options) : undefined;
     const binaryArgs = ['transcript', '-', '--source', page, '--format', invocation.format];
-    if (safari !== undefined) {
-      binaryArgs.push('--cross-check', CROSS_CHECK_FD_PATH);
-    }
     if (invocation.noSpeech) {
       binaryArgs.push('--no-speech');
+    }
+    if (invocation.engine === 'safari') {
+      const snapshot = await captureSafariAx(page, options);
+      return await transcribe(binary, binaryArgs, JSON.stringify(snapshot));
+    }
+    const snapshot = await captureChromium(page, options);
+    let second: unknown;
+    if (invocation.engine === 'both') {
+      second = await captureSafariAx(page, options);
+      binaryArgs.push('--align-with', SECOND_SNAPSHOT_FD_PATH);
+    } else if (invocation.crossCheck) {
+      second = await captureSafari(page, options);
+      binaryArgs.push('--cross-check', SECOND_SNAPSHOT_FD_PATH);
     }
     return await transcribe(
       binary,
       binaryArgs,
       JSON.stringify(snapshot),
-      safari === undefined ? undefined : JSON.stringify(safari),
+      second === undefined ? undefined : JSON.stringify(second),
     );
   } catch (error) {
     fail(describeFailure(error));
