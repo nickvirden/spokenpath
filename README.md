@@ -11,7 +11,8 @@ reader.
 ## Status
 
 spokenpath is **pre-alpha**. Nothing is installable yet and no package is published: the
-`spokenpath` command runs from a checkout of this repository, for Chromium only
+`spokenpath` command runs from a checkout of this repository, for Chromium and, on a Mac, for
+Safari's macOS accessibility tree, each engine alone or both side by side
 ([docs/usage.md](docs/usage.md)). Versions stay at 0.x until 1.0 is declared on purpose, and one
 version covers the whole repository.
 
